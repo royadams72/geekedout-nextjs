@@ -1,4 +1,6 @@
-import { apiGames } from "@/api/apiGames";
+import { apiGames } from "@/app/api/route";
+import { apiMovies } from "@/app/api/apiMovies";
+import { apiMusic } from "@/app/api/apiMusic";
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 // import { counterSlice } from "./features/counter/counterSlice";
@@ -6,7 +8,11 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices({ [apiGames.reducerPath]: apiGames.reducer });
+const rootReducer = combineSlices({
+  [apiGames.reducerPath]: apiGames.reducer,
+  [apiMovies.reducerPath]: apiMovies.reducer,
+  [apiMusic.reducerPath]: apiMusic.reducer,
+});
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -20,7 +26,11 @@ export const makeStore = () => {
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
     middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat([apiGames.middleware]);
+      return getDefaultMiddleware().concat(
+        apiGames.middleware,
+        apiMovies.middleware,
+        apiMusic.middleware
+      );
     },
   });
 };
