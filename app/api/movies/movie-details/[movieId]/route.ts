@@ -8,11 +8,11 @@ export async function GET(
     params: { movieId: string };
   }
 ) {
-  console.log("request===========", movieId);
+  const api_key = process.env.MOVIES_APIKEY;
 
   // const movieId = request.nextUrl.searchParams;
   const res = await fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}?api_key=ec6dbc198ab2edc5acd6c1e1a3336c72&language=en-GB&egion=GB`,
+    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${api_key}&language=en-GB&egion=GB`,
     {
       headers: {
         "Content-Type": "application/json",
