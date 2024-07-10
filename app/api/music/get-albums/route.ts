@@ -1,16 +1,23 @@
-import { getToken } from "../utils/getToken";
+import { getToken } from "../token/getToken";
 
 const clientID = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 let token: string;
 
 export const GET = async (ref: any) => {
-  let data = await getAllAlbums();
-
-  if (data?.error?.status === 401) {
-    token = await getToken();
-    data = await getAllAlbums();
-  }
+  let data;
+  await getAllAlbums()
+    .then((response) => {
+      if (response.error) {
+        throw response;
+      }
+      data = response;
+    })
+    .catch(async (error) => {
+      if (error.error.status === 401) {
+        token = await getToken().then((data = await getAllAlbums()));
+      }
+    });
   return Response.json({ data });
 };
 
@@ -24,5 +31,6 @@ const getAllAlbums = async () => {
       },
     }
   );
+
   return await albums.json();
 };

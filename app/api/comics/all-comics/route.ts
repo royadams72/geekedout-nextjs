@@ -1,5 +1,5 @@
 import { md5 } from "js-md5";
-import { BASE_URL } from "../constants/constants";
+import { BASE_URL } from "../constants/urls";
 const ts = Date.now();
 const hash = md5.create();
 const privateKey = process.env.COMICS_PRIVATE_APIKEY;

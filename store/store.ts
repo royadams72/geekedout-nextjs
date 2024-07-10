@@ -19,23 +19,18 @@ import { musicReducer, musicSlice } from "@/app/api/music/store/musicSlice";
 import { loggerMiddleware } from "./middleware/logger";
 
 import storage from "redux-persist/lib/storage";
-// import { counterSlice } from "./features/counter/counterSlice";
-// import { quotesApiSlice } from "./features/quotes/quotesApiSlice";
+import { apiMusic } from "@/app/api/apiMusic";
+
 const persistConfig = {
   key: "root",
   storage: storage,
 };
-// const restOf = ;
-// const restOf = combineSlices(
-//   comicsSlice,
-//   musicSlice
-//   // [apiGames.reducerPath]: apiGames.reducer,
-//   // [apiMovies.reducerPath]: apiMovies.reducer,
-//   // [apiMusic.reducerPath]: apiMusic.reducer,
-// );
 const rootReducer = persistReducer(
   persistConfig,
-  combineReducers({ comics: comicsReducer, music: musicReducer })
+  combineReducers({
+    comics: comicsReducer,
+    music: musicReducer,
+  })
 );
 
 // `combineSlices` automatically combines the reducers using
@@ -51,18 +46,12 @@ export type RootState = ReturnType<typeof rootReducer>;
 export const makeStore = () => {
   const store = configureStore({
     reducer: rootReducer,
-    // Adding the api middleware enables caching, invalidation, polling,
-    // and other useful features of `rtk-query`.
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
       }),
-    // middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
-    // middleware: (getDefaultMiddleware) => {
-    //   return getDefaultMiddleware().concat(loggerMiddleware);
-    // },
   });
   persistStore(store);
   return store;

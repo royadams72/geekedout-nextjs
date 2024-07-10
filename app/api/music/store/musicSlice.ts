@@ -69,7 +69,7 @@ export const musicSlice = createAppSlice({
   // state as their first argument.
   selectors: {
     selectStatus: (state) => state.status,
-    selectAllAlbums: (state) => state.music.items,
+    selectAllAlbums: (state) => state?.music?.items,
   },
 });
 
@@ -81,7 +81,9 @@ export const { selectStatus, selectAllAlbums } = musicSlice.selectors;
 //
 export const musicReducer = musicSlice.reducer;
 // Helper functions
-
+// , {
+//   next: { revalidate: 10 },
+// }
 async function getMusic() {
   const response = await fetch("http://localhost:3000/api/music/get-albums/");
   const data = await response.json();

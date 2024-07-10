@@ -3,7 +3,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import { Provider } from "react-redux";
-// import { persistStore } from "redux-persist";
+
 import type { AppStore } from "@/store/store";
 import { makeStore } from "@/store/store";
 
@@ -25,7 +25,6 @@ export const StoreProvider = ({ children }: Props) => {
       // optional, but required for `refetchOnFocus`/`refetchOnReconnect` behaviors
 
       const unsubscribe = setupListeners(storeRef.current.dispatch);
-      // persistStore(storeRef.current);
       return unsubscribe;
     }
   }, []);

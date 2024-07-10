@@ -17,10 +17,13 @@ let token = "";
 const baseQueryWithReauth: (baseQuery: BaseQueryType) => BaseQueryType =
   (baseQuery) => async (args: any, api: any, extraOptions: any) => {
     let result = await baseQuery(args, api, extraOptions);
+    console.log(result);
+
     if (
       (result.error && result.error.status === 401) ||
       (result.error && result.error.status === 400)
     ) {
+      console.log(result.error);
       // try to get a new token
       const refreshResult = await fetch(
         `https://accounts.spotify.com/api/token`,
@@ -40,6 +43,7 @@ const baseQueryWithReauth: (baseQuery: BaseQueryType) => BaseQueryType =
       const data = await refreshResult.json();
       if (data) {
         token = data.access_token;
+        console.log("token created======", token);
         // retry the initial query
         result = await baseQuery(args, api, extraOptions);
       } else {
@@ -62,16 +66,20 @@ export const apiMusic = createApi({
   baseQuery: baseQueryWithReauth(productBaseQuery),
   endpoints: (builder) => ({
     getMusic: builder.query({
-      query: () => "browse/new-releases?limit=20&country=GB",
-    }),
-    getAlbum: builder.query({
-      query: (id) => `albums/${id}`,
-    }),
-    getSearch: builder.query({
-      query: (query: string) => `search?q=${query}&type=album`,
+      query: () => {
+        console.log("query======");
+
+        return "browse/new-releases?limit=20&country=GB";
+      },
     }),
   }),
 });
-
-export const { useGetMusicQuery, useGetAlbumQuery, useGetSearchQuery } =
-  apiMusic;
+// ,
+//     getAlbum: builder.query({
+//       query: (id) => `albums/${id}`,
+//     }),
+//     getSearch: builder.query({
+//       query: (query: string) => `search?q=${query}&type=album`,
+//     }),
+// , useGetAlbumQuery, useGetSearchQuery
+export const { useGetMusicQuery } = apiMusic;
