@@ -1,3 +1,6 @@
+import type { Action, ThunkAction } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+
 import {
   persistStore,
   persistReducer,
@@ -8,18 +11,14 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import type { Action, ThunkAction } from "@reduxjs/toolkit";
-import {
-  combineReducers,
-  combineSlices,
-  configureStore,
-} from "@reduxjs/toolkit";
-import { comicsReducer, comicsSlice } from "@/app/api/comics/store/comicsSlice";
-import { musicReducer, musicSlice } from "@/app/api/music/store/musicSlice";
-import { loggerMiddleware } from "./middleware/logger";
-
 import storage from "redux-persist/lib/storage";
-import { apiMusic } from "@/app/api/apiMusic";
+
+import { comicsReducer } from "@/store/comics/comicsSlice";
+import { musicReducer } from "@/store/music/musicSlice";
+import { gamesReducer } from "@/store/games/gamesSlice";
+import { moviesReducer } from "@/store/movies/moviesSlice";
+
+// import { loggerMiddleware } from "./middleware/logger";
 
 const persistConfig = {
   key: "root",
@@ -30,6 +29,8 @@ const rootReducer = persistReducer(
   combineReducers({
     comics: comicsReducer,
     music: musicReducer,
+    games: gamesReducer,
+    movies: moviesReducer,
   })
 );
 

@@ -1,42 +1,42 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/store/createAppSlice";
-import type { AppThunk } from "@/store/store";
-import { Comic, ComicStore } from "@/shared/interfaces/comic";
-// import { getToken } from "./counterAPI";
 
-export interface ComicsSliceState {
-  comics: ComicStore;
-  status: "idle" | "loading" | "failed";
+import { StateLoading } from "@/shared/constants/loading";
+import { Game } from "@/shared/interfaces/game";
+// import { fetchToken } from "@/app/api/games/token/route";
+
+export interface GamesSliceState {
+  games: Game[];
+  status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
 }
 
-const initialState: ComicsSliceState = {
-  comics: {} as ComicStore,
-  status: "idle",
+const initialState: GamesSliceState = {
+  games: [] as Game[],
+  status: StateLoading.IDLE,
 };
 
 // If you are not using async thunks you can use the standalone `createSlice`.
-export const comicsSlice = createAppSlice({
-  name: "comics",
+export const gamesSlice = createAppSlice({
+  name: "games",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: (create) => ({
-    getComics: create.asyncThunk(
+    getGames: create.asyncThunk(
       async () => {
-        const response = await getComicsApi();
-        // The value we return becomes the `fulfilled` action payload
-        return response.data;
+        let data = await getAllGames();
+        return data.data;
       },
       {
         pending: (state) => {
-          state.status = "loading";
+          state.status = StateLoading.LOADING;
         },
         fulfilled: (state, action) => {
-          state.status = "idle";
-          state.comics = action.payload;
+          state.status = StateLoading.IDLE;
+          state.games = action.payload;
         },
         rejected: (state) => {
-          state.status = "failed";
+          state.status = StateLoading.FAILED;
         },
       }
     ),
@@ -44,24 +44,27 @@ export const comicsSlice = createAppSlice({
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
   selectors: {
-    selectComicsArray: (comics) => comics.comics.results as Comic[],
-    selectStatus: (counter) => counter.status,
+    selectStatus: (state) => state.status,
+    selectGames: (state) => state?.games,
   },
 });
 
-const getComicsApi = async () => {
-  const response = await fetch("http://localhost:3000/api/comics/all-comics");
-  const data = await response.json();
-  return data;
-};
-
 // Action creators are generated for each case reducer function.
-export const { getComics } = comicsSlice.actions;
+export const { getGames } = gamesSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectComicsArray, selectStatus } = comicsSlice.selectors;
-
-export const comicsReducer = comicsSlice.reducer;
+export const { selectStatus, selectGames } = gamesSlice.selectors;
+//
+export const gamesReducer = gamesSlice.reducer;
+// Helper functions
+// , {
+//   next: { revalidate: 10 },
+// }
+async function getAllGames() {
+  const response = await fetch("http://localhost:3000/api/games/get-games/");
+  const data = await response.json();
+  return data;
+}
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.
 // export const incrementIfOdd =

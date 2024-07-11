@@ -37,6 +37,12 @@ export default async function Home() {
         <li>
           <Link href={"/features/music"}>Music</Link>
         </li>
+        <li>
+          <Link href={"/features/games"}>Games</Link>
+        </li>
+        <li>
+          <Link href={"/features/movies"}>Movies</Link>
+        </li>
       </ul>
     </main>
   );

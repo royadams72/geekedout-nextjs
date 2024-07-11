@@ -2,20 +2,19 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/store/createAppSlice";
 import type { AppThunk } from "@/store/store";
 import { MusicStore } from "@/shared/interfaces/music";
+import { StateLoading } from "@/shared/constants/loading";
 // import { fetchToken } from "@/app/api/music/token/route";
 
 export interface MusicSliceState {
   music: MusicStore;
-  token: string;
-  status: "idle" | "loading" | "failed";
+  status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
 }
 
 const initialState: MusicSliceState = {
   music: {} as MusicStore,
-  token: "",
-  status: "idle",
+  status: StateLoading.IDLE,
 };
-let token: any;
+
 // If you are not using async thunks you can use the standalone `createSlice`.
 export const musicSlice = createAppSlice({
   name: "music",
@@ -30,37 +29,21 @@ export const musicSlice = createAppSlice({
     //   // immutable state based off those changes
     //   state.token = action.payload;
     // }),
-    // ,
-    // decrement: create.reducer((state) => {
-    //   state.value -= 1;
-    // }),
-    // // Use the `PayloadAction` type to declare the contents of `action.payload`
-    // incrementByAmount: create.reducer(
-    //   (state, action: PayloadAction<number>) => {
-    //     state.value += action.payload;
-    //   }
-    // ),
-    // The function below is called a thunk and allows us to perform async logic. It
-    // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-    // will call the thunk with the `dispatch` function as the first argument. Async
-    // code can then be executed and other actions can be dispatched. Thunks are
-    // typically used to make async requests.
     getAllAlbums: create.asyncThunk(
       async () => {
         let data = await getMusic();
-        console.log(data.data.albums);
         return data.data.albums;
       },
       {
         pending: (state) => {
-          state.status = "loading";
+          state.status = StateLoading.LOADING;
         },
         fulfilled: (state, action) => {
-          state.status = "idle";
+          state.status = StateLoading.IDLE;
           state.music = action.payload;
         },
         rejected: (state) => {
-          state.status = "failed";
+          state.status = StateLoading.FAILED;
         },
       }
     ),

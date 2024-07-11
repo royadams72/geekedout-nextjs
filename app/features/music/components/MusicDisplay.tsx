@@ -4,34 +4,25 @@ import {
   getAllAlbums,
   selectAllAlbums,
   selectStatus,
-} from "@/app/api/music/store/musicSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+} from "@/store/music/musicSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/store.hooks";
 import { Album, AlbumDetail } from "@/shared/interfaces/music";
-import { useGetMusicQuery } from "@/app/api/apiMusic";
+import { useGetMusicQuery } from "@/archive/apiMusic";
+import { useSelectorEffect } from "@/hooks/useSelector";
+import { StateLoading } from "@/shared/constants/loading";
 
 const MusicDisplay = () => {
-  const dispatch = useAppDispatch();
   const albums = useAppSelector(selectAllAlbums) as Album[];
-  // const [isClient, setIsClient] = useState(false);
-  const isLoaded = useAppSelector(selectStatus) === "idle";
-  console.log(albums);
+  const isLoaded = useAppSelector(selectStatus) === StateLoading.IDLE;
+  const isClientLoaded = useSelectorEffect(albums, getAllAlbums);
 
-  // // }, []);
-  useEffect(() => {
-    // if (albums === undefined) {
-    dispatch(getAllAlbums());
-    console.log("dispatching=============");
-    // }
-
-    // setIsClient(true);
-  }, []);
-  // const { data, isError, isLoading, isSuccess } = useGetMusicQuery([]);
-  // console.log(data, isError, isLoading, isSuccess);
-
+  if (!isLoaded) {
+    <div>Loading....</div>;
+  }
   return (
     <>
       <div>MusicDisplay</div>
-      {isLoaded && (
+      {isClientLoaded && (
         <ul>
           {albums?.map((album: Album) => (
             <li key={album.id}>{album.name}</li>

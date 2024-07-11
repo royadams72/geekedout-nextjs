@@ -1,5 +1,9 @@
 import { NextRequest } from "next/server";
 
+import { BASE_URL_MOVIES } from "@/shared/constants/urls";
+
+const api_key = process.env.MOVIES_APIKEY;
+
 export async function GET(
   request: NextRequest,
   {
@@ -8,11 +12,8 @@ export async function GET(
     params: { movieId: string };
   }
 ) {
-  const api_key = process.env.MOVIES_APIKEY;
-
-  // const movieId = request.nextUrl.searchParams;
   const res = await fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${api_key}&language=en-GB&egion=GB`,
+    `${BASE_URL_MOVIES}/${movieId}?api_key=${api_key}&language=en-GB&egion=GB`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -20,6 +21,6 @@ export async function GET(
     }
   );
   const data = await res.json();
-
+  // TODO error handling
   return Response.json({ data });
 }
