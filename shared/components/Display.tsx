@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { StateLoading } from "@/shared/constants/loading";
+import { StateLoading } from "@/shared/enums/loading";
 import { useSelectorEffect } from "@/hooks/useSelector";
 import { useAppSelector } from "@/hooks/store.hooks";
 

@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/store.hooks";
 import { Album, AlbumDetail } from "@/shared/interfaces/music";
 import { useGetMusicQuery } from "@/archive/apiMusic";
 import { useSelectorEffect } from "@/hooks/useSelector";
-import { StateLoading } from "@/shared/constants/loading";
+import { StateLoading } from "@/shared/enums/loading";
 
 const MusicDisplay = () => {
   const albums = useAppSelector(selectAllAlbums) as Album[];

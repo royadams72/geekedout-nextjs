@@ -2,7 +2,7 @@
 import React from "react";
 import { useAppSelector } from "@/hooks/store.hooks";
 
-import { StateLoading } from "@/shared/constants/loading";
+import { StateLoading } from "@/shared/enums/loading";
 
 import { useSelectorEffect } from "@/hooks/useSelector";
 import { getGames, selectGames, selectStatus } from "@/store/games/gamesSlice";

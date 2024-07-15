@@ -1,8 +1,12 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/store/createAppSlice";
 import type { AppThunk } from "@/store/store";
 import { Comic, ComicStore } from "@/shared/interfaces/comic";
-import { StateLoading } from "@/shared/constants/loading";
+import { StateLoading } from "@/shared/enums/loading";
+import { CategoryType } from "@/shared/enums/category-type.enum";
+import { Paths } from "@/shared/enums/paths.enums";
+import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
+import { Preview } from "@/shared/interfaces/preview";
 // import { getToken } from "./counterAPI";
 
 export interface ComicsSliceState {
@@ -46,9 +50,23 @@ export const comicsSlice = createAppSlice({
   // state as their first argument.
   selectors: {
     selectComicsArray: (comics) => comics.comics.results as Comic[],
-    selectStatus: (counter) => counter.status,
+    selectStatus: (comics) => comics.status,
+    // selectComics(comics) => comicPreview(comics),
   },
 });
+
+// const selectComicsPreview = (item: any) => {
+//   let data;
+//   const isImages = item.images !== undefined ? item.images.length > 0 : undefined;
+
+//   const imageNotFound = `${Paths.IMAGES}/image404@2x.png`;
+//   const imageNotFound450x210 = `${Paths.IMAGES}/image404-450x210@2x.png`;
+//   const imageNotFound250x250 = `${Paths.IMAGES}/image404-250x250@2x.png`;
+//   data = {
+//     category: CategoryType.Comics, id: item.id, imageLarge: isImages ? `${item.images[0].path}.jpg` : imageNotFound,
+//     imageSmall: isImages  ? `${item.images[0].path}/standard_fantastic.jpg` : imageNotFound250x250, title: item.title
+//   };
+// }
 
 const getComicsApi = async () => {
   const response = await fetch("http://localhost:3000/api/comics/all-comics");
@@ -62,6 +80,27 @@ export const { getComics } = comicsSlice.actions;
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectComicsArray, selectStatus } = comicsSlice.selectors;
 
+export const selectComicsPreview = createSelector(
+  selectComicsArray,
+  (arr: Comic[]) => {
+    return arr?.map((comic) => {
+      const isImages =
+        comic.images !== undefined ? comic.images.length > 0 : undefined;
+      return {
+        category: CategoryType.Comics,
+        id: comic.id,
+        title: comic.title,
+        imageLarge: isImages
+          ? `${comic.images[0].path}.jpg`
+          : IMAGE_NOT_FOUND.SM,
+        imageSmall: isImages
+          ? `${comic.images[0].path}/standard_fantastic.jpg`
+          : IMAGE_NOT_FOUND.MED_250x250,
+      };
+    });
+    // return res;
+  }
+);
 export const comicsReducer = comicsSlice.reducer;
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

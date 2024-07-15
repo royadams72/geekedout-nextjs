@@ -1,6 +1,6 @@
 import { createAppSlice } from "@/store/createAppSlice";
 import { Movie, MoviesStore } from "@/shared/interfaces/movies";
-import { StateLoading } from "@/shared/constants/loading";
+import { StateLoading } from "@/shared/enums/loading";
 
 export interface MoviesSliceState {
   movies: MoviesStore;

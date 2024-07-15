@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/store/createAppSlice";
 import type { AppThunk } from "@/store/store";
 import { MusicStore } from "@/shared/interfaces/music";
-import { StateLoading } from "@/shared/constants/loading";
+import { StateLoading } from "@/shared/enums/loading";
 // import { fetchToken } from "@/app/api/music/token/route";
 
 export interface MusicSliceState {
