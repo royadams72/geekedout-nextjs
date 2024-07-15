@@ -1,8 +1,10 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/store/createAppSlice";
 import type { AppThunk } from "@/store/store";
-import { MusicStore } from "@/shared/interfaces/music";
+import { Album, AlbumDetail, MusicStore } from "@/shared/interfaces/music";
 import { StateLoading } from "@/shared/enums/loading";
+import { CategoryType } from "@/shared/enums/category-type.enum";
+import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 // import { fetchToken } from "@/app/api/music/token/route";
 
 export interface MusicSliceState {
@@ -72,14 +74,19 @@ async function getMusic() {
   const data = await response.json();
   return data;
 }
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
-// export const incrementIfOdd =
-//   (amount: number): AppThunk =>
-//   (dispatch, getState) => {
-//     const currentValue = selectCount(getState());
-
-//     if (currentValue % 2 === 1 || currentValue % 2 === -1) {
-//       dispatch(incrementByAmount(amount));
-//     }
-//   };
+export const selectMusicPreview = createSelector(
+  selectAllAlbums,
+  (arr: Album[]) => {
+    return arr?.map((album) => {
+      const isImages =
+        album.images !== undefined ? album.images.length > 0 : undefined;
+      return {
+        category: CategoryType.Music,
+        id: album.id,
+        imageLarge: isImages ? `${album.images[0].url}` : IMAGE_NOT_FOUND.SM,
+        imageSmall: isImages ? `${album.images[1].url}` : IMAGE_NOT_FOUND.SM,
+        title: album.name,
+      };
+    });
+  }
+);

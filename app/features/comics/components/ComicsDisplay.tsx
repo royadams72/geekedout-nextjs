@@ -1,11 +1,8 @@
 "use client";
 
-import { useAppSelector } from "@/hooks/store.hooks";
 import Display from "@/shared/components/Display";
-import { Comic } from "@/shared/interfaces/comic";
 import { Preview } from "@/shared/interfaces/preview";
 import {
-  selectComicsArray,
   selectStatus,
   getComics,
   selectComicsPreview,
@@ -13,9 +10,6 @@ import {
 import Link from "next/link";
 
 const ComicsDisplay = () => {
-  // const items = useAppSelector(selectComicsPreview);
-  // console.log(items);
-
   return (
     <>
       <div>

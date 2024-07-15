@@ -22,6 +22,7 @@ const Display = <T extends { id?: string | number | undefined }>({
   const items = useAppSelector(itemsSelector);
   const isClientLoaded = useSelectorEffect(items, fetchAction);
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
+  console.log(items);
 
   if (isLoading) {
     return <div>Loading....</div>;

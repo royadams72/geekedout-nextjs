@@ -1,8 +1,11 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/store/createAppSlice";
 
 import { StateLoading } from "@/shared/enums/loading";
 import { Game } from "@/shared/interfaces/game";
+import { CategoryType } from "@/shared/enums/category-type.enum";
+import { title } from "process";
+import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 // import { fetchToken } from "@/app/api/games/token/route";
 
 export interface GamesSliceState {
@@ -65,14 +68,14 @@ async function getAllGames() {
   const data = await response.json();
   return data;
 }
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
-// export const incrementIfOdd =
-//   (amount: number): AppThunk =>
-//   (dispatch, getState) => {
-//     const currentValue = selectCount(getState());
 
-//     if (currentValue % 2 === 1 || currentValue % 2 === -1) {
-//       dispatch(incrementByAmount(amount));
-//     }
-//   };
+export const selectGamesPreview = createSelector(selectGames, (arr: Game[]) => {
+  return arr?.map((game) => {
+    return {
+      category: CategoryType.Games,
+      id: game.id,
+      imageLarge: game.image || IMAGE_NOT_FOUND.LRG_450x210,
+      title: game.title,
+    };
+  });
+});

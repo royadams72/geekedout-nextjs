@@ -6,10 +6,11 @@ import Display from "@/shared/components/Display";
 import Link from "next/link";
 import {
   getMovies,
-  selectMovies,
+  selectMoviesPreview,
   selectStatus,
 } from "@/store/movies/moviesSlice";
-import { Movie } from "@/shared/interfaces/movies";
+
+import { Preview } from "@/shared/interfaces/preview";
 
 const MoviesDisplay = () => {
   return (
@@ -17,8 +18,8 @@ const MoviesDisplay = () => {
       <div>
         <Link href={"/"}>Back to main Page</Link>
       </div>
-      <Display<Movie>
-        itemsSelector={selectMovies}
+      <Display<Preview>
+        itemsSelector={selectMoviesPreview}
         statusSelector={selectStatus}
         fetchAction={getMovies}
         itemRenderer={(movie) => movie.title}
