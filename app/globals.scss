@@ -1,0 +1,230 @@
+@import "../styles/settings/";
+@import "../styles/mixins/mixins";
+@import "../styles/utilities/utils";
+@import "../styles/base/base";
+@import "../styles/core/core";
+
+/* ---------- Variables */
+
+$base-main-border-radius: 8px !default;
+$base-bg-colour: settings-colour("bg-colour-primary") !default;
+@debug "$base-bg-colour: #{$base-bg-colour}";
+// Typography
+
+$type-body-font-family: $font-main-font !default;
+$type-font-colour: settings-colour("text-primary") !default;
+$type-h1-font-family: $font-main-font !default;
+$type-h1-font-size-small: 25px !default;
+$type-h1-font-size-medium: 30px !default;
+$type-h1-line-height-small: 1.1 !default;
+$type-h1-line-height-medium: 1.1 !default;
+$type-h1-margin-bottom: 0 !default;
+$type-h1-weight: bold !default;
+$type-h1-colour: $type-font-colour !default;
+
+$type-h2-font-family: $font-main-font !default;
+$type-h2-font-size-small: 20px !default;
+$type-h2-font-size-medium: 25px !default;
+$type-h2-line-height-small: 1.1 !default;
+$type-h2-line-height-medium: 1.1 !default;
+$type-h2-margin-bottom: 0 !default;
+$type-h2-weight: normal !default;
+$type-h2-colour: $type-font-colour !default;
+
+$type-h3-font-family: $font-main-font !default;
+$type-h3-font-size-small: 18px !default;
+$type-h3-font-size-medium: 22px !default;
+$type-h3-line-height-small: 1.1 !default;
+$type-h3-line-height-medium: 1.1 !default;
+$type-h3-margin-bottom: 20px !default;
+$type-h3-margin-bottom-medium: 32px !default;
+$type-h3-weight: normal !default;
+$type-h3-colour: $type-font-colour !default;
+
+$type-h4-font-family: $font-main-font !default;
+$type-h4-font-size-small: 16px !default;
+$type-h4-font-size-medium: 20px !default;
+$type-h4-line-height-small: 1.1 !default;
+$type-h4-line-height-medium: 1.1 !default;
+$type-h4-margin-bottom: 0 !default;
+$type-h4-weight: normal !default;
+$type-h4-colour: $type-font-colour !default;
+
+$type-p-font-size-small: 14px !default;
+$type-p-font-size-medium: 18px !default;
+$type-p-line-height-small: 1.4 !default;
+$type-p-line-height-medium: 1.4 !default;
+$type-p-margin-bottom-small: 20px !default;
+$type-p-margin-bottom-medium: 20px !default;
+$type-p-weight: normal !default;
+$type-p-colour: $type-font-colour !default;
+
+$type-li-font-family: $font-main-font !default;
+$type-li-font-size-small: 14px !default;
+$type-li-font-size-medium: 18px !default;
+$type-li-line-height-small: 1.4 !default;
+$type-li-line-height-medium: 1.4 !default;
+$type-li-margin-bottom-small: 5px !default;
+$type-li-margin-bottom-medium: 9px !default;
+$type-li-weight: normal !default;
+$type-li-colour: $type-font-colour !default;
+
+$type-a-decoration: none !default;
+
+//Mixins /
+
+@mixin color-font-margin-bottom(
+  $type-font-colour,
+  $type-body-font-family,
+  $font-weight,
+  $margin-bottom
+) {
+  color: $type-font-colour;
+  font-family: $type-body-font-family;
+  font-weight: $font-weight;
+  margin-bottom: $margin-bottom;
+}
+
+h1,
+%h1 {
+  @include color-font-margin-bottom(
+    $type-h1-colour,
+    $type-h1-font-family,
+    $type-h1-weight,
+    $type-h1-margin-bottom
+  );
+  font-size: $type-h1-font-size-small;
+  line-height: $type-h1-line-height-small;
+  margin-top: 0;
+  padding-left: 10px;
+
+  @include is-medium {
+    font-size: $type-h1-font-size-medium;
+    line-height: $type-h1-line-height-medium;
+    padding-left: 20px;
+  }
+}
+
+h2,
+%h2 {
+  @include color-font-margin-bottom(
+    $type-h2-colour,
+    $type-h2-font-family,
+    $type-h2-weight,
+    $type-h2-margin-bottom
+  );
+  font-size: $type-h2-font-size-small;
+  line-height: $type-h2-line-height-small;
+
+  @include is-medium {
+    font-size: $type-h2-font-size-medium;
+    line-height: $type-h2-line-height-medium;
+  }
+}
+
+h3,
+%h3 {
+  @include color-font-margin-bottom(
+    $type-h3-colour,
+    $type-h3-font-family,
+    $type-h3-weight,
+    $type-h3-margin-bottom
+  );
+  font-size: $type-h3-font-size-small;
+  line-height: $type-h3-line-height-small;
+
+  @include is-medium {
+    font-size: $type-h3-font-size-medium;
+    line-height: $type-h3-line-height-medium;
+  }
+}
+
+h4,
+%h4 {
+  @include color-font-margin-bottom(
+    $type-h4-colour,
+    $type-h4-font-family,
+    $type-h4-weight,
+    $type-h4-margin-bottom
+  );
+  font-size: $type-h4-font-size-small;
+  line-height: $type-h4-line-height-small;
+  margin-top: 10px;
+
+  @include is-medium {
+    font-size: $type-h4-font-size-medium;
+    line-height: $type-h4-line-height-medium;
+  }
+}
+
+p,
+%p {
+  @include color-font-margin-bottom(
+    $type-p-colour,
+    $type-body-font-family,
+    normal,
+    $type-p-margin-bottom-small
+  );
+  font-size: $type-p-font-size-small;
+  line-height: $type-p-line-height-small;
+
+  @include is-medium {
+    font-size: $type-p-font-size-medium;
+    line-height: $type-p-line-height-medium;
+  }
+
+  // &:last-child {
+  //   margin-bottom: 0;
+  // }
+}
+
+li,
+%li {
+  @include color-font-margin-bottom(
+    $type-li-colour,
+    $type-li-font-family,
+    normal,
+    $type-li-margin-bottom-small
+  );
+  font-size: $type-li-font-size-small;
+  line-height: $type-li-line-height-small;
+  text-transform: capitalize;
+  // &:last-child {
+  //     margin-bottom: 0;
+  // }
+
+  @include is-medium {
+    font-size: $type-li-font-size-medium;
+    line-height: $type-li-line-height-medium;
+  }
+}
+/* ---------- Variables */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+html {
+  // sass-lint:disable no-vendor-prefixes
+  -webkit-font-smoothing: antialiased;
+  // sass-lint:enable no-vendor-prefixes
+  background-color: $base-bg-colour;
+  font-size: (14px / 16px) * 100%;
+}
+
+.main {
+  background-color: $base-bg-colour;
+  margin: 0 auto 65px;
+  max-width: 936px;
+
+  @include is-medium {
+    margin: 0 auto 65px;
+  }
+}
+body {
+  // background-color: $base-bg-colour;
+  color: settings-colour("text-white");
+  margin: 0;
+  padding: 0;
+}

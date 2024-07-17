@@ -6,7 +6,7 @@ import {
   selectMusicPreview,
   selectStatus,
 } from "@/store/music/musicSlice";
-import Display from "@/shared/components/Display";
+import Category from "@/shared/components/Category";
 import Link from "next/link";
 import { Preview } from "@/shared/interfaces/preview";
 
@@ -16,7 +16,7 @@ const MusicDisplay = () => {
       <div>
         <Link href={"/"}>Back to main Page</Link>
       </div>
-      <Display<Preview>
+      <Category<Preview>
         itemsSelector={selectMusicPreview}
         statusSelector={selectStatus}
         fetchAction={getAllAlbums}

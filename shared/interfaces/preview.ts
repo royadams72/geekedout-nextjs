@@ -1,6 +1,6 @@
 export interface Preview {
   category?: string;
-  id?: number | string;
+  id?: number | string | undefined;
   imageLarge?: string;
   imageMedium?: string;
   imageSmall?: string;

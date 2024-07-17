@@ -30,7 +30,7 @@ export const comicsSlice = createAppSlice({
       async () => {
         const response = await getComicsApi();
         // The value we return becomes the `fulfilled` action payload
-        return response.data.json();
+        return response;
       },
       {
         pending: (state) => {

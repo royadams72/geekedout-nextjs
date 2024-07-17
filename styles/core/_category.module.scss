@@ -1,0 +1,85 @@
+@import "../mixins/mixins";
+
+$opacity-transition: opacity 1s;
+$music-header-colour: #d26cb5;
+$movies-header-colour: #35ab7c;
+$comics-header-colour: #caba1d;
+$games-header-colour: #d44d51;
+
+.category {
+  &__header {
+    font-size: 40px;
+    margin-bottom: 8px;
+
+    &-comicsColour {
+      color: $comics-header-colour;
+    }
+
+    &-musicColour {
+      color: $music-header-colour;
+    }
+
+    &-gamesColour {
+      color: $games-header-colour;
+    }
+
+    &-moviesColour {
+      color: $movies-header-colour;
+    }
+  }
+
+  &__itemsContainer {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    height: auto;
+    // position: relative;
+    width: 50%;
+
+    @include is-medium {
+      width: 25%;
+    }
+  }
+
+  &__image {
+    align-self: center;
+    height: auto;
+    // opacity: 0;
+    // transition: $opacity-transition;
+    width: 100%;
+  }
+
+  &__footer {
+    margin-bottom: 8px;
+    margin-top: 8px;
+    // opacity: 0;
+    padding-left: 10px;
+    // transition: $opacity-transition;
+  }
+
+  // img.ng-lazyloaded {
+  //   opacity: 1;
+  // }
+
+  &__comicsColour {
+    color: settings-colour("comics");
+  }
+
+  &__musicColour {
+    color: settings-colour("music");
+  }
+
+  &__gamesColour {
+    color: settings-colour("games");
+  }
+
+  &__moviesColour {
+    color: settings-colour("movies");
+  }
+}

@@ -1,0 +1,46 @@
+/*
+
+Animation
+
+*/
+
+/* ---------- Mixins */
+
+@mixin animation-keyframe($name, $property, $from, $to) {
+    @keyframes #{$name} {
+        from {
+            #{$property}: $from;
+        }
+
+        to {
+            #{$property}: $to;
+        }
+    }
+}
+
+//Utilities */
+
+.anim-fade-in,
+%a-fade-in {
+  @include animation-keyframe(fadeIn, opacity, 0, 1);
+  animation: fadeIn .3s;
+}
+
+.pulsate {
+  // @include animation-keyframe(pulse, opacity, 1, .2);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: .2;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: .2;
+  }
+}

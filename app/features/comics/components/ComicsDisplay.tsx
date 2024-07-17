@@ -1,6 +1,6 @@
 "use client";
 
-import Display from "@/shared/components/Display";
+import Category from "@/shared/components/Category";
 import { Preview } from "@/shared/interfaces/preview";
 import {
   selectStatus,
@@ -15,12 +15,12 @@ const ComicsDisplay = () => {
       <div>
         <Link href={"/"}>Back to main Page</Link>
       </div>
-      <Display<Preview>
+      <Category<Preview>
         itemsSelector={selectComicsPreview}
         statusSelector={selectStatus}
         fetchAction={getComics}
         itemRenderer={(comic) => `${comic.title}, ${comic.category}`}
-        title="Comics Display"
+        title="Comics Category"
       />
     </>
   );

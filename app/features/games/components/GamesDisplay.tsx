@@ -12,7 +12,7 @@ import {
   selectGamesPreview,
 } from "@/store/games/gamesSlice";
 import { Game } from "@/shared/interfaces/game";
-import Display from "@/shared/components/Display";
+import Category from "@/shared/components/Category";
 
 import Link from "next/link";
 import { Preview } from "@/shared/interfaces/preview";
@@ -23,12 +23,12 @@ const GamesDisplay = () => {
       <div>
         <Link href={"/"}>Back to main Page</Link>
       </div>
-      <Display<Preview>
+      <Category<Preview>
         itemsSelector={selectGamesPreview}
         statusSelector={selectStatus}
         fetchAction={getGames}
         itemRenderer={(game) => game.title}
-        title="Games Display"
+        title="Games Category"
       />
     </>
   );

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-import Display from "@/shared/components/Display";
+import Category from "@/shared/components/Category";
 
 import Link from "next/link";
 import {
@@ -18,12 +18,12 @@ const MoviesDisplay = () => {
       <div>
         <Link href={"/"}>Back to main Page</Link>
       </div>
-      <Display<Preview>
+      <Category<Preview>
         itemsSelector={selectMoviesPreview}
         statusSelector={selectStatus}
         fetchAction={getMovies}
         itemRenderer={(movie) => movie.title}
-        title="Games Display"
+        title="Games Category"
       />
     </>
   );

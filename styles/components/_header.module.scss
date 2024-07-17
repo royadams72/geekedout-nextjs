@@ -1,0 +1,88 @@
+// @import "../base/body";
+// @import "../mixins/media-queries";
+@import "../mixins/mixins";
+$bg-colour: #232323;
+
+.header {
+  background-color: $bg-colour;
+  display: flex;
+  flex-basis: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 120px;
+  justify-content: left;
+  margin: 0;
+  padding: 0;
+
+  @include is-medium {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 70px;
+  }
+
+  &__logo {
+    align-items: flex-start;
+    display: flex;
+    flex-basis: 0;
+    flex-grow: 1;
+    height: auto;
+    justify-content: center;
+    text-align: center;
+
+    @include is-medium {
+      justify-content: flex-start;
+      text-align: start;
+    }
+
+    &-image {
+      max-width: 85%;
+
+      @include is-medium {
+        margin-left: 15px;
+        margin-top: 6px;
+        max-width: 70%;
+      }
+
+      @include is-large {
+        margin-top: 8px;
+      }
+    }
+  }
+
+  &__nav {
+    flex-basis: 0;
+    flex-grow: 1;
+    margin-top: 10px;
+
+    &-ul {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+
+      @include is-medium {
+        align-items: center;
+        justify-content: flex-end;
+      }
+    }
+
+    &-item {
+      display: flex;
+      justify-content: center;
+      margin: 0 0.4rem;
+      width: 20%;
+
+      @include is-large {
+        width: 10%;
+      }
+    }
+
+    &-item-img {
+      height: auto;
+      width: 40px;
+    }
+  }
+}
