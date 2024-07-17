@@ -1,0 +1,12 @@
+/*
+
+Helper functions
+
+*/
+
+
+/* ---------- Colours */
+
+@function settings-colour($colour) {
+    @return map-get($settings-colours, $colour);
+}

@@ -10,7 +10,6 @@ const MuiscPage = () => {
   return (
     <>
       <div>Muisc</div>
-      <Link href={"/"}>Back to main Page</Link>
       <MusicDisplay />
     </>
   );

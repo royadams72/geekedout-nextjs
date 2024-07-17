@@ -1,0 +1,33 @@
+/*
+
+Form
+- Inputs
+
+*/
+$input-border-colour:           $settings-form-field-border-colour;
+$input-border-radius:           $settings-form-field-border-radius;
+$input-font-colour:             $settings-form-field-font-colour;
+$input-font-size:               $settings-form-field-font-size;
+$input-placeholder-colour:      $settings-form-field-placeholder-colour;
+$input-border-width:            $settings-form-field-border-width;
+$input-placeholder-color:       $settings-form-field-placeholder-colour;
+$input-valid-border-colour:     $field-valid-colour;
+$input-invalid-border-colour:   $field-error-colour;
+$input-focus-colour:            $field-focus-colour;
+$input-outline-width:           $settings-form-field-outline-width;
+$input-two-figure-width:        70px;
+$input-four-figure-width:       88px;
+$input-ten-figure-width:        164px;
+$input-border-style:            solid !default;
+$input-border:                  $input-border-width  $input-border-style  $input-border-colour !default;
+
+
+// Component
+
+input {
+  border: $input-border;
+  border-radius: $input-border-radius;
+  color: $input-font-colour;
+  font-size: $input-font-size;
+
+}

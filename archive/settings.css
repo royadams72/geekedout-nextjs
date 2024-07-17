@@ -1,0 +1,33 @@
+:root {
+  --bg-colour-primary: #232323;
+  --bg-colour-secondary: #e8f8fb;
+  --heading-bg: #000000;
+  --footer-bg: #04459b;
+
+  /* Main border colours*/
+  --border-primary-colour: #a6a8aa;
+  --border-secondary-colour: #dcdcdc;
+
+  /* text */
+  --text-primary: #cccccc;
+  --text-white: #ffffff;
+  --dashboard-text-link: #04459b;
+
+  --error: #ca0109;
+  --valid-state: #c5da46;
+  --active-state: #04459b;
+  --focus: #fdbe1f;
+  --text-focus: #a9a9a9;
+
+  --link: #04459b;
+  --link-hover: #04459b;
+
+  /* form */
+  --typeahead-ul-bg-colour: #f7f7f7;
+
+  /*Category colours*/
+  --comics: #f5e653;
+  --music: #f969d0;
+  --games: #eb5055;
+  --movies: #68c39f;
+}

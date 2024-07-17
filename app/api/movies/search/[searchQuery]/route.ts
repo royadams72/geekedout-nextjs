@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-import { BASE_URL_MOVIES } from "@/app/api/constants/urls";
+import { BASE_URL_MOVIES } from "@/shared/constants/urls";
 
 const api_key = process.env.MOVIES_APIKEY;
 

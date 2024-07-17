@@ -1,6 +1,10 @@
 import { createAppSlice } from "@/store/createAppSlice";
 import { Movie, MoviesStore } from "@/shared/interfaces/movies";
-import { StateLoading } from "@/shared/constants/loading";
+import { StateLoading } from "@/shared/enums/loading";
+import { createSelector } from "@reduxjs/toolkit";
+import { CategoryType } from "@/shared/enums/category-type.enum";
+import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
+import { Paths } from "@/shared/enums/paths.enums";
 
 export interface MoviesSliceState {
   movies: MoviesStore;
@@ -60,14 +64,22 @@ export const { getMovies } = moviesSlice.actions;
 export const { selectMovies, selectStatus } = moviesSlice.selectors;
 
 export const moviesReducer = moviesSlice.reducer;
-// We can also write thunks by hand, which may contain both sync and async logic.
-// Here's an example of conditionally dispatching actions based on current state.
-// export const incrementIfOdd =
-//   (amount: number): AppThunk =>
-//   (dispatch, getState) => {
-//     const currentValue = selectCount(getState());
 
-//     if (currentValue % 2 === 1 || currentValue % 2 === -1) {
-//       dispatch(incrementByAmount(amount));
-//     }
-//   };
+export const selectMoviesPreview = createSelector(
+  selectMovies,
+  (arr: Movie[]) => {
+    return arr?.map((movie) => {
+      return {
+        category: CategoryType.Movies,
+        id: movie.id,
+        imageLarge: movie.poster_path
+          ? `${Paths.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
+          : IMAGE_NOT_FOUND.SM,
+        imageSmall: movie.poster_path
+          ? `${Paths.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
+          : IMAGE_NOT_FOUND.SM,
+        title: movie.title,
+      };
+    });
+  }
+);

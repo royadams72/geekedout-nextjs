@@ -1,0 +1,12 @@
+
+
+.search {
+  &__input {
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+    @include is-medium {
+      margin-bottom: 40px;
+    }
+  }
+}
