@@ -17,6 +17,7 @@ import { comicsReducer } from "@/store/comics/comicsSlice";
 import { musicReducer } from "@/store/music/musicSlice";
 import { gamesReducer } from "@/store/games/gamesSlice";
 import { moviesReducer } from "@/store/movies/moviesSlice";
+import { loggerMiddleware } from "./middleware/logger";
 
 // import { loggerMiddleware } from "./middleware/logger";
 
@@ -52,7 +53,7 @@ export const makeStore = () => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }),
+      }).concat(loggerMiddleware),
   });
   persistStore(store);
   return store;

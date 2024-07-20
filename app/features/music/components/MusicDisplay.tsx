@@ -16,13 +16,13 @@ const MusicDisplay = () => {
       <div>
         <Link href={"/"}>Back to main Page</Link>
       </div>
-      <Category<Preview>
+      {/* <Category<Preview>
         itemsSelector={selectMusicPreview}
         statusSelector={selectStatus}
         fetchAction={getAllAlbums}
         itemRenderer={(album) => album.title}
         title="Games Display"
-      />
+      /> */}
     </>
   );
 };

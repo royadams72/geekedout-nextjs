@@ -18,13 +18,13 @@ const MoviesDisplay = () => {
       <div>
         <Link href={"/"}>Back to main Page</Link>
       </div>
-      <Category<Preview>
+      {/* <Category<Preview>
         itemsSelector={selectMoviesPreview}
         statusSelector={selectStatus}
         fetchAction={getMovies}
         itemRenderer={(movie) => movie.title}
         title="Games Category"
-      />
+      /> */}
     </>
   );
 };

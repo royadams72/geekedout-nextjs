@@ -29,6 +29,7 @@ export const comicsSlice = createAppSlice({
     getComics: create.asyncThunk(
       async () => {
         const response = await getComicsApi();
+
         // The value we return becomes the `fulfilled` action payload
         return response;
       },
@@ -37,6 +38,7 @@ export const comicsSlice = createAppSlice({
           state.status = StateLoading.LOADING;
         },
         fulfilled: (state, action) => {
+          console.log("state.comics=======", state.comics);
           state.status = StateLoading.IDLE;
           state.comics = action.payload;
         },
@@ -68,8 +70,10 @@ export const comicsSlice = createAppSlice({
 //   };
 // }
 
-const getComicsApi = async () => {
-  const response = await fetch("http://localhost:3000/api/comics/all-comics");
+export const getComicsApi = async () => {
+  const response = await fetch(
+    "http://localhost:3000/api/comics/all-comics?ghghgh"
+  );
   const data = await response.json();
   return data;
 };

@@ -23,13 +23,13 @@ const GamesDisplay = () => {
       <div>
         <Link href={"/"}>Back to main Page</Link>
       </div>
-      <Category<Preview>
+      {/* <Category<Preview>
         itemsSelector={selectGamesPreview}
         statusSelector={selectStatus}
         fetchAction={getGames}
         itemRenderer={(game) => game.title}
         title="Games Category"
-      />
+      /> */}
     </>
   );
 };

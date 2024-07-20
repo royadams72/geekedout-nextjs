@@ -1,7 +1,10 @@
 export const loggerMiddleware =
   (storeAPI: any) => (next: any) => (action: any) => {
-    console.log("dispatching", action);
+    if (action === "comics/getComics/pending") {
+      console.log("next state", storeAPI.getState().music);
+      console.log("dispatching==============", action);
+    }
+
     let result = next(action);
-    console.log("next state", storeAPI.getState());
     return result;
   };

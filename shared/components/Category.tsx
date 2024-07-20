@@ -10,56 +10,31 @@ import CategoryItem from "./CategoryItem";
 import { Preview } from "../interfaces/preview";
 
 interface DisplayProps<T> {
-  itemsSelector: (state: any) => T[];
   statusSelector: (state: any) => string;
   fetchAction: any;
-  itemRenderer: (item: T) => React.ReactNode;
+  itemsRenderer: any;
+  // slot: any;
   title: string;
+  items: any;
+  // children: React.ReactNode;
 }
 
 const Category = <T extends Preview>({
-  itemsSelector,
   statusSelector,
   fetchAction,
-  itemRenderer,
-  title,
-}: DisplayProps<T>) => {
-  const items = useAppSelector(itemsSelector);
-  const isClientLoaded = useSelectorEffect(items, fetchAction);
+  itemsRenderer,
+  // slot,
+  items,
+}: // children,
+DisplayProps<T>) => {
+  const isClientLoaded = true;
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
-
-  if (isLoading) {
-    return <div>Loading....</div>;
-  }
-
   return (
     <>
-      {isClientLoaded && (
-        <div className={styles.category}>
-          <h1 className="category__header {{categoryTitleColour}}">{title} </h1>
-          <div className={styles.category__itemsContainer}>
-            {/* {items?.map((item: T) => ( */}
-            <CategoryItem>
-              {items?.map((item: T) => (
-                <div key={item.id} className={styles.category__item}>
-                  <a className={styles.category_anchor}>
-                    {/* <img
-                      className={styles.category_image}
-                      src={item.imageSmall}
-                      alt="som"
-                    /> */}
-                    {/* <p className={styles.category__footer}>
-                      <span>{item.title}</span>
-                    </p> */}
-                  </a>
-                  <div>{item.title}</div>
-                </div>
-              ))}
-            </CategoryItem>
-            {/* // ))} */}
-          </div>
-        </div>
-      )}
+      {/* {slot} */}
+      {/* {children} */}
+      <CategoryItem>{itemsRenderer}</CategoryItem>
+      {/* <CategoryItem items={items} itemsRenderer={itemsRenderer}></CategoryItem> */}
     </>
   );
 };
