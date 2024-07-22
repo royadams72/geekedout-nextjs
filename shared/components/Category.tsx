@@ -1,31 +1,38 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StateLoading } from "@/shared/enums/loading";
 import { useSelectorEffect } from "@/hooks/useSelector";
-import { useAppSelector } from "@/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/store.hooks";
 
 import styles from "@/styles/core/_category.module.scss";
 
 import CategoryItem from "./CategoryItem";
 import { Preview } from "../interfaces/preview";
+import { selectComicsLoaded } from "@/store/comics/comicsSlice";
+import { moviesLoaded, selectMoviesLoaded } from "@/store/movies/moviesSlice";
 
 interface DisplayProps<T> {
   itemsSelector: (state: any) => T[];
   statusSelector: (state: any) => string;
   fetchAction: any;
+  slot: any;
   itemRenderer: (item: T) => React.ReactNode;
   title: string;
+  children: any;
 }
 
 const Category = <T extends Preview>({
   itemsSelector,
   statusSelector,
   fetchAction,
+  slot,
   itemRenderer,
   title,
+  children,
 }: DisplayProps<T>) => {
-  const items = useAppSelector(itemsSelector);
-  const isClientLoaded = useSelectorEffect(items, fetchAction);
+  // const items = useAppSelector(itemsSelector);
+  const isClientLoaded = true;
+  // const isClientLoaded = useSelectorEffect(items, fetchAction);
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
 
   if (isLoading) {
@@ -36,27 +43,13 @@ const Category = <T extends Preview>({
     <>
       {isClientLoaded && (
         <div className={styles.category}>
+          {slot}
           <h1 className="category__header {{categoryTitleColour}}">{title} </h1>
           <div className={styles.category__itemsContainer}>
-            {/* {items?.map((item: T) => ( */}
-            <CategoryItem>
-              {items?.map((item: T) => (
-                <div key={item.id} className={styles.category__item}>
-                  <a className={styles.category_anchor}>
-                    {/* <img
-                      className={styles.category_image}
-                      src={item.imageSmall}
-                      alt="som"
-                    /> */}
-                    {/* <p className={styles.category__footer}>
-                      <span>{item.title}</span>
-                    </p> */}
-                  </a>
-                  <div>{item.title}</div>
-                </div>
-              ))}
-            </CategoryItem>
-            {/* // ))} */}
+            {children}
+            {/* {items?.map((item: any) => ( */}
+
+            {/* ))} */}
           </div>
         </div>
       )}
@@ -65,3 +58,6 @@ const Category = <T extends Preview>({
 };
 
 export default Category;
+function comicsLoaded(arg0: boolean): any {
+  throw new Error("Function not implemented.");
+}

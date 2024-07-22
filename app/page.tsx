@@ -9,7 +9,6 @@ import styles from "@/styles/components/_header.module.scss";
 import CategoryItem from "@/shared/components/CategoryItem";
 // import { useAppDispatch } from "@/hooks/hooks";
 // import { loadComics } from "./api/comics/store/comicsSlice";
-// import { useEffect } from "react";
 
 export default async function Home() {
   // const dispatch = useAppDispatch();
@@ -33,7 +32,7 @@ export default async function Home() {
   return (
     <main>
       <header className={styles.header}>dhdhdhdhdhddhd</header>
-      <CategoryItem>What the actual fuck is going on</CategoryItem>
+      {/* <CategoryItem>What the actual fuck is going on</CategoryItem> */}
       <ul className="ul">
         <li>
           <Link href={"/features/comics"}>Comics</Link>

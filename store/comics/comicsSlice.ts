@@ -12,11 +12,13 @@ import { Preview } from "@/shared/interfaces/preview";
 export interface ComicsSliceState {
   comics: ComicStore;
   status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
+  comicsLoaded: boolean;
 }
 
 const initialState: ComicsSliceState = {
   comics: {} as ComicStore,
   status: StateLoading.IDLE,
+  comicsLoaded: false,
 };
 
 // If you are not using async thunks you can use the standalone `createSlice`.
@@ -45,13 +47,20 @@ export const comicsSlice = createAppSlice({
         },
       }
     ),
+    comicsLoaded: create.reducer((state, action: PayloadAction<boolean>) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.comicsLoaded = action.payload;
+    }),
   }),
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
   selectors: {
     selectComicsArray: (comics) => comics.comics.results as Comic[],
     selectStatus: (comics) => comics.status,
-    // selectComics(comics) => comicPreview(comics),
+    selectComicsLoaded: (comics) => comics.comicsLoaded,
   },
 });
 
@@ -78,7 +87,8 @@ const getComicsApi = async () => {
 export const { getComics } = comicsSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectComicsArray, selectStatus } = comicsSlice.selectors;
+export const { selectComicsArray, selectStatus, selectComicsLoaded } =
+  comicsSlice.selectors;
 
 export const selectComicsPreview = createSelector(
   selectComicsArray,

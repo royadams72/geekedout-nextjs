@@ -12,11 +12,16 @@ hash.update(`${privateKey}`);
 hash.update(`${publicKey}`);
 
 export async function GET() {
+  // console.log(
+  //   "comics function=====inside call",
+  //   `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`
+  // );
   const res = await fetch(
     `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`
   );
 
   const data = await res.json();
+  // console.log("comics data=====", data.data);
   // TODO error handling
   return Response.json(data.data);
 }

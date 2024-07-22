@@ -13,7 +13,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import { comicsReducer } from "@/store/comics/comicsSlice";
+import { comicsReducer, comicsSlice } from "@/store/comics/comicsSlice";
 import { musicReducer } from "@/store/music/musicSlice";
 import { gamesReducer } from "@/store/games/gamesSlice";
 import { moviesReducer } from "@/store/movies/moviesSlice";
