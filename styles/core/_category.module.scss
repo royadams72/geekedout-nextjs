@@ -34,6 +34,7 @@ $games-header-colour: #d44d51;
   &__header_movies {
     font-size: 40px;
     margin-bottom: 8px;
+    margin: 0 auto;
   }
 
   &__header_comics {
@@ -53,52 +54,34 @@ $games-header-colour: #d44d51;
   }
 
   &__itemsContainer {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-    flex-direction: column;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 10px;
   }
 
   &__item {
-    // height: auto;
-    // position: relative;
-    width: 50%;
-
-    @include is-medium {
-      width: 25%;
-    }
+    padding: 0 10px;
+    background-color: #a39200;
   }
-  // { width: "100%", height: "auto" }
-  &__imageContainer {
-    // align-self: center;
-    // opacity: 0;
-    // transition: $opacity-transition;
-    position: relative;
-    height: 50vh;
-    width: 50vw;
 
-    @include is-medium {
-      height: 60vh;
-      width: 100%;
-    }
+  &__imageContainer {
+    position: relative;
+
+    height: 52vh;
   }
 
   &__footer {
     margin-bottom: 8px;
     margin-top: 8px;
-    // opacity: 0;
-    padding-left: 10px;
-    // transition: $opacity-transition;
+
+    padding: 0 10px;
   }
   &__title {
-    @include truncate(1, 1rem, 1.2);
+    @include truncate(1, 1.5, 1.2);
+    color: #ffffff;
+    margin: 0 5px;
   }
-  // img.ng-lazyloaded {
-  //   opacity: 1;
-  // }
 
   &__comicsColour {
     color: settings-colour("comics");
