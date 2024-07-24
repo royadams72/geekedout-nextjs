@@ -81,6 +81,12 @@ $games-header-colour: #d44d51;
     padding-bottom: 100%;
   }
 
+  &__image_wrapper {
+    position: absolute;
+    padding: 0 12px;
+    height: 100%;
+    width: 100%;
+  }
   &__image {
     object-position: top center !important;
   }
@@ -95,12 +101,5 @@ $games-header-colour: #d44d51;
     @include truncate(1, 1.5, 1.2);
     color: #ffffff;
     margin: 0 5px;
-  }
-
-  &__image_wrapper {
-    position: absolute;
-    padding: 0 12px;
-    height: 100%;
-    width: 100%;
   }
 }
