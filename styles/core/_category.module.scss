@@ -56,46 +56,51 @@ $games-header-colour: #d44d51;
   &__itemsContainer {
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 50%);
     gap: 10px;
+
+    @include is-medium {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+
+  &__itemsContainer_music {
+    @include is-medium {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
   }
 
   &__item {
     padding: 0 10px;
-    background-color: #a39200;
+    height: 100%;
   }
 
   &__imageContainer {
     position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+  }
 
-    height: 52vh;
+  &__image {
+    object-position: top center !important;
   }
 
   &__footer {
     margin-bottom: 8px;
     margin-top: 8px;
-
     padding: 0 10px;
   }
+
   &__title {
     @include truncate(1, 1.5, 1.2);
     color: #ffffff;
     margin: 0 5px;
   }
 
-  &__comicsColour {
-    color: settings-colour("comics");
-  }
-
-  &__musicColour {
-    color: settings-colour("music");
-  }
-
-  &__gamesColour {
-    color: settings-colour("games");
-  }
-
-  &__moviesColour {
-    color: settings-colour("movies");
+  &__image_wrapper {
+    position: absolute;
+    padding: 0 12px;
+    height: 100%;
+    width: 100%;
   }
 }

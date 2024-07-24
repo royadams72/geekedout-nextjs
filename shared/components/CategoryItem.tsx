@@ -17,26 +17,22 @@ const CategoryItem = ({ item }: { item: Preview }) => {
   const imgLrg = item?.imageLarge;
   const containerStyle = item.category;
 
-  console.log("imgLrg===", imgLrg);
-  console.log("imgMed===", imgMed);
-
-  // console.log(item);
-  // [ngStyle]="{'margin-top': categoryTitle ==='Movies' && link ? '10px' : (!link ? '10px' : '50px')}" [style.opacity]="isLoaded ? 1 : 0">{{categoryTitle}}
-  // [routerLink]="link ? [link] : item.id"
-  // [defaultImage]="defaultImage" [lazyLoad]="item.imageSmall" [src]="image" [errorImage]="setErrorImage()" *ngIf="item.imageSmall && smallScreen"
   return (
     <>
       <div className={styles.category__item}>
         <Link href={`${item.category}/details/${item.id}`}>
           <div className={styles[`category__imageContainer`]}>
-            <Image
-              src={imgMed || (imgLrg as StaticImport)}
-              alt={title}
-              fill
-              loading="lazy"
-              objectFit="contain"
-              sizes="25vw, 25vh"
-            />
+            <div className={styles.category__image_wrapper}>
+              <Image
+                className={styles.category__image}
+                src={imgMed || (imgLrg as StaticImport)}
+                alt={title}
+                layout="fill"
+                loading="lazy"
+                objectFit="cover"
+                sizes="25vw, 25vh"
+              />
+            </div>
           </div>
           <p className={styles.category__footer}>
             <span className={styles.category__title}>{title}</span>
