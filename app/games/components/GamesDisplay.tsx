@@ -11,7 +11,6 @@ import {
   selectStatus,
   selectGamesPreview,
 } from "@/store/games/gamesSlice";
-import { Game } from "@/shared/interfaces/game";
 import Category from "@/shared/components/Category";
 
 import Link from "next/link";
@@ -27,8 +26,7 @@ const GamesDisplay = () => {
         itemsSelector={selectGamesPreview}
         statusSelector={selectStatus}
         fetchAction={getGames}
-        itemRenderer={(game) => game.title}
-        title="Games Category"
+        title="Games"
       />
     </>
   );

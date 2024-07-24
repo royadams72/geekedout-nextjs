@@ -33,19 +33,19 @@ export default async function Home() {
   return (
     <main>
       <header className={styles.header}>dhdhdhdhdhddhd</header>
-      <CategoryItem>What the actual fuck is going on</CategoryItem>
+      {/* <CategoryItem>What the actual fuck is going on</CategoryItem> */}
       <ul className="ul">
         <li>
-          <Link href={"/features/comics"}>Comics</Link>
+          <Link href={"/comics"}>Comics</Link>
         </li>
         <li>
-          <Link href={"/features/music"}>Music</Link>
+          <Link href={"/music"}>Music</Link>
         </li>
         <li>
-          <Link href={"/features/games"}>Games</Link>
+          <Link href={"/games"}>Games</Link>
         </li>
         <li>
-          <Link href={"/features/movies"}>Movies</Link>
+          <Link href={"/movies"}>Movies</Link>
         </li>
       </ul>
     </main>

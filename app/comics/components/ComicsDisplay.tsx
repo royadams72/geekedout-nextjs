@@ -19,8 +19,7 @@ const ComicsDisplay = () => {
         itemsSelector={selectComicsPreview}
         statusSelector={selectStatus}
         fetchAction={getComics}
-        itemRenderer={(comic) => `${comic.title}, ${comic.category}`}
-        title="Comics Category"
+        title="Comics"
       />
     </>
   );
