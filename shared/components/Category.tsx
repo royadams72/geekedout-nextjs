@@ -13,7 +13,7 @@ interface DisplayProps<T> {
   itemsSelector: (state: any) => T[];
   statusSelector: (state: any) => string;
   fetchAction: any;
-  itemRenderer: (item: T) => React.ReactNode;
+  // itemRenderer: (item: T) => React.ReactNode;
   title: string;
 }
 
@@ -21,7 +21,7 @@ const Category = <T extends Preview>({
   itemsSelector,
   statusSelector,
   fetchAction,
-  itemRenderer,
+  // itemRenderer,
   title,
 }: DisplayProps<T>) => {
   const items = useAppSelector(itemsSelector);
@@ -36,27 +36,14 @@ const Category = <T extends Preview>({
     <>
       {isClientLoaded && (
         <div className={styles.category}>
-          <h1 className="category__header {{categoryTitleColour}}">{title} </h1>
+          {/* .toLowerCase() */}
+          <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
+            {title}
+          </h1>
           <div className={styles.category__itemsContainer}>
-            {/* {items?.map((item: T) => ( */}
-            <CategoryItem>
-              {items?.map((item: T) => (
-                <div key={item.id} className={styles.category__item}>
-                  <a className={styles.category_anchor}>
-                    {/* <img
-                      className={styles.category_image}
-                      src={item.imageSmall}
-                      alt="som"
-                    /> */}
-                    {/* <p className={styles.category__footer}>
-                      <span>{item.title}</span>
-                    </p> */}
-                  </a>
-                  <div>{item.title}</div>
-                </div>
-              ))}
-            </CategoryItem>
-            {/* // ))} */}
+            {items?.map((item: T) => (
+              <CategoryItem key={item.id} item={item} />
+            ))}
           </div>
         </div>
       )}

@@ -20,8 +20,7 @@ const MusicDisplay = () => {
         itemsSelector={selectMusicPreview}
         statusSelector={selectStatus}
         fetchAction={getAllAlbums}
-        itemRenderer={(album) => album.title}
-        title="Games Display"
+        title="Music"
       />
     </>
   );

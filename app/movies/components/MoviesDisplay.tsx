@@ -22,8 +22,7 @@ const MoviesDisplay = () => {
         itemsSelector={selectMoviesPreview}
         statusSelector={selectStatus}
         fetchAction={getMovies}
-        itemRenderer={(movie) => movie.title}
-        title="Games Category"
+        title="Movies"
       />
     </>
   );
