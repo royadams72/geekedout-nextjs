@@ -8,7 +8,3 @@ export interface Preview {
   imageSmall?: string | StaticImport;
   title?: string;
 }
-// export interface Preview {
-//   id?: number | string;
-//   title?: string;
-// }

@@ -34,6 +34,7 @@ $games-header-colour: #d44d51;
   &__header_movies {
     font-size: 40px;
     margin-bottom: 8px;
+    margin: 0 auto;
   }
 
   &__header_comics {
@@ -53,66 +54,53 @@ $games-header-colour: #d44d51;
   }
 
   &__itemsContainer {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
-    flex-direction: column;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    gap: 10px;
+
+    @include is-medium {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+
+  &__itemsContainer_music {
+    @include is-medium {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
   }
 
   &__item {
-    // height: auto;
-    // position: relative;
-    width: 50%;
-
-    @include is-medium {
-      width: 25%;
-    }
+    padding: 0 10px;
+    height: 100%;
   }
-  // { width: "100%", height: "auto" }
-  &__imageContainer {
-    // align-self: center;
-    // opacity: 0;
-    // transition: $opacity-transition;
-    position: relative;
-    height: 50vh;
-    width: 50vw;
 
-    @include is-medium {
-      height: 60vh;
-      width: 100%;
-    }
+  &__imageContainer {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+  }
+
+  &__image {
+    object-position: top center !important;
   }
 
   &__footer {
     margin-bottom: 8px;
     margin-top: 8px;
-    // opacity: 0;
-    padding-left: 10px;
-    // transition: $opacity-transition;
+    padding: 0 10px;
   }
+
   &__title {
-    @include truncate(1, 1rem, 1.2);
-  }
-  // img.ng-lazyloaded {
-  //   opacity: 1;
-  // }
-
-  &__comicsColour {
-    color: settings-colour("comics");
+    @include truncate(1, 1.5, 1.2);
+    color: #ffffff;
+    margin: 0 5px;
   }
 
-  &__musicColour {
-    color: settings-colour("music");
-  }
-
-  &__gamesColour {
-    color: settings-colour("games");
-  }
-
-  &__moviesColour {
-    color: settings-colour("movies");
+  &__image_wrapper {
+    position: absolute;
+    padding: 0 12px;
+    height: 100%;
+    width: 100%;
   }
 }
