@@ -1,14 +1,13 @@
 import React, { Fragment } from "react";
-import Link from "next/link";
 import MoviesDisplay from "./components/MoviesDisplay";
 
-const GamesPage = () => {
+const MoviesPage = () => {
   return (
     <>
-      <div>Games Page</div>
+      <div>Movies Page</div>
       <MoviesDisplay />
     </>
   );
 };
 
-export default GamesPage;
+export default MoviesPage;
