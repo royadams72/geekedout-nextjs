@@ -1,17 +1,17 @@
 "use client";
 import React from "react";
-import { useAppSelector } from "@/hooks/store.hooks";
+import { useAppSelector } from "@/lib/hooks/store.hooks";
 
 import { StateLoading } from "@/shared/enums/loading";
 
-import { useSelectorEffect } from "@/hooks/useSelector";
+import { useSelectorEffect } from "@/lib/hooks/useSelector";
 import {
   getGames,
   selectGames,
   selectStatus,
   selectGamesPreview,
-} from "@/store/games/gamesSlice";
-import Category from "@/shared/components/Category";
+} from "@/lib/features/games/gamesSlice";
+import Category from "@/shared/components/category/Category";
 
 import Link from "next/link";
 import { Preview } from "@/shared/interfaces/preview";

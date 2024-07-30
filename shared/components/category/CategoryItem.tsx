@@ -1,15 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import styles from "@/styles/core/_category.module.scss";
+import styles from "@/styles/components/_category.module.scss";
 import { Preview } from "@/shared/interfaces/preview";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Link from "next/link";
-
-// const Category = <T>({itemsSelector}: DisplayProps<T>) => {}
-
-interface ItemsInterface<T> {
-  item: T;
-}
 
 const CategoryItem = ({ item }: { item: Preview }) => {
   const title = item?.title as string;
@@ -24,7 +18,6 @@ const CategoryItem = ({ item }: { item: Preview }) => {
           <div className={styles[`category__imageContainer`]}>
             <div className={styles.category__image_wrapper}>
               <Image
-                className={styles.category__image}
                 src={imgMed || (imgLrg as StaticImport)}
                 alt={title}
                 layout="fill"

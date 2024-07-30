@@ -1,86 +1,59 @@
-// @import "../base/body";
-// @import "../mixins/media-queries";
 @import "../mixins/mixins";
+
 $bg-colour: #232323;
 
 .header {
-  background-color: $bg-colour;
-  display: flex;
-  flex-basis: auto;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 120px;
-  justify-content: left;
-  margin: 0;
-  padding: 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, auto);
 
   @include is-medium {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    height: 70px;
+    grid-template-columns: 55% 1fr;
+  }
+
+  @include is-large {
+    grid-template-columns: 75% 1fr;
   }
 
   &__logo {
-    align-items: flex-start;
-    display: flex;
-    flex-basis: 0;
-    flex-grow: 1;
-    height: auto;
-    justify-content: center;
-    text-align: center;
-
-    @include is-medium {
-      justify-content: flex-start;
-      text-align: start;
-    }
-
-    &-image {
-      max-width: 85%;
+    &_image {
+      margin: 0 auto;
+      width: 70%;
+      height: auto;
+      display: block;
 
       @include is-medium {
-        margin-left: 15px;
-        margin-top: 6px;
-        max-width: 70%;
+        margin: 10px 0 10px 15px;
+        width: 60%;
       }
 
       @include is-large {
-        margin-top: 8px;
+        width: 30%;
       }
     }
   }
 
   &__nav {
-    flex-basis: 0;
-    flex-grow: 1;
-    margin-top: 10px;
+    margin-top: 20px;
+    padding: 0;
 
-    &-ul {
+    &_ul {
       align-items: center;
-      display: flex;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      justify-items: center;
       list-style: none;
-      margin: 0;
-      padding: 0;
+      margin: 0 auto;
+    }
+
+    &_item > a {
+      display: inline-block;
+      height: 100%;
       width: 100%;
-
-      @include is-medium {
-        align-items: center;
-        justify-content: flex-end;
-      }
     }
 
-    &-item {
-      display: flex;
-      justify-content: center;
-      margin: 0 0.4rem;
-      width: 20%;
-
-      @include is-large {
-        width: 10%;
-      }
-    }
-
-    &-item-img {
+    &_item_img {
       height: auto;
       width: 40px;
     }

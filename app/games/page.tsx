@@ -3,12 +3,7 @@ import GamesDisplay from "./components/GamesDisplay";
 import Link from "next/link";
 
 const GamesPage = () => {
-  return (
-    <>
-      <div>Games Page</div>
-      <GamesDisplay />
-    </>
-  );
+  return <GamesDisplay />;
 };
 
 export default GamesPage;

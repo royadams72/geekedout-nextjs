@@ -1,5 +1,5 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
-import { createAppSlice } from "@/store/createAppSlice";
+import { createAppSlice } from "@/lib/createAppSlice";
 
 import { StateLoading } from "@/shared/enums/loading";
 import { Game } from "@/shared/interfaces/game";
