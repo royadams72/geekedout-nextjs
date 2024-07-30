@@ -5,8 +5,8 @@ import {
   selectAllAlbums,
   selectMusicPreview,
   selectStatus,
-} from "@/store/music/musicSlice";
-import Category from "@/shared/components/Category";
+} from "@/lib/features/music/musicSlice";
+import Category from "@/shared/components/category/Category";
 import Link from "next/link";
 import { Preview } from "@/shared/interfaces/preview";
 

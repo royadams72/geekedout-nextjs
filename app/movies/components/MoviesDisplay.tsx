@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 
-import Category from "@/shared/components/Category";
+import Category from "@/shared/components/category/Category";
 
 import Link from "next/link";
 import {
   getMovies,
   selectMoviesPreview,
   selectStatus,
-} from "@/store/movies/moviesSlice";
+} from "@/lib/features/movies/moviesSlice";
 
 import { Preview } from "@/shared/interfaces/preview";
 

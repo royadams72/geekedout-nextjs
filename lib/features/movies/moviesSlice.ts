@@ -1,4 +1,4 @@
-import { createAppSlice } from "@/store/createAppSlice";
+import { createAppSlice } from "@/lib/createAppSlice";
 import { Movie, MoviesStore } from "@/shared/interfaces/movies";
 import { StateLoading } from "@/shared/enums/loading";
 import { createSelector } from "@reduxjs/toolkit";

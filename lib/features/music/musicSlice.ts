@@ -1,6 +1,6 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
-import { createAppSlice } from "@/store/createAppSlice";
-import type { AppThunk } from "@/store/store";
+import { createAppSlice } from "@/lib/createAppSlice";
+import type { AppThunk } from "@/lib/store";
 import { Album, AlbumDetail, MusicStore } from "@/shared/interfaces/music";
 import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";

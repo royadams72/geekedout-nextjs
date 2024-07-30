@@ -13,10 +13,10 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import { comicsReducer } from "@/store/comics/comicsSlice";
-import { musicReducer } from "@/store/music/musicSlice";
-import { gamesReducer } from "@/store/games/gamesSlice";
-import { moviesReducer } from "@/store/movies/moviesSlice";
+import { comicsReducer } from "@/lib/features/comics/comicsSlice";
+import { musicReducer } from "@/lib/features/music/musicSlice";
+import { gamesReducer } from "@/lib/features/games/gamesSlice";
+import { moviesReducer } from "@/lib/features/movies/moviesSlice";
 
 // import { loggerMiddleware } from "./middleware/logger";
 

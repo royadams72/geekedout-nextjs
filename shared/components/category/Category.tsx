@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 import { StateLoading } from "@/shared/enums/loading";
-import { useSelectorEffect } from "@/hooks/useSelector";
-import { useAppSelector } from "@/hooks/store.hooks";
+import { useSelectorEffect } from "@/lib/hooks/useSelector";
+import { useAppSelector } from "@/lib/hooks/store.hooks";
 
-import styles from "@/styles/core/_category.module.scss";
+import styles from "@/styles/components/_category.module.scss";
 
 import CategoryItem from "./CategoryItem";
-import { Preview } from "../interfaces/preview";
+import { Preview } from "../../interfaces/preview";
 
 interface DisplayProps<T> {
   itemsSelector: (state: any) => T[];
