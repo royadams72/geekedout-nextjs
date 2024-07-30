@@ -87,7 +87,7 @@ $games-header-colour: #d44d51;
     height: 100%;
     width: 100%;
   }
-  &__image {
+  &__image_wrapper > img {
     object-position: top center !important;
   }
 
