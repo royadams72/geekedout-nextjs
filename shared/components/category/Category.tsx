@@ -36,7 +36,6 @@ const Category = <T extends Preview>({
     <>
       {isClientLoaded && (
         <div className={styles.category}>
-          {/* .toLowerCase() */}
           <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
             {title}
           </h1>

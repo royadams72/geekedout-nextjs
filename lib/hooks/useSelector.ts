@@ -7,10 +7,10 @@ export const useSelectorEffect = (slice: Array<any>, dispatchAction: any) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if (slice === undefined || slice.length === 0) {
-      console.log("dispatchAction");
-      dispatch(dispatchAction());
-    }
+    // if (slice === undefined || slice.length === 0) {
+    console.log("dispatchAction");
+    dispatch(dispatchAction());
+    // }
 
     setIsClient(true);
   }, []);
