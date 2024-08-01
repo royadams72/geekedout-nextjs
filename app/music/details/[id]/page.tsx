@@ -11,9 +11,7 @@ const AlbumDetails = ({ params: { id } }: { params: { id: string } }) => {
     const fetchAlbumDetails = async () => {
       try {
         // const response = await fetch(`/api/music/get-details?id=${id}`);
-        const response = await fetch(
-          `/api/music/albums?action=getDetails&id=${id}`
-        );
+        const response = await fetch(`/api/music/get-details?id=${id}`);
         console.log(response);
         const result = await response.json();
 

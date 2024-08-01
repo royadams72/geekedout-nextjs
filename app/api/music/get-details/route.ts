@@ -52,7 +52,7 @@
 import { BASE_URL_MUSIC } from "@/shared/constants/urls";
 import { NextRequest } from "next/server";
 
-import { getValidToken } from "../albums/route";
+import { getValidToken } from "@/app/api/music/token/getToken";
 let id: string | null;
 let token: string | null;
 export const GET = async (req: NextRequest) => {

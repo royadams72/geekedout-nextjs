@@ -72,9 +72,7 @@ export const musicReducer = musicSlice.reducer;
 //   next: { revalidate: 10 },
 // }
 async function getMusic() {
-  const response = await fetch(
-    "http://localhost:3000/api/music/albums?action=getAll"
-  );
+  const response = await fetch("http://localhost:3000/api/music/get-albums");
   const data = await response.json();
   return data;
 }
