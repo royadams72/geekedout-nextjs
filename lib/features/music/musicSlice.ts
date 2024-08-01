@@ -34,7 +34,9 @@ export const musicSlice = createAppSlice({
     getAllAlbums: create.asyncThunk(
       async () => {
         let data = await getMusic();
-        return data.data.albums;
+        console.log(data.data.data.albums);
+
+        return data.data.data.albums;
       },
       {
         pending: (state) => {

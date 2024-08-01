@@ -1,16 +1,18 @@
 import { BASE_URL_MUSIC } from "@/shared/constants/urls";
 
 import { NextRequest } from "next/server";
+import { getValidToken } from "../albums/route";
 
 let token: string | null;
 export const GET = async (req: NextRequest) => {
-  const { searchParams } = new URL(req.url);
-  token = searchParams.get("token");
   const data = await getAllAlbums();
+  console.log("get all albums2 ====", data);
   return new Response(JSON.stringify({ data }), { status: 200 });
 };
 
 const getAllAlbums = async () => {
+  const token = await getValidToken();
+
   const response = await fetch(
     `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
     {
@@ -24,7 +26,7 @@ const getAllAlbums = async () => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw { status: response.status, ...data }; // Properly handle error with status
+    throw new Error(`Failed to fetch albums: ${data.error.message}`);
   }
 
   return data;

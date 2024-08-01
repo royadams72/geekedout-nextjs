@@ -50,21 +50,22 @@
 //   return data;
 // };
 import { BASE_URL_MUSIC } from "@/shared/constants/urls";
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "../token/getToken";
+import { NextRequest } from "next/server";
+
+import { getValidToken } from "../albums/route";
 let id: string | null;
 let token: string | null;
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
-  id = searchParams.get("id");
-  token = searchParams.get("token");
-  console.log("token=======", token);
+  id = searchParams.get("id") as string;
 
-  const data = await getAlbumDetails();
+  const data = await getAlbumDetails(id);
   return new Response(JSON.stringify({ data }), { status: 200 });
 };
 
-const getAlbumDetails = async () => {
+const getAlbumDetails = async (id: string) => {
+  const token = await getValidToken();
+
   const response = await fetch(`${BASE_URL_MUSIC}/albums/${id}`, {
     method: "GET",
     headers: {
@@ -75,7 +76,7 @@ const getAlbumDetails = async () => {
   const album = await response.json();
 
   if (!response.ok) {
-    throw { status: response.status, ...album }; // Properly handle error with status
+    throw new Error(`Failed to fetch album details: ${album.error.message}`);
   }
 
   return album;

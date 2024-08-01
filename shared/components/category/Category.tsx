@@ -27,6 +27,7 @@ const Category = <T extends Preview>({
   const items = useAppSelector(itemsSelector);
   const isClientLoaded = useSelectorEffect(items, fetchAction);
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
+  console.log(items);
 
   if (isLoading) {
     return <div>Loading....</div>;
