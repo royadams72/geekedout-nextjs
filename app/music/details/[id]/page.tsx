@@ -40,21 +40,14 @@ const AlbumDetails = ({ params: { id } }: { params: { id: string } }) => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    setAlbumDetails(initialAlbumDetail);
-    setBackgroundImage("");
-    setCategory("");
     fetchAlbumDetails();
   }, [fetchAlbumDetails]);
 
   useEffect(() => {
-    // dispatch(getAlbum(id));
-    console.log(album.id, id);
-
     if (album && album.id === id) {
       setAlbumDetails(album);
       setBackgroundImage(album.image);
       setCategory(album.category);
-
       setIsFetching(false);
     }
   }, [album, id]);
