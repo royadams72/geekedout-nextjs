@@ -1,18 +1,9 @@
 import React from "react";
-import Link from "next/link";
-import MusicDisplay from "./components/MusicDisplay";
-import dynamic from "next/dynamic";
 
-// const MusicDisplay = dynamic(() => import("./components/MusicDisplay"), {
-//   ssr: false,
-// });
+import MusicCategory from "@/app/music/components/MusicCategory";
+
 const MuiscPage = () => {
-  return (
-    <>
-      <div>Muisc</div>
-      <MusicDisplay />
-    </>
-  );
+  return <MusicCategory />;
 };
 
 export default MuiscPage;

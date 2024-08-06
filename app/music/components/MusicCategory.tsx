@@ -10,7 +10,7 @@ import Category from "@/shared/components/category/Category";
 import Link from "next/link";
 import { Preview } from "@/shared/interfaces/preview";
 
-const MusicDisplay = () => {
+const MusicCategory = () => {
   return (
     <>
       <div>
@@ -26,4 +26,4 @@ const MusicDisplay = () => {
   );
 };
 
-export default MusicDisplay;
+export default MusicCategory;
