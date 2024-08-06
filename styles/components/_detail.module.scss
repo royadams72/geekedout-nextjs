@@ -1,0 +1,265 @@
+@import "../utilities/utils";
+@import "../mixins/mixins";
+@import "../settings";
+
+$comics-colour: settings-colour("comics");
+$music-colour: settings-colour("music");
+$games-colour: settings-colour("games");
+$movies-colour: settings-colour("movies");
+$primary-colour: settings-colour("text-primary");
+$white: settings-colour("text-white");
+$btn-z-index: 2;
+$details-main-z-index: 1;
+$details-bg-image-z-index: 0;
+$details-width: 600px;
+
+.details {
+  &_container_music {
+    margin: 20px auto 0;
+    max-width: $details-width;
+
+    :global {
+      .btn {
+        position: relative;
+        z-index: $btn-z-index;
+      }
+    }
+
+    .details_link {
+      text-decoration: underline;
+
+      &:hover {
+        color: $primary-colour;
+      }
+    }
+
+    .details_image {
+      grid-row: 1;
+    }
+  }
+
+  &_title {
+    padding-left: 0;
+  }
+
+  &_btn_container {
+    margin-bottom: 20px;
+  }
+
+  &_music,
+  &_movies,
+  &_comics,
+  &_games {
+    border: $primary-colour 1px solid;
+    display: grid;
+    gap: 10px;
+    grid-template-rows: repeat(2, 50%, 1fr);
+    grid-template-columns: none;
+    margin: 0 auto;
+    max-width: $details-width;
+    padding: 25px;
+    position: relative;
+    z-index: $details-main-z-index;
+
+    @include is-medium {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: none;
+      .details_image {
+        grid-column: 2;
+      }
+    }
+  }
+
+  &_info {
+    margin: 0 auto;
+    text-align: left;
+    width: 100%;
+  }
+
+  &_image {
+    width: 100%;
+    & > img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &_movies {
+    .details_link {
+      color: $movies-colour;
+    }
+
+    .details_alt_colour {
+      color: $movies-colour;
+    }
+
+    :global {
+      .btn {
+        &:hover {
+          border-color: $movies-colour;
+          color: $movies-colour;
+        }
+      }
+    }
+  }
+
+  &_comics {
+    .details_link {
+      color: $comics-colour;
+    }
+
+    .details_alt_colour {
+      color: $comics-colour;
+    }
+
+    :global {
+      .btn {
+        &:hover {
+          border-color: $comics-colour;
+          color: $comics-colour;
+        }
+      }
+    }
+  }
+
+  &_container_games {
+    .details_link {
+      color: $games-colour;
+    }
+
+    .details_alt_colour {
+      color: $games-colour;
+    }
+
+    :global {
+      .btn {
+        &:hover {
+          border-color: $games-colour;
+          color: $games-colour;
+        }
+      }
+    }
+  }
+
+  &_container_music {
+    .details_link {
+      color: $music-colour;
+    }
+
+    :global {
+      .btn {
+        &:hover {
+          border-color: $music-colour;
+          color: $music-colour;
+        }
+      }
+    }
+  }
+
+  &_btn_movies_info {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  &_btn_top {
+    margin: 0 auto;
+    max-width: 300px;
+    padding-left: 28px;
+
+    @include is-medium {
+      margin: 0 auto;
+      max-width: 740px;
+      padding-left: 0;
+    }
+  }
+
+  &_sub_heading_music {
+    color: $music-colour;
+
+    &:hover {
+      color: $white;
+    }
+  }
+
+  &_ul,
+  &_ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+
+    @include is-medium {
+      padding: 10px;
+    }
+  }
+
+  &_ul_comics {
+    padding-left: 0;
+  }
+
+  &_ol_music {
+    list-style: decimal;
+    padding-left: 18px;
+
+    &_li {
+      color: $music-colour;
+    }
+
+    &_li_alt {
+      color: $primary-colour;
+    }
+  }
+
+  &_list_heading {
+    font-size: 17px;
+  }
+
+  &_copy {
+    margin: 10px 0 0;
+
+    &_top_0 {
+      margin-top: 0;
+    }
+
+    &_last {
+      margin-bottom: 15px;
+    }
+  }
+
+  // &_comicColour {
+  //   color: $comics-colour;
+  // }
+
+  // &_musicColour {
+  //   color: $music-colour;
+  // }
+
+  // &_gamesColour {
+  //   color: $games-colour;
+  // }
+
+  // &_moviesColour {
+  //   color: $movies-colour;
+  // }
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: $details-bg-image-z-index;
+  background-size: cover;
+  opacity: 0.06;
+  filter: blur(15px);
+}
+
+.details_music {
+  .btn {
+    &:hover {
+      border-color: $music-colour;
+      color: $music-colour;
+    }
+  }
+}

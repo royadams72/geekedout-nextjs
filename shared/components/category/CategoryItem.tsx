@@ -20,7 +20,7 @@ const CategoryItem = ({ item }: { item: Preview }) => {
               <Image
                 src={imgMed || (imgLrg as StaticImport)}
                 alt={title}
-                layout="fill"
+                fill
                 loading="lazy"
                 objectFit="cover"
                 sizes="25vw, 25vh"

@@ -27,6 +27,7 @@ const Category = <T extends Preview>({
   const items = useAppSelector(itemsSelector);
   const isClientLoaded = useSelectorEffect(items, fetchAction);
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
+  console.log(items);
 
   if (isLoading) {
     return <div>Loading....</div>;
@@ -36,7 +37,6 @@ const Category = <T extends Preview>({
     <>
       {isClientLoaded && (
         <div className={styles.category}>
-          {/* .toLowerCase() */}
           <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
             {title}
           </h1>

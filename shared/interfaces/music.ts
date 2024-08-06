@@ -101,10 +101,12 @@ export interface Album {
 }
 
 export interface AlbumDetail {
+  id: string;
   artists: ArtistDetails[];
   image: string;
   name: string;
   release_date: string;
   spotify_link: string;
   tracks: Array<string>;
+  category: string;
 }

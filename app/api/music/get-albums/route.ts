@@ -1,29 +1,19 @@
-import { getToken } from "../token/getToken";
+import { BASE_URL_MUSIC } from "@/shared/constants/urls";
 
-const clientID = process.env.SPOTIFY_CLIENT_ID;
-const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-let token: string;
+import { NextRequest } from "next/server";
+import { getValidToken } from "@/app/api/music/token/getToken";
 
-export const GET = async (ref: any) => {
-  let data;
-  await getAllAlbums()
-    .then((response) => {
-      if (response.error) {
-        throw response;
-      }
-      data = response;
-    })
-    .catch(async (error) => {
-      if (error.error.status === 401) {
-        token = await getToken().then((data = await getAllAlbums()));
-      }
-    });
-  return Response.json({ data });
+let token: string | null;
+export const GET = async (req: NextRequest) => {
+  const data = await getAllAlbums();
+  return new Response(JSON.stringify({ data }), { status: 200 });
 };
 
 const getAllAlbums = async () => {
-  const albums = await fetch(
-    `https://api.spotify.com/v1/browse/new-releases?limit=20&country=GB`,
+  const token = await getValidToken();
+
+  const response = await fetch(
+    `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
     {
       method: "GET",
       headers: {
@@ -32,5 +22,11 @@ const getAllAlbums = async () => {
     }
   );
 
-  return await albums.json();
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch albums: ${data.error.message}`);
+  }
+
+  return data;
 };
