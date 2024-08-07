@@ -11,10 +11,10 @@ $white: settings-colour("text-white");
 $btn-z-index: 2;
 $details-main-z-index: 1;
 $details-bg-image-z-index: 0;
-$details-width: 600px;
+$details-width: 650px;
 
 .details {
-  &_container_music {
+  &_container {
     margin: 20px auto 0;
     max-width: $details-width;
 
@@ -24,7 +24,9 @@ $details-width: 600px;
         z-index: $btn-z-index;
       }
     }
+  }
 
+  &_container_music {
     .details_link {
       text-decoration: underline;
 
@@ -38,53 +40,7 @@ $details-width: 600px;
     }
   }
 
-  &_title {
-    padding-left: 0;
-  }
-
-  &_btn_container {
-    margin-bottom: 20px;
-  }
-
-  &_music,
-  &_movies,
-  &_comics,
-  &_games {
-    border: $primary-colour 1px solid;
-    display: grid;
-    gap: 10px;
-    grid-template-rows: repeat(2, 50%, 1fr);
-    grid-template-columns: none;
-    margin: 0 auto;
-    max-width: $details-width;
-    padding: 25px;
-    position: relative;
-    z-index: $details-main-z-index;
-
-    @include is-medium {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: none;
-      .details_image {
-        grid-column: 2;
-      }
-    }
-  }
-
-  &_info {
-    margin: 0 auto;
-    text-align: left;
-    width: 100%;
-  }
-
-  &_image {
-    width: 100%;
-    & > img {
-      width: 100%;
-      height: auto;
-    }
-  }
-
-  &_movies {
+  &_container_movies {
     .details_link {
       color: $movies-colour;
     }
@@ -103,7 +59,7 @@ $details-width: 600px;
     }
   }
 
-  &_comics {
+  &_container_comics {
     .details_link {
       color: $comics-colour;
     }
@@ -156,6 +112,52 @@ $details-width: 600px;
     }
   }
 
+  &_title {
+    padding-left: 0;
+  }
+
+  &_btn_container {
+    margin-bottom: 20px;
+  }
+
+  &_music,
+  &_movies,
+  &_comics,
+  &_games {
+    border: $primary-colour 1px solid;
+    display: grid;
+    gap: 10px;
+    grid-template-rows: repeat(2, 50%, 1fr);
+    grid-template-columns: none;
+    margin: 0 auto;
+    max-width: $details-width;
+    padding: 25px;
+    position: relative;
+    z-index: $details-main-z-index;
+
+    @include is-medium {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: none;
+      .details_image {
+        grid-column: 2;
+      }
+    }
+  }
+
+  &_info {
+    margin: 0 auto;
+    text-align: left;
+    width: 100%;
+  }
+
+  &_image {
+    width: 100%;
+    & > img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
   &_btn_movies_info {
     margin-bottom: 10px;
     margin-top: 10px;
@@ -181,8 +183,8 @@ $details-width: 600px;
     }
   }
 
-  &_ul,
-  &_ol {
+  &_ul_comics,
+  &_ol_music {
     list-style: none;
     margin: 0;
     padding: 0;

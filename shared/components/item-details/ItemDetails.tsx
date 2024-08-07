@@ -10,11 +10,11 @@ import styles from "@/styles/components/_detail.module.scss";
 interface ItemProps<T> {
   id: string;
   itemDetail: T | null;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 interface SelectedItem {
-  id: string;
+  id: string | number | undefined;
   image: string;
   category: string;
   name: string;
@@ -44,7 +44,7 @@ const ItemDetails = <T extends SelectedItem>({
     if (itemDetail && itemDetail.id === id) {
       setItemDetails(itemDetail);
       setBackgroundImage(itemDetail.image);
-      setCategory(itemDetail.category.toLowerCase());
+      setCategory(itemDetail.category);
       setIsFetching(false);
     }
   }, [itemDetail, id]);
@@ -57,23 +57,25 @@ const ItemDetails = <T extends SelectedItem>({
 
   return (
     <>
-      <div className={styles[`details_container_${category}`]}>
-        <div className={styles.details_btn_container}>
-          <Link href={`/${category}`} className="btn">
-            Back to Music
-          </Link>
-        </div>
-        <div className={styles.details_music}>
-          <div className={styles.details_info}>{children}</div>
-          <div className={styles.details_image}>
-            {itemDetails?.image && (
-              <Image
-                width={300}
-                height={300}
-                src={itemDetails?.image}
-                alt={itemDetails?.name}
-              />
-            )}
+      <div className={styles.details_container}>
+        <div className={styles[`details_container_${category.toLowerCase()}`]}>
+          <div className={styles.details_btn_container}>
+            <Link href={`/${category.toLowerCase()}`} className="btn">
+              Back to {category}
+            </Link>
+          </div>
+          <div className={styles.details_music}>
+            <div className={styles.details_info}>{children}</div>
+            <div className={styles.details_image}>
+              {itemDetails?.image && (
+                <Image
+                  width={300}
+                  height={300}
+                  src={itemDetails?.image}
+                  alt={itemDetails?.name}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

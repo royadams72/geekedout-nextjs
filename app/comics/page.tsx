@@ -1,8 +1,8 @@
 import React from "react";
-import ComicsDisplay from "./components/ComicsDisplay";
+import ComicsCategory from "./components/ComicsCategory";
 
 const ComicsPage = () => {
-  return <ComicsDisplay />;
+  return <ComicsCategory />;
 };
 
 export default ComicsPage;

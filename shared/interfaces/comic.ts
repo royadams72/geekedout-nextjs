@@ -33,12 +33,13 @@ export interface ComicDetail {
   creators?: Array<{ name: string; role: string } | undefined>;
   onsaleDate: string;
   description?: string;
-  id?: number;
+  id: number | string;
   image: string;
   pageCount?: number;
   printPrice?: string;
-  title?: string;
+  name: string;
   clickThrough?: string;
+  category: string;
 }
 
 export interface ComicDate {
