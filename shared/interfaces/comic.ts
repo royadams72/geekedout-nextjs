@@ -36,7 +36,7 @@ export interface ComicDetail {
   id: number | string;
   image: string;
   pageCount?: number;
-  printPrice?: string;
+  printPrice?: number;
   name: string;
   clickThrough?: string;
   category: string;

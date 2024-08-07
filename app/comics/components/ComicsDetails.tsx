@@ -4,30 +4,29 @@ import Link from "next/link";
 
 import styles from "@/styles/components/_detail.module.scss";
 
+import { formatDate } from "@/utils/date-functions";
+
 import { ComicDetail } from "@/shared/interfaces/comic";
 
 const MusicDetails = ({ comicDetails }: { comicDetails: ComicDetail }) => {
+  console.log(typeof comicDetails?.printPrice);
   return (
     <>
       <h1 className={styles.details_title}>{comicDetails?.name}</h1>
-      <h4>
-        <span className={styles.details_alt_colour}>Published: </span>
-        {comicDetails?.onsaleDate}
-      </h4>
+
       {comicDetails?.onsaleDate && (
         <h4>
           <span className={styles.details_alt_colour}>Published: </span>
-          {comicDetails?.onsaleDate}
+          {formatDate(comicDetails?.onsaleDate)}
         </h4>
       )}
       <h4>
-        {comicDetails?.printPrice && (
+        {comicDetails?.printPrice !== 0 ? (
           <span>
             <span className={styles.details_alt_colour}>Price: </span>
-            &pound;{comicDetails?.printPrice} (Aprox)
+            &pound;{comicDetails.printPrice} (Aprox)
           </span>
-        )}
-        {!comicDetails?.printPrice && (
+        ) : (
           <span className={styles.details_alt_colour}>No Price Available</span>
         )}
       </h4>
