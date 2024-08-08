@@ -16,7 +16,7 @@ import Category from "@/shared/components/category/Category";
 import Link from "next/link";
 import { Preview } from "@/shared/interfaces/preview";
 
-const GamesDisplay = () => {
+const GamesCategory = () => {
   return (
     <>
       <div>
@@ -31,4 +31,4 @@ const GamesDisplay = () => {
     </>
   );
 };
-export default GamesDisplay;
+export default GamesCategory;
