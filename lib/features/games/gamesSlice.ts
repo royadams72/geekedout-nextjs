@@ -1,30 +1,31 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
+
 import { createAppSlice } from "@/lib/createAppSlice";
 
 import { StateLoading } from "@/shared/enums/loading";
-import { Game } from "@/shared/interfaces/game";
+import { Game, GameDetail } from "@/shared/interfaces/game";
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { title } from "process";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-// import { fetchToken } from "@/app/api/games/token/route";
 
 export interface GamesSliceState {
   games: Game[];
   status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
+  selectedGame: GameDetail;
 }
 
 const initialState: GamesSliceState = {
   games: [] as Game[],
   status: StateLoading.IDLE,
+  selectedGame: {} as GameDetail,
 };
 
-// If you are not using async thunks you can use the standalone `createSlice`.
 export const gamesSlice = createAppSlice({
   name: "games",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: (create) => ({
+    setGameDetails: create.reducer((state, action: PayloadAction<string>) => {
+      state.selectedGame = mapGameDetail(state, action.payload);
+    }),
     getGames: create.asyncThunk(
       async () => {
         let data = await getAllGames();
@@ -44,20 +45,18 @@ export const gamesSlice = createAppSlice({
       }
     ),
   }),
-  // You can define your selectors here. These selectors receive the slice
-  // state as their first argument.
   selectors: {
     selectStatus: (state) => state.status,
     selectGames: (state) => state?.games,
+    selectGameDetail: (state) => state.selectedGame,
   },
 });
 
-// Action creators are generated for each case reducer function.
-export const { getGames } = gamesSlice.actions;
+export const { getGames, setGameDetails } = gamesSlice.actions;
 
-// Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectStatus, selectGames } = gamesSlice.selectors;
-//
+export const { selectStatus, selectGames, selectGameDetail } =
+  gamesSlice.selectors;
+
 export const gamesReducer = gamesSlice.reducer;
 // Helper functions
 // , {
@@ -79,3 +78,36 @@ export const selectGamesPreview = createSelector(selectGames, (arr: Game[]) => {
     };
   });
 });
+
+const mapGameDetail = (state: GamesSliceState, id: string) => {
+  const item: Game | undefined = [...state.games].find((game: Game) => {
+    return game.id?.toString() === id;
+  });
+
+  const {
+    description,
+    gamerpower_url,
+    image,
+    instructions,
+    platforms,
+    published_date,
+    title: name,
+    type,
+    worth,
+  }: any = item;
+
+  const selectedItem: GameDetail = {
+    category: "Games",
+    description,
+    gamerpower_url,
+    id,
+    image,
+    instructions,
+    platforms,
+    published_date,
+    name,
+    type,
+    worth,
+  };
+  return selectedItem;
+};

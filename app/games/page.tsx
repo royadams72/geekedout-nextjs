@@ -1,9 +1,8 @@
-import React, { Fragment } from "react";
-import GamesDisplay from "./components/GamesDisplay";
-import Link from "next/link";
+import React from "react";
+import GamesCategory from "./components/GamesCategory";
 
 const GamesPage = () => {
-  return <GamesDisplay />;
+  return <GamesCategory />;
 };
 
 export default GamesPage;
