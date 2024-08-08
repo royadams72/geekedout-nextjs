@@ -19,12 +19,9 @@ const initialState: GamesSliceState = {
   selectedGame: {} as GameDetail,
 };
 
-// If you are not using async thunks you can use the standalone `createSlice`.
 export const gamesSlice = createAppSlice({
   name: "games",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: (create) => ({
     setGameDetails: create.reducer((state, action: PayloadAction<string>) => {
       state.selectedGame = mapGameDetail(state, action.payload);
@@ -59,7 +56,7 @@ export const { getGames, setGameDetails } = gamesSlice.actions;
 
 export const { selectStatus, selectGames, selectGameDetail } =
   gamesSlice.selectors;
-//
+
 export const gamesReducer = gamesSlice.reducer;
 // Helper functions
 // , {
