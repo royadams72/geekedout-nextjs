@@ -12,15 +12,18 @@ export async function GET(
     params: { movieId: string };
   }
 ) {
-  const res = await fetch(
-    `${BASE_URL_MOVIES}/${movieId}?api_key=${api_key}&language=en-GB&egion=GB`,
+  const response = await fetch(
+    `${BASE_URL_MOVIES}/${movieId}?api_key=${api_key}&language=en-GB&region=GB`,
     {
       headers: {
         "Content-Type": "application/json",
       },
     }
   );
-  const data = await res.json();
-  // TODO error handling
-  return Response.json({ data });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch movie details: ${data.error.message}`);
+  }
+  return Response.json(data);
 }

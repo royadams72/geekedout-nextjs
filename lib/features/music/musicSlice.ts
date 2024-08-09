@@ -32,8 +32,6 @@ export const musicSlice = createAppSlice({
     getAllAlbums: create.asyncThunk(
       async () => {
         let data = await getAllMusic();
-        console.log(data.data.albums);
-
         return data.data.albums;
       },
       {
@@ -52,8 +50,6 @@ export const musicSlice = createAppSlice({
     getAlbum: create.asyncThunk(
       async (id: string) => {
         let data = await getAlbumDetails(id);
-        // console.log(data);
-
         return data;
       },
       {

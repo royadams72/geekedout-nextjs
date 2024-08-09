@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
-import MoviesDisplay from "./components/MoviesDisplay";
+import MoviesCategory from "./components/MoviesCategory";
 
 const MoviesPage = () => {
   return (
     <>
-      <MoviesDisplay />
+      <MoviesCategory />
     </>
   );
 };

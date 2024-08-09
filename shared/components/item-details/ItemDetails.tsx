@@ -8,7 +8,7 @@ import Link from "next/link";
 import styles from "@/styles/components/_detail.module.scss";
 
 interface ItemProps<T> {
-  id: string;
+  id: string | number;
   itemDetail: T | null;
   isLoading?: boolean;
 }
