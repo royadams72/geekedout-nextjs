@@ -12,7 +12,7 @@ import {
 
 import { Preview } from "@/shared/interfaces/preview";
 
-const MoviesDisplay = () => {
+const MoviesCategory = () => {
   return (
     <>
       <div>
@@ -27,4 +27,4 @@ const MoviesDisplay = () => {
     </>
   );
 };
-export default MoviesDisplay;
+export default MoviesCategory;

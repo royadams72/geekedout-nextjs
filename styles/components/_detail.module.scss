@@ -6,6 +6,7 @@ $comics-colour: settings-colour("comics");
 $music-colour: settings-colour("music");
 $games-colour: settings-colour("games");
 $movies-colour: settings-colour("movies");
+$movies-colour-darker: #275643;
 $primary-colour: settings-colour("text-primary");
 $white: settings-colour("text-white");
 $btn-z-index: 2;
@@ -184,7 +185,8 @@ $details-width: 650px;
   }
 
   &_ul_comics,
-  &_ol_music {
+  &_ol_music,
+  &_ul_movies {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -195,8 +197,21 @@ $details-width: 650px;
     }
   }
 
-  &_ul_comics {
+  &_ul_comics,
+  &_ul_movies {
     padding-left: 0;
+  }
+
+  &_ul_movies {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-gap: 3px 7px;
+
+    &_li {
+      background-color: $movies-colour-darker;
+      color: $white;
+      padding-left: 6px;
+    }
   }
 
   &_ol_music {
@@ -227,22 +242,6 @@ $details-width: 650px;
       margin-bottom: 15px;
     }
   }
-
-  // &_comicColour {
-  //   color: $comics-colour;
-  // }
-
-  // &_musicColour {
-  //   color: $music-colour;
-  // }
-
-  // &_gamesColour {
-  //   color: $games-colour;
-  // }
-
-  // &_moviesColour {
-  //   color: $movies-colour;
-  // }
 }
 
 .backgroundImage {

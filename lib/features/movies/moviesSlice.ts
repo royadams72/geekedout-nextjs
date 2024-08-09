@@ -1,5 +1,5 @@
 import { createAppSlice } from "@/lib/createAppSlice";
-import { Movie, MoviesStore } from "@/shared/interfaces/movies";
+import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import { StateLoading } from "@/shared/enums/loading";
 import { createSelector } from "@reduxjs/toolkit";
 import { CategoryType } from "@/shared/enums/category-type.enum";
@@ -9,24 +9,41 @@ import { Paths } from "@/shared/enums/paths.enums";
 export interface MoviesSliceState {
   movies: MoviesStore;
   status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
+  selectedMovie: MovieDetail;
 }
 
 const initialState: MoviesSliceState = {
   movies: {} as MoviesStore,
   status: StateLoading.IDLE,
+  selectedMovie: {} as MovieDetail,
 };
 
-// If you are not using async thunks you can use the standalone `createSlice`.
 export const moviesSlice = createAppSlice({
   name: "movies",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
+
   reducers: (create) => ({
+    getMovieDetail: create.asyncThunk(
+      async (id: number) => {
+        const movie = await getMovie(id);
+        return movie;
+      },
+      {
+        pending: (state) => {
+          state.status = StateLoading.LOADING;
+        },
+        fulfilled: (state, action) => {
+          state.status = StateLoading.IDLE;
+          state.selectedMovie = action.payload;
+        },
+        rejected: (state) => {
+          state.status = StateLoading.FAILED;
+        },
+      }
+    ),
     getMovies: create.asyncThunk(
       async () => {
         const response = await getMoviesApi();
-        // The value we return becomes the `fulfilled` action payload
         return response.data;
       },
       {
@@ -43,11 +60,11 @@ export const moviesSlice = createAppSlice({
       }
     ),
   }),
-  // You can define your selectors here. These selectors receive the slice
-  // state as their first argument.
+
   selectors: {
     selectMovies: (movies) => movies.movies.results as Movie[],
     selectStatus: (movies) => movies.status,
+    selectMovieDetails: (movies) => movies.selectedMovie,
   },
 });
 
@@ -57,11 +74,19 @@ const getMoviesApi = async () => {
   return data;
 };
 
-// Action creators are generated for each case reducer function.
-export const { getMovies } = moviesSlice.actions;
+const getMovie = async (id: number) => {
+  const response = await fetch(
+    `http://localhost:3000/api/movies/movie-details/${id}`
+  );
+  const m = await response.json();
+  const movie = mapMovieDetail(m, id);
+  return movie;
+};
 
-// Selectors returned by `slice.selectors` take the root state as their first argument.
-export const { selectMovies, selectStatus } = moviesSlice.selectors;
+export const { getMovies, getMovieDetail } = moviesSlice.actions;
+
+export const { selectMovies, selectStatus, selectMovieDetails } =
+  moviesSlice.selectors;
 
 export const moviesReducer = moviesSlice.reducer;
 
@@ -83,3 +108,30 @@ export const selectMoviesPreview = createSelector(
     });
   }
 );
+
+function mapMovieDetail(movie: Movie, id: number) {
+  const {
+    title: name,
+    release_date,
+    poster_path,
+    homepage,
+    imdb_id,
+    genres: g,
+    overview,
+  }: any = movie;
+
+  const genres = g.map((arrayItem: any) => arrayItem.name);
+  const selectedItem: MovieDetail = {
+    category: "Movies",
+    genres,
+    homepage,
+    id,
+    imdb_link: `http://www.imdb.com/title/${imdb_id}`,
+    image: `https://image.tmdb.org/t/p/w300${poster_path}`,
+    name,
+    overview,
+    release_date,
+  };
+  console.log(movie);
+  return selectedItem;
+}
