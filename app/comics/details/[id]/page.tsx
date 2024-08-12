@@ -1,31 +1,18 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
+import { StoreProvider } from "@/app/StoreProvider";
+import ComicDetails from "../../components/ComicDetails";
 
-import ItemDetails from "@/shared/components/item-details/ItemDetails";
-
-import { ComicDetail } from "@/shared/interfaces/comic";
-import ComicsDetails from "@/app/comics/components/ComicsDetails";
-import {
-  selectComicDetail,
-  setComicDetails,
-} from "@/lib/features/comics/comicsSlice";
-
-const ComicDetails = ({ params: { id } }: { params: { id: string } }) => {
-  const dispatch = useAppDispatch();
-  const comicDetails: ComicDetail = useAppSelector(selectComicDetail);
-
-  useEffect(() => {
-    dispatch(setComicDetails(id));
-  }, [dispatch, id]);
+const ComicDetailsPage = ({ params: { id } }: { params: { id: string } }) => {
+  console.log("sdasdasdasdasdasdad", id);
 
   return (
-    <ItemDetails<ComicDetail> id={id} itemDetail={comicDetails}>
-      <ComicsDetails comicDetails={comicDetails} />
-    </ItemDetails>
+    <StoreProvider>
+      <ComicDetails params={{ id }} />
+    </StoreProvider>
   );
 };
 
-export default ComicDetails;
+export default ComicDetailsPage;

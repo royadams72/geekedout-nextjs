@@ -1,16 +1,7 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
+import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import { comicsReducer } from "@/lib/features/comics/comicsSlice";
@@ -18,48 +9,55 @@ import { musicReducer } from "@/lib/features/music/musicSlice";
 import { gamesReducer } from "@/lib/features/games/gamesSlice";
 import { moviesReducer } from "@/lib/features/movies/moviesSlice";
 
-// import { loggerMiddleware } from "./middleware/logger";
-
 const persistConfig = {
   key: "root",
-  storage: storage,
+  storage,
+  whitelist: ["comics", "music", "games", "movies"],
 };
-const rootReducer = persistReducer(
-  persistConfig,
-  combineReducers({
-    comics: comicsReducer,
-    music: musicReducer,
-    games: gamesReducer,
-    movies: moviesReducer,
-  })
-);
+const rootReducer = combineReducers({
+  comics: comicsReducer,
+  music: musicReducer,
+  games: gamesReducer,
+  movies: moviesReducer,
+});
 
-// `combineSlices` automatically combines the reducers using
-// their `reducerPath`s, therefore we no longer need to call `combineReducers`.
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 
-// `makeStore` encapsulates the store configuration to allow
-// creating unique store instances, which is particularly important for
-// server-side rendering (SSR) scenarios. In SSR, separate store instances
-// are needed for each request to prevent cross-request state pollution.
-export const makeStore = () => {
-  const store = configureStore({
-    reducer: rootReducer,
+export const makeStore = (preloadedState?: any) => {
+  // If preloadedState is undefined, attempt to retrieve the current state from the store
+  console.log(
+    "preloadedState === undefined",
+    preloadedState === undefined,
+    "store==",
+    store
+  );
+
+  if (preloadedState === undefined && store) {
+    preloadedState = store.getState();
+  }
+  console.log("makeStore==", preloadedState, persistedReducer);
+
+  return configureStore({
+    reducer: persistedReducer,
+    preloadedState, // This allows SSR state to be injected
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         immutableCheck: false,
         serializableCheck: false,
-        // serializableCheck: {
-        //   ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        // },
       }),
   });
-  persistStore(store);
-  return store;
 };
 
+export let store: ReturnType<typeof configureStore> | null = null;
+
+export const initializeStore = (initialState?: any): AppStore | unknown => {
+  if (!store) {
+    store = makeStore(initialState);
+  }
+  return store;
+};
 // Infer the return type of `makeStore`
 export type AppStore = ReturnType<typeof makeStore>;
 // Infer the `AppDispatch` type from the store itself

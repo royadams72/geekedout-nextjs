@@ -1,28 +1,11 @@
-"use client";
+import ComicsDisplayClient from "./ComicsClient";
+import { getComicsApi } from "@/lib/features/comics/comicsSlice";
 
-import Category from "@/shared/components/category/Category";
-import { Preview } from "@/shared/interfaces/preview";
-import {
-  selectStatus,
-  getComics,
-  selectComicsPreview,
-} from "@/lib/features/comics/comicsSlice";
-import Link from "next/link";
+const ComicsDisplay = async () => {
+  // Fetch data on the server side
+  const data = await getComicsApi();
 
-const ComicsDisplay = () => {
-  return (
-    <>
-      <div>
-        <Link href={"/"}>Back to main Page</Link>
-      </div>
-      <Category<Preview>
-        itemsSelector={selectComicsPreview}
-        statusSelector={selectStatus}
-        fetchAction={getComics}
-        title="Comics"
-      />
-    </>
-  );
+  return <ComicsDisplayClient data={data} />;
 };
 
 export default ComicsDisplay;

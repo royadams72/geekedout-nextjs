@@ -35,6 +35,9 @@ export const comicsSlice = createAppSlice({
     setComicDetails: create.reducer((state, action: PayloadAction<string>) => {
       state.selectedComic = mapComicDetail(state, action.payload);
     }),
+    setComics: create.reducer((state, action: PayloadAction<ComicStore>) => {
+      state.comics = action.payload;
+    }),
     getComics: create.asyncThunk(
       async () => {
         const response = await getComicsApi();
@@ -57,19 +60,19 @@ export const comicsSlice = createAppSlice({
   }),
 
   selectors: {
-    selectComicsArray: (comics) => comics.comics.results as Comic[],
+    selectComicsArray: (comics) => comics?.comics?.results as Comic[],
     selectStatus: (comics) => comics.status,
     selectComicDetail: (comics) => comics.selectedComic,
   },
 });
 
-const getComicsApi = async () => {
+export const getComicsApi = async () => {
   const response = await fetch("http://localhost:3000/api/comics/all-comics");
   const data = await response.json();
   return data;
 };
 
-export const { getComics, setComicDetails } = comicsSlice.actions;
+export const { getComics, setComicDetails, setComics } = comicsSlice.actions;
 
 export const { selectComicsArray, selectStatus, selectComicDetail } =
   comicsSlice.selectors;

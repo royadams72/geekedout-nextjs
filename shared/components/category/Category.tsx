@@ -12,7 +12,7 @@ import { Preview } from "../../interfaces/preview";
 interface DisplayProps<T> {
   itemsSelector: (state: any) => T[];
   statusSelector: (state: any) => string;
-  fetchAction: any;
+  // fetchAction: any;
   // itemRenderer: (item: T) => React.ReactNode;
   title: string;
 }
@@ -20,12 +20,12 @@ interface DisplayProps<T> {
 const Category = <T extends Preview>({
   itemsSelector,
   statusSelector,
-  fetchAction,
+
   // itemRenderer,
   title,
 }: DisplayProps<T>) => {
   const items = useAppSelector(itemsSelector);
-  const isClientLoaded = useSelectorEffect(items, fetchAction);
+  // const isClientLoaded = useSelectorEffect(items, fetchAction);
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
   console.log(items);
 
@@ -35,7 +35,7 @@ const Category = <T extends Preview>({
 
   return (
     <>
-      {isClientLoaded && (
+      {
         <div className={styles.category}>
           <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
             {title}
@@ -46,7 +46,7 @@ const Category = <T extends Preview>({
             ))}
           </div>
         </div>
-      )}
+      }
     </>
   );
 };

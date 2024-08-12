@@ -17,15 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <StoreProvider>
-      <html className="html" lang="en">
-        <body className="body">
-          <main className="main">
-            <Header />
-            {children}
-          </main>
-        </body>
-      </html>
-    </StoreProvider>
+    <html className="html" lang="en">
+      <body className="body">
+        <main className="main">
+          <Header />
+          {children}
+        </main>
+      </body>
+    </html>
   );
 }
