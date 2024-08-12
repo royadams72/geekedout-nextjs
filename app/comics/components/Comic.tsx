@@ -9,7 +9,6 @@ import { formatDate } from "@/utils/date-functions";
 import { ComicDetail } from "@/shared/interfaces/comic";
 
 const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
-  console.log(typeof comicDetails?.printPrice);
   return (
     <>
       <h1 className={styles.details_title}>{comicDetails?.name}</h1>
