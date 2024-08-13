@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { StateLoading } from "@/shared/enums/loading";
 import { useSelectorEffect } from "@/lib/hooks/useSelector";
-import { useAppSelector } from "@/lib/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
 import styles from "@/styles/components/_category.module.scss";
 
@@ -10,24 +10,40 @@ import CategoryItem from "./CategoryItem";
 import { Preview } from "../../interfaces/preview";
 
 interface DisplayProps<T> {
+  data: any;
   itemsSelector: (state: any) => T[];
-  statusSelector: (state: any) => string;
-  // fetchAction: any;
-  // itemRenderer: (item: T) => React.ReactNode;
+  dispatchAction: (stata: any) => any;
   title: string;
+  detailsSelector: (state: any) => any;
+  clearDetails: () => any;
+  statusSelector: (state: any) => string;
 }
 
 const Category = <T extends Preview>({
+  data,
   itemsSelector,
-  statusSelector,
-
-  // itemRenderer,
+  dispatchAction,
   title,
+  detailsSelector,
+  clearDetails,
+  statusSelector,
 }: DisplayProps<T>) => {
+  const dispatch = useAppDispatch();
   const items = useAppSelector(itemsSelector);
-  // const isClientLoaded = useSelectorEffect(items, fetchAction);
+  const isDetailsInStore = useAppSelector(detailsSelector);
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
+  // const isClientLoaded = useSelectorEffect(items, fetchAction);
+
   console.log(items);
+  useEffect(() => {
+    if (isDetailsInStore && Object.keys(isDetailsInStore).length !== 0) {
+      dispatch(clearDetails());
+    }
+  }, [dispatch, clearDetails, isDetailsInStore]);
+
+  useEffect(() => {
+    dispatch(dispatchAction(data));
+  }, [dispatchAction, dispatch, data]);
 
   if (isLoading) {
     return <div>Loading....</div>;

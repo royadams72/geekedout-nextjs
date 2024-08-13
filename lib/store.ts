@@ -33,17 +33,17 @@ export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = (preloadedState?: any) => {
   // If preloadedState is undefined, attempt to retrieve the current state from the store
-  console.log(
-    "preloadedState === undefined",
-    preloadedState === undefined,
-    "store==",
-    store
-  );
+  // console.log(
+  //   "preloadedState === undefined",
+  //   preloadedState === undefined,
+  //   "store==",
+  //   store
+  // );
 
   if (preloadedState === undefined && store) {
     preloadedState = store.getState();
   }
-  console.log("makeStore==", preloadedState, persistedReducer);
+  // console.log("makeStore==", preloadedState, persistedReducer);
 
   return configureStore({
     reducer: persistedReducer,

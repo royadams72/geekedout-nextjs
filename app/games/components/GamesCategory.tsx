@@ -1,22 +1,24 @@
 "use client";
 import React from "react";
-import { useAppSelector } from "@/lib/hooks/store.hooks";
-
-import { StateLoading } from "@/shared/enums/loading";
-
-import { useSelectorEffect } from "@/lib/hooks/useSelector";
-import {
-  getGames,
-  selectGames,
-  selectStatus,
-  selectGamesPreview,
-} from "@/lib/features/games/gamesSlice";
-import Category from "@/shared/components/category/Category";
 
 import Link from "next/link";
+
+import { useAppSelector } from "@/lib/hooks/store.hooks";
+
+import {
+  selectStatus,
+  selectGamesPreview,
+  setGames,
+} from "@/lib/features/games/gamesSlice";
+
+import { StateLoading } from "@/shared/enums/loading";
 import { Preview } from "@/shared/interfaces/preview";
 
-const GamesCategory = () => {
+import Category from "@/shared/components/category/Category";
+
+const GamesCategory = ({ data }: { data: any }) => {
+  const isLoading = useAppSelector(selectStatus) === StateLoading.LOADING;
+
   return (
     <>
       <div>
@@ -24,9 +26,10 @@ const GamesCategory = () => {
       </div>
       <Category<Preview>
         itemsSelector={selectGamesPreview}
-        statusSelector={selectStatus}
-        fetchAction={getGames}
+        data={data}
         title="Games"
+        dispatchAction={setGames}
+        isLoading={isLoading}
       />
     </>
   );

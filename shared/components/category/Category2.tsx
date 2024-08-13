@@ -7,20 +7,40 @@ import {
   setComics,
 } from "@/lib/features/comics/comicsSlice";
 import Link from "next/link";
+import { Preview } from "@/shared/interfaces/preview";
 
-const Category2 = ({ data }: { data: any }) => {
+interface DisplayProps<T> {
+  data: any;
+  itemsSelector: (state: any) => T[];
+  statusSelector?: (state: any) => string;
+  dispatchAction: any;
+  // itemRenderer: (item: T) => React.ReactNode;
+  title: string;
+}
+
+const Category2 = <T extends Preview>({
+  data,
+  itemsSelector,
+  statusSelector,
+  dispatchAction,
+
+  // itemRenderer,
+  title,
+}: DisplayProps<T>) => {
   const dispatch = useAppDispatch();
-  const items = useAppSelector(selectComicsArray);
-  console.log(items);
+  const items = useAppSelector(itemsSelector);
+
   useEffect(() => {
-    dispatch(setComics(data));
-  }, [dispatch, data]);
+    dispatch(dispatchAction(data));
+  }, [dispatchAction, dispatch, data]);
   return (
     <div>
       {items &&
         items.map((item) => (
           <div key={item.id}>
-            <Link href={`comics/details/${item.id}`}>{item.title}</Link>
+            <Link href={`${item?.category}/details/${item.id}`}>
+              {item.title}
+            </Link>
           </div>
         ))}
     </div>

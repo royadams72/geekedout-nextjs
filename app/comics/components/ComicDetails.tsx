@@ -12,16 +12,16 @@ import {
 } from "@/lib/features/comics/comicsSlice";
 import { ComicDetail } from "@/shared/interfaces/comic";
 
-const ComicDetails = ({ params: { id } }: { params: { id: string } }) => {
+const ComicDetails = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch();
   const comicDetails: ComicDetail = useAppSelector(selectComicDetail);
   console.log(comicDetails);
 
   useEffect(() => {
-    if (!comicDetails || comicDetails.id !== id) {
-      dispatch(setComicDetails(id));
-    }
-  }, [dispatch, id, comicDetails]);
+    // if (!comicDetails || comicDetails.id !== id) {
+    dispatch(setComicDetails(id));
+    // }
+  }, [dispatch, id]);
 
   return (
     <ItemDetails<ComicDetail> id={id} itemDetail={comicDetails}>

@@ -35,6 +35,9 @@ export const comicsSlice = createAppSlice({
     setComicDetails: create.reducer((state, action: PayloadAction<string>) => {
       state.selectedComic = mapComicDetail(state, action.payload);
     }),
+    clearComicDetails: create.reducer((state) => {
+      state.selectedComic = {} as ComicDetail;
+    }),
     setComics: create.reducer((state, action: PayloadAction<ComicStore>) => {
       state.comics = action.payload;
     }),
@@ -72,12 +75,13 @@ export const getComicsApi = async () => {
   return data;
 };
 
-export const { getComics, setComicDetails, setComics } = comicsSlice.actions;
+export const { getComics, setComicDetails, setComics, clearComicDetails } =
+  comicsSlice.actions;
 
 export const { selectComicsArray, selectStatus, selectComicDetail } =
   comicsSlice.selectors;
 
-export const selectComicsPreview = createSelector(
+export const selectComicsPreviews = createSelector(
   selectComicsArray,
   (arr: Comic[]) => {
     return arr?.map((comic) => {

@@ -26,6 +26,9 @@ export const gamesSlice = createAppSlice({
     setGameDetails: create.reducer((state, action: PayloadAction<string>) => {
       state.selectedGame = mapGameDetail(state, action.payload);
     }),
+    setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
+      state.games = action.payload;
+    }),
     getGames: create.asyncThunk(
       async () => {
         let data = await getAllGames();
@@ -52,7 +55,7 @@ export const gamesSlice = createAppSlice({
   },
 });
 
-export const { getGames, setGameDetails } = gamesSlice.actions;
+export const { getGames, setGameDetails, setGames } = gamesSlice.actions;
 
 export const { selectStatus, selectGames, selectGameDetail } =
   gamesSlice.selectors;
@@ -62,13 +65,15 @@ export const gamesReducer = gamesSlice.reducer;
 // , {
 //   next: { revalidate: 10 },
 // }
-async function getAllGames() {
+export const getAllGames = async () => {
   const response = await fetch("http://localhost:3000/api/games/get-games/");
   const data = await response.json();
-  return data;
-}
+  // console.log("getAllGames==", data.data[0]);
 
-export const selectGamesPreview = createSelector(selectGames, (arr: Game[]) => {
+  return data.data;
+};
+
+export const selectGamesPreview = createSelector(selectGames, (arr: any[]) => {
   return arr?.map((game) => {
     return {
       category: CategoryType.Games,
