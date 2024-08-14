@@ -1,45 +1,39 @@
-import React from "react";
+"use client";
 
-import Link from "next/link";
-
-import styles from "@/styles/components/_detail.module.scss";
+import React, { useEffect } from "react";
 
 import { MovieDetail } from "@/shared/interfaces/movies";
+import ItemDetails from "@/shared/components/item-details/ItemDetails";
+import Movie from "@/app/movies/components/Movie";
+import {
+  setMovieDetails,
+  selectStatus,
+} from "@/lib/features/movies/moviesSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
+import { StateLoading } from "@/shared/enums/loading";
+const MovieDetails = ({
+  id,
+  movieDetails,
+}: {
+  id: number;
+  movieDetails: MovieDetail;
+}) => {
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(selectStatus) === StateLoading.LOADING;
 
-const MusicDetails = ({ movieDetails }: { movieDetails: MovieDetail }) => {
+  useEffect(() => {
+    dispatch(setMovieDetails(movieDetails));
+  }, [dispatch, movieDetails]);
+
   return (
-    <>
-      <h1 className={styles.details_title}>{movieDetails?.name}</h1>
-
-      <h4>
-        <span className={styles.details_alt_colour}>Realease Date: </span>
-        {movieDetails?.release_date}
-      </h4>
-      <h4 className={styles.details_alt_colour}>Overview</h4>
-      <p className={styles.details_copy}>{movieDetails?.overview}</p>
-      <h4 className={styles.details_alt_colour}>Genres</h4>
-      <ul className={styles.details_ul_movies}>
-        {movieDetails?.genres.map((genre, index) => (
-          <li className={styles.details_ul_movies_li} key={index}>
-            {genre}
-          </li>
-        ))}
-      </ul>
-
-      {movieDetails?.imdb_link && (
-        <Link href={movieDetails?.imdb_link} target="_blank" className="btn">
-          View on IMDB
-        </Link>
-      )}
-      {movieDetails?.homepage && (
-        <div className="util-helper__margin-top-l">
-          <Link href={movieDetails?.homepage} target="_blank" className="btn">
-            Spotify Page
-          </Link>
-        </div>
-      )}
-    </>
+    <ItemDetails<MovieDetail>
+      id={id}
+      itemDetail={movieDetails}
+      isLoading={isLoading}
+    >
+      <Movie movieDetails={movieDetails} />
+    </ItemDetails>
   );
 };
 
-export default MusicDetails;
+export default MovieDetails;

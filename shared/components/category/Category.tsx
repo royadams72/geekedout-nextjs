@@ -34,7 +34,7 @@ const Category = <T extends Preview>({
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
   // const isClientLoaded = useSelectorEffect(items, fetchAction);
 
-  console.log(items);
+  // console.log(items);
   useEffect(() => {
     if (isDetailsInStore && Object.keys(isDetailsInStore).length !== 0) {
       dispatch(clearDetails());

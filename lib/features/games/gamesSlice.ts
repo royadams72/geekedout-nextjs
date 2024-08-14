@@ -26,6 +26,9 @@ export const gamesSlice = createAppSlice({
     setGameDetails: create.reducer((state, action: PayloadAction<string>) => {
       state.selectedGame = mapGameDetail(state, action.payload);
     }),
+    clearGameDetails: create.reducer((state) => {
+      state.selectedGame = {} as GameDetail;
+    }),
     setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
       state.games = action.payload;
     }),
@@ -55,7 +58,8 @@ export const gamesSlice = createAppSlice({
   },
 });
 
-export const { getGames, setGameDetails, setGames } = gamesSlice.actions;
+export const { getGames, setGameDetails, setGames, clearGameDetails } =
+  gamesSlice.actions;
 
 export const { selectStatus, selectGames, selectGameDetail } =
   gamesSlice.selectors;

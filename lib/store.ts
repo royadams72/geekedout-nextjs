@@ -33,17 +33,9 @@ export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = (preloadedState?: any) => {
   // If preloadedState is undefined, attempt to retrieve the current state from the store
-  // console.log(
-  //   "preloadedState === undefined",
-  //   preloadedState === undefined,
-  //   "store==",
-  //   store
-  // );
-
-  if (preloadedState === undefined && store) {
-    preloadedState = store.getState();
-  }
-  // console.log("makeStore==", preloadedState, persistedReducer);
+  // if (preloadedState === undefined && store) {
+  //   preloadedState = store.getState();
+  // }
 
   return configureStore({
     reducer: persistedReducer,
@@ -54,15 +46,6 @@ export const makeStore = (preloadedState?: any) => {
         serializableCheck: false,
       }),
   });
-};
-
-export let store: ReturnType<typeof configureStore> | null = null;
-
-export const initializeStore = (initialState?: any): AppStore | unknown => {
-  if (!store) {
-    store = makeStore(initialState);
-  }
-  return store;
 };
 
 // lib/store/serverSideStore.ts

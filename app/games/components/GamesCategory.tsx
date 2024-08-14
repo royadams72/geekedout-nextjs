@@ -3,22 +3,19 @@ import React from "react";
 
 import Link from "next/link";
 
-import { useAppSelector } from "@/lib/hooks/store.hooks";
-
 import {
   selectStatus,
   selectGamesPreview,
   setGames,
+  clearGameDetails,
+  selectGameDetail,
 } from "@/lib/features/games/gamesSlice";
 
-import { StateLoading } from "@/shared/enums/loading";
 import { Preview } from "@/shared/interfaces/preview";
 
 import Category from "@/shared/components/category/Category";
 
 const GamesCategory = ({ data }: { data: any }) => {
-  const isLoading = useAppSelector(selectStatus) === StateLoading.LOADING;
-
   return (
     <>
       <div>
@@ -29,7 +26,9 @@ const GamesCategory = ({ data }: { data: any }) => {
         data={data}
         title="Games"
         dispatchAction={setGames}
-        isLoading={isLoading}
+        detailsSelector={selectGameDetail}
+        clearDetails={clearGameDetails}
+        statusSelector={selectStatus}
       />
     </>
   );

@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { PersistGate } from "redux-persist/integration/react";
-import { AppStore, initializeStore, makeStore } from "@/lib/store"; // Adjust import as needed
+import { AppStore, makeStore } from "@/lib/store"; // Adjust import as needed
 import { persistStore } from "redux-persist";
 
 interface Props {
