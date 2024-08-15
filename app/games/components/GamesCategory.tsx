@@ -23,9 +23,7 @@ const GamesCategory = ({ data }: { data: any }) => {
       </div>
       <Category<Preview>
         itemsSelector={selectGamesPreview}
-        data={data}
         title="Games"
-        dispatchAction={setGames}
         detailsSelector={selectGameDetail}
         clearDetails={clearGameDetails}
         statusSelector={selectStatus}

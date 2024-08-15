@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+
 import "./globals.scss";
 import { StoreProvider } from "./StoreProvider";
 import Header from "@/shared/components/header/Header";
-import { initializeStoreForServer } from "@/lib/store";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,13 +14,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const store = await initializeStoreForServer();
-  const preloadedState = store.getState();
   return (
     <html className="html" lang="en">
       <body className="body">
         <main className="main">
-          <StoreProvider preloadedState={preloadedState}>
+          <StoreProvider>
             <Header />
             {children}
           </StoreProvider>

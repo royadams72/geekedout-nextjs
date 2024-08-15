@@ -10,9 +10,9 @@ import CategoryItem from "./CategoryItem";
 import { Preview } from "../../interfaces/preview";
 
 interface DisplayProps<T> {
-  data: any;
+  preloadedState: any;
   itemsSelector: (state: any) => T[];
-  dispatchAction: (stata: any) => any;
+  preloadedStateAction: (stata: any) => any;
   title: string;
   detailsSelector: (state: any) => any;
   clearDetails: () => any;
@@ -20,9 +20,9 @@ interface DisplayProps<T> {
 }
 
 const Category = <T extends Preview>({
-  data,
+  preloadedState,
   itemsSelector,
-  dispatchAction,
+  preloadedStateAction,
   title,
   detailsSelector,
   clearDetails,
@@ -34,7 +34,7 @@ const Category = <T extends Preview>({
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
   // const isClientLoaded = useSelectorEffect(items, fetchAction);
 
-  // console.log(items);
+  console.log(items);
   useEffect(() => {
     if (isDetailsInStore && Object.keys(isDetailsInStore).length !== 0) {
       dispatch(clearDetails());
@@ -42,10 +42,12 @@ const Category = <T extends Preview>({
   }, [dispatch, clearDetails, isDetailsInStore]);
 
   useEffect(() => {
-    dispatch(dispatchAction(data));
-  }, [dispatchAction, dispatch, data]);
+    if (preloadedState && preloadedState[title.toLowerCase()]) {
+    dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
+    }
+  }, [preloadedStateAction, dispatch, preloadedState, title]);
 
-  if (isLoading) {
+  if (!items) {
     return <div>Loading....</div>;
   }
 

@@ -22,8 +22,6 @@ const MoviesCategory = ({ data }: { data: any }) => {
       </div>
       <Category<Preview>
         itemsSelector={selectMoviesPreview}
-        data={data}
-        dispatchAction={setMovies}
         title="Movies"
         detailsSelector={selectMovieDetails}
         clearDetails={clearMovieDetails}

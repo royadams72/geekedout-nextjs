@@ -13,7 +13,7 @@ import { musicReducer } from "@/lib/features/music/musicSlice";
 import { gamesReducer } from "@/lib/features/games/gamesSlice";
 import { moviesReducer } from "@/lib/features/movies/moviesSlice";
 import { ComicDetail } from "@/shared/interfaces/comic";
-import { useAppSelector } from "./hooks/store.hooks";
+import { useAppSelector } from "../hooks/store.hooks";
 
 const persistConfig = {
   key: "root",
@@ -50,27 +50,27 @@ export const makeStore = (preloadedState?: any) => {
 
 // lib/store/serverSideStore.ts
 
-export const initializeStoreForDetailsPage = async (itemId: string) => {
-  const store = makeStore();
-  // const comicDetails: ComicDetail = useAppSelector(selectComicDetail);
-  // Dispatch the action to fetch item details
-  store.dispatch(setComicDetails(itemId));
+// export const initializeStoreForDetailsPage = async (itemId: string) => {
+//   const store = makeStore();
+//   // const comicDetails: ComicDetail = useAppSelector(selectComicDetail);
+//   // Dispatch the action to fetch item details
+//   store.dispatch(setComicDetails(itemId));
 
-  return store;
-};
+//   return store;
+// };
 
-export const initializeStoreForServer: any = async (
-  fetchSomeData?: () => any
-) => {
-  const store = makeStore();
+// export const initializeStoreForServer: any = async (
+//   fetchSomeData?: () => any
+// ) => {
+//   const store = makeStore();
 
-  // Dispatch any server-side actions here
-  if (fetchSomeData) {
-    await store.dispatch(fetchSomeData());
-  }
+//   // Dispatch any server-side actions here
+//   if (fetchSomeData) {
+//     await store.dispatch(fetchSomeData());
+//   }
 
-  return store;
-};
+//   return store;
+// };
 // Infer the return type of `makeStore`
 export type AppStore = ReturnType<typeof makeStore>;
 // Infer the `AppDispatch` type from the store itself

@@ -1,6 +1,6 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/createAppSlice";
-import type { AppThunk } from "@/lib/store";
+import type { AppThunk } from "@/lib/store/store";
 import {
   Album,
   AlbumDetail,
@@ -29,9 +29,9 @@ export const musicSlice = createAppSlice({
   name: "music",
   initialState,
   reducers: (create) => ({
-    getAllAlbums: create.asyncThunk(
+    getMusic: create.asyncThunk(
       async () => {
-        let data = await getAllMusic();
+        let data = await getAllMusicApi();
         return data.data.albums;
       },
       {
@@ -65,6 +65,9 @@ export const musicSlice = createAppSlice({
         },
       }
     ),
+    clearAlbumDetails: create.reducer((state) => {
+      state.selectedAlbum = {} as AlbumDetail;
+    }),
   }),
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
@@ -76,7 +79,7 @@ export const musicSlice = createAppSlice({
 });
 
 // Action creators are generated for each case reducer function.
-export const { getAllAlbums, getAlbum } = musicSlice.actions;
+export const { getMusic, getAlbum, clearAlbumDetails } = musicSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectStatus, selectAllAlbums, selectAlbumDetail } =
@@ -85,7 +88,7 @@ export const { selectStatus, selectAllAlbums, selectAlbumDetail } =
 export const musicReducer = musicSlice.reducer;
 // Helper functions
 
-const getAllMusic = async () => {
+const getAllMusicApi = async () => {
   const response = await fetch("http://localhost:3000/api/music/get-albums");
   const data = await response.json();
   return data;

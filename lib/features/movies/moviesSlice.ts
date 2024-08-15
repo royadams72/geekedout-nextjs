@@ -25,7 +25,7 @@ export const moviesSlice = createAppSlice({
   reducers: (create) => ({
     getMovieDetail: create.asyncThunk(
       async (id: number) => {
-        const movie = await getMovie(id);
+        const movie = await getMovieApi(id);
         return movie;
       },
       {
@@ -43,7 +43,7 @@ export const moviesSlice = createAppSlice({
     ),
     getMovies: create.asyncThunk(
       async () => {
-        const response = await getMoviesApi();
+        const response = await getAllMoviesApi();
         return response.data;
       },
       {
@@ -79,13 +79,13 @@ export const moviesSlice = createAppSlice({
   },
 });
 
-export const getMoviesApi = async () => {
+const getAllMoviesApi = async () => {
   const response = await fetch("http://localhost:3000/api/movies/all-movies");
   const data = await response.json();
   return data.data;
 };
 
-export const getMovie = async (id: number) => {
+const getMovieApi = async (id: number) => {
   const response = await fetch(
     `http://localhost:3000/api/movies/movie-details/${id}`
   );

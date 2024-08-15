@@ -1,10 +1,15 @@
 import React from "react";
+
+import { initializeStoreForServer } from "@/lib/store/serverSideStore";
 import ComicsCategory from "./components/ComicsCategory";
-import { getComicsApi } from "@/lib/features/comics/comicsSlice";
 
 const ComicsPage = async () => {
-  const data = await getComicsApi();
-  return <ComicsCategory data={data} />;
+  // TODO: checks if store has changed
+  const store = await initializeStoreForServer(["comics"]);
+  const preloadedState = store.getState();
+  // console.log("preloadedState===", preloadedState.comics);
+
+  return <ComicsCategory preloadedState={preloadedState.comics} />;
 };
 
 export default ComicsPage;

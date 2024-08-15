@@ -8,13 +8,11 @@ import Link from "next/link";
 import styles from "@/styles/components/_detail.module.scss";
 
 interface ItemProps<T> {
-  id: string | number;
   itemDetail: T | null;
   isLoading?: boolean;
 }
 
 interface SelectedItem {
-  id: string | number | undefined;
   image: string;
   category: string;
   name: string;
@@ -22,14 +20,12 @@ interface SelectedItem {
 }
 
 const initialSelectedItem = {
-  id: "",
   image: "",
   category: "",
   name: "",
 };
 
 const ItemDetails = <T extends SelectedItem>({
-  id,
   itemDetail,
   isLoading,
   children,
@@ -41,13 +37,13 @@ const ItemDetails = <T extends SelectedItem>({
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
-    if (itemDetail && itemDetail.id === id) {
+    if (itemDetail) {
       setItemDetails(itemDetail);
       setBackgroundImage(itemDetail.image);
       setCategory(itemDetail.category);
       setIsFetching(false);
     }
-  }, [itemDetail, id]);
+  }, [itemDetail]);
 
   const divStyle = {
     backgroundImage: `url(${backgroundImage})`,

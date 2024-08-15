@@ -12,20 +12,20 @@ import {
 } from "@/lib/features/comics/comicsSlice";
 import { ComicDetail } from "@/shared/interfaces/comic";
 
-const ComicDetails = ({ id }: { id: string }) => {
+const ComicDetails = ({ preloadedState }: { preloadedState: ComicDetail }) => {
   const dispatch = useAppDispatch();
   const comicDetails: ComicDetail = useAppSelector(selectComicDetail);
   console.log(comicDetails);
 
   useEffect(() => {
     // if (!comicDetails || comicDetails.id !== id) {
-    dispatch(setComicDetails(id));
+    dispatch(setComicDetails(preloadedState));
     // }
-  }, [dispatch, id]);
+  }, [dispatch, preloadedState]);
 
   return (
-    <ItemDetails<ComicDetail> id={id} itemDetail={comicDetails}>
-      <Comic comicDetails={comicDetails} />
+    <ItemDetails<ComicDetail>  itemDetail={preloadedState}>
+      <Comic comicDetails={preloadedState} />
     </ItemDetails>
   );
 };

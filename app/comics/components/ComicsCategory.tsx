@@ -12,16 +12,16 @@ import { Preview } from "@/shared/interfaces/preview";
 
 import Category from "@/shared/components/category/Category";
 
-const ComicsDisplay = ({ data }: { data: any }) => {
+const ComicsDisplay = ({ preloadedState }: { preloadedState: any }) => {
   return (
     <Category<Preview>
       title="Comics"
-      data={data}
       itemsSelector={selectComicsPreviews}
-      dispatchAction={setComics}
       detailsSelector={selectComicDetail}
       clearDetails={clearComicDetails}
       statusSelector={selectStatus}
+      preloadedStateAction={setComics}
+      preloadedState={preloadedState}
     />
   );
 };

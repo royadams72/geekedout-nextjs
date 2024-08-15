@@ -1,6 +1,6 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/createAppSlice";
-import type { AppThunk } from "@/lib/store";
+import type { AppThunk } from "@/lib/store/store";
 import {
   Comic,
   ComicDetail,
@@ -32,9 +32,18 @@ export const comicsSlice = createAppSlice({
   name: "comics",
   initialState,
   reducers: (create) => ({
-    setComicDetails: create.reducer((state, action: PayloadAction<string>) => {
-      state.selectedComic = mapComicDetail(state, action.payload);
-    }),
+    setComicDetails: create.reducer(
+      (state, action: PayloadAction<ComicDetail>) => {
+        state.selectedComic = action.payload;
+      }
+    ),
+    setComicDetailsServerSide: create.reducer(
+      (state, action: PayloadAction<string | number>) => {
+        // console.log("setComicDetailsServerSide===", state);
+
+        state.selectedComic = mapComicDetail(state, action.payload as string);
+      }
+    ),
     clearComicDetails: create.reducer((state) => {
       state.selectedComic = {} as ComicDetail;
     }),
@@ -44,6 +53,8 @@ export const comicsSlice = createAppSlice({
     getComics: create.asyncThunk(
       async () => {
         const response = await getComicsApi();
+        // console.log("getComics===", response.offset);
+
         // The value we return becomes the `fulfilled` action payload
         return response;
       },
@@ -69,14 +80,19 @@ export const comicsSlice = createAppSlice({
   },
 });
 
-export const getComicsApi = async () => {
+const getComicsApi = async () => {
   const response = await fetch("http://localhost:3000/api/comics/all-comics");
   const data = await response.json();
   return data;
 };
 
-export const { getComics, setComicDetails, setComics, clearComicDetails } =
-  comicsSlice.actions;
+export const {
+  getComics,
+  setComicDetails,
+  setComics,
+  clearComicDetails,
+  setComicDetailsServerSide,
+} = comicsSlice.actions;
 
 export const { selectComicsArray, selectStatus, selectComicDetail } =
   comicsSlice.selectors;
@@ -103,6 +119,8 @@ export const selectComicsPreviews = createSelector(
 );
 
 const mapComicDetail = (state: ComicsSliceState, id: string) => {
+  // console.log("state====", state);
+
   const item: Comic | undefined = [...state.comics.results].find(
     (comic: Comic) => {
       return comic.id?.toString() === id;
