@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { StateLoading } from "@/shared/enums/loading";
 import { useSelectorEffect } from "@/lib/hooks/useSelector";
-import { useAppSelector } from "@/lib/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
 import styles from "@/styles/components/_category.module.scss";
 
@@ -10,32 +10,50 @@ import CategoryItem from "./CategoryItem";
 import { Preview } from "../../interfaces/preview";
 
 interface DisplayProps<T> {
+  preloadedState: any;
   itemsSelector: (state: any) => T[];
-  statusSelector: (state: any) => string;
-  fetchAction: any;
-  // itemRenderer: (item: T) => React.ReactNode;
+  preloadedStateAction: (stata: any) => any;
   title: string;
+  detailsSelector: (state: any) => any;
+  clearDetails: () => any;
+  statusSelector: (state: any) => string;
 }
 
 const Category = <T extends Preview>({
+  preloadedState,
   itemsSelector,
-  statusSelector,
-  fetchAction,
-  // itemRenderer,
+  preloadedStateAction,
   title,
+  detailsSelector,
+  clearDetails,
+  statusSelector,
 }: DisplayProps<T>) => {
+  const dispatch = useAppDispatch();
   const items = useAppSelector(itemsSelector);
-  const isClientLoaded = useSelectorEffect(items, fetchAction);
+  const isDetailsInStore = useAppSelector(detailsSelector);
   const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
-  console.log(items);
+  // const isClientLoaded = useSelectorEffect(items, fetchAction);
 
-  if (isLoading) {
+  console.log(items);
+  useEffect(() => {
+    if (isDetailsInStore && Object.keys(isDetailsInStore).length !== 0) {
+      dispatch(clearDetails());
+    }
+  }, [dispatch, clearDetails, isDetailsInStore]);
+
+  useEffect(() => {
+    if (preloadedState && preloadedState[title.toLowerCase()]) {
+    dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
+    }
+  }, [preloadedStateAction, dispatch, preloadedState, title]);
+
+  if (!items) {
     return <div>Loading....</div>;
   }
 
   return (
     <>
-      {isClientLoaded && (
+      {
         <div className={styles.category}>
           <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
             {title}
@@ -46,7 +64,7 @@ const Category = <T extends Preview>({
             ))}
           </div>
         </div>
-      )}
+      }
     </>
   );
 };

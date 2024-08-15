@@ -1,7 +1,7 @@
 import { createAppSlice } from "@/lib/createAppSlice";
 import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import { StateLoading } from "@/shared/enums/loading";
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { Paths } from "@/shared/enums/paths.enums";
@@ -25,7 +25,7 @@ export const moviesSlice = createAppSlice({
   reducers: (create) => ({
     getMovieDetail: create.asyncThunk(
       async (id: number) => {
-        const movie = await getMovie(id);
+        const movie = await getMovieApi(id);
         return movie;
       },
       {
@@ -43,7 +43,7 @@ export const moviesSlice = createAppSlice({
     ),
     getMovies: create.asyncThunk(
       async () => {
-        const response = await getMoviesApi();
+        const response = await getAllMoviesApi();
         return response.data;
       },
       {
@@ -59,22 +59,33 @@ export const moviesSlice = createAppSlice({
         },
       }
     ),
+    setMovies: create.reducer((state, action: PayloadAction<MoviesStore>) => {
+      state.movies = action.payload;
+    }),
+    setMovieDetails: create.reducer(
+      (state, action: PayloadAction<MovieDetail>) => {
+        state.selectedMovie = action.payload;
+      }
+    ),
+    clearMovieDetails: create.reducer((state) => {
+      state.selectedMovie = {} as MovieDetail;
+    }),
   }),
 
   selectors: {
-    selectMovies: (movies) => movies.movies.results as Movie[],
+    selectMovies: (movies) => movies?.movies?.results as Movie[],
     selectStatus: (movies) => movies.status,
     selectMovieDetails: (movies) => movies.selectedMovie,
   },
 });
 
-const getMoviesApi = async () => {
+const getAllMoviesApi = async () => {
   const response = await fetch("http://localhost:3000/api/movies/all-movies");
   const data = await response.json();
-  return data;
+  return data.data;
 };
 
-const getMovie = async (id: number) => {
+const getMovieApi = async (id: number) => {
   const response = await fetch(
     `http://localhost:3000/api/movies/movie-details/${id}`
   );
@@ -83,7 +94,13 @@ const getMovie = async (id: number) => {
   return movie;
 };
 
-export const { getMovies, getMovieDetail } = moviesSlice.actions;
+export const {
+  getMovieDetail,
+  clearMovieDetails,
+  setMovies,
+  setMovieDetails,
+  getMovies,
+} = moviesSlice.actions;
 
 export const { selectMovies, selectStatus, selectMovieDetails } =
   moviesSlice.selectors;

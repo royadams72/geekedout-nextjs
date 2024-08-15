@@ -8,8 +8,7 @@ import { formatDate } from "@/utils/date-functions";
 
 import { ComicDetail } from "@/shared/interfaces/comic";
 
-const MusicDetails = ({ comicDetails }: { comicDetails: ComicDetail }) => {
-  console.log(typeof comicDetails?.printPrice);
+const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
   return (
     <>
       <h1 className={styles.details_title}>{comicDetails?.name}</h1>
@@ -60,4 +59,4 @@ const MusicDetails = ({ comicDetails }: { comicDetails: ComicDetail }) => {
   );
 };
 
-export default MusicDetails;
+export default Comic;

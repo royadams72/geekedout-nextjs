@@ -1,27 +1,28 @@
 "use client";
 
-import Category from "@/shared/components/category/Category";
-import { Preview } from "@/shared/interfaces/preview";
 import {
+  selectComicsPreviews,
+  setComics,
   selectStatus,
-  getComics,
-  selectComicsPreview,
+  selectComicDetail,
+  clearComicDetails,
 } from "@/lib/features/comics/comicsSlice";
-import Link from "next/link";
 
-const ComicsDisplay = () => {
+import { Preview } from "@/shared/interfaces/preview";
+
+import Category from "@/shared/components/category/Category";
+
+const ComicsDisplay = ({ preloadedState }: { preloadedState: any }) => {
   return (
-    <>
-      <div>
-        <Link href={"/"}>Back to main Page</Link>
-      </div>
-      <Category<Preview>
-        itemsSelector={selectComicsPreview}
-        statusSelector={selectStatus}
-        fetchAction={getComics}
-        title="Comics"
-      />
-    </>
+    <Category<Preview>
+      title="Comics"
+      itemsSelector={selectComicsPreviews}
+      detailsSelector={selectComicDetail}
+      clearDetails={clearComicDetails}
+      statusSelector={selectStatus}
+      preloadedStateAction={setComics}
+      preloadedState={preloadedState}
+    />
   );
 };
 

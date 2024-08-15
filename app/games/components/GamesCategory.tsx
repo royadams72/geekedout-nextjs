@@ -1,22 +1,21 @@
 "use client";
 import React from "react";
-import { useAppSelector } from "@/lib/hooks/store.hooks";
-
-import { StateLoading } from "@/shared/enums/loading";
-
-import { useSelectorEffect } from "@/lib/hooks/useSelector";
-import {
-  getGames,
-  selectGames,
-  selectStatus,
-  selectGamesPreview,
-} from "@/lib/features/games/gamesSlice";
-import Category from "@/shared/components/category/Category";
 
 import Link from "next/link";
+
+import {
+  selectStatus,
+  selectGamesPreview,
+  setGames,
+  clearGameDetails,
+  selectGameDetail,
+} from "@/lib/features/games/gamesSlice";
+
 import { Preview } from "@/shared/interfaces/preview";
 
-const GamesCategory = () => {
+import Category from "@/shared/components/category/Category";
+
+const GamesCategory = ({ data }: { data: any }) => {
   return (
     <>
       <div>
@@ -24,9 +23,10 @@ const GamesCategory = () => {
       </div>
       <Category<Preview>
         itemsSelector={selectGamesPreview}
-        statusSelector={selectStatus}
-        fetchAction={getGames}
         title="Games"
+        detailsSelector={selectGameDetail}
+        clearDetails={clearGameDetails}
+        statusSelector={selectStatus}
       />
     </>
   );

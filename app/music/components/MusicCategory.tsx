@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  getAllAlbums,
-  selectAllAlbums,
+  selectAlbumDetail,
+  clearAlbumDetails,
   selectMusicPreview,
   selectStatus,
 } from "@/lib/features/music/musicSlice";
@@ -19,7 +19,8 @@ const MusicCategory = () => {
       <Category<Preview>
         itemsSelector={selectMusicPreview}
         statusSelector={selectStatus}
-        fetchAction={getAllAlbums}
+        clearDetails={clearAlbumDetails}
+        detailsSelector={selectAlbumDetail}
         title="Music"
       />
     </>

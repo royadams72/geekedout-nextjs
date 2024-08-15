@@ -1,10 +1,13 @@
-import React, { Fragment } from "react";
-import MoviesCategory from "./components/MoviesCategory";
+import React from "react";
+import MoviesCategory from "@/app/movies/components/MoviesCategory";
+import { getMoviesApi } from "@/lib/features/movies/moviesSlice";
+const MoviesPage = async () => {
+  const data = await getMoviesApi();
+  console.log(data);
 
-const MoviesPage = () => {
   return (
     <>
-      <MoviesCategory />
+      <MoviesCategory data={data} />
     </>
   );
 };
