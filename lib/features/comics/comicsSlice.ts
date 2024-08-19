@@ -119,13 +119,17 @@ export const selectComicsPreviews = createSelector(
 );
 
 const mapComicDetail = (state: ComicsSliceState, id: string) => {
-  // console.log("state====", state);
+  // console.log("mapComicDetail===", state);
 
-  const item: Comic | undefined = [...state.comics.results].find(
-    (comic: Comic) => {
-      return comic.id?.toString() === id;
-    }
+  const results = state.comics.results || [];
+
+  const item: Comic | undefined = results.find(
+    (comic: Comic) => comic.id?.toString() === id
   );
+
+  if (!item) {
+    return {} as ComicDetail; // or handle the case where the comic is not found
+  }
 
   const {
     description,

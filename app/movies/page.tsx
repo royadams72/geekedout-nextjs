@@ -1,13 +1,17 @@
 import React from "react";
+
+import { initializeStoreForServer } from "@/lib/store/serverSideStore";
+
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
-import { getMoviesApi } from "@/lib/features/movies/moviesSlice";
+import { RootState } from "@/lib/store/store";
+
 const MoviesPage = async () => {
-  const data = await getMoviesApi();
-  console.log(data);
+  const store = await initializeStoreForServer(["movies"]);
+  const preloadedState: RootState = store.getState();
 
   return (
     <>
-      <MoviesCategory data={data} />
+      <MoviesCategory preloadedState={preloadedState.movies} />
     </>
   );
 };

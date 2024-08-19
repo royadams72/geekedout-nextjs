@@ -1,55 +1,136 @@
-// lib/store/serverSideStore.ts
+import { AppStore, makeStore, RootState } from "./store";
+import {
+  clearGameDetails,
+  getGameDetailsServerSide,
+  getGames,
+} from "@/lib/features/games/gamesSlice";
+import {
+  clearAlbumDetails,
+  getMusic,
+  getMusicDetailsServerSide,
+} from "@/lib/features/music/musicSlice";
+import {
+  clearMovieDetails,
+  getMovieDetailServerSide,
+  getMovies,
+} from "@/lib/features/movies/moviesSlice";
+import {
+  clearComicDetails,
+  getComics,
+  setComicDetailsServerSide,
+} from "../features/comics/comicsSlice";
+import { Persistor, persistStore } from "redux-persist";
 
-import { makeStore } from "./store";
-import { getGames } from "@/lib/features/games/gamesSlice";
-import { getMusic } from "@/lib/features/music/musicSlice";
-import { getMovies } from "@/lib/features/movies/moviesSlice";
-import { getComics } from "@/lib/features/comics/comicsSlice";
+let store: AppStore | null = null;
+let persistor: Persistor;
+const initializePersistedStore = async () => {
+  if (store) return store;
 
-export let store: any;
-export let cachedStore: any;
+  store = makeStore();
+  persistor = persistStore(store);
+
+  // Ensure the store is rehydrated with persisted state
+  await new Promise((resolve) => {
+    persistor.subscribe(() => {
+      if (persistor.getState().bootstrapped) {
+        resolve(true);
+      }
+    });
+  });
+  return store;
+};
 
 export const initializeStoreForServer = async (categories: string[] = []) => {
-  store = makeStore();
+  store = await initializePersistedStore();
 
-  // Dispatch actions based on the categories passed
   for (const category of categories) {
     switch (category) {
       case "games":
-        console.log(category);
         await store.dispatch(getGames());
+        store.dispatch(clearGameDetails());
         break;
       case "music":
-        console.log(category);
         await store.dispatch(getMusic());
+        store.dispatch(clearAlbumDetails());
         break;
       case "movies":
-        console.log(category);
         await store.dispatch(getMovies());
+        store.dispatch(clearMovieDetails());
         break;
       case "comics":
-        console.log(category);
         await store.dispatch(getComics());
+        store.dispatch(clearComicDetails());
         break;
       default:
         break;
     }
   }
-  cachedStore = store.getState();
-  // console.log("cachedStore====", cachedStore);
+
   return store;
 };
 
 export const initializeStoreForDetailsPage = async (
-  itemId: string | number,
-  dispatchAction?: (id: string | number) => any
+  categories: string[] = [],
+  itemId: string | number
 ) => {
-  store = makeStore(cachedStore);
+  if (!store) {
+    store = await initializePersistedStore();
+  }
 
-  // const comicDetails: ComicDetail = useAppSelector(selectComicDetail);
-  // Dispatch the action to fetch item details
-  store.dispatch(dispatchAction?.(itemId));
-  cachedStore = store.getState();
-  console.log("initializeStoreForDetailsPage====", cachedStore);
+  for (const category of categories) {
+    switch (category) {
+      case "games":
+        console.log(category);
+        store.dispatch(getGameDetailsServerSide(itemId));
+        break;
+      case "music":
+        console.log(category);
+        await store.dispatch(getMusicDetailsServerSide(itemId as string));
+        break;
+      case "movies":
+        console.log(category);
+        await store.dispatch(getMovieDetailServerSide(itemId as number));
+        break;
+      case "comics":
+        console.log(category);
+        store.dispatch(setComicDetailsServerSide(itemId));
+        break;
+      default:
+        break;
+    }
+  }
+  // console.log("initializeStoreForDetailsPage===", store.getState());
+  return store;
+};
+
+export const clearStoreForDetailsPage = async (categories: string[] = []) => {
+  // console.log("clearStoreForDetailsPage2====", store?.getState());
+  if (!store) {
+    store = await initializePersistedStore();
+  }
+
+  for (const category of categories) {
+    switch (category) {
+      case "games":
+        console.log(category);
+        // store.dispatch(getGameDetailsServerSide());
+        break;
+      case "music":
+        console.log(category);
+        // await store.dispatch(getMusic());
+        break;
+      case "movies":
+        console.log(category);
+        // await store.dispatch(getMovieDetailServerSide(itemId as number));
+        break;
+      case "comics":
+        console.log(category);
+        store.dispatch(clearComicDetails());
+        break;
+      default:
+        break;
+    }
+  }
+
   return store;
 };

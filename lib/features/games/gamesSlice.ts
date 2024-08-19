@@ -23,9 +23,16 @@ export const gamesSlice = createAppSlice({
   name: "games",
   initialState,
   reducers: (create) => ({
-    setGameDetails: create.reducer((state, action: PayloadAction<string>) => {
-      state.selectedGame = mapGameDetail(state, action.payload);
-    }),
+    getGameDetailsServerSide: create.reducer(
+      (state, action: PayloadAction<string | number>) => {
+        state.selectedGame = mapGameDetail(state, action.payload);
+      }
+    ),
+    setGameDetails: create.reducer(
+      (state, action: PayloadAction<GameDetail>) => {
+        state.selectedGame = action.payload;
+      }
+    ),
     clearGameDetails: create.reducer((state) => {
       state.selectedGame = {} as GameDetail;
     }),
@@ -35,7 +42,7 @@ export const gamesSlice = createAppSlice({
     getGames: create.asyncThunk(
       async () => {
         let data = await getAllGames();
-        return data.data;
+        return data;
       },
       {
         pending: (state) => {
@@ -58,8 +65,13 @@ export const gamesSlice = createAppSlice({
   },
 });
 
-export const { getGames, setGameDetails, setGames, clearGameDetails } =
-  gamesSlice.actions;
+export const {
+  getGames,
+  getGameDetailsServerSide,
+  setGameDetails,
+  setGames,
+  clearGameDetails,
+} = gamesSlice.actions;
 
 export const { selectStatus, selectGames, selectGameDetail } =
   gamesSlice.selectors;
@@ -88,10 +100,16 @@ export const selectGamesPreview = createSelector(selectGames, (arr: any[]) => {
   });
 });
 
-const mapGameDetail = (state: GamesSliceState, id: string) => {
-  const item: Game | undefined = [...state.games].find((game: Game) => {
+const mapGameDetail = (state: GamesSliceState, id: string | number) => {
+  const gamesArray = state.games || [];
+
+  const item: Game | undefined = gamesArray.find((game: Game) => {
     return game.id?.toString() === id;
   });
+
+  if (!item) {
+    return {} as GameDetail; // or handle the case where the comic is not found
+  }
 
   const {
     description,

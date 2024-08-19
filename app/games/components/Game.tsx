@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 
 import { useConvertCurr } from "@/lib/hooks/useConvertCurr";
-import { formatCurrency } from "@/utils/currency";
+import { formatCurrency } from "@/utils/helpers";
 import { formatDate } from "@/utils/date-functions";
 
 import styles from "@/styles/components/_detail.module.scss";

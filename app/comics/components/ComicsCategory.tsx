@@ -11,8 +11,9 @@ import {
 import { Preview } from "@/shared/interfaces/preview";
 
 import Category from "@/shared/components/category/Category";
+import { ComicDetail } from "@/shared/interfaces/comic";
 
-const ComicsDisplay = ({ preloadedState }: { preloadedState: any }) => {
+const ComicsDisplay = ({ preloadedState }: { preloadedState: ComicDetail }) => {
   return (
     <Category<Preview>
       title="Comics"

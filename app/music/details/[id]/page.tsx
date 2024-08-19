@@ -1,39 +1,18 @@
-"use client";
+import React from "react";
 
-import React, { useEffect } from "react";
+import { initializeStoreForDetailsPage } from "@/lib/store/serverSideStore";
+import { RootState } from "@/lib/store/store";
+import MusicDetails from "../../components/MusicDetails";
 
-import {
-  getAlbum,
-  selectAlbumDetail,
-  selectStatus,
-} from "@/lib/features/music/musicSlice";
+const MusicDetailsPage = async ({
+  params: { id },
+}: {
+  params: { id: number };
+}) => {
+  const store = await initializeStoreForDetailsPage(["music"], id);
+  const preloadedState: RootState = store.getState();
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
-
-import { StateLoading } from "@/shared/enums/loading";
-import { AlbumDetail } from "@/shared/interfaces/music";
-
-import ItemDetails from "@/shared/components/item-details/ItemDetails";
-import MusicDetails from "@/app/music/components/MusicDetails";
-
-const AlbumDetails = ({ params: { id } }: { params: { id: string } }) => {
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(selectStatus) === StateLoading.LOADING;
-  const albumDetails: AlbumDetail = useAppSelector(selectAlbumDetail);
-
-  useEffect(() => {
-    dispatch(getAlbum(id));
-  }, [dispatch, id]);
-
-  return (
-    <ItemDetails<AlbumDetail>
-      id={id}
-      itemDetail={albumDetails}
-      isLoading={isLoading}
-    >
-      <MusicDetails albumDetails={albumDetails} />
-    </ItemDetails>
-  );
+  return <MusicDetails preloadedState={preloadedState.music.selectedAlbum} />;
 };
 
-export default AlbumDetails;
+export default MusicDetailsPage;

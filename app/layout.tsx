@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.scss";
 import { StoreProvider } from "./StoreProvider";
 import Header from "@/shared/components/header/Header";
+import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,15 +16,20 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="html" lang="en">
-      <body className="body">
-        <main className="main">
-          <StoreProvider>
-            <Header />
-            {children}
-          </StoreProvider>
-        </main>
-      </body>
-    </html>
+    <>
+      <html className="html" lang="en">
+        <Head>
+          <base href="/" />
+        </Head>
+        <body className="body">
+          <main className="main">
+            <StoreProvider>
+              <Header />
+              {children}
+            </StoreProvider>
+          </main>
+        </body>
+      </html>
+    </>
   );
 }
