@@ -41,8 +41,10 @@ const initializePersistedStore = async () => {
 };
 
 export const initializeStoreForServer = async (categories: string[] = []) => {
-  store = await initializePersistedStore();
-
+  if (!store) {
+    store = await initializePersistedStore();
+  }
+  console.log("initializeStoreForServer1===", store.getState());
   for (const category of categories) {
     switch (category) {
       case "games":
@@ -65,7 +67,7 @@ export const initializeStoreForServer = async (categories: string[] = []) => {
         break;
     }
   }
-
+  console.log("initializeStoreForServer2===", store.getState());
   return store;
 };
 
@@ -76,7 +78,7 @@ export const initializeStoreForDetailsPage = async (
   if (!store) {
     store = await initializePersistedStore();
   }
-
+  console.log("initializeStoreForDetailsPage1===", store.getState());
   for (const category of categories) {
     switch (category) {
       case "games":
@@ -99,7 +101,7 @@ export const initializeStoreForDetailsPage = async (
         break;
     }
   }
-  // console.log("initializeStoreForDetailsPage===", store.getState());
+  console.log("initializeStoreForDetailsPage2===", store.getState());
   return store;
 };
 
