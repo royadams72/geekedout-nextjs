@@ -11,27 +11,17 @@ import {
 } from "@/lib/features/movies/moviesSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 import { StateLoading } from "@/shared/enums/loading";
-const MovieDetails = ({
-  id,
-  movieDetails,
-}: {
-  id: number;
-  movieDetails: MovieDetail;
-}) => {
+const MovieDetails = ({ preloadedState }: { preloadedState: MovieDetail }) => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectStatus) === StateLoading.LOADING;
 
   useEffect(() => {
-    dispatch(setMovieDetails(movieDetails));
-  }, [dispatch, movieDetails]);
+    dispatch(setMovieDetails(preloadedState));
+  }, [dispatch, preloadedState]);
 
   return (
-    <ItemDetails<MovieDetail>
-      id={id}
-      itemDetail={movieDetails}
-      isLoading={isLoading}
-    >
-      <Movie movieDetails={movieDetails} />
+    <ItemDetails<MovieDetail> itemDetail={preloadedState} isLoading={isLoading}>
+      <Movie movieDetails={preloadedState} />
     </ItemDetails>
   );
 };

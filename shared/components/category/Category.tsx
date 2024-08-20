@@ -8,6 +8,8 @@ import styles from "@/styles/components/_category.module.scss";
 
 import CategoryItem from "./CategoryItem";
 import { Preview } from "../../interfaces/preview";
+import { clearStoreForDetailsPage } from "@/lib/store/serverSideStore";
+import { update } from "./update";
 
 interface DisplayProps<T> {
   preloadedState: any;
@@ -36,14 +38,18 @@ const Category = <T extends Preview>({
 
   console.log(items);
   useEffect(() => {
-    if (isDetailsInStore && Object.keys(isDetailsInStore).length !== 0) {
-      dispatch(clearDetails());
-    }
-  }, [dispatch, clearDetails, isDetailsInStore]);
+    (async () => {
+      if (isDetailsInStore && Object.keys(isDetailsInStore).length !== 0) {
+        dispatch(clearDetails());
+        update();
+        //I want this to be server side
+      }
+    })();
+  }, [dispatch, clearDetails, isDetailsInStore, title]);
 
   useEffect(() => {
     if (preloadedState && preloadedState[title.toLowerCase()]) {
-    dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
+      dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
   }, [preloadedStateAction, dispatch, preloadedState, title]);
 

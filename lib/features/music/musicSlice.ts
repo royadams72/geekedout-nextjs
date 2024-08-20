@@ -1,6 +1,6 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/createAppSlice";
-import type { AppThunk } from "@/lib/store/store";
+
 import {
   Album,
   AlbumDetail,
@@ -10,7 +10,6 @@ import {
 import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-// import { fetchToken } from "@/app/api/music/token/route";
 
 export interface MusicSliceState {
   music: MusicStore;
@@ -47,9 +46,10 @@ export const musicSlice = createAppSlice({
         },
       }
     ),
-    getAlbum: create.asyncThunk(
+    getMusicDetailsServerSide: create.asyncThunk(
       async (id: string) => {
-        let data = await getAlbumDetails(id);
+        const data = await getAlbumDetails(id);
+
         return data;
       },
       {
@@ -65,9 +65,17 @@ export const musicSlice = createAppSlice({
         },
       }
     ),
+    setMusic: create.reducer((state, action: PayloadAction<MusicStore>) => {
+      state.music = action.payload;
+    }),
     clearAlbumDetails: create.reducer((state) => {
       state.selectedAlbum = {} as AlbumDetail;
     }),
+    setMusicDetails: create.reducer(
+      (state, action: PayloadAction<AlbumDetail>) => {
+        state.selectedAlbum = action.payload;
+      }
+    ),
   }),
   // You can define your selectors here. These selectors receive the slice
   // state as their first argument.
@@ -79,7 +87,13 @@ export const musicSlice = createAppSlice({
 });
 
 // Action creators are generated for each case reducer function.
-export const { getMusic, getAlbum, clearAlbumDetails } = musicSlice.actions;
+export const {
+  getMusic,
+  clearAlbumDetails,
+  getMusicDetailsServerSide,
+  setMusicDetails,
+  setMusic,
+} = musicSlice.actions;
 
 // Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectStatus, selectAllAlbums, selectAlbumDetail } =
@@ -95,12 +109,22 @@ const getAllMusicApi = async () => {
 };
 
 const getAlbumDetails = async (id: string) => {
-  const response = await fetch(`/api/music/get-details?id=${id}`);
-  const data = await response.json();
-
-  const album = mapAlbumDetail(data.data);
-  console.log(album);
-  return album;
+  try {
+    // console.log("Fetching album details...");
+    const response = await fetch(
+      `http://localhost:3000/api/music/get-details?id=${id}`
+    );
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+    const data = await response.json();
+    // console.log("Fetch successful:", data); // This logs
+    const album = mapAlbumDetail(data.data);
+    return album;
+  } catch (error) {
+    console.error("Failed to fetch album details:", error);
+    throw error;
+  }
 };
 
 const mapAlbumDetail = (item: any) => {

@@ -2,9 +2,11 @@ import { BASE_URL_MUSIC } from "@/shared/constants/urls";
 import { NextRequest } from "next/server";
 
 import { getValidToken } from "@/app/api/music/token/getToken";
+
 let id: string | null;
-let token: string | null;
+
 export const GET = async (req: NextRequest) => {
+  console.log("This is not called");
   const { searchParams } = new URL(req.url);
   id = searchParams.get("id") as string;
 

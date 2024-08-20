@@ -23,7 +23,7 @@ export const moviesSlice = createAppSlice({
   initialState,
 
   reducers: (create) => ({
-    getMovieDetail: create.asyncThunk(
+    getMovieDetailServerSide: create.asyncThunk(
       async (id: number) => {
         const movie = await getMovieApi(id);
         return movie;
@@ -44,7 +44,9 @@ export const moviesSlice = createAppSlice({
     getMovies: create.asyncThunk(
       async () => {
         const response = await getAllMoviesApi();
-        return response.data;
+        // console.log(response);
+
+        return response;
       },
       {
         pending: (state) => {
@@ -95,7 +97,7 @@ const getMovieApi = async (id: number) => {
 };
 
 export const {
-  getMovieDetail,
+  getMovieDetailServerSide,
   clearMovieDetails,
   setMovies,
   setMovieDetails,

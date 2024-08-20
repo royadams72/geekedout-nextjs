@@ -15,7 +15,7 @@ import { Preview } from "@/shared/interfaces/preview";
 
 import Category from "@/shared/components/category/Category";
 
-const GamesCategory = ({ data }: { data: any }) => {
+const GamesCategory = ({ preloadedState }: { preloadedState: any }) => {
   return (
     <>
       <div>
@@ -27,6 +27,8 @@ const GamesCategory = ({ data }: { data: any }) => {
         detailsSelector={selectGameDetail}
         clearDetails={clearGameDetails}
         statusSelector={selectStatus}
+        preloadedStateAction={setGames}
+        preloadedState={preloadedState}
       />
     </>
   );

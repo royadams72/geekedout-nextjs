@@ -14,7 +14,7 @@ import {
 
 import { Preview } from "@/shared/interfaces/preview";
 
-const MoviesCategory = ({ data }: { data: any }) => {
+const MoviesCategory = ({ preloadedState }: { preloadedState: any }) => {
   return (
     <>
       <div>
@@ -26,6 +26,8 @@ const MoviesCategory = ({ data }: { data: any }) => {
         detailsSelector={selectMovieDetails}
         clearDetails={clearMovieDetails}
         statusSelector={selectStatus}
+        preloadedStateAction={setMovies}
+        preloadedState={preloadedState}
       />
     </>
   );

@@ -21,7 +21,7 @@ export interface GameDetail {
   category: string;
   description: string;
   gamerpower_url: string;
-  id: string;
+  id: string | number;
   image: string;
   instructions: string;
   name: string;
