@@ -6,7 +6,7 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 export const getValidToken = async (req: NextRequest): Promise<string> => {
   const tokenCookie = req.cookies.get("spotify_token");
   const now = Date.now();
-  console.log("getValidToken called========");
+  console.log("getValidToken called========", req.cookies.get("spotify_token"));
   // Check if the token is cached in the cookie and is still valid
   if (tokenCookie) {
     const { token, expiry } = JSON.parse(tokenCookie.value);
@@ -16,8 +16,12 @@ export const getValidToken = async (req: NextRequest): Promise<string> => {
       return token;
     }
   }
-
+  return await refreshToken();
   // Token is either not cached or has expired, so fetch a new one
+};
+
+export const refreshToken = async (): Promise<string> => {
+  const now = Date.now();
   const tokenResponse = await fetch(`https://accounts.spotify.com/api/token`, {
     method: "POST",
     body: new URLSearchParams({
