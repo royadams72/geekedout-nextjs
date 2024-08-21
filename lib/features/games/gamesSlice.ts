@@ -23,11 +23,6 @@ export const gamesSlice = createAppSlice({
   name: "games",
   initialState,
   reducers: (create) => ({
-    getGameDetailsServerSide: create.reducer(
-      (state, action: PayloadAction<string | number>) => {
-        state.selectedGame = mapGameDetail(state, action.payload);
-      }
-    ),
     setGameDetails: create.reducer(
       (state, action: PayloadAction<GameDetail>) => {
         state.selectedGame = action.payload;
@@ -65,28 +60,53 @@ export const gamesSlice = createAppSlice({
   },
 });
 
-export const {
-  getGames,
-  getGameDetailsServerSide,
-  setGameDetails,
-  setGames,
-  clearGameDetails,
-} = gamesSlice.actions;
+export const { getGames, setGameDetails, setGames, clearGameDetails } =
+  gamesSlice.actions;
 
 export const { selectStatus, selectGames, selectGameDetail } =
   gamesSlice.selectors;
 
 export const gamesReducer = gamesSlice.reducer;
-// Helper functions
-// , {
-//   next: { revalidate: 10 },
-// }
-export const getAllGames = async () => {
+
+const getAllGames = async () => {
   const response = await fetch("http://localhost:3000/api/games/get-games/");
   const data = await response.json();
-  // console.log("getAllGames==", data.data[0]);
-
   return data.data;
+};
+
+export const setGameDetailsServerSide = async (
+  serverSideStore: GamesSliceState,
+  id: string
+): Promise<GameDetail> => {
+  return mapGameDetail(serverSideStore, id);
+};
+
+export const getGamesStore = async (): Promise<GamesSliceState> => {
+  let gamesStore;
+  let status = StateLoading.IDLE;
+
+  try {
+    status = StateLoading.LOADING;
+
+    gamesStore = await getAllGames();
+
+    if (!gamesStore) {
+      status = StateLoading.FAILED;
+      throw new Error(`data was not loaded`);
+    }
+
+    status = StateLoading.IDLE;
+  } catch (error) {
+    status = StateLoading.FAILED;
+    console.error("Failed to fetch album details:", error);
+    throw error;
+  }
+
+  return {
+    games: gamesStore,
+    status,
+    selectedGame: {} as GameDetail,
+  };
 };
 
 export const selectGamesPreview = createSelector(selectGames, (arr: any[]) => {
@@ -100,8 +120,10 @@ export const selectGamesPreview = createSelector(selectGames, (arr: any[]) => {
   });
 });
 
-const mapGameDetail = (state: GamesSliceState, id: string | number) => {
-  const gamesArray = state.games || [];
+const mapGameDetail = (games: GamesSliceState, id: string | number) => {
+  console.log(games);
+
+  const gamesArray = games?.games || [];
 
   const item: Game | undefined = gamesArray.find((game: Game) => {
     return game.id?.toString() === id;

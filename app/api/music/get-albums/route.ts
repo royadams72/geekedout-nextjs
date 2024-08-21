@@ -3,7 +3,6 @@ import { BASE_URL_MUSIC } from "@/shared/constants/urls";
 import { NextRequest } from "next/server";
 import { getValidToken } from "@/app/api/music/token/getToken";
 
-let token: string | null;
 export const GET = async (req: NextRequest) => {
   const data = await getAllAlbums();
   return new Response(JSON.stringify({ data }), { status: 200 });

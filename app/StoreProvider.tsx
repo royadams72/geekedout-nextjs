@@ -22,13 +22,6 @@ export const StoreProvider = ({ children }: Props) => {
     persistorRef.current = persistStore(storeRef.current); // Initialize persistence
   }
 
-  // Setup listeners once the store is initialized
-  useEffect(() => {
-    if (storeRef.current) {
-      setupListeners(storeRef.current.dispatch);
-    }
-  }, []); // Empty dependency array ensures this runs only once
-
   return (
     <Provider store={storeRef.current}>
       <PersistGate loading={null} persistor={persistorRef.current}>

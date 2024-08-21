@@ -20,7 +20,6 @@ const getToken = async (): Promise<{
       "Content-Type": "application/x-www-form-urlencoded",
     },
   });
-  // console.log("getToken====", response);
 
   if (!response.ok) {
     const error = await response.json();
@@ -28,6 +27,11 @@ const getToken = async (): Promise<{
   }
 
   const data = await response.json();
+  console.log("getToken function", {
+    access_token: data.access_token,
+    expires_in: data.expires_in,
+  });
+
   return { access_token: data.access_token, expires_in: data.expires_in };
 };
 
@@ -35,13 +39,12 @@ export const getValidToken = async (): Promise<string> => {
   const now = Date.now();
 
   if (cachedToken && tokenExpiry && tokenExpiry > now) {
-    // console.log("Token cached===", cachedToken);
+    console.log("Token IS cached===", cachedToken);
 
     return cachedToken;
   }
   console.log("Token not cached===", cachedToken);
   const tokenResponse = await getToken();
-  // console.log("tokenResponse======", tokenResponse);
 
   cachedToken = tokenResponse.access_token;
   tokenExpiry = now + tokenResponse.expires_in * 1000;

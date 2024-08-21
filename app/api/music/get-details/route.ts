@@ -6,7 +6,6 @@ import { getValidToken } from "@/app/api/music/token/getToken";
 let id: string | null;
 
 export const GET = async (req: NextRequest) => {
-  console.log("This is not called");
   const { searchParams } = new URL(req.url);
   id = searchParams.get("id") as string;
 
@@ -25,7 +24,7 @@ const getAlbumDetails = async (id: string) => {
   });
 
   const album = await response.json();
-
+  console.log("getAlbumDetails============================album", album);
   if (!response.ok) {
     throw new Error(`Failed to fetch album details: ${album.error.message}`);
   }
