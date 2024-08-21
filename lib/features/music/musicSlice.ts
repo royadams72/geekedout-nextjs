@@ -10,6 +10,7 @@ import {
 import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
+import { refreshToken } from "@/app/api/music/token/getToken";
 
 export interface MusicSliceState {
   music: MusicStore;
@@ -120,9 +121,30 @@ export const getMusicDetailsServerSide = async (
 };
 
 const getAllMusicApi = async () => {
-  const response = await fetch("http://localhost:3000/api/music/get-albums");
-  const data = await response.json();
-  return data;
+  console.log("Fetching music...");
+  try {
+    let response = await fetch("http://localhost:3000/api/music/get-albums");
+
+    if (response.status === 401) {
+      console.log("Token expired or invalid, refreshing token...");
+
+      // Refresh the token
+      await refreshToken();
+
+      response = await fetch("http://localhost:3000/api/music/get-albums");
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+    } else if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch album details:", error);
+    throw error;
+  }
 };
 
 export const getMusicStore = async (): Promise<MusicSliceState> => {
@@ -154,22 +176,35 @@ export const getMusicStore = async (): Promise<MusicSliceState> => {
 const getAlbumDetails = async (id: string) => {
   try {
     console.log("Fetching album details...");
-    const response = await fetch(
+    let response = await fetch(
       `http://localhost:3000/api/music/get-details?id=${id}`
     );
 
-    if (!response.ok) {
+    if (response.status === 401) {
+      console.log("Token expired or invalid, refreshing token...");
+
+      // Refresh the token
+      await refreshToken();
+
+      // Retry the request with the new token
+      response = await fetch(
+        `http://localhost:3000/api/music/get-details?id=${id}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+    } else if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }
+
     const data = await response.json();
-    // console.log("data in musicSlice", data.data);
     if (data?.data?.error?.status === 401) {
       throw new Error(
         `Network response was not ok: ${data?.data?.error?.status}`
       );
     }
 
-    // console.log("Fetch successful:", data); // This logs
     const album = mapAlbumDetail(data.data);
     return album;
   } catch (error) {
