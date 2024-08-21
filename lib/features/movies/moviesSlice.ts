@@ -23,44 +23,24 @@ export const moviesSlice = createAppSlice({
   initialState,
 
   reducers: (create) => ({
-    getMovieDetailServerSide: create.asyncThunk(
-      async (id: number) => {
-        const movie = await getMovieApi(id);
-        return movie;
-      },
-      {
-        pending: (state) => {
-          state.status = StateLoading.LOADING;
-        },
-        fulfilled: (state, action) => {
-          state.status = StateLoading.IDLE;
-          state.selectedMovie = action.payload;
-        },
-        rejected: (state) => {
-          state.status = StateLoading.FAILED;
-        },
-      }
-    ),
-    getMovies: create.asyncThunk(
-      async () => {
-        const response = await getAllMoviesApi();
-        // console.log(response);
-
-        return response;
-      },
-      {
-        pending: (state) => {
-          state.status = StateLoading.LOADING;
-        },
-        fulfilled: (state, action) => {
-          state.status = StateLoading.IDLE;
-          state.movies = action.payload;
-        },
-        rejected: (state) => {
-          state.status = StateLoading.FAILED;
-        },
-      }
-    ),
+    // getMovieDetailServerSide: create.asyncThunk(
+    //   async (id: number) => {
+    //     const movie = await getMovieApi(id);
+    //     return movie;
+    //   },
+    //   {
+    //     pending: (state) => {
+    //       state.status = StateLoading.LOADING;
+    //     },
+    //     fulfilled: (state, action) => {
+    //       state.status = StateLoading.IDLE;
+    //       state.selectedMovie = action.payload;
+    //     },
+    //     rejected: (state) => {
+    //       state.status = StateLoading.FAILED;
+    //     },
+    //   }
+    // ),
     setMovies: create.reducer((state, action: PayloadAction<MoviesStore>) => {
       state.movies = action.payload;
     }),
@@ -81,6 +61,50 @@ export const moviesSlice = createAppSlice({
   },
 });
 
+export const getMoviesStore = async (): Promise<MoviesSliceState> => {
+  let moviesStore;
+  let status = StateLoading.IDLE;
+  try {
+    status = StateLoading.LOADING;
+
+    moviesStore = await getAllMoviesApi();
+
+    if (!moviesStore) {
+      status = StateLoading.FAILED;
+      throw new Error(`data was not loaded`);
+    }
+
+    status = StateLoading.IDLE;
+  } catch (error) {
+    status = StateLoading.FAILED;
+    console.error("Failed to fetch data:", error);
+    throw error;
+  }
+  return {
+    movies: moviesStore,
+    status,
+    selectedMovie: {} as MovieDetail,
+  };
+};
+
+export const getMovieDetailServerSide = async (
+  id: number
+): Promise<MovieDetail> => {
+  let selectedMovie;
+
+  try {
+    selectedMovie = await getMovieApi(id);
+
+    if (!selectedMovie) {
+      throw new Error(`data was not loaded`);
+    }
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+    throw error;
+  }
+  return selectedMovie;
+};
+
 const getAllMoviesApi = async () => {
   const response = await fetch("http://localhost:3000/api/movies/all-movies");
   const data = await response.json();
@@ -97,11 +121,10 @@ const getMovieApi = async (id: number) => {
 };
 
 export const {
-  getMovieDetailServerSide,
   clearMovieDetails,
   setMovies,
   setMovieDetails,
-  getMovies,
+  // getMovies,
 } = moviesSlice.actions;
 
 export const { selectMovies, selectStatus, selectMovieDetails } =

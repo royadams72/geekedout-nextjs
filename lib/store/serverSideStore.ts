@@ -1,73 +1,82 @@
+import { Persistor, persistStore } from "redux-persist";
+
 import { AppStore, makeStore, RootState } from "./store";
+
 import {
   clearGameDetails,
-  getGameDetailsServerSide,
+  setGameDetailsServerSide,
   getGames,
+  getGamesStore,
 } from "@/lib/features/games/gamesSlice";
 import {
   clearAlbumDetails,
-  getMusic,
   getMusicDetailsServerSide,
+  getMusicStore,
 } from "@/lib/features/music/musicSlice";
 import {
   clearMovieDetails,
   getMovieDetailServerSide,
-  getMovies,
+  getMoviesStore,
 } from "@/lib/features/movies/moviesSlice";
 import {
   clearComicDetails,
-  getComics,
+  getComicsStore,
   setComicDetailsServerSide,
 } from "../features/comics/comicsSlice";
-import { Persistor, persistStore } from "redux-persist";
 
-let store: AppStore | null = null;
-let persistor: Persistor;
-const initializePersistedStore = async () => {
-  if (store) return store;
+let store: AppStore | undefined = undefined;
+let preloadedState = {} as RootState;
+// console.log();
 
-  store = makeStore();
-  persistor = persistStore(store);
+export const initializeStore = () => {
+  // console.log("preloadedState in initializeStore", preloadedState);
+  let _store = store ?? makeStore(preloadedState);
 
-  // Ensure the store is rehydrated with persisted state
-  await new Promise((resolve) => {
-    persistor.subscribe(() => {
-      if (persistor.getState().bootstrapped) {
-        resolve(true);
-      }
+  // If we have preloadedState and an existing store, merge them to create a new store
+  if (preloadedState && store) {
+    _store = makeStore({
+      ...store.getState(),
+      ...preloadedState,
     });
-  });
-  return store;
+    // Set the old store to undefined to enforce a fresh creation
+    store = undefined;
+  }
+
+  // For SSR: always return a new store
+  if (typeof window === "undefined") return _store;
+
+  // For the client: create the store once and reuse it
+  if (!store) {
+    store = _store;
+    persistStore(store);
+  }
+
+  return _store;
 };
 
 export const initializeStoreForServer = async (categories: string[] = []) => {
-  if (!store) {
-    store = await initializePersistedStore();
-  }
-  console.log("initializeStoreForServer1===", store.getState());
+  // Prepare initial state based on categories
   for (const category of categories) {
     switch (category) {
       case "games":
-        await store.dispatch(getGames());
-        store.dispatch(clearGameDetails());
+        preloadedState = { ...preloadedState, games: await getGamesStore() };
         break;
       case "music":
-        await store.dispatch(getMusic());
-        store.dispatch(clearAlbumDetails());
+        preloadedState = { ...preloadedState, music: await getMusicStore() };
         break;
       case "movies":
-        await store.dispatch(getMovies());
-        store.dispatch(clearMovieDetails());
+        preloadedState = { ...preloadedState, movies: await getMoviesStore() };
         break;
       case "comics":
-        await store.dispatch(getComics());
-        store.dispatch(clearComicDetails());
+        preloadedState = { ...preloadedState, comics: await getComicsStore() };
         break;
       default:
         break;
     }
   }
-  console.log("initializeStoreForServer2===", store.getState());
+
+  const store = initializeStore();
+  // console.log("initializeStoreForServer2===", store.getState());
   return store;
 };
 
@@ -75,41 +84,67 @@ export const initializeStoreForDetailsPage = async (
   categories: string[] = [],
   itemId: string | number
 ) => {
-  if (!store) {
-    store = await initializePersistedStore();
-  }
-  console.log("initializeStoreForDetailsPage1===", store.getState());
+  // console.log("preloadedState===== in details", preloadedState);
+  // Prepare initial state based on categories and itemId
   for (const category of categories) {
     switch (category) {
       case "games":
-        console.log(category);
-        store.dispatch(getGameDetailsServerSide(itemId));
+        preloadedState = {
+          ...preloadedState,
+          games: {
+            ...preloadedState.games,
+            selectedGame: await setGameDetailsServerSide(
+              preloadedState.games,
+              itemId as string
+            ),
+          },
+        };
         break;
       case "music":
-        console.log(category);
-        await store.dispatch(getMusicDetailsServerSide(itemId as string));
+        preloadedState = {
+          ...preloadedState,
+          music: {
+            ...preloadedState.music,
+            selectedAlbum: await getMusicDetailsServerSide(itemId as string),
+          },
+        };
         break;
       case "movies":
-        console.log(category);
-        await store.dispatch(getMovieDetailServerSide(itemId as number));
+        preloadedState = {
+          ...preloadedState,
+          movies: {
+            ...preloadedState.movies,
+            selectedMovie: await getMovieDetailServerSide(itemId as number),
+          },
+        };
         break;
       case "comics":
-        console.log(category);
-        store.dispatch(setComicDetailsServerSide(itemId));
+        preloadedState = {
+          ...preloadedState,
+          comics: {
+            ...preloadedState.comics,
+            selectedComic: await setComicDetailsServerSide(
+              preloadedState.comics,
+              itemId as string
+            ),
+          },
+        };
         break;
       default:
         break;
     }
   }
-  console.log("initializeStoreForDetailsPage2===", store.getState());
+
+  const store = initializeStore();
+  // console.log("initializeStoreForDetailsPage===", store.getState());
   return store;
 };
 
 export const clearStoreForDetailsPage = async (categories: string[] = []) => {
   // console.log("clearStoreForDetailsPage2====", store?.getState());
-  if (!store) {
-    store = await initializePersistedStore();
-  }
+  // if (!store) {
+  store = makeStore();
+  // }
 
   for (const category of categories) {
     switch (category) {

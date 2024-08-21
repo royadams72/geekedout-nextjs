@@ -37,40 +37,12 @@ export const comicsSlice = createAppSlice({
         state.selectedComic = action.payload;
       }
     ),
-    setComicDetailsServerSide: create.reducer(
-      (state, action: PayloadAction<string | number>) => {
-        // console.log("setComicDetailsServerSide===", state);
-
-        state.selectedComic = mapComicDetail(state, action.payload as string);
-      }
-    ),
     clearComicDetails: create.reducer((state) => {
       state.selectedComic = {} as ComicDetail;
     }),
     setComics: create.reducer((state, action: PayloadAction<ComicStore>) => {
       state.comics = action.payload;
     }),
-    getComics: create.asyncThunk(
-      async () => {
-        const response = await getComicsApi();
-        // console.log("getComics===", response.offset);
-
-        // The value we return becomes the `fulfilled` action payload
-        return response;
-      },
-      {
-        pending: (state) => {
-          state.status = StateLoading.LOADING;
-        },
-        fulfilled: (state, action) => {
-          state.status = StateLoading.IDLE;
-          state.comics = action.payload;
-        },
-        rejected: (state) => {
-          state.status = StateLoading.FAILED;
-        },
-      }
-    ),
   }),
 
   selectors: {
@@ -80,48 +52,24 @@ export const comicsSlice = createAppSlice({
   },
 });
 
-const getComicsApi = async () => {
-  const response = await fetch("http://localhost:3000/api/comics/all-comics");
-  const data = await response.json();
-  return data;
-};
-
-export const {
-  getComics,
-  setComicDetails,
-  setComics,
-  clearComicDetails,
-  setComicDetailsServerSide,
-} = comicsSlice.actions;
+export const { setComicDetails, setComics, clearComicDetails } =
+  comicsSlice.actions;
 
 export const { selectComicsArray, selectStatus, selectComicDetail } =
   comicsSlice.selectors;
+export const comicsReducer = comicsSlice.reducer;
 
-export const selectComicsPreviews = createSelector(
-  selectComicsArray,
-  (arr: Comic[]) => {
-    return arr?.map((comic) => {
-      const isImages =
-        comic.images !== undefined ? comic.images.length > 0 : undefined;
-      return {
-        category: CategoryType.Comics,
-        id: comic.id,
-        title: comic.title,
-        imageLarge: isImages
-          ? `${comic.images[0].path}.jpg`
-          : IMAGE_NOT_FOUND.SM,
-        imageSmall: isImages
-          ? `${comic.images[0].path}/standard_fantastic.jpg`
-          : IMAGE_NOT_FOUND.MED_250x250,
-      };
-    });
-  }
-);
+export const setComicDetailsServerSide = async (
+  serverSideStore: ComicsSliceState,
+  id: string
+): Promise<ComicDetail> => {
+  return mapComicDetail(serverSideStore, id);
+};
 
-const mapComicDetail = (state: ComicsSliceState, id: string) => {
-  // console.log("mapComicDetail===", state);
+const mapComicDetail = (comics: ComicsSliceState, id: string) => {
+  console.log("mapComicDetail===", comics);
 
-  const results = state.comics.results || [];
+  const results = comics?.comics?.results || [];
 
   const item: Comic | undefined = results.find(
     (comic: Comic) => comic.id?.toString() === id
@@ -158,4 +106,57 @@ const mapComicDetail = (state: ComicsSliceState, id: string) => {
   return selectedItem;
 };
 
-export const comicsReducer = comicsSlice.reducer;
+export const getComicsStore = async (): Promise<ComicsSliceState> => {
+  let comicStore;
+  let status = StateLoading.IDLE;
+
+  try {
+    status = StateLoading.LOADING;
+
+    comicStore = await getComicsApi();
+
+    if (!comicStore) {
+      status = StateLoading.FAILED;
+      throw new Error("Data was not loaded");
+    }
+
+    status = StateLoading.IDLE;
+  } catch (error) {
+    status = StateLoading.FAILED;
+    console.error("Failed to fetch comic details:", error);
+    throw error;
+  }
+
+  return {
+    comics: comicStore,
+    status,
+    selectedComic: {} as ComicDetail,
+  };
+};
+
+const getComicsApi = async () => {
+  const response = await fetch("http://localhost:3000/api/comics/all-comics");
+  const data = await response.json();
+  return data;
+};
+
+export const selectComicsPreviews = createSelector(
+  selectComicsArray,
+  (arr: Comic[]) => {
+    return arr?.map((comic) => {
+      const isImages =
+        comic.images !== undefined ? comic.images.length > 0 : undefined;
+      return {
+        category: CategoryType.Comics,
+        id: comic.id,
+        title: comic.title,
+        imageLarge: isImages
+          ? `${comic.images[0].path}.jpg`
+          : IMAGE_NOT_FOUND.SM,
+        imageSmall: isImages
+          ? `${comic.images[0].path}/standard_fantastic.jpg`
+          : IMAGE_NOT_FOUND.MED_250x250,
+      };
+    });
+  }
+);

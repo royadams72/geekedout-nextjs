@@ -28,43 +28,43 @@ export const musicSlice = createAppSlice({
   name: "music",
   initialState,
   reducers: (create) => ({
-    getMusic: create.asyncThunk(
-      async () => {
-        let data = await getAllMusicApi();
-        return data.data.albums;
-      },
-      {
-        pending: (state) => {
-          state.status = StateLoading.LOADING;
-        },
-        fulfilled: (state, action) => {
-          state.status = StateLoading.IDLE;
-          state.music = action.payload;
-        },
-        rejected: (state) => {
-          state.status = StateLoading.FAILED;
-        },
-      }
-    ),
-    getMusicDetailsServerSide: create.asyncThunk(
-      async (id: string) => {
-        const data = await getAlbumDetails(id);
+    // getMusic: create.asyncThunk(
+    //   async () => {
+    //     let data = await getAllMusicApi();
+    //     return data.data.albums;
+    //   },
+    //   {
+    //     pending: (state) => {
+    //       state.status = StateLoading.LOADING;
+    //     },
+    //     fulfilled: (state, action) => {
+    //       state.status = StateLoading.IDLE;
+    //       state.music = action.payload;
+    //     },
+    //     rejected: (state) => {
+    //       state.status = StateLoading.FAILED;
+    //     },
+    //   }
+    // ),
+    // getMusicDetailsServerSide: create.asyncThunk(
+    //   async (id: string) => {
+    //     const data = await getAlbumDetails(id);
 
-        return data;
-      },
-      {
-        pending: (state) => {
-          state.status = StateLoading.LOADING;
-        },
-        fulfilled: (state, action) => {
-          state.status = StateLoading.IDLE;
-          state.selectedAlbum = action.payload;
-        },
-        rejected: (state) => {
-          state.status = StateLoading.FAILED;
-        },
-      }
-    ),
+    //     return data;
+    //   },
+    //   {
+    //     pending: (state) => {
+    //       state.status = StateLoading.LOADING;
+    //     },
+    //     fulfilled: (state, action) => {
+    //       state.status = StateLoading.IDLE;
+    //       state.selectedAlbum = action.payload;
+    //     },
+    //     rejected: (state) => {
+    //       state.status = StateLoading.FAILED;
+    //     },
+    //   }
+    // ),
     setMusic: create.reducer((state, action: PayloadAction<MusicStore>) => {
       state.music = action.payload;
     }),
@@ -88,9 +88,8 @@ export const musicSlice = createAppSlice({
 
 // Action creators are generated for each case reducer function.
 export const {
-  getMusic,
+  // getMusic,
   clearAlbumDetails,
-  getMusicDetailsServerSide,
   setMusicDetails,
   setMusic,
 } = musicSlice.actions;
@@ -102,22 +101,74 @@ export const { selectStatus, selectAllAlbums, selectAlbumDetail } =
 export const musicReducer = musicSlice.reducer;
 // Helper functions
 
+export const getMusicDetailsServerSide = async (
+  id: string
+): Promise<AlbumDetail> => {
+  let selectedAlbum;
+
+  try {
+    selectedAlbum = await getAlbumDetails(id);
+
+    if (!selectedAlbum) {
+      throw new Error(`data was not loaded`);
+    }
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+    throw error;
+  }
+  return selectedAlbum;
+};
+
 const getAllMusicApi = async () => {
   const response = await fetch("http://localhost:3000/api/music/get-albums");
   const data = await response.json();
   return data;
 };
 
+export const getMusicStore = async (): Promise<MusicSliceState> => {
+  let musicStore;
+  let status = StateLoading.IDLE;
+  try {
+    status = StateLoading.LOADING;
+
+    musicStore = await getAllMusicApi();
+
+    if (!musicStore) {
+      status = StateLoading.FAILED;
+      throw new Error(`data was not loaded`);
+    }
+
+    status = StateLoading.IDLE;
+  } catch (error) {
+    status = StateLoading.FAILED;
+    console.error("Failed to fetch album details:", error);
+    throw error;
+  }
+  return {
+    music: musicStore.data.albums,
+    status,
+    selectedAlbum: {} as AlbumDetail,
+  };
+};
+
 const getAlbumDetails = async (id: string) => {
   try {
-    // console.log("Fetching album details...");
+    console.log("Fetching album details...");
     const response = await fetch(
       `http://localhost:3000/api/music/get-details?id=${id}`
     );
+
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);
     }
     const data = await response.json();
+    // console.log("data in musicSlice", data.data);
+    if (data?.data?.error?.status === 401) {
+      throw new Error(
+        `Network response was not ok: ${data?.data?.error?.status}`
+      );
+    }
+
     // console.log("Fetch successful:", data); // This logs
     const album = mapAlbumDetail(data.data);
     return album;
