@@ -4,7 +4,7 @@ import MoviesCategory from "./movies/components/MoviesCategory";
 import { RootState } from "@/lib/store/store";
 
 export default async function Home() {
-  const store = await initializeStoreForServer(["movies"]);
+  const store = await initializeStoreForServer(["movies"]).then();
   const preloadedState: RootState = store.getState();
 
   return <MoviesCategory preloadedState={preloadedState.movies} />;

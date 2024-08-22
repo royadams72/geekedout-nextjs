@@ -102,8 +102,12 @@ const getMovieApi = async (id: number) => {
   return movie;
 };
 
-export const { clearMovieDetails, setMovies, setMovieDetails } =
-  moviesSlice.actions;
+export const {
+  clearMovieDetails,
+  setMovies,
+  setMovieDetails,
+  // getMovies,
+} = moviesSlice.actions;
 
 export const { selectMovies, selectStatus, selectMovieDetails } =
   moviesSlice.selectors;

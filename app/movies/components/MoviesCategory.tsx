@@ -1,17 +1,17 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Category from "@/shared/components/category/Category";
 
-import Link from "next/link";
 import {
   clearMovieDetails,
   setMovies,
   selectMovieDetails,
   selectMoviesPreview,
-  selectStatus,
   MoviesSliceState,
 } from "@/lib/features/movies/moviesSlice";
+
+import { isNotEmpty } from "@/utils/helpers";
 
 import { Preview } from "@/shared/interfaces/preview";
 import { StateLoading } from "@/shared/enums/loading";
@@ -23,25 +23,31 @@ const MoviesCategory = ({
   preloadedState: MoviesSliceState;
   isFirstLoad?: boolean;
 }) => {
-  const status = preloadedState.status;
-  console.log(status);
+  const [isPreloadedState, setIsPreloadedState] = useState(false);
 
+  useEffect(() => {
+    if (isNotEmpty(preloadedState)) {
+      console.log("isNotEmpty===", isNotEmpty(preloadedState));
+
+      setIsPreloadedState(true);
+    }
+  }, [preloadedState]);
+
+  if (!isPreloadedState) return <div>Loading...</div>;
+  if (!isPreloadedState && preloadedState.status === StateLoading.FAILED)
+    return <div>Category faild to load</div>;
   return (
     <>
-      {status === StateLoading.LOADING ? (
-        <div>Loading....</div>
-      ) : (
-        <Category<Preview>
-          itemsSelector={selectMoviesPreview}
-          title="Movies"
-          detailsSelector={selectMovieDetails}
-          clearDetails={clearMovieDetails}
-          statusSelector={selectStatus}
-          preloadedStateAction={setMovies}
-          preloadedState={preloadedState}
-          isFirstLoad={isFirstLoad}
-        />
-      )}
+      <Category<Preview>
+        itemsSelector={selectMoviesPreview}
+        title="Movies"
+        detailsSelector={selectMovieDetails}
+        clearDetails={clearMovieDetails}
+        preloadedStateAction={setMovies}
+        preloadedState={preloadedState}
+        isFirstLoad={isFirstLoad}
+        sliceNumber={6}
+      />
     </>
   );
 };

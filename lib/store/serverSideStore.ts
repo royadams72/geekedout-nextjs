@@ -5,6 +5,7 @@ import { AppStore, makeStore, RootState } from "./store";
 import {
   clearGameDetails,
   setGameDetailsServerSide,
+  getGames,
   getGamesStore,
 } from "@/lib/features/games/gamesSlice";
 import {
@@ -83,7 +84,7 @@ export const initializeStoreForDetailsPage = async (
   categories: string[] = [],
   itemId: string | number
 ) => {
-  // console.log("preloadedState===== in details", preloadedState);
+  console.log("preloadedState===== in details", preloadedState);
   // Prepare initial state based on categories and itemId
   for (const category of categories) {
     switch (category) {
@@ -135,7 +136,7 @@ export const initializeStoreForDetailsPage = async (
   }
 
   const store = initializeStore();
-  // console.log("initializeStoreForDetailsPage===", store.getState());
+  console.log("initializeStoreForDetailsPage===", store.getState());
   return store;
 };
 
