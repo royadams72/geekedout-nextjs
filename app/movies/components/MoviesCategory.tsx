@@ -10,25 +10,38 @@ import {
   selectMovieDetails,
   selectMoviesPreview,
   selectStatus,
+  MoviesSliceState,
 } from "@/lib/features/movies/moviesSlice";
 
 import { Preview } from "@/shared/interfaces/preview";
+import { StateLoading } from "@/shared/enums/loading";
 
-const MoviesCategory = ({ preloadedState }: { preloadedState: any }) => {
+const MoviesCategory = ({
+  preloadedState,
+  isFirstLoad,
+}: {
+  preloadedState: MoviesSliceState;
+  isFirstLoad?: boolean;
+}) => {
+  const status = preloadedState.status;
+  console.log(status);
+
   return (
     <>
-      <div>
-        <Link href={"/"}>Back to main Page</Link>
-      </div>
-      <Category<Preview>
-        itemsSelector={selectMoviesPreview}
-        title="Movies"
-        detailsSelector={selectMovieDetails}
-        clearDetails={clearMovieDetails}
-        statusSelector={selectStatus}
-        preloadedStateAction={setMovies}
-        preloadedState={preloadedState}
-      />
+      {status === StateLoading.LOADING ? (
+        <div>Loading....</div>
+      ) : (
+        <Category<Preview>
+          itemsSelector={selectMoviesPreview}
+          title="Movies"
+          detailsSelector={selectMovieDetails}
+          clearDetails={clearMovieDetails}
+          statusSelector={selectStatus}
+          preloadedStateAction={setMovies}
+          preloadedState={preloadedState}
+          isFirstLoad={isFirstLoad}
+        />
+      )}
     </>
   );
 };

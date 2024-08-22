@@ -5,7 +5,6 @@ import { AppStore, makeStore, RootState } from "./store";
 import {
   clearGameDetails,
   setGameDetailsServerSide,
-  getGames,
   getGamesStore,
 } from "@/lib/features/games/gamesSlice";
 import {

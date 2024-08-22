@@ -23,24 +23,6 @@ export const moviesSlice = createAppSlice({
   initialState,
 
   reducers: (create) => ({
-    // getMovieDetailServerSide: create.asyncThunk(
-    //   async (id: number) => {
-    //     const movie = await getMovieApi(id);
-    //     return movie;
-    //   },
-    //   {
-    //     pending: (state) => {
-    //       state.status = StateLoading.LOADING;
-    //     },
-    //     fulfilled: (state, action) => {
-    //       state.status = StateLoading.IDLE;
-    //       state.selectedMovie = action.payload;
-    //     },
-    //     rejected: (state) => {
-    //       state.status = StateLoading.FAILED;
-    //     },
-    //   }
-    // ),
     setMovies: create.reducer((state, action: PayloadAction<MoviesStore>) => {
       state.movies = action.payload;
     }),
@@ -120,12 +102,8 @@ const getMovieApi = async (id: number) => {
   return movie;
 };
 
-export const {
-  clearMovieDetails,
-  setMovies,
-  setMovieDetails,
-  // getMovies,
-} = moviesSlice.actions;
+export const { clearMovieDetails, setMovies, setMovieDetails } =
+  moviesSlice.actions;
 
 export const { selectMovies, selectStatus, selectMovieDetails } =
   moviesSlice.selectors;

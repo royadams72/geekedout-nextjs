@@ -19,6 +19,7 @@ interface DisplayProps<T> {
   detailsSelector: (state: any) => any;
   clearDetails: () => any;
   statusSelector: (state: any) => string;
+  isFirstLoad?: boolean;
 }
 
 const Category = <T extends Preview>({
@@ -29,6 +30,7 @@ const Category = <T extends Preview>({
   detailsSelector,
   clearDetails,
   statusSelector,
+  isFirstLoad = true,
 }: DisplayProps<T>) => {
   const dispatch = useAppDispatch();
   const items = useAppSelector(itemsSelector);
@@ -41,7 +43,7 @@ const Category = <T extends Preview>({
     (async () => {
       if (isDetailsInStore && Object.keys(isDetailsInStore).length !== 0) {
         dispatch(clearDetails());
-        update();
+        // update();
         //I want this to be server side
       }
     })();
@@ -52,6 +54,12 @@ const Category = <T extends Preview>({
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
   }, [preloadedStateAction, dispatch, preloadedState, title]);
+
+  useEffect(() => {
+    if (isFirstLoad) {
+      items.slice(0, 4);
+    }
+  }, [items]);
 
   if (!items) {
     return <div>Loading....</div>;
