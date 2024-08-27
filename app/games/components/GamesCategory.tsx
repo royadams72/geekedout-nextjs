@@ -9,27 +9,39 @@ import {
   setGames,
   clearGameDetails,
   selectGameDetail,
+  GamesSliceState,
 } from "@/lib/features/games/gamesSlice";
 
 import { Preview } from "@/shared/interfaces/preview";
 
 import Category from "@/shared/components/category/Category";
+import { CategoryTitle } from "@/shared/enums/category-type.enum";
+import CategoryContainer from "@/shared/components/category/CategoryContainer";
 
-const GamesCategory = ({ preloadedState }: { preloadedState: any }) => {
+const GamesCategory = ({
+  preloadedState,
+  isFirstPage,
+}: {
+  preloadedState: any;
+  isFirstPage?: boolean;
+}) => {
   return (
     <>
-      <div>
-        <Link href={"/"}>Back to main Page</Link>
-      </div>
-      <Category<Preview>
-        itemsSelector={selectGamesPreview}
-        title="Games"
-        detailsSelector={selectGameDetail}
-        clearDetails={clearGameDetails}
-        statusSelector={selectStatus}
-        preloadedStateAction={setGames}
+      <CategoryContainer<GamesSliceState>
         preloadedState={preloadedState}
-      />
+        title={CategoryTitle.Games}
+      >
+        <Category<Preview>
+          itemsSelector={selectGamesPreview}
+          title={CategoryTitle.Games}
+          detailsSelector={selectGameDetail}
+          clearDetails={clearGameDetails}
+          preloadedStateAction={setGames}
+          preloadedState={preloadedState}
+          isFirstPage={isFirstPage}
+          sliceNumber={6}
+        />
+      </CategoryContainer>
     </>
   );
 };

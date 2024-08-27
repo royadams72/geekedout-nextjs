@@ -16,7 +16,7 @@ interface DisplayProps<T> {
   title: string;
   detailsSelector: (state: any) => any;
   clearDetails: () => any;
-  isFirstLoad?: boolean;
+  isFirstPage?: boolean;
   sliceNumber: number;
 }
 
@@ -27,7 +27,7 @@ const Category = <T extends { id: number | string | undefined }>({
   title,
   detailsSelector,
   clearDetails,
-  isFirstLoad = true,
+  isFirstPage = true,
   sliceNumber,
 }: DisplayProps<T>) => {
   const dispatch = useAppDispatch();
@@ -50,15 +50,11 @@ const Category = <T extends { id: number | string | undefined }>({
   }, [preloadedStateAction, dispatch, preloadedState, title]);
 
   useEffect(() => {
-    if (isNotEmpty(items) && isFirstLoad) {
+    if (isNotEmpty(items) && isFirstPage) {
       return setItemsArray(items.slice(0, sliceNumber));
     }
     setItemsArray(items);
   }, [items]);
-
-  if (itemsArray) {
-    return <div>Loading....</div>;
-  }
 
   return (
     <>
@@ -68,9 +64,16 @@ const Category = <T extends { id: number | string | undefined }>({
             {title}
           </h1>
           <div className={styles.category__itemsContainer}>
-            {(itemsArray as T[]).map((item: T) => (
-              <CategoryItem key={item.id} item={item} />
-            ))}
+            {itemsArray &&
+              (itemsArray as T[]).map((item: T) => {
+                return (
+                  <CategoryItem
+                    isFirstPage={isFirstPage}
+                    key={item.id}
+                    item={item}
+                  />
+                );
+              })}
           </div>
         </div>
       }

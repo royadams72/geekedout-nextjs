@@ -31,7 +31,7 @@ let preloadedState = {} as RootState;
 export const initializeStore = () => {
   // console.log("preloadedState in initializeStore", preloadedState);
   let _store = store ?? makeStore(preloadedState);
-
+  console.log(preloadedState);
   // If we have preloadedState and an existing store, merge them to create a new store
   if (preloadedState && store) {
     _store = makeStore({

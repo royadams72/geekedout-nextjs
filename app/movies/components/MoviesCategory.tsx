@@ -1,7 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import Category from "@/shared/components/category/Category";
+import { Preview } from "@/shared/interfaces/preview";
 
 import {
   clearMovieDetails,
@@ -11,44 +11,33 @@ import {
   MoviesSliceState,
 } from "@/lib/features/movies/moviesSlice";
 
-import { isNotEmpty } from "@/utils/helpers";
-
-import { Preview } from "@/shared/interfaces/preview";
-import { StateLoading } from "@/shared/enums/loading";
+import CategoryContainer from "@/shared/components/category/CategoryContainer";
+import Category from "@/shared/components/category/Category";
+import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
 const MoviesCategory = ({
   preloadedState,
-  isFirstLoad,
+  isFirstPage,
 }: {
   preloadedState: MoviesSliceState;
-  isFirstLoad?: boolean;
+  isFirstPage?: boolean;
 }) => {
-  const [isPreloadedState, setIsPreloadedState] = useState(false);
-
-  useEffect(() => {
-    if (isNotEmpty(preloadedState)) {
-      console.log("isNotEmpty===", isNotEmpty(preloadedState));
-
-      setIsPreloadedState(true);
-    }
-  }, [preloadedState]);
-
-  if (!isPreloadedState) return <div>Loading...</div>;
-  if (!isPreloadedState && preloadedState.status === StateLoading.FAILED)
-    return <div>Category faild to load</div>;
   return (
-    <>
+    <CategoryContainer<MoviesSliceState>
+      preloadedState={preloadedState}
+      title={CategoryTitle.Movies}
+    >
       <Category<Preview>
         itemsSelector={selectMoviesPreview}
-        title="Movies"
+        title={CategoryTitle.Movies}
         detailsSelector={selectMovieDetails}
         clearDetails={clearMovieDetails}
         preloadedStateAction={setMovies}
         preloadedState={preloadedState}
-        isFirstLoad={isFirstLoad}
+        isFirstPage={isFirstPage}
         sliceNumber={6}
       />
-    </>
+    </CategoryContainer>
   );
 };
 export default MoviesCategory;

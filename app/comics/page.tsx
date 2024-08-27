@@ -8,7 +8,12 @@ const ComicsPage = async () => {
   const store = await initializeStoreForServer(["comics"]);
   const preloadedState = store?.getState();
 
-  return <ComicsCategory preloadedState={preloadedState.comics} />;
+  return (
+    <ComicsCategory
+      isFirstPage={false}
+      preloadedState={preloadedState.comics}
+    />
+  );
 };
 
 export default ComicsPage;
