@@ -7,7 +7,9 @@ import { RootState } from "@/lib/store/store";
 const MuiscPage = async () => {
   const store = await initializeStoreForServer(["music"]);
   const preloadedState: RootState = store.getState();
-  return <MusicCategory preloadedState={preloadedState.music} />;
+  return (
+    <MusicCategory preloadedState={preloadedState.music} isFirstPage={false} />
+  );
 };
 
 export default MuiscPage;

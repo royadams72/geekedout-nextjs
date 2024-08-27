@@ -1,15 +1,13 @@
 "use client";
-import React, { useEffect } from "react";
-import { StateLoading } from "@/shared/enums/loading";
-import { useSelectorEffect } from "@/lib/hooks/useSelector";
+import React, { useEffect, useState } from "react";
+
+import { isNotEmpty } from "@/utils/helpers";
+
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
 import styles from "@/styles/components/_category.module.scss";
 
 import CategoryItem from "./CategoryItem";
-import { Preview } from "../../interfaces/preview";
-import { clearStoreForDetailsPage } from "@/lib/store/serverSideStore";
-import { update } from "./update";
 
 interface DisplayProps<T> {
   preloadedState: any;
@@ -18,44 +16,45 @@ interface DisplayProps<T> {
   title: string;
   detailsSelector: (state: any) => any;
   clearDetails: () => any;
-  statusSelector: (state: any) => string;
+  isFirstPage?: boolean;
+  sliceNumber: number;
 }
 
-const Category = <T extends Preview>({
+const Category = <T extends { id: number | string | undefined }>({
   preloadedState,
   itemsSelector,
   preloadedStateAction,
   title,
   detailsSelector,
   clearDetails,
-  statusSelector,
+  isFirstPage = true,
+  sliceNumber,
 }: DisplayProps<T>) => {
   const dispatch = useAppDispatch();
   const items = useAppSelector(itemsSelector);
+  const [itemsArray, setItemsArray] = useState<Array<T>>([]);
   const isDetailsInStore = useAppSelector(detailsSelector);
-  const isLoading = useAppSelector(statusSelector) === StateLoading.LOADING;
-  // const isClientLoaded = useSelectorEffect(items, fetchAction);
 
-  console.log(items);
   useEffect(() => {
     (async () => {
-      if (isDetailsInStore && Object.keys(isDetailsInStore).length !== 0) {
+      if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
         dispatch(clearDetails());
-        update();
-        //I want this to be server side
       }
     })();
   }, [dispatch, clearDetails, isDetailsInStore, title]);
 
   useEffect(() => {
-    if (preloadedState && preloadedState[title.toLowerCase()]) {
+    if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
   }, [preloadedStateAction, dispatch, preloadedState, title]);
 
-  if (!items) {
-    return <div>Loading....</div>;
-  }
+  useEffect(() => {
+    if (isNotEmpty(items) && isFirstPage) {
+      return setItemsArray(items.slice(0, sliceNumber));
+    }
+    setItemsArray(items);
+  }, [items]);
 
   return (
     <>
@@ -65,9 +64,16 @@ const Category = <T extends Preview>({
             {title}
           </h1>
           <div className={styles.category__itemsContainer}>
-            {items?.map((item: T) => (
-              <CategoryItem key={item.id} item={item} />
-            ))}
+            {itemsArray &&
+              (itemsArray as T[]).map((item: T) => {
+                return (
+                  <CategoryItem
+                    isFirstPage={isFirstPage}
+                    key={item.id}
+                    item={item}
+                  />
+                );
+              })}
           </div>
         </div>
       }

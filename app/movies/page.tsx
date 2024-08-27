@@ -11,7 +11,10 @@ const MoviesPage = async () => {
 
   return (
     <>
-      <MoviesCategory preloadedState={preloadedState.movies} />
+      <MoviesCategory
+        isFirstPage={false}
+        preloadedState={preloadedState.movies}
+      />
     </>
   );
 };

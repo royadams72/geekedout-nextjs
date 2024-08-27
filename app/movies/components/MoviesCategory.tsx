@@ -1,35 +1,43 @@
 "use client";
 import React from "react";
 
-import Category from "@/shared/components/category/Category";
+import { Preview } from "@/shared/interfaces/preview";
 
-import Link from "next/link";
 import {
   clearMovieDetails,
   setMovies,
   selectMovieDetails,
   selectMoviesPreview,
-  selectStatus,
+  MoviesSliceState,
 } from "@/lib/features/movies/moviesSlice";
 
-import { Preview } from "@/shared/interfaces/preview";
+import CategoryContainer from "@/shared/components/category/CategoryContainer";
+import Category from "@/shared/components/category/Category";
+import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
-const MoviesCategory = ({ preloadedState }: { preloadedState: any }) => {
+const MoviesCategory = ({
+  preloadedState,
+  isFirstPage,
+}: {
+  preloadedState: MoviesSliceState;
+  isFirstPage?: boolean;
+}) => {
   return (
-    <>
-      <div>
-        <Link href={"/"}>Back to main Page</Link>
-      </div>
+    <CategoryContainer<MoviesSliceState>
+      preloadedState={preloadedState}
+      title={CategoryTitle.Movies}
+    >
       <Category<Preview>
         itemsSelector={selectMoviesPreview}
-        title="Movies"
+        title={CategoryTitle.Movies}
         detailsSelector={selectMovieDetails}
         clearDetails={clearMovieDetails}
-        statusSelector={selectStatus}
         preloadedStateAction={setMovies}
         preloadedState={preloadedState}
+        isFirstPage={isFirstPage}
+        sliceNumber={6}
       />
-    </>
+    </CategoryContainer>
   );
 };
 export default MoviesCategory;

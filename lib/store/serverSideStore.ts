@@ -31,7 +31,7 @@ let preloadedState = {} as RootState;
 export const initializeStore = () => {
   // console.log("preloadedState in initializeStore", preloadedState);
   let _store = store ?? makeStore(preloadedState);
-
+  console.log(preloadedState);
   // If we have preloadedState and an existing store, merge them to create a new store
   if (preloadedState && store) {
     _store = makeStore({
@@ -84,7 +84,7 @@ export const initializeStoreForDetailsPage = async (
   categories: string[] = [],
   itemId: string | number
 ) => {
-  // console.log("preloadedState===== in details", preloadedState);
+  console.log("preloadedState===== in details", preloadedState);
   // Prepare initial state based on categories and itemId
   for (const category of categories) {
     switch (category) {
@@ -136,7 +136,7 @@ export const initializeStoreForDetailsPage = async (
   }
 
   const store = initializeStore();
-  // console.log("initializeStoreForDetailsPage===", store.getState());
+  console.log("initializeStoreForDetailsPage===", store.getState());
   return store;
 };
 

@@ -8,7 +8,9 @@ const GamesPage = async () => {
   const store = await initializeStoreForServer(["games"]);
   const preloadedState = store.getState();
 
-  return <GamesCategory preloadedState={preloadedState.games} />;
+  return (
+    <GamesCategory preloadedState={preloadedState.games} isFirstPage={false} />
+  );
 };
 
 export default GamesPage;

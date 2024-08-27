@@ -1,52 +1,27 @@
-// "use client";
-// import { useGetGamesQuery } from "@/app/api/apiGames";
-// import { useGetMoviesQuery } from "@/app/api/apiMovies";
-// import { useGetMusicQuery } from "@/app/api/apiMusic";
+import { initializeStoreForServer } from "@/lib/store/serverSideStore";
 
-// import { headers } from "next/headers";
-import Link from "next/link";
-import styles from "@/styles/components/_header.module.scss";
-import CategoryItem from "@/shared/components/category/CategoryItem";
-// import { useAppDispatch } from "@/hooks/hooks";
-// import { loadComics } from "./api/comics/store/comicsSlice";
-// import { useEffect } from "react";
+import { RootState } from "@/lib/store/store";
+
+import MoviesCategory from "@/app/movies/components/MoviesCategory";
+import ComicsCategory from "@/app/comics/components/ComicsCategory";
+import MusicCategory from "@/app/music/components/MusicCategory";
+import GamesCategory from "./games/components/GamesCategory";
 
 export default async function Home() {
-  // const dispatch = useAppDispatch();
-  // useEffect(() => {
-  //   (async () => {
-  //     await fetch(
-  //       // "http://localhost:3000/api/movies/search/woman",
-  //       // "http://localhost:3000/api/movies/all-movies",
-  //       "http://localhost:3000/api/comics/all-comics?fifo",
-  //       { method: "GET" }
-  //     )
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         console.log("data=====", data);
-
-  //         dispatch(loadComics(data));
-  //       });
-  //   })();
-  // }, []);
+  const store = await initializeStoreForServer([
+    "movies",
+    "comics",
+    "music",
+    "games",
+  ]);
+  const preloadedState: RootState = store.getState();
 
   return (
-    <main>
-      {/* <CategoryItem>What the actual fuck is going on</CategoryItem> */}
-      <ul className="ul">
-        <li>
-          <Link href={"/comics"}>Comics</Link>
-        </li>
-        <li>
-          <Link href={"/music"}>Music</Link>
-        </li>
-        <li>
-          <Link href={"/games"}>Games</Link>
-        </li>
-        <li>
-          <Link href={"/movies"}>Movies</Link>
-        </li>
-      </ul>
-    </main>
+    <>
+      <MoviesCategory preloadedState={preloadedState.movies} />
+      <ComicsCategory preloadedState={preloadedState.comics} />
+      <MusicCategory preloadedState={preloadedState.music} />
+      <GamesCategory preloadedState={preloadedState.games} />
+    </>
   );
 }
