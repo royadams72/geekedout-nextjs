@@ -106,6 +106,7 @@ export const getMusicDetailsServerSide = async (
   id: string
 ): Promise<AlbumDetail> => {
   let selectedAlbum;
+  console.log("getMusicDetailsServerSide======", id);
 
   try {
     selectedAlbum = await getAlbumDetails(id);
@@ -121,9 +122,11 @@ export const getMusicDetailsServerSide = async (
 };
 
 const getAllMusicApi = async () => {
-  console.log("Fetching music...");
+  console.log("Fetching music ...");
   try {
-    let response = await fetch("http://localhost:3000/api/music/get-albums");
+    let response = await fetch("http://localhost:3000/api/music/get-albums", {
+      method: "GET",
+    });
 
     if (response.status === 401) {
       console.log("Token expired or invalid, refreshing token...");
@@ -131,7 +134,9 @@ const getAllMusicApi = async () => {
       // Refresh the token
       await refreshToken();
 
-      response = await fetch("http://localhost:3000/api/music/get-albums");
+      response = await fetch("http://localhost:3000/api/music/get-albums", {
+        method: "GET",
+      });
 
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -177,18 +182,23 @@ const getAlbumDetails = async (id: string) => {
   try {
     console.log("Fetching album details...");
     let response = await fetch(
-      `http://localhost:3000/api/music/get-details?id=${id}`
+      `http://localhost:3000/api/music/get-details?id=${id}`,
+      { method: "POST" }
     );
+    console.log("response=====inSlice", response);
 
     if (response.status === 401) {
-      console.log("Token expired or invalid, refreshing token...");
+      console.log("response.status======================", response.status);
+      // }
+      // console.log("Token expired or invalid, refreshing token...");
 
       // Refresh the token
       await refreshToken();
 
       // Retry the request with the new token
       response = await fetch(
-        `http://localhost:3000/api/music/get-details?id=${id}`
+        `http://localhost:3000/api/music/get-details?id=${id}`,
+        { method: "POST" }
       );
 
       if (!response.ok) {
@@ -200,9 +210,7 @@ const getAlbumDetails = async (id: string) => {
 
     const data = await response.json();
     if (data?.data?.error?.status === 401) {
-      throw new Error(
-        `Network response was not ok: ${data?.data?.error?.status}`
-      );
+      throw new Error(`No token: ${data?.data?.error?.status}`);
     }
 
     const album = mapAlbumDetail(data.data);

@@ -31,7 +31,7 @@ let preloadedState = {} as RootState;
 export const initializeStore = () => {
   // console.log("preloadedState in initializeStore", preloadedState);
   let _store = store ?? makeStore(preloadedState);
-  console.log(preloadedState);
+  // console.log(preloadedState);
   // If we have preloadedState and an existing store, merge them to create a new store
   if (preloadedState && store) {
     _store = makeStore({
@@ -76,7 +76,7 @@ export const initializeStoreForServer = async (categories: string[] = []) => {
   }
 
   const store = initializeStore();
-  // console.log("initializeStoreForServer2===", store.getState());
+  console.log("initializeStoreForServer2===", store.getState());
   return store;
 };
 
@@ -149,7 +149,7 @@ export const clearStoreForDetailsPage = async (categories: string[] = []) => {
   for (const category of categories) {
     switch (category) {
       case "games":
-        console.log(category);
+        // console.log(category);
         // store.dispatch(getGameDetailsServerSide());
         break;
       case "music":
