@@ -26,7 +26,6 @@ const CategoryLoader = ({ title }: { title: string }) => {
                       alt={title}
                       fill
                       loading="lazy"
-                      objectFit="cover"
                       sizes="25vw, 25vh"
                     />
                   </div>
