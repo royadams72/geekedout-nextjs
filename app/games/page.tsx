@@ -1,15 +1,32 @@
 import React from "react";
 
-import { initializeStoreForServer } from "@/lib/store/serverSideStore";
-
-import GamesCategory from "@/app/games/components/GamesCategory";
+import {
+  clearStoreForDetailsPage,
+  initializeStoreForServer,
+} from "@/lib/store/serverSideStore";
 
 const GamesPage = async () => {
-  const store = await initializeStoreForServer(["games"]);
-  const preloadedState = store.getState();
+  const response = await fetch(
+    "http://localhost:3000/api/games/setGamesServerSide/",
+    {
+      method: "GET",
+    }
+  );
+  const gamesPreview = await response.json();
+  console.log(gamesPreview);
 
+  // let store = await clearStoreForDetailsPage(["games"]);
+  // const preloadedState = store.getState();
+  // console.log(
+  //   "isEmpty(preloadedState.games)===",
+  //   isEmpty(preloadedState.games.games)
+  // );
+  // if (isEmpty(preloadedState.games.games) || !preloadedState.games.games) {
+  //   store = await initializeStoreForServer(["games"]);
+  // }
   return (
-    <GamesCategory preloadedState={preloadedState.games} isFirstPage={false} />
+    <>Games page</>
+    // <GamesCategory preloadedState={preloadedState.games} isFirstPage={false} />
   );
 };
 

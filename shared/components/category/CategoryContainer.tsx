@@ -11,14 +11,19 @@ const CategoryContainer = <T extends { status: string }>({
   children,
   title,
 }: {
-  preloadedState: T;
+  preloadedState: any;
   title: string;
   children: React.ReactNode;
 }) => {
   const [isPreloadedState, setIsPreloadedState] = useState(false);
 
   useEffect(() => {
+    console.log("isNotEmpty(preloadedState)====", preloadedState?.games);
+
     if (isNotEmpty(preloadedState)) {
+      if (preloadedState?.games?.length > 0) {
+        console.log("games state");
+      }
       setIsPreloadedState(true);
     }
   }, [preloadedState]);

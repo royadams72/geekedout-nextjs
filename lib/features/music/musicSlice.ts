@@ -124,7 +124,7 @@ export const getMusicDetailsServerSide = async (
 const getAllMusicApi = async () => {
   console.log("Fetching music ...");
   try {
-    let response = await fetch("http://localhost:3000/api/music/get-albums", {
+    let response = await fetch("http://localhost:3000/api/music/get-data", {
       method: "GET",
     });
 
@@ -134,7 +134,7 @@ const getAllMusicApi = async () => {
       // Refresh the token
       await refreshToken();
 
-      response = await fetch("http://localhost:3000/api/music/get-albums", {
+      response = await fetch("http://localhost:3000/api/music/get-data", {
         method: "GET",
       });
 

@@ -135,7 +135,9 @@ export const getComicsStore = async (): Promise<ComicsSliceState> => {
 };
 
 const getComicsApi = async () => {
-  const response = await fetch("http://localhost:3000/api/comics/all-comics");
+  const response = await fetch("http://localhost:3000/api/comics/get-data", {
+    method: "GET",
+  });
   const data = await response.json();
   return data;
 };

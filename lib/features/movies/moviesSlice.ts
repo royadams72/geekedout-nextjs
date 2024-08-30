@@ -88,14 +88,19 @@ export const getMovieDetailServerSide = async (
 };
 
 const getAllMoviesApi = async () => {
-  const response = await fetch("http://localhost:3000/api/movies/all-movies");
+  const response = await fetch("http://localhost:3000/api/movies/get-data", {
+    method: "GET",
+  });
   const data = await response.json();
-  return data.data;
+  return data;
 };
 
 const getMovieApi = async (id: number) => {
   const response = await fetch(
-    `http://localhost:3000/api/movies/movie-details/${id}`
+    `http://localhost:3000/api/movies/movie-details/${id}`,
+    {
+      method: "GET",
+    }
   );
   const m = await response.json();
   const movie = mapMovieDetail(m, id);

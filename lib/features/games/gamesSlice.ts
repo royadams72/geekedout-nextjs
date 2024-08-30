@@ -34,6 +34,9 @@ export const gamesSlice = createAppSlice({
     setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
       state.games = action.payload;
     }),
+    setGamesServerSide: create.reducer((state): any => {
+      return state.games;
+    }),
     getGames: create.asyncThunk(
       async () => {
         let data = await getAllGames();
@@ -55,23 +58,30 @@ export const gamesSlice = createAppSlice({
   }),
   selectors: {
     selectStatus: (state) => state.status,
-    selectGames: (state) => state?.games,
+    selectState: (state) => state,
     selectGameDetail: (state) => state.selectedGame,
   },
 });
 
-export const { getGames, setGameDetails, setGames, clearGameDetails } =
-  gamesSlice.actions;
+export const {
+  getGames,
+  setGameDetails,
+  setGames,
+  clearGameDetails,
+  setGamesServerSide,
+} = gamesSlice.actions;
 
-export const { selectStatus, selectGames, selectGameDetail } =
+export const { selectStatus, selectGameDetail, selectState } =
   gamesSlice.selectors;
 
 export const gamesReducer = gamesSlice.reducer;
 
 const getAllGames = async () => {
-  const response = await fetch("http://localhost:3000/api/games/get-games/");
+  const response = await fetch("http://localhost:3000/api/games/get-data/", {
+    method: "GET",
+  });
   const data = await response.json();
-  return data.data;
+  return data;
 };
 
 export const setGameDetailsServerSide = async (
@@ -108,6 +118,8 @@ export const getGamesStore = async (): Promise<GamesSliceState> => {
     selectedGame: {} as GameDetail,
   };
 };
+
+export const selectGames = createSelector(selectState, (state) => state.games);
 
 export const selectGamesPreview = createSelector(selectGames, (arr: any[]) => {
   return arr?.map((game) => {

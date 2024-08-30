@@ -2,7 +2,7 @@
   "name": "geekedout-nextjs",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://rapidapi.com/digiwalls/api/gamerpower",
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
+    "ioredis": "^5.4.1",
     "js-md5": "^0.8.3",
     "next": "14.2.4",
     "react": "^18",
@@ -25,7 +26,6 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "sass": "^1.77.8",
-    "typescript": "^5",
-    "type": "module"
+    "typescript": "^5"
   }
 }
