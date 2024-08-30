@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const clientID = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
-export const getValidToken = async (req: NextRequest): Promise<any> => {
+export const getValidToken = async (req: NextRequest): Promise<string> => {
   const tokenCookie = req.cookies.get("spotify_token");
   const now = Date.now();
   console.log("getValidToken called========", req.cookies.get("spotify_token"));
@@ -16,18 +16,11 @@ export const getValidToken = async (req: NextRequest): Promise<any> => {
       return token;
     }
   }
-  const response = await refreshToken();
-
-  // Extract the token from the new cookie
-  const refreshedTokenCookie = response.cookies.get("spotify_token");
-  if (refreshedTokenCookie) {
-    const { token } = JSON.parse(refreshedTokenCookie.value);
-    return token;
-  }
-  throw new Error("Failed to retrieve a valid token after refresh");
+  return await refreshToken();
+  // Token is either not cached or has expired, so fetch a new one
 };
 
-export const refreshToken = async (): Promise<any> => {
+export const refreshToken = async (): Promise<string> => {
   const now = Date.now();
   const tokenResponse = await fetch(`https://accounts.spotify.com/api/token`, {
     method: "POST",
@@ -62,10 +55,7 @@ export const refreshToken = async (): Promise<any> => {
     path: "/",
   });
 
-  console.log(
-    "New token stored in cookie===",
-    response.cookies.get("spotify_token")
-  );
+  console.log("New token stored in cookie===", token);
 
-  return response;
+  return token;
 };

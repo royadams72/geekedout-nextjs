@@ -8,6 +8,8 @@ const redis = new Redis({
 });
 
 export const saveCategoriesToCache = async (categoriesData: any) => {
+  // console.log("categoriesData====", categoriesData);
+
   await redis.set("categoriesData", JSON.stringify(categoriesData));
 };
 

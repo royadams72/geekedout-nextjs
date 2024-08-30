@@ -23,7 +23,7 @@ export default async function Home() {
   for (const { key, fetchFunction } of dataFetchers) {
     try {
       const data = await fetchFunction();
-      // console.log("preloadedState games=======", data);
+
       preloadedState[key] = data;
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
@@ -31,14 +31,15 @@ export default async function Home() {
       preloadedState[key] = null; // or any fallback value
     }
   }
+  // console.log("preloadedState games=======", preloadedState.comics);
   // Store all getFunctions data on the server
-  // await fetch("http://localhost:3000/api/store-category-data", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(preloadedState),
-  // });
+  await fetch("http://localhost:3000/api/store-category-data", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ preloadedState }),
+  });
 
   return (
     <>

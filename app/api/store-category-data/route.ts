@@ -1,17 +1,29 @@
-// pages/api/categories/store-data.ts
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { saveCategoriesToCache } from "@/lib/redis"; // Import your cache methods
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-  // export default async function handler() {
-
+// Named export for handling POST requests
+export async function POST(request: Request) {
   try {
-    const categoriesData = req.body;
-    // console.log(categoriesData);
+    // Parse the request body
+    const categoriesData = await request.json();
 
+    console.log("Request Headers:", request.headers);
+    console.log("Request Body:", categoriesData);
+
+    // Save data to cache
     await saveCategoriesToCache(categoriesData);
-    res.status(200).json({ message: "Categories data stored successfully" });
+
+    // Return success response
+    return NextResponse.json({
+      message: "Categories data stored successfully",
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to store data" });
+    console.error("Failed to store data:", error);
+
+    // Return error response
+    return NextResponse.json(
+      { error: "Failed to store data" },
+      { status: 500 }
+    );
   }
 }
