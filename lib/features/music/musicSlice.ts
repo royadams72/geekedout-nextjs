@@ -1,6 +1,5 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/createAppSlice";
-
 import {
   Album,
   AlbumDetail,
@@ -14,63 +13,38 @@ import { refreshToken } from "@/app/api/music/token/getToken";
 
 export interface MusicSliceState {
   music: MusicStore;
-  status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
-  selectedAlbum: AlbumDetail;
+  status: StateLoading;
+  selectedAlbum: AlbumDetail | null;
 }
 
 const initialState: MusicSliceState = {
   music: {} as MusicStore,
   status: StateLoading.IDLE,
-  selectedAlbum: {} as AlbumDetail,
+  selectedAlbum: null,
 };
 
-// If you are not using async thunks you can use the standalone `createSlice`.
+const fetchWithTokenRefresh = async (url: string, options: RequestInit) => {
+  let response = await fetch(url, options);
+  if (response.status === 401) {
+    console.log("Token expired or invalid, refreshing token...");
+    await refreshToken();
+    response = await fetch(url, options);
+  }
+  if (!response.ok) {
+    throw new Error(`Network response was not ok: ${response.statusText}`);
+  }
+  return response.json();
+};
+
 export const musicSlice = createAppSlice({
   name: "music",
   initialState,
   reducers: (create) => ({
-    // getMusic: create.asyncThunk(
-    //   async () => {
-    //     let data = await getAllMusicApi();
-    //     return data.data.albums;
-    //   },
-    //   {
-    //     pending: (state) => {
-    //       state.status = StateLoading.LOADING;
-    //     },
-    //     fulfilled: (state, action) => {
-    //       state.status = StateLoading.IDLE;
-    //       state.music = action.payload;
-    //     },
-    //     rejected: (state) => {
-    //       state.status = StateLoading.FAILED;
-    //     },
-    //   }
-    // ),
-    // getMusicDetailsServerSide: create.asyncThunk(
-    //   async (id: string) => {
-    //     const data = await getAlbumDetails(id);
-
-    //     return data;
-    //   },
-    //   {
-    //     pending: (state) => {
-    //       state.status = StateLoading.LOADING;
-    //     },
-    //     fulfilled: (state, action) => {
-    //       state.status = StateLoading.IDLE;
-    //       state.selectedAlbum = action.payload;
-    //     },
-    //     rejected: (state) => {
-    //       state.status = StateLoading.FAILED;
-    //     },
-    //   }
-    // ),
     setMusic: create.reducer((state, action: PayloadAction<MusicStore>) => {
       state.music = action.payload;
     }),
     clearAlbumDetails: create.reducer((state) => {
-      state.selectedAlbum = {} as AlbumDetail;
+      state.selectedAlbum = null;
     }),
     setMusicDetails: create.reducer(
       (state, action: PayloadAction<AlbumDetail>) => {
@@ -78,93 +52,52 @@ export const musicSlice = createAppSlice({
       }
     ),
   }),
-  // You can define your selectors here. These selectors receive the slice
-  // state as their first argument.
   selectors: {
     selectStatus: (state) => state.status,
-    selectAllAlbums: (state) => state?.music?.items,
-    selectAlbumDetail: (state) => state?.selectedAlbum,
+    selectAllAlbums: (state) => state.music.items || [],
+    selectAlbumDetail: (state) => state.selectedAlbum,
   },
 });
 
-// Action creators are generated for each case reducer function.
-export const {
-  // getMusic,
-  clearAlbumDetails,
-  setMusicDetails,
-  setMusic,
-} = musicSlice.actions;
+export const { clearAlbumDetails, setMusicDetails, setMusic } =
+  musicSlice.actions;
 
-// Selectors returned by `slice.selectors` take the root state as their first argument.
 export const { selectStatus, selectAllAlbums, selectAlbumDetail } =
   musicSlice.selectors;
-//
+
 export const musicReducer = musicSlice.reducer;
-// Helper functions
 
 export const getMusicDetailsServerSide = async (
   id: string
 ): Promise<AlbumDetail> => {
-  let selectedAlbum;
   console.log("getMusicDetailsServerSide======", id);
-
-  try {
-    selectedAlbum = await getAlbumDetails(id);
-
-    if (!selectedAlbum) {
-      throw new Error(`data was not loaded`);
-    }
-  } catch (error) {
-    console.error("Failed to fetch data:", error);
-    throw error;
+  const selectedAlbum = await getAlbumDetails(id);
+  if (!selectedAlbum) {
+    throw new Error(`data was not loaded`);
   }
   return selectedAlbum;
 };
 
 const getAllMusicApi = async () => {
   console.log("Fetching music ...");
-  try {
-    let response = await fetch("http://localhost:3000/api/music/get-albums", {
+  const data = await fetchWithTokenRefresh(
+    "http://localhost:3000/api/music/get-data",
+    {
       method: "GET",
-    });
-
-    if (response.status === 401) {
-      console.log("Token expired or invalid, refreshing token...");
-
-      // Refresh the token
-      await refreshToken();
-
-      response = await fetch("http://localhost:3000/api/music/get-albums", {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-    } else if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
     }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch album details:", error);
-    throw error;
-  }
+  );
+  return data;
 };
 
 export const getMusicStore = async (): Promise<MusicSliceState> => {
   let musicStore;
-  let status = StateLoading.IDLE;
+  let status = StateLoading.LOADING;
   try {
-    status = StateLoading.LOADING;
-
     musicStore = await getAllMusicApi();
-
     if (!musicStore) {
       status = StateLoading.FAILED;
       throw new Error(`data was not loaded`);
     }
-
     status = StateLoading.IDLE;
   } catch (error) {
     status = StateLoading.FAILED;
@@ -172,98 +105,61 @@ export const getMusicStore = async (): Promise<MusicSliceState> => {
     throw error;
   }
   return {
-    music: musicStore.data.albums,
+    music: musicStore.data?.albums || [],
     status,
-    selectedAlbum: {} as AlbumDetail,
+    selectedAlbum: null,
   };
 };
 
 const getAlbumDetails = async (id: string) => {
-  try {
-    console.log("Fetching album details...");
-    let response = await fetch(
-      `http://localhost:3000/api/music/get-details?id=${id}`,
-      { method: "POST" }
-    );
-    console.log("response=====inSlice", response);
-
-    if (response.status === 401) {
-      console.log("response.status======================", response.status);
-      // }
-      // console.log("Token expired or invalid, refreshing token...");
-
-      // Refresh the token
-      await refreshToken();
-
-      // Retry the request with the new token
-      response = await fetch(
-        `http://localhost:3000/api/music/get-details?id=${id}`,
-        { method: "POST" }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-    } else if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
+  console.log("Fetching album details...");
+  const data = await fetchWithTokenRefresh(
+    `http://localhost:3000/api/music/get-details?id=${id}`,
+    {
+      method: "POST",
     }
-
-    const data = await response.json();
-    if (data?.data?.error?.status === 401) {
-      throw new Error(`No token: ${data?.data?.error?.status}`);
-    }
-
-    const album = mapAlbumDetail(data.data);
-    return album;
-  } catch (error) {
-    console.error("Failed to fetch album details:", error);
-    throw error;
-  }
+  );
+  return mapAlbumDetail(data.data);
 };
 
-const mapAlbumDetail = (item: any) => {
+const mapAlbumDetail = (item: any): AlbumDetail => {
   const {
     id,
     name,
     artists: artistArray,
-    images: [, { url: image }],
+    images,
     external_urls: { spotify: spotifyLink },
     release_date,
     tracks: { items },
   }: any = item;
+
   const tracks = items.map((arrayItem: Artists) => arrayItem.name);
   const artists = artistArray.map((arrayItem: Artists) => ({
     name: arrayItem.name,
     spotifyUrl: arrayItem.external_urls.spotify,
   }));
 
-  const selectedItem: AlbumDetail = {
+  return {
     id,
     name,
     artists,
     spotify_link: spotifyLink,
-    image,
+    image: images?.[0]?.url || IMAGE_NOT_FOUND.SM,
     release_date,
     tracks,
     category: "Music",
   };
-
-  return selectedItem;
 };
 
 export const selectMusicPreview = createSelector(
   selectAllAlbums,
   (arr: Album[]) => {
-    return arr?.map((album) => {
-      const isImages =
-        album.images !== undefined ? album.images.length > 0 : undefined;
-      return {
-        category: CategoryType.Music,
-        id: album.id,
-        imageLarge: isImages ? `${album.images[0].url}` : IMAGE_NOT_FOUND.SM,
-        imageSmall: isImages ? `${album.images[1].url}` : IMAGE_NOT_FOUND.SM,
-        title: album.name,
-      };
-    });
+    return arr.map((album) => ({
+      category: CategoryType.Music,
+      id: album.id,
+      imageLarge: album.images?.[0]?.url || IMAGE_NOT_FOUND.SM,
+      imageSmall: album.images?.[1]?.url || IMAGE_NOT_FOUND.SM,
+      title: album.name,
+    }));
   }
 );

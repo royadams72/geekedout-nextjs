@@ -1,22 +1,10 @@
-import React from "react";
-
-import { initializeStoreForServer } from "@/lib/store/serverSideStore";
+import { getCategoryByNameFromCache } from "@/lib/redis";
 
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
-import { RootState } from "@/lib/store/store";
 
 const MoviesPage = async () => {
-  const store = await initializeStoreForServer(["movies"]);
-  const preloadedState: RootState = store.getState();
-
-  return (
-    <>
-      <MoviesCategory
-        isFirstPage={false}
-        preloadedState={preloadedState.movies}
-      />
-    </>
-  );
+  const category = await getCategoryByNameFromCache("games");
+  return <MoviesCategory isFirstPage={false} preloadedState={category} />;
 };
 
 export default MoviesPage;

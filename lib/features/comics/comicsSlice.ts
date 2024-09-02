@@ -1,6 +1,7 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
+
 import { createAppSlice } from "@/lib/createAppSlice";
-import type { AppThunk } from "@/lib/store/store";
+
 import {
   Comic,
   ComicDetail,
@@ -8,26 +9,23 @@ import {
   Items,
   Price,
 } from "@/shared/interfaces/comic";
+
 import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { Paths } from "@/shared/enums/paths.enums";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { Preview } from "@/shared/interfaces/preview";
-// import { getToken } from "./counterAPI";
 
 export interface ComicsSliceState {
   comics: ComicStore;
   status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
-  selectedComic: ComicDetail;
+  selectedComic: ComicDetail | null;
 }
 
 const initialState: ComicsSliceState = {
   comics: {} as ComicStore,
   status: StateLoading.IDLE,
-  selectedComic: {} as ComicDetail,
+  selectedComic: null,
 };
 
-// If you are not using async thunks you can use the standalone `createSlice`.
 export const comicsSlice = createAppSlice({
   name: "comics",
   initialState,
@@ -38,15 +36,14 @@ export const comicsSlice = createAppSlice({
       }
     ),
     clearComicDetails: create.reducer((state) => {
-      state.selectedComic = {} as ComicDetail;
+      state.selectedComic = null;
     }),
     setComics: create.reducer((state, action: PayloadAction<ComicStore>) => {
       state.comics = action.payload;
     }),
   }),
-
   selectors: {
-    selectComicsArray: (comics) => comics?.comics?.results as Comic[],
+    selectComicsArray: (comics) => comics.comics.results as Comic[],
     selectStatus: (comics) => comics.status,
     selectComicDetail: (comics) => comics.selectedComic,
   },
@@ -57,26 +54,28 @@ export const { setComicDetails, setComics, clearComicDetails } =
 
 export const { selectComicsArray, selectStatus, selectComicDetail } =
   comicsSlice.selectors;
+
 export const comicsReducer = comicsSlice.reducer;
 
 export const setComicDetailsServerSide = async (
   serverSideStore: ComicsSliceState,
   id: string
-): Promise<ComicDetail> => {
+): Promise<ComicDetail | null> => {
   return mapComicDetail(serverSideStore, id);
 };
 
-const mapComicDetail = (comics: ComicsSliceState, id: string) => {
+export const mapComicDetail = (
+  comics: ComicsSliceState,
+  id: string
+): ComicDetail | null => {
   console.log("mapComicDetail===", comics);
-
-  const results = comics?.comics?.results || [];
-
+  const results = comics.comics.results || [];
   const item: Comic | undefined = results.find(
     (comic: Comic) => comic.id?.toString() === id
   );
 
   if (!item) {
-    return {} as ComicDetail; // or handle the case where the comic is not found
+    return null;
   }
 
   const {
@@ -88,15 +87,18 @@ const mapComicDetail = (comics: ComicsSliceState, id: string) => {
     images: [{ path, extension }],
     dates: [{ date: onsaleDate }],
     creators: { items: creators },
-  }: any = item;
+  } = item;
 
   const selectedItem: ComicDetail = {
-    onsaleDate,
-    creators: creators.map((c: Items) => ({ name: c.name, role: c.role })),
-    description,
+    onsaleDate: onsaleDate || "TBA",
+    creators: creators.map((c: Items) => ({
+      name: c.name,
+      role: c.role || "unknown",
+    })),
+    description: description || "No Description",
     image: `${path}.${extension}`,
     pageCount,
-    printPrice: prices.find((c: Price) => c.type === "printPrice").price,
+    printPrice: prices.find((c: Price) => c.type === "printPrice")?.price,
     clickThrough,
     name,
     category: "Comics",
@@ -107,12 +109,10 @@ const mapComicDetail = (comics: ComicsSliceState, id: string) => {
 };
 
 export const getComicsStore = async (): Promise<ComicsSliceState> => {
-  let comicStore;
-  let status = StateLoading.IDLE;
+  let comicStore: ComicStore;
+  let status = StateLoading.LOADING;
 
   try {
-    status = StateLoading.LOADING;
-
     comicStore = await getComicsApi();
 
     if (!comicStore) {
@@ -130,22 +130,23 @@ export const getComicsStore = async (): Promise<ComicsSliceState> => {
   return {
     comics: comicStore,
     status,
-    selectedComic: {} as ComicDetail,
+    selectedComic: null,
   };
 };
 
-const getComicsApi = async () => {
-  const response = await fetch("http://localhost:3000/api/comics/all-comics");
-  const data = await response.json();
+const getComicsApi = async (): Promise<ComicStore> => {
+  const response = await fetch("http://localhost:3000/api/comics/get-data", {
+    method: "GET",
+  });
+  const data: ComicStore = await response.json();
   return data;
 };
 
 export const selectComicsPreviews = createSelector(
   selectComicsArray,
   (arr: Comic[]) => {
-    return arr?.map((comic) => {
-      const isImages =
-        comic.images !== undefined ? comic.images.length > 0 : undefined;
+    return arr.map((comic) => {
+      const isImages = comic.images && comic.images.length > 0;
       return {
         category: CategoryType.Comics,
         id: comic.id,

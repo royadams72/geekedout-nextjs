@@ -1,15 +1,10 @@
-import React from "react";
+import { getCategoryByNameFromCache } from "@/lib/redis";
 
 import MusicCategory from "@/app/music/components/MusicCategory";
-import { initializeStoreForServer } from "@/lib/store/serverSideStore";
-import { RootState } from "@/lib/store/store";
 
 const MuiscPage = async () => {
-  const store = await initializeStoreForServer(["music"]);
-  const preloadedState: RootState = store.getState();
-  return (
-    <MusicCategory preloadedState={preloadedState.music} isFirstPage={false} />
-  );
+  const category = await getCategoryByNameFromCache("games");
+  return <MusicCategory preloadedState={category} isFirstPage={false} />;
 };
 
 export default MuiscPage;

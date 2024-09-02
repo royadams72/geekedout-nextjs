@@ -8,106 +8,95 @@ import { Paths } from "@/shared/enums/paths.enums";
 
 export interface MoviesSliceState {
   movies: MoviesStore;
-  status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
-  selectedMovie: MovieDetail;
+  status: StateLoading;
+  selectedMovie: MovieDetail | null;
 }
 
 const initialState: MoviesSliceState = {
   movies: {} as MoviesStore,
   status: StateLoading.IDLE,
-  selectedMovie: {} as MovieDetail,
+  selectedMovie: null,
 };
 
 export const moviesSlice = createAppSlice({
   name: "movies",
   initialState,
-
-  reducers: (create) => ({
-    setMovies: create.reducer((state, action: PayloadAction<MoviesStore>) => {
+  reducers: {
+    setMovies: (state, action: PayloadAction<MoviesStore>) => {
       state.movies = action.payload;
-    }),
-    setMovieDetails: create.reducer(
-      (state, action: PayloadAction<MovieDetail>) => {
-        state.selectedMovie = action.payload;
-      }
-    ),
-    clearMovieDetails: create.reducer((state) => {
-      state.selectedMovie = {} as MovieDetail;
-    }),
-  }),
-
+    },
+    setMovieDetails: (state, action: PayloadAction<MovieDetail>) => {
+      state.selectedMovie = action.payload;
+    },
+    clearMovieDetails: (state) => {
+      state.selectedMovie = null;
+    },
+  },
   selectors: {
-    selectMovies: (movies) => movies?.movies?.results as Movie[],
+    selectMovies: (movies) => movies.movies.results as Movie[],
     selectStatus: (movies) => movies.status,
     selectMovieDetails: (movies) => movies.selectedMovie,
   },
 });
 
 export const getMoviesStore = async (): Promise<MoviesSliceState> => {
-  let moviesStore;
-  let status = StateLoading.IDLE;
+  let moviesStore: MoviesStore;
+  let status = StateLoading.LOADING;
   try {
-    status = StateLoading.LOADING;
-
     moviesStore = await getAllMoviesApi();
-
     if (!moviesStore) {
       status = StateLoading.FAILED;
-      throw new Error(`data was not loaded`);
+      throw new Error(`Data was not loaded`);
     }
-
     status = StateLoading.IDLE;
   } catch (error) {
-    status = StateLoading.FAILED;
     console.error("Failed to fetch data:", error);
+    status = StateLoading.FAILED;
     throw error;
   }
   return {
     movies: moviesStore,
     status,
-    selectedMovie: {} as MovieDetail,
+    selectedMovie: null,
   };
 };
 
 export const getMovieDetailServerSide = async (
   id: number
 ): Promise<MovieDetail> => {
-  let selectedMovie;
-
   try {
-    selectedMovie = await getMovieApi(id);
-
+    const selectedMovie = await getMovieApi(id);
     if (!selectedMovie) {
-      throw new Error(`data was not loaded`);
+      throw new Error(`Data was not loaded`);
     }
+    return selectedMovie;
   } catch (error) {
     console.error("Failed to fetch data:", error);
     throw error;
   }
-  return selectedMovie;
 };
 
 const getAllMoviesApi = async () => {
-  const response = await fetch("http://localhost:3000/api/movies/all-movies");
+  const response = await fetch("http://localhost:3000/api/movies/get-data", {
+    method: "GET",
+  });
   const data = await response.json();
-  return data.data;
+  return data;
 };
 
 const getMovieApi = async (id: number) => {
   const response = await fetch(
-    `http://localhost:3000/api/movies/movie-details/${id}`
+    `http://localhost:3000/api/movies/movie-details/${id}`,
+    {
+      method: "GET",
+    }
   );
   const m = await response.json();
-  const movie = mapMovieDetail(m, id);
-  return movie;
+  return mapMovieDetail(m, id);
 };
 
-export const {
-  clearMovieDetails,
-  setMovies,
-  setMovieDetails,
-  // getMovies,
-} = moviesSlice.actions;
+export const { clearMovieDetails, setMovies, setMovieDetails } =
+  moviesSlice.actions;
 
 export const { selectMovies, selectStatus, selectMovieDetails } =
   moviesSlice.selectors;
@@ -117,37 +106,36 @@ export const moviesReducer = moviesSlice.reducer;
 export const selectMoviesPreview = createSelector(
   selectMovies,
   (arr: Movie[]) => {
-    return arr?.map((movie) => {
-      return {
-        category: CategoryType.Movies,
-        id: movie.id,
-        imageLarge: movie.poster_path
-          ? `${Paths.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
-          : IMAGE_NOT_FOUND.SM,
-        imageSmall: movie.poster_path
-          ? `${Paths.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
-          : IMAGE_NOT_FOUND.SM,
-        title: movie.title,
-      };
-    });
+    return arr?.map((movie) => ({
+      category: CategoryType.Movies,
+      id: movie.id,
+      imageLarge: movie.poster_path
+        ? `${Paths.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
+        : IMAGE_NOT_FOUND.SM,
+      imageSmall: movie.poster_path
+        ? `${Paths.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
+        : IMAGE_NOT_FOUND.SM,
+      title: movie.title,
+    }));
   }
 );
 
-function mapMovieDetail(movie: Movie, id: number) {
+function mapMovieDetail(movie: Movie, id: number): MovieDetail {
   const {
     title: name,
     release_date,
     poster_path,
     homepage,
     imdb_id,
-    genres: g,
-    overview,
-  }: any = movie;
-
-  const genres = g.map((arrayItem: any) => arrayItem.name);
-  const selectedItem: MovieDetail = {
-    category: "Movies",
     genres,
+    overview,
+  } = movie;
+
+  const genreNames = genres.map((genre: { name: string }) => genre.name);
+
+  return {
+    category: "Movies",
+    genres: genreNames,
     homepage,
     id,
     imdb_link: `http://www.imdb.com/title/${imdb_id}`,
@@ -156,6 +144,4 @@ function mapMovieDetail(movie: Movie, id: number) {
     overview,
     release_date,
   };
-  console.log(movie);
-  return selectedItem;
 }

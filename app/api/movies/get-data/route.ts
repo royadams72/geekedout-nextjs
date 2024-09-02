@@ -14,7 +14,7 @@ export async function GET() {
   if (!response.ok) {
     throw new Error(`Failed to fetch movies: ${data.error.message}`);
   }
-  console.log(`calling movies data=====`, data);
+  // console.log(`calling movies data=====`, data);
   // TODO error handling
   return Response.json(data);
 }

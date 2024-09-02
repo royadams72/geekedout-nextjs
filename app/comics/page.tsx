@@ -1,19 +1,10 @@
-import React from "react";
-
-import { initializeStoreForServer } from "@/lib/store/serverSideStore";
+import { getCategoryByNameFromCache } from "@/lib/redis";
 
 import ComicsCategory from "./components/ComicsCategory";
 
 const ComicsPage = async () => {
-  const store = await initializeStoreForServer(["comics"]);
-  const preloadedState = store?.getState();
-
-  return (
-    <ComicsCategory
-      isFirstPage={false}
-      preloadedState={preloadedState.comics}
-    />
-  );
+  const category = await getCategoryByNameFromCache("comics");
+  return <ComicsCategory isFirstPage={false} preloadedState={category} />;
 };
 
 export default ComicsPage;

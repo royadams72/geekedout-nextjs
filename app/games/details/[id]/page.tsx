@@ -4,16 +4,16 @@ import { initializeStoreForDetailsPage } from "@/lib/store/serverSideStore";
 
 import GamesDetails from "@/app/games/components/GamesDetails";
 import { RootState } from "@/lib/store/store";
+import { getItemFromCache } from "@/lib/redis";
 
 const GameDetailsPage = async ({
   params: { id },
 }: {
   params: { id: string };
 }) => {
-  const store = await initializeStoreForDetailsPage(["games"], id);
-  const preloadedState: RootState = store.getState();
+  const item = await getItemFromCache("games", id);
 
-  return <GamesDetails preloadedState={preloadedState.games.selectedGame} />;
+  return <GamesDetails preloadedState={item} />;
 };
 
 export default GameDetailsPage;
