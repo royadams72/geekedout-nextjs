@@ -1,18 +1,14 @@
 import React from "react";
-
 import MovieDetails from "../../components/MovieDetails";
-import { initializeStoreForDetailsPage } from "@/lib/store/serverSideStore";
-import { RootState } from "@/lib/store/store";
+import { getItemFromCache } from "@/lib/redis";
 
 const MovieDetailsPage = async ({
   params: { id },
 }: {
   params: { id: number };
 }) => {
-  const store = await initializeStoreForDetailsPage(["movies"], id);
-  const preloadedState: RootState = store.getState();
-
-  return <MovieDetails preloadedState={preloadedState.movies.selectedMovie} />;
+  const item = await getItemFromCache("movies", id);
+  return <MovieDetails preloadedState={item} />;
 };
 
 export default MovieDetailsPage;

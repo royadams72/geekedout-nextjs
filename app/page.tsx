@@ -1,7 +1,3 @@
-import { initializeStoreForServer } from "@/lib/store/serverSideStore";
-
-import { RootState } from "@/lib/store/store";
-
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
 import ComicsCategory from "@/app/comics/components/ComicsCategory";
 import MusicCategory from "@/app/music/components/MusicCategory";
@@ -31,14 +27,14 @@ export default async function Home() {
       preloadedState[key] = null; // or any fallback value
     }
   }
-  // console.log("preloadedState games=======", preloadedState.comics);
-  // Store all getFunctions data on the server
-  await fetch("http://localhost:3000/api/store-category-data", {
+
+  // Store all data on the server
+  await fetch("http://localhost:3000/api/category-store-data", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ preloadedState }),
+    body: JSON.stringify(preloadedState),
   });
 
   return (
