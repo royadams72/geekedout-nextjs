@@ -4,7 +4,7 @@ import ComicsCategory from "./components/ComicsCategory";
 
 const ComicsPage = async () => {
   const category = await getCategoryByNameFromCache("comics");
-  return <ComicsCategory isFirstPage={false} preloadedState={category} />;
+  return <ComicsCategory preloadedState={category} />;
 };
 
 export default ComicsPage;

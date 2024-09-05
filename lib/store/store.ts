@@ -8,17 +8,20 @@ import { comicsReducer } from "@/lib/features/comics/comicsSlice";
 import { musicReducer } from "@/lib/features/music/musicSlice";
 import { gamesReducer } from "@/lib/features/games/gamesSlice";
 import { moviesReducer } from "@/lib/features/movies/moviesSlice";
+import { listenerMiddleware } from "../middleware/persist";
+import { uiDataReducer } from "../features/uiData/uiDataSlice";
 
 const persistConfig = {
   key: "root",
   storage: storage,
-  whitelist: ["comics", "music", "games", "movies"],
+  whitelist: ["comics", "music", "games", "movies", "uiData"],
 };
 const rootReducer = combineReducers({
   comics: comicsReducer,
   music: musicReducer,
   games: gamesReducer,
   movies: moviesReducer,
+  uiData: uiDataReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -33,7 +36,7 @@ export const makeStore = (preloadedState?: any) => {
       getDefaultMiddleware({
         immutableCheck: false,
         serializableCheck: false,
-      }),
+      }).concat(listenerMiddleware.middleware),
   });
 };
 

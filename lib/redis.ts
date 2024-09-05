@@ -1,53 +1,41 @@
-// lib/redis.js
 import Redis from "ioredis";
-import {
-  mapComicDetail,
-  setComicDetailsServerSide,
-} from "./features/comics/comicsSlice";
-import {
-  mapGameDetail,
-  setGameDetailsServerSide,
-} from "./features/games/gamesSlice";
+import { setComicDetailsServerSide } from "./features/comics/comicsSlice";
+import { setGameDetailsServerSide } from "./features/games/gamesSlice";
 import { getMovieDetailServerSide } from "./features/movies/moviesSlice";
+import { uiDataSlice } from "./features/uiData/uiDataSlice";
 
-// Replace with your Redis server details
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
   port: Number(process.env.REDIS_PORT) || 6379,
 });
 
 export const saveCategoriesToCache = async (categoriesData: any) => {
-  // console.log("categoriesData====", categoriesData);
+  // console.log("saveCategoriesToCache===", categoriesData);
 
   await redis.set("categoriesData", JSON.stringify(categoriesData));
 };
 
-// Get multiple categories from Redis
 export const getCategoriesFromCache = async () => {
   const data: any = await redis.get("categoriesData");
   return JSON.parse(data);
 };
 
-// Function to update a single category
 export const updateCategoryInCache = async (
   categoryName: string,
   updatedDataCategory: any
 ) => {
   try {
-    // Fetch current categories data
     const categoriesData = await getCategoriesFromCache();
 
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }
 
-    // Update the category data
     categoriesData[categoryName] = {
       ...categoriesData[categoryName],
       ...updatedDataCategory,
     };
 
-    // Save the updated categories data back to Redis
     await saveCategoriesToCache(categoriesData);
   } catch (error) {
     console.error("Error updating category in cache:", error);
@@ -56,18 +44,16 @@ export const updateCategoryInCache = async (
 
 export const getCategoryByNameFromCache = async (categoryName: string) => {
   try {
-    const categoriesData = await getCategoriesFromCache();
-    // console.log(categoriesData);
-
+    const data = await getCategoriesFromCache();
+    const categoriesData = data.state;
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }
 
-    // Return the requested category
     return categoriesData[categoryName];
   } catch (error) {
     console.error("Error getting category from cache:", error);
-    return null; // Or handle as needed
+    return null;
   }
 };
 
@@ -95,7 +81,6 @@ export const getItemFromCache = async (
             selectedComic: selectedData,
           },
         };
-        // item = mapComicDetail(categoriesData[categoryName], id as string);
         break;
       case "games":
         selectedData = await setGameDetailsServerSide(
@@ -123,13 +108,11 @@ export const getItemFromCache = async (
       default:
         break;
     }
-    // Return the requested category data
-    console.log(categoriesData);
 
     return selectedData;
   } catch (error) {
     console.error("Error getting category from cache:", error);
-    return null; // Or handle as needed
+    return null;
   }
 };
 

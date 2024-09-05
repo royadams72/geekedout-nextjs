@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import styles from "@/styles/components/_category.module.scss";
-import { Preview } from "@/shared/interfaces/preview";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Link from "next/link";
 
-const CategoryItem = ({
-  item,
-  isFirstPage,
-}: {
-  item: Preview;
-  isFirstPage: boolean;
-}) => {
+import { useAppSelector } from "@/lib/hooks/store.hooks";
+import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
+
+import { Preview } from "@/shared/interfaces/preview";
+
+import styles from "@/styles/components/_category.module.scss";
+
+const CategoryItem = ({ item }: { item: Preview }) => {
   const title = item?.title as string;
   const imgMed = item?.imageMedium;
   const imgLrg = item?.imageLarge;
+  const isFirstPage = useAppSelector(selectIsFirstPage);
   const itemLink = isFirstPage
     ? `${item.category}`
     : `${item.category}/details/${item.id}`;
 
   return (
+    // firstPage
     <>
-      <div className={styles.category__item}>
+      <div
+        className={
+          isFirstPage ? styles.category__item_firstPage : styles.category__item
+        }
+      >
         <Link href={itemLink}>
           <div className={styles[`category__imageContainer`]}>
             <div className={styles.category__image_wrapper}>
