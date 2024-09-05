@@ -4,6 +4,7 @@ import "./globals.scss";
 import { StoreProvider } from "./StoreProvider";
 import Header from "@/shared/components/header/Header";
 import Head from "next/head";
+import NavigationActions from "@/shared/components/navigation-actions/NavigationActions";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,6 +25,7 @@ export default async function RootLayout({
         <body className="body">
           <main className="main">
             <StoreProvider>
+              <NavigationActions />
               <Header />
               {children}
             </StoreProvider>

@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import { isNotEmpty } from "@/utils/helpers";
-
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
+
+import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
+
+import { isNotEmpty } from "@/utils/helpers";
 
 import styles from "@/styles/components/_category.module.scss";
 
@@ -16,7 +18,6 @@ interface DisplayProps<T> {
   title: string;
   detailsSelector: (state: any) => any;
   clearDetails: () => any;
-  isFirstPage?: boolean;
   sliceNumber: number;
 }
 
@@ -27,13 +28,13 @@ const Category = <T extends { id: number | string | undefined }>({
   title,
   detailsSelector,
   clearDetails,
-  isFirstPage = true,
   sliceNumber,
 }: DisplayProps<T>) => {
   const dispatch = useAppDispatch();
   const items = useAppSelector(itemsSelector);
-  const [itemsArray, setItemsArray] = useState<Array<T>>([]);
+  const isFirstPage = useAppSelector(selectIsFirstPage);
   const isDetailsInStore = useAppSelector(detailsSelector);
+  const [itemsArray, setItemsArray] = useState<Array<T>>([]);
 
   useEffect(() => {
     (async () => {
@@ -54,7 +55,7 @@ const Category = <T extends { id: number | string | undefined }>({
       return setItemsArray(items.slice(0, sliceNumber));
     }
     setItemsArray(items);
-  }, [items]);
+  }, [items, isFirstPage, sliceNumber]);
 
   return (
     <>
@@ -66,13 +67,7 @@ const Category = <T extends { id: number | string | undefined }>({
           <div className={styles.category__itemsContainer}>
             {itemsArray &&
               (itemsArray as T[]).map((item: T) => {
-                return (
-                  <CategoryItem
-                    isFirstPage={isFirstPage}
-                    key={item.id}
-                    item={item}
-                  />
-                );
+                return <CategoryItem key={item.id} item={item} />;
               })}
           </div>
         </div>

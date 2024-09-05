@@ -34,7 +34,6 @@ const MusicCategory = ({
           detailsSelector={selectAlbumDetail}
           preloadedStateAction={setMusic}
           preloadedState={preloadedState}
-          isFirstPage={isFirstPage}
           sliceNumber={6}
         />
       </CategoryContainer>

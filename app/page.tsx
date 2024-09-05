@@ -13,7 +13,7 @@ const dataFetchers = [
   { key: "movies", fetchFunction: getMoviesStore },
   { key: "music", fetchFunction: getMusicStore },
 ];
-export default async function Home() {
+const Home = async () => {
   const preloadedState: Record<string, any> = {}; // Use Record<string, any> for better type safety
 
   for (const { key, fetchFunction } of dataFetchers) {
@@ -28,15 +28,6 @@ export default async function Home() {
     }
   }
 
-  // Store all data on the server
-  await fetch("http://localhost:3000/api/category-store-data", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(preloadedState),
-  });
-
   return (
     <>
       <MoviesCategory preloadedState={preloadedState.movies} />
@@ -45,4 +36,5 @@ export default async function Home() {
       <GamesCategory preloadedState={preloadedState.games} />
     </>
   );
-}
+};
+export default Home;

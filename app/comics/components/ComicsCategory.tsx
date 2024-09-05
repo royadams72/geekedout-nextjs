@@ -17,10 +17,8 @@ import { CategoryTitle, CategoryType } from "@/shared/enums/category-type.enum";
 
 const ComicsDisplay = ({
   preloadedState,
-  isFirstPage,
 }: {
   preloadedState: ComicsSliceState;
-  isFirstPage?: boolean;
 }) => {
   return (
     <CategoryContainer<ComicsSliceState>
@@ -34,7 +32,6 @@ const ComicsDisplay = ({
         clearDetails={clearComicDetails}
         preloadedStateAction={setComics}
         preloadedState={preloadedState}
-        isFirstPage={isFirstPage}
         sliceNumber={6}
       />
     </CategoryContainer>

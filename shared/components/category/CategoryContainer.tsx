@@ -1,9 +1,9 @@
 "use client";
+import { useEffect, useState } from "react";
 
 import { StateLoading } from "@/shared/enums/loading";
 import { isNotEmpty } from "@/utils/helpers";
-import React, { ReactNode, useEffect, useState } from "react";
-import Loader from "../loader/Loader";
+
 import CategoryLoader from "./CategoryLoader";
 
 const CategoryContainer = <T extends { status: string }>({

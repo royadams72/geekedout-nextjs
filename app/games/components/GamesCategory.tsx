@@ -1,10 +1,5 @@
 "use client";
-import React from "react";
-
-import Link from "next/link";
-
 import {
-  selectStatus,
   selectGamesPreview,
   setGames,
   clearGameDetails,
@@ -13,9 +8,9 @@ import {
 } from "@/lib/features/games/gamesSlice";
 
 import { Preview } from "@/shared/interfaces/preview";
+import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
 import Category from "@/shared/components/category/Category";
-import { CategoryTitle } from "@/shared/enums/category-type.enum";
 import CategoryContainer from "@/shared/components/category/CategoryContainer";
 
 const GamesCategory = ({
@@ -38,7 +33,6 @@ const GamesCategory = ({
           clearDetails={clearGameDetails}
           preloadedStateAction={setGames}
           preloadedState={preloadedState}
-          isFirstPage={isFirstPage}
           sliceNumber={6}
         />
       </CategoryContainer>

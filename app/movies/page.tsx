@@ -4,6 +4,8 @@ import MoviesCategory from "@/app/movies/components/MoviesCategory";
 
 const MoviesPage = async () => {
   const category = await getCategoryByNameFromCache("games");
+  // console.log("category", category);
+
   return <MoviesCategory isFirstPage={false} preloadedState={category} />;
 };
 

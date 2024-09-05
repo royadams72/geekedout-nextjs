@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { saveCategoriesToCache } from "@/lib/redis";
 
 export async function POST(request: Request) {
+  // console.log("POST=======");
+
   try {
     const categoriesData = await request.json();
 

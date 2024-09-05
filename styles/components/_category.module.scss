@@ -101,21 +101,21 @@ $games-header-colour: #d44d51;
 }
 
 @media (max-width: 1200px) {
-  .category__item:nth-of-type(n + 5) {
+  .category__item_firstPage:nth-of-type(n + 5) {
     // Hide items after the first 4 items
     display: none;
   }
 }
 
 @media (max-width: 800px) {
-  .category__item:nth-of-type(n + 3) {
+  .category__item_firstPage:nth-of-type(n + 3) {
     // Hide items after the first 2 items
     display: none;
   }
 }
 
 @media ((max-width: 500px)) {
-  .category__item:nth-of-type(n + 3) {
+  .category__item_firstPage:nth-of-type(n + 3) {
     // Hide items after the first 1 item
     display: none;
   }

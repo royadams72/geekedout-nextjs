@@ -19,7 +19,7 @@ import Music from "@/app/music/components/Music";
 const MusicDetails = ({ preloadedState }: { preloadedState: AlbumDetail }) => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectStatus) === StateLoading.LOADING;
-  console.log(preloadedState);
+  // console.log(preloadedState);
 
   useEffect(() => {
     dispatch(setMusicDetails(preloadedState));

@@ -34,7 +34,6 @@ const MoviesCategory = ({
         clearDetails={clearMovieDetails}
         preloadedStateAction={setMovies}
         preloadedState={preloadedState}
-        isFirstPage={isFirstPage}
         sliceNumber={6}
       />
     </CategoryContainer>

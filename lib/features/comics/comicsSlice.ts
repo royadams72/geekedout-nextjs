@@ -68,7 +68,7 @@ export const mapComicDetail = (
   comics: ComicsSliceState,
   id: string
 ): ComicDetail | null => {
-  console.log("mapComicDetail===", comics);
+  // console.log("mapComicDetail===", comics);
   const results = comics.comics.results || [];
   const item: Comic | undefined = results.find(
     (comic: Comic) => comic.id?.toString() === id
@@ -145,7 +145,7 @@ const getComicsApi = async (): Promise<ComicStore> => {
 export const selectComicsPreviews = createSelector(
   selectComicsArray,
   (arr: Comic[]) => {
-    return arr.map((comic) => {
+    return arr?.map((comic) => {
       const isImages = comic.images && comic.images.length > 0;
       return {
         category: CategoryType.Comics,
