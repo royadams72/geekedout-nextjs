@@ -1,9 +1,9 @@
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import styles from "@/styles/components/_header.module.scss";
 import { Paths } from "@/shared/enums/paths.enums";
+
+import styles from "@/styles/components/_header.module.scss";
 
 const Header = () => {
   const imgWidth = 100;

@@ -1,4 +1,4 @@
-import { createAppSlice } from "@/lib/createAppSlice";
+import { createAppSlice } from "@/lib/store/createAppSlice";
 import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import { StateLoading } from "@/shared/enums/loading";
 import { createSelector, PayloadAction } from "@reduxjs/toolkit";
@@ -9,13 +9,11 @@ import { Paths } from "@/shared/enums/paths.enums";
 export interface MoviesSliceState {
   movies: MoviesStore;
   status: StateLoading;
-  selectedMovie: MovieDetail | null;
 }
 
 const initialState: MoviesSliceState = {
   movies: {} as MoviesStore,
   status: StateLoading.IDLE,
-  selectedMovie: null,
 };
 
 export const moviesSlice = createAppSlice({
@@ -25,17 +23,10 @@ export const moviesSlice = createAppSlice({
     setMovies: (state, action: PayloadAction<MoviesStore>) => {
       state.movies = action.payload;
     },
-    setMovieDetails: (state, action: PayloadAction<MovieDetail>) => {
-      state.selectedMovie = action.payload;
-    },
-    clearMovieDetails: (state) => {
-      state.selectedMovie = null;
-    },
   },
   selectors: {
     selectMovies: (movies) => movies.movies.results as Movie[],
     selectStatus: (movies) => movies.status,
-    selectMovieDetails: (movies) => movies.selectedMovie,
   },
 });
 
@@ -57,7 +48,6 @@ export const getMoviesStore = async (): Promise<MoviesSliceState> => {
   return {
     movies: moviesStore,
     status,
-    selectedMovie: null,
   };
 };
 
@@ -95,11 +85,9 @@ const getMovieApi = async (id: number) => {
   return mapMovieDetail(m, id);
 };
 
-export const { clearMovieDetails, setMovies, setMovieDetails } =
-  moviesSlice.actions;
+export const { setMovies } = moviesSlice.actions;
 
-export const { selectMovies, selectStatus, selectMovieDetails } =
-  moviesSlice.selectors;
+export const { selectMovies, selectStatus } = moviesSlice.selectors;
 
 export const moviesReducer = moviesSlice.reducer;
 

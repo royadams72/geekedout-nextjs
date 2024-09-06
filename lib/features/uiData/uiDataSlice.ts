@@ -1,7 +1,10 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 
-import { createAppSlice } from "@/lib/createAppSlice";
+import { createAppSlice } from "@/lib/store/createAppSlice";
+
 import { UiData } from "@/shared/interfaces/uiData";
+
+import { AllDetailsTypes } from "@/shared/types/all-categories";
 
 const initialState: UiData = {
   selectedId: "",
@@ -30,15 +33,23 @@ export const uiDataSlice = createAppSlice({
     ) => {
       const { currentUrl, previousUrl } = action.payload;
       state.currPrevUrls = { currentUrl, previousUrl };
-      console.log({ currentUrl, previousUrl });
+    },
+    setSelectedItem: (state, action: PayloadAction<AllDetailsTypes>) => {
+      state.selectedItem = action.payload;
+    },
+    clearSelectedItem: (state) => {
+      state.selectedItem = null;
     },
   },
   selectors: {
     selectCurrPrevUrls: (state) => state.currPrevUrls,
     selectIsFirstPage: (state) => state.isFirstPage,
+    selectSelectedItem: (state) => state.selectedItem,
   },
 });
 
-export const { setFirstPage, setUrls } = uiDataSlice.actions;
-export const { selectCurrPrevUrls, selectIsFirstPage } = uiDataSlice.selectors;
+export const { setFirstPage, setUrls, setSelectedItem, clearSelectedItem } =
+  uiDataSlice.actions;
+export const { selectCurrPrevUrls, selectIsFirstPage, selectSelectedItem } =
+  uiDataSlice.selectors;
 export const uiDataReducer = uiDataSlice.reducer;

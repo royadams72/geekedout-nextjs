@@ -4,7 +4,15 @@ import { config } from "@/shared/constants/config";
 
 export const listenerMiddleware = createListenerMiddleware();
 listenerMiddleware.startListening({
-  predicate: (action, currState, prevState) => {
+  predicate: (action, currState: any, prevState: any) => {
+    // console.log(
+    //   "action==",
+    //   action,
+    //   "currState.uiData.selectedData=====",
+    //   currState.uiData.selectedData,
+    //   "isNot equal==",
+    //   JSON.stringify(currState) !== JSON.stringify(prevState)
+    // );
     return JSON.stringify(currState) !== JSON.stringify(prevState);
   },
 

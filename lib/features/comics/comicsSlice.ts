@@ -1,6 +1,6 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
-import { createAppSlice } from "@/lib/createAppSlice";
+import { createAppSlice } from "@/lib/store/createAppSlice";
 
 import {
   Comic,
@@ -17,43 +17,30 @@ import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 export interface ComicsSliceState {
   comics: ComicStore;
   status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
-  selectedComic: ComicDetail | null;
 }
 
 const initialState: ComicsSliceState = {
   comics: {} as ComicStore,
   status: StateLoading.IDLE,
-  selectedComic: null,
 };
 
 export const comicsSlice = createAppSlice({
   name: "comics",
   initialState,
-  reducers: (create) => ({
-    setComicDetails: create.reducer(
-      (state, action: PayloadAction<ComicDetail>) => {
-        state.selectedComic = action.payload;
-      }
-    ),
-    clearComicDetails: create.reducer((state) => {
-      state.selectedComic = null;
-    }),
-    setComics: create.reducer((state, action: PayloadAction<ComicStore>) => {
+  reducers: {
+    setComics: (state, action: PayloadAction<ComicStore>) => {
       state.comics = action.payload;
-    }),
-  }),
+    },
+  },
   selectors: {
     selectComicsArray: (comics) => comics.comics.results as Comic[],
     selectStatus: (comics) => comics.status,
-    selectComicDetail: (comics) => comics.selectedComic,
   },
 });
 
-export const { setComicDetails, setComics, clearComicDetails } =
-  comicsSlice.actions;
+export const { setComics } = comicsSlice.actions;
 
-export const { selectComicsArray, selectStatus, selectComicDetail } =
-  comicsSlice.selectors;
+export const { selectComicsArray, selectStatus } = comicsSlice.selectors;
 
 export const comicsReducer = comicsSlice.reducer;
 
@@ -130,7 +117,6 @@ export const getComicsStore = async (): Promise<ComicsSliceState> => {
   return {
     comics: comicStore,
     status,
-    selectedComic: null,
   };
 };
 

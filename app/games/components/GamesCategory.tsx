@@ -2,8 +2,6 @@
 import {
   selectGamesPreview,
   setGames,
-  clearGameDetails,
-  selectGameDetail,
   GamesSliceState,
 } from "@/lib/features/games/gamesSlice";
 
@@ -15,7 +13,6 @@ import CategoryContainer from "@/shared/components/category/CategoryContainer";
 
 const GamesCategory = ({
   preloadedState,
-  isFirstPage,
 }: {
   preloadedState: any;
   isFirstPage?: boolean;
@@ -29,8 +26,6 @@ const GamesCategory = ({
         <Category<Preview>
           itemsSelector={selectGamesPreview}
           title={CategoryTitle.Games}
-          detailsSelector={selectGameDetail}
-          clearDetails={clearGameDetails}
           preloadedStateAction={setGames}
           preloadedState={preloadedState}
           sliceNumber={6}
