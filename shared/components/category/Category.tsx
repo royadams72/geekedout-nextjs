@@ -1,9 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
-import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
+import {
+  clearSelectedItem,
+  selectIsFirstPage,
+  selectSelectedItem,
+} from "@/lib/features/uiData/uiDataSlice";
 
 import { isNotEmpty } from "@/utils/helpers";
 
@@ -16,8 +20,6 @@ interface DisplayProps<T> {
   itemsSelector: (state: any) => T[];
   preloadedStateAction: (stata: any) => any;
   title: string;
-  detailsSelector: (state: any) => any;
-  clearDetails: () => any;
   sliceNumber: number;
 }
 
@@ -26,23 +28,22 @@ const Category = <T extends { id: number | string | undefined }>({
   itemsSelector,
   preloadedStateAction,
   title,
-  detailsSelector,
-  clearDetails,
+
   sliceNumber,
 }: DisplayProps<T>) => {
   const dispatch = useAppDispatch();
   const items = useAppSelector(itemsSelector);
   const isFirstPage = useAppSelector(selectIsFirstPage);
-  const isDetailsInStore = useAppSelector(detailsSelector);
+  const isDetailsInStore = useAppSelector(selectSelectedItem);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
 
   useEffect(() => {
     (async () => {
       if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
-        dispatch(clearDetails());
+        dispatch(clearSelectedItem());
       }
     })();
-  }, [dispatch, clearDetails, isDetailsInStore, title]);
+  }, [dispatch, isDetailsInStore, title]);
 
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {

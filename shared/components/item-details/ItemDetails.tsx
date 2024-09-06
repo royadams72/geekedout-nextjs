@@ -1,37 +1,41 @@
 "use client";
 
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
 
 import styles from "@/styles/components/_detail.module.scss";
 
-interface ItemProps<T> {
-  itemDetail: T | null;
-  isLoading?: boolean;
-}
+import { setSelectedItem } from "@/lib/features/uiData/uiDataSlice";
 
-interface SelectedItem {
+import {
+  isAlbumDetail,
+  isComicDetail,
+  isGameDetail,
+  isMovieDetail,
+} from "@/shared/types/type-guards";
+
+import { useAppDispatch } from "@/lib/hooks/store.hooks";
+
+const typeGuards = [isMovieDetail, isComicDetail, isAlbumDetail, isGameDetail];
+interface BasicDetail {
   image: string;
   category: string;
   name: string;
-  // Add other properties as needed
+}
+interface ItemProps<T> {
+  itemDetail: T;
+  isLoading?: boolean;
 }
 
-const initialSelectedItem = {
-  image: "",
-  category: "",
-  name: "",
-};
-
-const ItemDetails = <T extends SelectedItem>({
+const ItemDetails = <T extends BasicDetail>({
   itemDetail,
   isLoading,
   children,
 }: PropsWithChildren<ItemProps<T>>) => {
-  const [itemDetails, setItemDetails] =
-    useState<SelectedItem>(initialSelectedItem);
+  const dispatch = useAppDispatch();
+  const [itemDetails, setItemDetails] = useState<T>();
   const [backgroundImage, setBackgroundImage] = useState("");
   const [category, setCategory] = useState("");
   const [isFetching, setIsFetching] = useState(true);
@@ -42,8 +46,15 @@ const ItemDetails = <T extends SelectedItem>({
       setBackgroundImage(itemDetail.image);
       setCategory(itemDetail.category);
       setIsFetching(false);
+
+      for (const checkDetailType of typeGuards) {
+        if (checkDetailType(itemDetail)) {
+          dispatch(setSelectedItem(itemDetail));
+          break;
+        }
+      }
     }
-  }, [itemDetail]);
+  }, [itemDetail, dispatch]);
 
   const divStyle = {
     backgroundImage: `url(${backgroundImage})`,

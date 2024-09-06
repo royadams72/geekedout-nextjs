@@ -1,5 +1,5 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
-import { createAppSlice } from "@/lib/createAppSlice";
+import { createAppSlice } from "@/lib/store/createAppSlice";
 import { StateLoading } from "@/shared/enums/loading";
 import { Game, GameDetail } from "@/shared/interfaces/game";
 import { CategoryType } from "@/shared/enums/category-type.enum";
@@ -8,27 +8,17 @@ import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 export interface GamesSliceState {
   games: Game[];
   status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
-  selectedGame: GameDetail | null;
 }
 
 const initialState: GamesSliceState = {
   games: [],
   status: StateLoading.IDLE,
-  selectedGame: null,
 };
 
 export const gamesSlice = createAppSlice({
   name: "games",
   initialState,
   reducers: (create) => ({
-    setGameDetails: create.reducer(
-      (state, action: PayloadAction<GameDetail>) => {
-        state.selectedGame = action.payload;
-      }
-    ),
-    clearGameDetails: create.reducer((state) => {
-      state.selectedGame = null;
-    }),
     setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
       state.games = action.payload;
     }),
@@ -54,15 +44,11 @@ export const gamesSlice = createAppSlice({
   selectors: {
     selectStatus: (state) => state.status,
     selectState: (state) => state,
-    selectGameDetail: (state) => state.selectedGame,
   },
 });
 
-export const { getGames, setGameDetails, setGames, clearGameDetails } =
-  gamesSlice.actions;
-
-export const { selectStatus, selectGameDetail, selectState } =
-  gamesSlice.selectors;
+export const { getGames, setGames } = gamesSlice.actions;
+export const { selectStatus, selectState } = gamesSlice.selectors;
 export const gamesReducer = gamesSlice.reducer;
 
 const getAllGames = async (): Promise<Game[]> => {
@@ -107,7 +93,6 @@ export const getGamesStore = async (): Promise<GamesSliceState> => {
   return {
     games: gamesStore,
     status,
-    selectedGame: null,
   };
 };
 

@@ -3,16 +3,16 @@ export const formatCurrency = (value: number) =>
     value
   );
 
-export const isNotEmpty = (obj: any = {}): boolean => {
+export const isNotEmpty = (obj: any = {}): boolean | null | undefined => {
   if (Object.prototype.toString.call(obj) === "[object Array]") {
-    return obj?.length !== 0;
+    return obj?.length !== 0 || null || undefined;
   }
   return Object?.keys?.(obj)?.length !== 0;
 };
 
-export const isEmpty = (obj: any = {}): boolean => {
+export const isEmpty = (obj: any = {}): boolean | null | undefined => {
   if (Object.prototype.toString.call(obj) === "[object Array]") {
     return obj?.length === 0;
   }
-  return Object?.keys(obj)?.length === 0;
+  return Object?.keys(obj)?.length === 0 || null || undefined;
 };

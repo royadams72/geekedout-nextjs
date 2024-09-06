@@ -3,8 +3,6 @@
 import {
   selectComicsPreviews,
   setComics,
-  selectComicDetail,
-  clearComicDetails,
   ComicsSliceState,
 } from "@/lib/features/comics/comicsSlice";
 
@@ -28,8 +26,6 @@ const ComicsDisplay = ({
       <Category<Preview>
         title={CategoryTitle.Comics}
         itemsSelector={selectComicsPreviews}
-        detailsSelector={selectComicDetail}
-        clearDetails={clearComicDetails}
         preloadedStateAction={setComics}
         preloadedState={preloadedState}
         sliceNumber={6}

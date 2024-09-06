@@ -1,5 +1,5 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
-import { createAppSlice } from "@/lib/createAppSlice";
+import { createAppSlice } from "@/lib/store/createAppSlice";
 import {
   Album,
   AlbumDetail,
@@ -14,13 +14,11 @@ import { refreshToken } from "@/app/api/music/token/getToken";
 export interface MusicSliceState {
   music: MusicStore;
   status: StateLoading;
-  selectedAlbum: AlbumDetail | null;
 }
 
 const initialState: MusicSliceState = {
   music: {} as MusicStore,
   status: StateLoading.IDLE,
-  selectedAlbum: null,
 };
 
 const fetchWithTokenRefresh = async (url: string, options: RequestInit) => {
@@ -39,31 +37,20 @@ const fetchWithTokenRefresh = async (url: string, options: RequestInit) => {
 export const musicSlice = createAppSlice({
   name: "music",
   initialState,
-  reducers: (create) => ({
-    setMusic: create.reducer((state, action: PayloadAction<MusicStore>) => {
+  reducers: {
+    setMusic: (state, action: PayloadAction<MusicStore>) => {
       state.music = action.payload;
-    }),
-    clearAlbumDetails: create.reducer((state) => {
-      state.selectedAlbum = null;
-    }),
-    setMusicDetails: create.reducer(
-      (state, action: PayloadAction<AlbumDetail>) => {
-        state.selectedAlbum = action.payload;
-      }
-    ),
-  }),
+    },
+  },
   selectors: {
     selectStatus: (state) => state.status,
     selectAllAlbums: (state) => state.music.items || [],
-    selectAlbumDetail: (state) => state.selectedAlbum,
   },
 });
 
-export const { clearAlbumDetails, setMusicDetails, setMusic } =
-  musicSlice.actions;
+export const { setMusic } = musicSlice.actions;
 
-export const { selectStatus, selectAllAlbums, selectAlbumDetail } =
-  musicSlice.selectors;
+export const { selectStatus, selectAllAlbums } = musicSlice.selectors;
 
 export const musicReducer = musicSlice.reducer;
 
@@ -107,7 +94,6 @@ export const getMusicStore = async (): Promise<MusicSliceState> => {
   return {
     music: musicStore.data?.albums || [],
     status,
-    selectedAlbum: null,
   };
 };
 
