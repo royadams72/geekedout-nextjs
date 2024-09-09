@@ -44,7 +44,6 @@ const Category = <T extends { id: number | string | undefined }>({
       setItemsArray(isFirstPage ? items.slice(0, sliceNumber) : items);
       setShowLoader(!isPreloadedState);
     }
-    console.log("isFirstPage==", isFirstPage);
   }, [items, isFirstPage, sliceNumber, isPreloadedState]);
 
   useEffect(() => {

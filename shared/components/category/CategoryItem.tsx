@@ -17,7 +17,6 @@ const CategoryItem = ({
   const title = item?.title as string;
   const imgLrg = item?.imageLarge as StaticImport;
   const isFirstPage = useAppSelector(selectIsFirstPage);
-  const [isPreloadedState, setIsPreloadedState] = useState(false);
   const itemLink = isFirstPage
     ? `${item.category}`
     : `${item.category}/details/${item.id}`;

@@ -5,8 +5,6 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 
 const MoviesPage = async () => {
   const category = await getCategoryByNameFromCache(CategoryType.Movies);
-  // console.log("category", category);
-
   return <MoviesCategory preloadedState={category} />;
 };
 

@@ -14,7 +14,7 @@ const dataFetchers = [
   { key: "music", fetchFunction: getMusicStore },
 ];
 const Home = async () => {
-  const preloadedState: Record<string, any> = {}; // Use Record<string, any> for better type safety
+  const preloadedState: Record<string, any> = {};
 
   for (const { key, fetchFunction } of dataFetchers) {
     try {
@@ -23,8 +23,7 @@ const Home = async () => {
       preloadedState[key] = data;
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
-      // Set a default value or handle the failure
-      preloadedState[key] = null; // or any fallback value
+      preloadedState[key] = null;
     }
   }
 
