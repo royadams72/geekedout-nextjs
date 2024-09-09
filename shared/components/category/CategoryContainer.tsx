@@ -23,13 +23,13 @@ const CategoryContainer = <T extends { status: string }>({
     }
   }, [preloadedState]);
 
-  if (!isPreloadedState) {
-    return (
-      <div style={{ position: "relative" }}>
-        <CategoryLoader title={title} />
-      </div>
-    );
-  }
+  // if (!isPreloadedState) {
+  //   return (
+  //     <div style={{ position: "relative" }}>
+  //       <CategoryLoader title={title} />
+  //     </div>
+  //   );
+  // }
 
   if (preloadedState.status === StateLoading.FAILED) {
     return <div>Category failed to load</div>;

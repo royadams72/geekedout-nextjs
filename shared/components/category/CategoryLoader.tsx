@@ -16,8 +16,8 @@ const CategoryLoader = ({ title }: { title: string }) => {
           </h1>
           <div className={styles.category__itemsContainer}>
             {itemsArray.map((item: number) => (
-              <div key={item} className={styles.category__item}>
-                <div className={styles[`category__imageContainer`]}>
+              <div key={item} className={styles.category__item_firstPage}>
+                <div className={styles.category__imageContainer}>
                   <div className={styles.category__image_wrapper}>
                     <Image
                       src={"/images/defaultImage.png"}
