@@ -9,7 +9,6 @@ import {
 
 import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
-import CategoryContainer from "@/shared/components/category/CategoryContainer";
 import Category from "@/shared/components/category/Category";
 
 const MoviesCategory = ({
@@ -19,18 +18,13 @@ const MoviesCategory = ({
   isFirstPage?: boolean;
 }) => {
   return (
-    <CategoryContainer<MoviesSliceState>
-      preloadedState={preloadedState}
+    <Category<Preview>
+      itemsSelector={selectMoviesPreview}
       title={CategoryTitle.Movies}
-    >
-      <Category<Preview>
-        itemsSelector={selectMoviesPreview}
-        title={CategoryTitle.Movies}
-        preloadedStateAction={setMovies}
-        preloadedState={preloadedState}
-        sliceNumber={6}
-      />
-    </CategoryContainer>
+      preloadedStateAction={setMovies}
+      preloadedState={preloadedState}
+      sliceNumber={6}
+    />
   );
 };
 export default MoviesCategory;
