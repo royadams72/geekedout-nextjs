@@ -7,7 +7,6 @@ import { AlbumDetail } from "@/shared/interfaces/music";
 const Music = ({ albumDetails }: { albumDetails: AlbumDetail }) => {
   return (
     <>
-      <h1 className={styles.details_title}>{albumDetails?.name}</h1>
       {albumDetails?.artists &&
         albumDetails?.artists.map((artist, index) => (
           <h4 key={index} className={styles.details_sub_heading_music}>

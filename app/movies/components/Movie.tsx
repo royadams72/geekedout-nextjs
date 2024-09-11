@@ -7,8 +7,6 @@ import { MovieDetail } from "@/shared/interfaces/movies";
 const Movie = ({ movieDetails }: { movieDetails: MovieDetail }) => {
   return (
     <>
-      <h1 className={styles.details_title}>{movieDetails?.name}</h1>
-
       <h4>
         <span className={styles.details_alt_colour}>Realease Date: </span>
         {movieDetails?.release_date}

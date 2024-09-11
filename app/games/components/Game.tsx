@@ -22,7 +22,6 @@ const Game = ({ gameDetail }: { gameDetail: GameDetail }) => {
 
   return (
     <>
-      <h1 className={styles.details_title}>{gameDetail?.name}</h1>
       <h4>
         <span className={styles.details_alt_colour}>Price: </span>
         {displayValue}
