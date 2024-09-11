@@ -35,7 +35,7 @@ const fetchWithTokenRefresh = async (url: string, options: RequestInit) => {
 };
 
 export const musicSlice = createAppSlice({
-  name: "music",
+  name: CategoryType.Music,
   initialState,
   reducers: {
     setMusic: (state, action: PayloadAction<MusicStore>) => {

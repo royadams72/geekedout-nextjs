@@ -25,7 +25,7 @@ const initialState: ComicsSliceState = {
 };
 
 export const comicsSlice = createAppSlice({
-  name: "comics",
+  name: CategoryType.Comics,
   initialState,
   reducers: {
     setComics: (state, action: PayloadAction<ComicStore>) => {

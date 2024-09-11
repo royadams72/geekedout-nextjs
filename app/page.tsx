@@ -6,12 +6,13 @@ import { getGamesStore } from "@/lib/features/games/gamesSlice";
 import { getComicsStore } from "@/lib/features/comics/comicsSlice";
 import { getMoviesStore } from "@/lib/features/movies/moviesSlice";
 import { getMusicStore } from "@/lib/features/music/musicSlice";
+import { CategoryType } from "@/shared/enums/category-type.enum";
 
 const dataFetchers = [
-  { key: "games", fetchFunction: getGamesStore },
-  { key: "comics", fetchFunction: getComicsStore },
-  { key: "movies", fetchFunction: getMoviesStore },
-  { key: "music", fetchFunction: getMusicStore },
+  { key: CategoryType.Games, fetchFunction: getGamesStore },
+  { key: CategoryType.Comics, fetchFunction: getComicsStore },
+  { key: CategoryType.Movies, fetchFunction: getMoviesStore },
+  { key: CategoryType.Music, fetchFunction: getMusicStore },
 ];
 const Home = async () => {
   const preloadedState: Record<string, any> = {};

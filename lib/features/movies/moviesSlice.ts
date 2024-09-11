@@ -17,7 +17,7 @@ const initialState: MoviesSliceState = {
 };
 
 export const moviesSlice = createAppSlice({
-  name: "movies",
+  name: CategoryType.Movies,
   initialState,
   reducers: {
     setMovies: (state, action: PayloadAction<MoviesStore>) => {

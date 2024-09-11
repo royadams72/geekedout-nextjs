@@ -16,7 +16,7 @@ const initialState: GamesSliceState = {
 };
 
 export const gamesSlice = createAppSlice({
-  name: "games",
+  name: CategoryType.Games,
   initialState,
   reducers: (create) => ({
     setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
