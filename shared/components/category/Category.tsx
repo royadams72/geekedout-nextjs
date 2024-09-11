@@ -34,24 +34,23 @@ const Category = <T extends { id: number | string | undefined }>({
   const items = useAppSelector(itemsSelector);
   const isFirstPage = useAppSelector(selectIsFirstPage);
   const isDetailsInStore = useAppSelector(selectSelectedItem);
+  console.log("isFirstPage==", isFirstPage);
 
   const [showLoader, setShowLoader] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
   const [isPreloadedState, setIsPreloadedState] = useState(false);
-
+  // isFirstPage ? items.slice(0, sliceNumber) :
   useEffect(() => {
     if (isNotEmpty(items)) {
-      setItemsArray(isFirstPage ? items.slice(0, sliceNumber) : items);
+      setItemsArray(items);
       setShowLoader(!isPreloadedState);
     }
   }, [items, isFirstPage, sliceNumber, isPreloadedState]);
 
   useEffect(() => {
-    (async () => {
-      if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
-        dispatch(clearSelectedItem());
-      }
-    })();
+    if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
+      dispatch(clearSelectedItem());
+    }
   }, [dispatch, isDetailsInStore, title]);
 
   useEffect(() => {
@@ -61,6 +60,7 @@ const Category = <T extends { id: number | string | undefined }>({
       setShowLoader(false);
     }
   }, [preloadedStateAction, dispatch, preloadedState, title]);
+  // console.log(showLoader);
 
   const content = (
     <div className={styles.category}>

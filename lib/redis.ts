@@ -1,10 +1,20 @@
 import Redis from "ioredis";
-import { setComicDetailsServerSide } from "./features/comics/comicsSlice";
-import { setGameDetailsServerSide } from "./features/games/gamesSlice";
+import {
+  ComicsSliceState,
+  setComicDetailsServerSide,
+} from "./features/comics/comicsSlice";
+import {
+  GamesSliceState,
+  setGameDetailsServerSide,
+} from "./features/games/gamesSlice";
 import { getMovieDetailServerSide } from "./features/movies/moviesSlice";
 import { uiDataSlice } from "./features/uiData/uiDataSlice";
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { getMusicDetailsServerSide } from "./features/music/musicSlice";
+import {
+  getMusicDetailsServerSide,
+  MusicSliceState,
+} from "./features/music/musicSlice";
+import { UiData } from "@/shared/interfaces/uiData";
 
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
@@ -12,7 +22,7 @@ const redis = new Redis({
 });
 
 export const saveCategoriesToCache = async (categoriesData: any) => {
-  // console.log("saveCategoriesToCache===", categoriesData);
+  console.log("saveCategoriesToCache===", categoriesData.movies);
   await redis.set("categoriesData", JSON.stringify(categoriesData));
 };
 
@@ -22,27 +32,29 @@ export const getCategoriesFromCache = async () => {
   return JSON.parse(data);
 };
 
-// export const updateCategoryInCache = async (
-//   categoryName: string,
-//   updatedDataCategory: any
-// ) => {
-//   try {
-//     const categoriesData = await getCategoriesFromCache();
+export const updateUiDataInCache = async (data: any) => {
+  try {
+    const store: any = await getCategoriesFromCache();
+    const uiData = {
+      ...store.uiData,
+      ...data,
+    };
+    console.log(uiData);
 
-//     if (!categoriesData || !categoriesData[categoryName]) {
-//       throw new Error(`Category ${categoryName} does not exist`);
-//     }
-
-//     categoriesData[categoryName] = {
-//       ...categoriesData[categoryName],
-//       ...updatedDataCategory,
-//     };
-
-//     await saveCategoriesToCache(categoriesData);
-//   } catch (error) {
-//     console.error("Error updating category in cache:", error);
-//   }
-// };
+    // console.log("updateUiDataInCache====", {
+    //   ...store,
+    //   uiData: { ...uiData },
+    // });
+    await saveCategoriesToCache({
+      ...store,
+      uiData: { ...uiData },
+    });
+    // await redis.set(field, JSON.stringify(data));
+    console.log(`Successfully updated Redis with field: `);
+  } catch (error) {
+    console.error(`Error updating Redis with field: `, error);
+  }
+};
 
 export const getCategoryByNameFromCache = async (categoryName: string) => {
   try {
@@ -52,7 +64,32 @@ export const getCategoryByNameFromCache = async (categoryName: string) => {
       throw new Error(`Category ${categoryName} does not exist`);
     }
 
-    return categoriesData[categoryName];
+    let preloadedState: any;
+    const uiData = categoriesData.uiData as UiData;
+    if (categoryName === CategoryType.Music) {
+      preloadedState = {
+        music: categoriesData.music as MusicSliceState,
+        uiData,
+      };
+    } else if (categoryName === CategoryType.Comics) {
+      preloadedState = {
+        comics: categoriesData.music as ComicsSliceState,
+        uiData,
+      };
+    } else if (categoryName === CategoryType.Games) {
+      preloadedState = {
+        gamse: categoriesData.games as GamesSliceState,
+        uiData,
+      };
+    } else if (categoryName === CategoryType.Movies) {
+      preloadedState = {
+        movies: categoriesData.movies as GamesSliceState,
+        uiData,
+      };
+    } else {
+      throw new Error(`Unknown category: ${categoryName}`);
+    }
+    return preloadedState;
   } catch (error) {
     console.error("Error getting category from cache:", error);
     return null;

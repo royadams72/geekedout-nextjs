@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { saveCategoriesToCache } from "@/lib/redis";
+import { getCategoriesFromCache } from "@/lib/redis";
 
-export async function POST(request: Request) {
+export async function GET() {
+  // console.log("POST=======");
+
   try {
-    const categoriesData = await request.json();
-    console.log("POST=======", categoriesData);
+    // const categoriesData = await request.json();
 
-    await saveCategoriesToCache(categoriesData);
+    await getCategoriesFromCache();
 
     return NextResponse.json({
       message: "Categories data stored successfully",

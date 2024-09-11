@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import {
   selectCurrPrevUrls,
   setFirstPage,
@@ -7,8 +8,18 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-
-const NavigationActions = () => {
+// <Link href={movieDetails?.homepage} target="_blank" className="btn">
+const NavLink = ({
+  href,
+  target,
+  className,
+  label,
+}: {
+  href: string;
+  target: string;
+  className: string;
+  label: string;
+}) => {
   const currentPath = usePathname();
   const dispatch = useAppDispatch();
   const { currentUrl, previousUrl } = useAppSelector(selectCurrPrevUrls);
@@ -25,11 +36,11 @@ const NavigationActions = () => {
       console.log("dispatch(setFirstPage(true))");
     }
   }, [currentPath, dispatch, currentUrl, previousUrl]);
-  // useEffect(() => {
-  //   console.log("navigating");
-  // }, [currentPath]);
-
-  return null;
+  return (
+    <Link href={href} target={target} className={className}>
+      {label}
+    </Link>
+  );
 };
 
-export default NavigationActions;
+export default NavLink;

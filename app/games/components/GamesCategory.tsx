@@ -11,27 +11,15 @@ import { CategoryTitle } from "@/shared/enums/category-type.enum";
 import Category from "@/shared/components/category/Category";
 import CategoryContainer from "@/shared/components/category/CategoryContainer";
 
-const GamesCategory = ({
-  preloadedState,
-}: {
-  preloadedState: any;
-  isFirstPage?: boolean;
-}) => {
+const GamesCategory = ({ preloadedState }: { preloadedState: any }) => {
   return (
-    <>
-      <CategoryContainer<GamesSliceState>
-        preloadedState={preloadedState}
-        title={CategoryTitle.Games}
-      >
-        <Category<Preview>
-          itemsSelector={selectGamesPreview}
-          title={CategoryTitle.Games}
-          preloadedStateAction={setGames}
-          preloadedState={preloadedState}
-          sliceNumber={6}
-        />
-      </CategoryContainer>
-    </>
+    <Category<Preview>
+      itemsSelector={selectGamesPreview}
+      title={CategoryTitle.Games}
+      preloadedStateAction={setGames}
+      preloadedState={preloadedState}
+      sliceNumber={6}
+    />
   );
 };
 export default GamesCategory;

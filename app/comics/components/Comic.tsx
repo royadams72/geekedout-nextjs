@@ -9,8 +9,6 @@ import { ComicDetail } from "@/shared/interfaces/comic";
 const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
   return (
     <>
-      <h1 className={styles.details_title}>{comicDetails?.name}</h1>
-
       {comicDetails?.onsaleDate && (
         <h4>
           <span className={styles.details_alt_colour}>Published: </span>
