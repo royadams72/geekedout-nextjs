@@ -8,10 +8,9 @@ import {
 
 import { Preview } from "@/shared/interfaces/preview";
 
-import Category from "@/shared/components/category/Category";
+import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
-import CategoryContainer from "@/shared/components/category/CategoryContainer";
-import { CategoryTitle, CategoryType } from "@/shared/enums/category-type.enum";
+import Category from "@/shared/components/category/Category";
 
 const ComicsDisplay = ({
   preloadedState,
@@ -19,18 +18,13 @@ const ComicsDisplay = ({
   preloadedState: ComicsSliceState;
 }) => {
   return (
-    <CategoryContainer<ComicsSliceState>
+    <Category<Preview>
+      title={CategoryTitle.Comics}
+      itemsSelector={selectComicsPreviews}
+      preloadedStateAction={setComics}
       preloadedState={preloadedState}
-      title={CategoryType.Comics}
-    >
-      <Category<Preview>
-        title={CategoryTitle.Comics}
-        itemsSelector={selectComicsPreviews}
-        preloadedStateAction={setComics}
-        preloadedState={preloadedState}
-        sliceNumber={6}
-      />
-    </CategoryContainer>
+      sliceNumber={6}
+    />
   );
 };
 

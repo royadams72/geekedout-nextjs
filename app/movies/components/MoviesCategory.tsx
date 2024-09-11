@@ -15,7 +15,6 @@ const MoviesCategory = ({
   preloadedState,
 }: {
   preloadedState: MoviesSliceState;
-  isFirstPage?: boolean;
 }) => {
   return (
     <Category<Preview>
