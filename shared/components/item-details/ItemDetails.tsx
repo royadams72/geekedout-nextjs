@@ -17,6 +17,7 @@ import {
 } from "@/shared/types/type-guards";
 
 import { useAppDispatch } from "@/lib/hooks/store.hooks";
+import Loader from "../loader/Loader";
 
 const typeGuards = [isMovieDetail, isComicDetail, isAlbumDetail, isGameDetail];
 interface BasicDetail {
@@ -60,7 +61,7 @@ const ItemDetails = <T extends BasicDetail>({
     backgroundImage: `url(${backgroundImage})`,
   };
 
-  if (isLoading || isFetching) return <div>Loading...</div>;
+  if (isLoading || isFetching) return <Loader />;
 
   return (
     <>
@@ -71,7 +72,9 @@ const ItemDetails = <T extends BasicDetail>({
               Back to {category}
             </Link>
           </div>
-          <div className={styles.details_music}>
+          <div className={styles.details_games}>
+            <h1 className={styles.details_title}>{itemDetails?.name}</h1>
+
             <div className={styles.details_info}>{children}</div>
             <div className={styles.details_image}>
               {itemDetails?.image && (

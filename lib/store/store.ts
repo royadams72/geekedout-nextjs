@@ -4,17 +4,25 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+import { CategoryType } from "@/shared/enums/category-type.enum";
+
 import { comicsReducer } from "@/lib/features/comics/comicsSlice";
 import { musicReducer } from "@/lib/features/music/musicSlice";
 import { gamesReducer } from "@/lib/features/games/gamesSlice";
 import { moviesReducer } from "@/lib/features/movies/moviesSlice";
-import { listenerMiddleware } from "../middleware/persist";
-import { uiDataReducer } from "../features/uiData/uiDataSlice";
+import { uiDataReducer } from "@/lib/features/uiData/uiDataSlice";
+import { listenerMiddleware } from "@/lib/middleware/persist";
 
 const persistConfig = {
   key: "root",
   storage: storage,
-  whitelist: ["comics", "music", "games", "movies", "uiData"],
+  whitelist: [
+    CategoryType.Comics,
+    CategoryType.Music,
+    CategoryType.Games,
+    CategoryType.Movies,
+    "uiData",
+  ],
 };
 const rootReducer = combineReducers({
   comics: comicsReducer,

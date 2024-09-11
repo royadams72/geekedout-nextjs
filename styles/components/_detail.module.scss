@@ -35,20 +35,16 @@ $details-width: 650px;
         color: $primary-colour;
       }
     }
-
-    .details_image {
-      grid-row: 1;
-    }
   }
 
   &_container_movies {
-    .details_link {
-      color: $movies-colour;
-    }
+    // .details_link {
+    //   color: $movies-colour;
+    // }
 
-    .details_alt_colour {
-      color: $movies-colour;
-    }
+    // .details_alt_colour {
+    //   color: $movies-colour;
+    // }
 
     :global {
       .btn {
@@ -61,13 +57,13 @@ $details-width: 650px;
   }
 
   &_container_comics {
-    .details_link {
-      color: $comics-colour;
-    }
+    // .details_link {
+    //   color: $comics-colour;
+    // }
 
-    .details_alt_colour {
-      color: $comics-colour;
-    }
+    // .details_alt_colour {
+    //   color: $comics-colour;
+    // }
 
     :global {
       .btn {
@@ -80,13 +76,13 @@ $details-width: 650px;
   }
 
   &_container_games {
-    .details_link {
-      color: $games-colour;
-    }
+    // .details_link {
+    //   color: $games-colour;
+    // }
 
-    .details_alt_colour {
-      color: $games-colour;
-    }
+    // .details_alt_colour {
+    //   color: $games-colour;
+    // }
 
     :global {
       .btn {
@@ -99,9 +95,9 @@ $details-width: 650px;
   }
 
   &_container_music {
-    .details_link {
-      color: $music-colour;
-    }
+    // .details_link {
+    //   color: $music-colour;
+    // }
 
     :global {
       .btn {
@@ -127,20 +123,45 @@ $details-width: 650px;
   &_games {
     border: $primary-colour 1px solid;
     display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
     gap: 10px;
-    grid-template-rows: repeat(2, 50%, 1fr);
-    grid-template-columns: none;
     margin: 0 auto;
     max-width: $details-width;
     padding: 25px;
     position: relative;
     z-index: $details-main-z-index;
 
+    grid-template-areas:
+      "title"
+      "details_image"
+      "details_info";
+
+    .details_title {
+      grid-area: title;
+    }
+
+    .details_image {
+      grid-area: details_image;
+    }
+
+    .details_info {
+      grid-area: details_info;
+    }
+
     @include is-medium {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: none;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "title title"
+        "details_info details_image";
+
       .details_image {
-        grid-column: 2;
+        grid-area: details_image;
+      }
+
+      .details_info {
+        grid-area: details_info;
       }
     }
   }

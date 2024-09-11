@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 
-import { config } from "@/shared/constants/config";
+import { appConfig } from "@/shared/constants/appConfig";
 
 export const listenerMiddleware = createListenerMiddleware();
 listenerMiddleware.startListening({
@@ -19,7 +19,7 @@ listenerMiddleware.startListening({
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState();
 
-    await fetch(`${config.url.BASE_URL}/api/category-store-data/`, {
+    await fetch(`${appConfig.url.BASE_URL}/api/category-store-data/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
