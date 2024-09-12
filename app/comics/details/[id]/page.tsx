@@ -1,15 +1,15 @@
-import ComicDetails from "@/app/comics/components/ComicDetails";
-
-import { getItemFromCache } from "@/lib/redis/redis";
+import { getCategoryItem } from "@/app/api/get-set-data/functions";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
+
+import ComicDetails from "@/app/comics/components/ComicDetails";
 
 const ComicDetailsPage = async ({
   params: { id },
 }: {
   params: { id: string };
 }) => {
-  const item = await getItemFromCache(CategoryType.Comics, id);
+  const item = await getCategoryItem(CategoryType.Comics, id);
 
   return <ComicDetails preloadedState={item} />;
 };

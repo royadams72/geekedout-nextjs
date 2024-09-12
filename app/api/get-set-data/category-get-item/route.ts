@@ -1,13 +1,17 @@
 // app/api/fetch-category/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-import { getCategoryByNameFromCache } from "@/lib/redis/redis";
+import {
+  getCategoryByNameFromCache,
+  getItemFromCache,
+} from "@/lib/redis/redis";
 
 import { generateSessionId, getSessionIdFromCookie } from "../functions";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const categoryName = searchParams.get("categoryName");
+  const id = searchParams.get("id");
 
   if (!categoryName) {
     return NextResponse.json(
@@ -16,9 +20,9 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  let sessionId = getSessionIdFromCookie() as any;
-  // console.log("sessionId in get data ===", sessionId);
-
+  let sessionId = getSessionIdFromCookie();
+  console.log("sessionId in get data ===", sessionId);
+  // TODO create function for this
   if (!sessionId) {
     sessionId = generateSessionId();
     const response = NextResponse.json({
@@ -34,9 +38,10 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const categoryData = await getCategoryByNameFromCache(
+    const categoryData = await getItemFromCache(
       sessionId,
-      categoryName
+      categoryName,
+      id as string | number
     );
 
     if (!categoryData) {

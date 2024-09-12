@@ -7,7 +7,7 @@ import { getSessionIdFromCookie, generateSessionId } from "../functions";
 export async function POST(request: NextRequest) {
   try {
     let sessionId = getSessionIdFromCookie();
-    console.log("sessionId in store cat==", sessionId);
+    // console.log("sessionId in store cat==", sessionId);
 
     if (!sessionId) {
       sessionId = generateSessionId();

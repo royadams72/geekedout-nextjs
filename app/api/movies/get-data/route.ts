@@ -4,7 +4,7 @@ const pageNum = "1";
 const api_key = process.env.MOVIES_APIKEY;
 
 export async function GET() {
-  console.log("calling movies");
+  // console.log("calling movies");
 
   const response = await fetch(
     `${BASE_URL_MOVIES}/now_playing?api_key=${api_key}&language=en-GB&pageNum=${pageNum}&region=GB`

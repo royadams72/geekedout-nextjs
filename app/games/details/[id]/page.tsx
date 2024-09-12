@@ -1,14 +1,15 @@
-import { getItemFromCache } from "@/lib/redis/redis";
+import { getCategoryItem } from "@/app/api/get-set-data/functions";
+
+import { CategoryType } from "@/shared/enums/category-type.enum";
 
 import GamesDetails from "@/app/games/components/GamesDetails";
-import { CategoryType } from "@/shared/enums/category-type.enum";
 
 const GameDetailsPage = async ({
   params: { id },
 }: {
   params: { id: string };
 }) => {
-  const item = await getItemFromCache(CategoryType.Games, id);
+  const item = await getCategoryItem(CategoryType.Games, id);
 
   return <GamesDetails preloadedState={item} />;
 };
