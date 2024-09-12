@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { saveSessionData } from "@/lib/redis/redis";
 
-import { getSessionIdFromCookie, generateSessionId } from "../util-functions";
-import { cookies } from "next/headers";
+import { getSessionIdFromCookie, generateSessionId } from "../functions";
 
 export async function POST(request: NextRequest) {
   try {
-    let sessionId = getSessionIdFromCookie(request);
+    let sessionId = getSessionIdFromCookie();
     console.log("sessionId in store cat==", sessionId);
 
     if (!sessionId) {

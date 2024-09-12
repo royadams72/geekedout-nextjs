@@ -1,8 +1,10 @@
-import { appConfig } from "@/shared/constants/appConfig";
 import { cookies } from "next/headers";
-const sessionId = "ccd1e804-dfdc-41a5-a12e-ff43207976d0";
+
+import { v4 as uuidv4 } from "uuid";
+
+import { appConfig } from "@/shared/constants/appConfig";
+
 export const getCategoryData = async (categoryName: string) => {
-  const cookieHeader = cookies().toString();
   try {
     const response = await fetch(
       `${appConfig.url.BASE_URL}/api/get-set-data/category-get-data?categoryName=${categoryName}`,
@@ -11,10 +13,11 @@ export const getCategoryData = async (categoryName: string) => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Cookie: cookieHeader,
+          Cookie: `sessionId=${getSessionIdFromCookie()}`,
         },
       }
     );
+    console.log("getSessionIdFromCookie()=====", getSessionIdFromCookie());
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -29,3 +32,11 @@ export const getCategoryData = async (categoryName: string) => {
     throw error;
   }
 };
+
+export const getSessionIdFromCookie = () => {
+  const cookieHeader = cookies();
+  const sessionId = cookieHeader.get("sessionId")?.value;
+  return sessionId;
+};
+
+export const generateSessionId = () => uuidv4();
