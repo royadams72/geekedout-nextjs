@@ -1,6 +1,6 @@
 import ComicDetails from "@/app/comics/components/ComicDetails";
 
-import { getItemFromCache } from "@/lib/redis";
+import { getItemFromCache } from "@/lib/redis/redis";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 

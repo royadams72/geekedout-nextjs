@@ -1,11 +1,11 @@
-import { getCategoryByNameFromCache } from "@/lib/redis";
+import { getCategoryData } from "@/app/api/redis-functions";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 
-import ComicsCategory from "./components/ComicsCategory";
+import ComicsCategory from "@/app/comics/components/ComicsCategory";
 
 const ComicsPage = async () => {
-  const category = await getCategoryByNameFromCache(CategoryType.Comics);
+  const category = await getCategoryData(CategoryType.Comics);
   return <ComicsCategory preloadedState={category} />;
 };
 

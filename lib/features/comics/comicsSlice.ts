@@ -123,6 +123,7 @@ export const getComicsStore = async (): Promise<ComicsSliceState> => {
 const getComicsApi = async (): Promise<ComicStore> => {
   const response = await fetch("http://localhost:3000/api/comics/get-data", {
     method: "GET",
+    credentials: "include",
   });
   const data: ComicStore = await response.json();
   return data;

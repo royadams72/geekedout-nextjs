@@ -1,10 +1,9 @@
-import { getCategoryByNameFromCache } from "@/lib/redis";
-
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import GamesCategory from "./components/GamesCategory";
+import { getCategoryData } from "@/lib/redis/redis-functions";
 
 const GamesPage = async () => {
-  const category = await getCategoryByNameFromCache(CategoryType.Games);
+  const category = await getCategoryData(CategoryType.Games);
   return <GamesCategory preloadedState={category} />;
 };
 

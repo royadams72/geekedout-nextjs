@@ -55,6 +55,7 @@ const getAllGames = async (): Promise<Game[]> => {
   try {
     const response = await fetch("http://localhost:3000/api/games/get-data/", {
       method: "GET",
+      credentials: "include",
     });
     if (!response.ok) {
       throw new Error("Network response was not ok");

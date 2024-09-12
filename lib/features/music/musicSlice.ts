@@ -71,6 +71,7 @@ const getAllMusicApi = async () => {
     "http://localhost:3000/api/music/get-data",
     {
       method: "GET",
+      credentials: "include",
     }
   );
   return data;

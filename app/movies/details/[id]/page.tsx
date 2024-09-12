@@ -1,6 +1,6 @@
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import MovieDetails from "../../components/MovieDetails";
-import { getItemFromCache } from "@/lib/redis";
+import { getItemFromCache } from "@/lib/redis/redis";
 
 const MovieDetailsPage = async ({
   params: { id },

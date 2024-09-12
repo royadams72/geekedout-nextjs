@@ -1,4 +1,4 @@
-import { getItemFromCache } from "@/lib/redis";
+import { getItemFromCache } from "@/lib/redis/redis";
 
 import GamesDetails from "@/app/games/components/GamesDetails";
 import { CategoryType } from "@/shared/enums/category-type.enum";
