@@ -19,30 +19,24 @@ export async function GET(request: NextRequest) {
   }
 
   const existingSessionId = getSessionIdFromCookie();
-  console.log("categoryData================", existingSessionId);
   const { sessionId, response } = createOrUpdateSession(existingSessionId);
-  console.log("categoryData new session================", sessionId);
-  if (sessionId) {
-    try {
-      const categoryData = id
-        ? await getItemFromCache(sessionId, categoryName, id)
-        : await getCategoryByNameFromCache(sessionId, categoryName);
 
-      if (!categoryData) {
-        return NextResponse.json({ error: "No data found" }, { status: 404 });
-      }
-      const returnData = {
-        categoryData,
-        response,
-      };
-      return NextResponse.json({ categoryData, response });
-      // return response;
-    } catch (error) {
-      console.error("Error retrieving data:", error);
-      return NextResponse.json(
-        { error: "Failed to retrieve data" },
-        { status: 500 }
-      );
+  try {
+    const categoryData = id
+      ? await getItemFromCache(sessionId, categoryName, id)
+      : await getCategoryByNameFromCache(sessionId, categoryName);
+
+    if (!categoryData) {
+      return NextResponse.json({ error: "No data found" }, { status: 404 });
     }
+
+    return NextResponse.json({ categoryData, response });
+    // return response;
+  } catch (error) {
+    console.error("Error retrieving data:", error);
+    return NextResponse.json(
+      { error: "Failed to retrieve data" },
+      { status: 500 }
+    );
   }
 }

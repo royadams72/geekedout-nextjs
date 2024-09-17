@@ -30,10 +30,10 @@ export const getCategoryByNameFromCache = async (
   try {
     const data = await getSessionData(sessionId);
     const categoriesData = data.state;
+
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }
-    console.log("getSessionData() sessionId===", categoriesData[categoryName]);
 
     return categoriesData[categoryName];
   } catch (error) {
@@ -49,8 +49,8 @@ export const getItemFromCache = async (
 ) => {
   try {
     const data = await getSessionData(sessionId);
-    const categoriesData = data.returnData.state;
-    console.log("getSessionData() sessionId===", categoriesData);
+    const categoriesData = data.state;
+
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }

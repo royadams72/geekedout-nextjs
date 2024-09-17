@@ -23,8 +23,6 @@ export const getCategoryData = async (
       }
     );
 
-    // console.log("Getting data.....", `sessionId=${getSessionIdFromCookie()}`);
-    console.log("Getting data.....", response);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

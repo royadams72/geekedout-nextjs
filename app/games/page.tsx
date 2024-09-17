@@ -1,6 +1,8 @@
+import { getCategoryData } from "@/app/api/get-set-data/functions";
+
 import { CategoryType } from "@/shared/enums/category-type.enum";
+
 import GamesCategory from "./components/GamesCategory";
-import { getCategoryData } from "@/lib/redis/redis-functions";
 
 const GamesPage = async () => {
   const category = await getCategoryData(CategoryType.Games);

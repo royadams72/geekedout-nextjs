@@ -10,11 +10,12 @@ export async function POST(request: NextRequest) {
   console.log("sessionId in set data ===", sessionId);
 
   try {
-    const categoriesData = await request.json();
+    const { sessionId: payloadSessionId, ...categoriesData } =
+      await request.json();
     if (!categoriesData) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });
     }
-    await saveSessionData(sessionId, categoriesData);
+    await saveSessionData(payloadSessionId || sessionId, categoriesData);
     return response;
     // return NextResponse.json(categoriesData);
   } catch (error) {

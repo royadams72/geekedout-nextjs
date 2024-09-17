@@ -1,9 +1,8 @@
-import { getCategoryByNameFromCache } from "@/lib/redis/redis";
-
 import { CategoryType } from "@/shared/enums/category-type.enum";
 
+import { getCategoryData } from "@/app/api/get-set-data/functions";
+
 import MusicCategory from "@/app/music/components/MusicCategory";
-import { getCategoryData } from "@/lib/redis/redis-functions";
 
 const MuiscPage = async () => {
   const category = await getCategoryData(CategoryType.Music);

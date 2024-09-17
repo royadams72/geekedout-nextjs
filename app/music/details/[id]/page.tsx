@@ -10,8 +10,6 @@ const MusicDetailsPage = async ({
   params: { id: number };
 }) => {
   const item = await getCategoryData(CategoryType.Music, id);
-  console.log(item);
-
   return <MusicDetails preloadedState={item} />;
 };
 
