@@ -42,7 +42,6 @@ const Category = <T extends { id: number | string | undefined }>({
   useEffect(() => {
     if (isNotEmpty(items)) {
       setItemsArray(isFirstPage ? items.slice(0, sliceNumber) : items);
-      setShowLoader(!isPreloadedState);
     }
   }, [items, isFirstPage, sliceNumber, isPreloadedState]);
 
@@ -59,6 +58,8 @@ const Category = <T extends { id: number | string | undefined }>({
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
       setIsPreloadedState(true);
       setShowLoader(false);
+    } else {
+      setShowLoader(true);
     }
   }, [preloadedStateAction, dispatch, preloadedState, title]);
 

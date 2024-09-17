@@ -1,6 +1,6 @@
 const prod = {
   url: {
-    BASE_URL: "https://my-heroku-app.herokuapp.com/api/v1/",
+    BASE_URL: "http://localhost:3000",
   },
 };
 
