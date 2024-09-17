@@ -10,6 +10,7 @@ export const getCategoryData = async (
   id?: string | number
 ) => {
   const idString = id ? `&id=${id}` : "";
+  const sessionId = getSessionIdFromCookie();
   try {
     const response = await fetch(
       `${appConfig.url.BASE_URL}/api/get-set-data/category-get-data?categoryName=${categoryName}${idString}`,
@@ -18,7 +19,7 @@ export const getCategoryData = async (
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Cookie: `sessionId=${getSessionIdFromCookie()}`,
+          Cookie: `sessionId=${sessionId}`,
         },
       }
     );
@@ -49,15 +50,17 @@ export const createOrUpdateSession = (existingSessionId?: string) => {
       : "Session created and data retrieved",
   });
 
+  console.log("sessionId in getSessionIdFromCookie() ===", sessionId);
   if (!existingSessionId) {
     response.cookies.set("sessionId", sessionId, {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      // secure: process.env.NODE_ENV === "production",
+      secure: false,
+      expires: new Date(Date.now() + 86400 * 1000),
     });
   }
-  console.log("sessionId in getSessionIdFromCookie() ===", sessionId);
 
   return { sessionId, response };
 };
