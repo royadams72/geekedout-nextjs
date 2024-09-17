@@ -13,6 +13,8 @@ const redis = new Redis({
 });
 
 export const saveSessionData = async (sessionId: string, data: any) => {
+  // console.log("saveSessionData() data===", data);
+
   await redis.set(`session:${sessionId}`, JSON.stringify(data));
 };
 
@@ -31,6 +33,7 @@ export const getCategoryByNameFromCache = async (
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }
+    console.log("getSessionData() sessionId===", categoriesData[categoryName]);
 
     return categoriesData[categoryName];
   } catch (error) {
@@ -46,7 +49,8 @@ export const getItemFromCache = async (
 ) => {
   try {
     const data = await getSessionData(sessionId);
-    const categoriesData = data.state;
+    const categoriesData = data.returnData.state;
+    console.log("getSessionData() sessionId===", categoriesData);
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }

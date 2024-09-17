@@ -1,42 +1,18 @@
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 import { v4 as uuidv4 } from "uuid";
 
 import { appConfig } from "@/shared/constants/appConfig";
 
-export const getCategoryData = async (categoryName: string) => {
-  try {
-    const response = await fetch(
-      `${appConfig.url.BASE_URL}/api/get-set-data/category-get-data?categoryName=${categoryName}`,
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Cookie: `sessionId=${getSessionIdFromCookie()}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch data:", error);
-    throw error;
-  }
-};
-
-export const getCategoryItem = async (
+export const getCategoryData = async (
   categoryName: string,
-  id: string | number
+  id?: string | number
 ) => {
+  const idString = id ? `&id=${id}` : "";
   try {
     const response = await fetch(
-      `${appConfig.url.BASE_URL}/api/get-set-data/category-get-item?categoryName=${categoryName}&id=${id}`,
+      `${appConfig.url.BASE_URL}/api/get-set-data/category-get-data?categoryName=${categoryName}${idString}`,
       {
         method: "GET",
         credentials: "include",
@@ -46,16 +22,15 @@ export const getCategoryItem = async (
         },
       }
     );
-    console.log("getCategoryItem=====", getSessionIdFromCookie());
 
+    // console.log("Getting data.....", `sessionId=${getSessionIdFromCookie()}`);
+    console.log("Getting data.....", response);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json();
-
-    // console.log("getCategoryData()==", data);
-    return data;
+    return data.categoryData;
   } catch (error) {
     console.error("Failed to fetch data:", error);
     throw error;
@@ -68,4 +43,23 @@ export const getSessionIdFromCookie = () => {
   return sessionId;
 };
 
-export const generateSessionId = () => uuidv4();
+export const createOrUpdateSession = (existingSessionId?: string) => {
+  const sessionId = existingSessionId || uuidv4();
+  const response = NextResponse.json({
+    message: existingSessionId
+      ? "Session already exists"
+      : "Session created and data retrieved",
+  });
+
+  if (!existingSessionId) {
+    response.cookies.set("sessionId", sessionId, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
+  console.log("sessionId in getSessionIdFromCookie() ===", sessionId);
+
+  return { sessionId, response };
+};

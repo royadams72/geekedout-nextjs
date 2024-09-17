@@ -1,4 +1,4 @@
-import { getCategoryItem } from "@/app/api/get-set-data/functions";
+import { getCategoryData } from "@/app/api/get-set-data/functions";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 
@@ -9,7 +9,7 @@ const MovieDetailsPage = async ({
 }: {
   params: { id: number };
 }) => {
-  const item = await getCategoryItem(CategoryType.Movies, id);
+  const item = await getCategoryData(CategoryType.Movies, id);
   return <MovieDetails preloadedState={item} />;
 };
 

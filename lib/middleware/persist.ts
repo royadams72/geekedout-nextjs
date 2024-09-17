@@ -12,10 +12,10 @@ listenerMiddleware.startListening({
     const state = listenerApi.getState();
 
     await fetch(
-      `${appConfig.url.BASE_URL}/api/get-set-data/category-store-data/`,
+      `${appConfig.url.BASE_URL}/api/get-set-data/category-set-data/`,
       {
         method: "POST",
-        // credentials: "include",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
