@@ -1,15 +1,15 @@
+import { getCategoryData } from "@/app/api/get-set-data/functions";
+
 import { CategoryType } from "@/shared/enums/category-type.enum";
+
 import MusicDetails from "../../components/MusicDetails";
-import { getItemFromCache } from "@/lib/redis";
 
 const MusicDetailsPage = async ({
   params: { id },
 }: {
   params: { id: number };
 }) => {
-  const item = await getItemFromCache(CategoryType.Music, id);
-  console.log(item);
-
+  const item = await getCategoryData(CategoryType.Music, id);
   return <MusicDetails preloadedState={item} />;
 };
 

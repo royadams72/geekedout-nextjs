@@ -1,53 +1,36 @@
 import Redis from "ioredis";
-import { setComicDetailsServerSide } from "./features/comics/comicsSlice";
-import { setGameDetailsServerSide } from "./features/games/gamesSlice";
-import { getMovieDetailServerSide } from "./features/movies/moviesSlice";
-import { uiDataSlice } from "./features/uiData/uiDataSlice";
+
+import { setComicDetailsServerSide } from "../features/comics/comicsSlice";
+import { setGameDetailsServerSide } from "../features/games/gamesSlice";
+import { getMovieDetailServerSide } from "../features/movies/moviesSlice";
+import { getMusicDetailsServerSide } from "../features/music/musicSlice";
+
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { getMusicDetailsServerSide } from "./features/music/musicSlice";
 
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
   port: Number(process.env.REDIS_PORT) || 6379,
 });
 
-export const saveCategoriesToCache = async (categoriesData: any) => {
-  // console.log("saveCategoriesToCache===", categoriesData);
-  await redis.set("categoriesData", JSON.stringify(categoriesData));
+export const saveSessionData = async (sessionId: string, data: any) => {
+  // console.log("saveSessionData() data===", data);
+
+  await redis.set(`session:${sessionId}`, JSON.stringify(data));
 };
 
-export const getCategoriesFromCache = async () => {
-  const data: any = await redis.get("categoriesData");
-
-  return JSON.parse(data);
+export const getSessionData = async (sessionId: string) => {
+  const data = await redis.get(`session:${sessionId}`);
+  return data ? JSON.parse(data) : null;
 };
 
-// export const updateCategoryInCache = async (
-//   categoryName: string,
-//   updatedDataCategory: any
-// ) => {
-//   try {
-//     const categoriesData = await getCategoriesFromCache();
-
-//     if (!categoriesData || !categoriesData[categoryName]) {
-//       throw new Error(`Category ${categoryName} does not exist`);
-//     }
-
-//     categoriesData[categoryName] = {
-//       ...categoriesData[categoryName],
-//       ...updatedDataCategory,
-//     };
-
-//     await saveCategoriesToCache(categoriesData);
-//   } catch (error) {
-//     console.error("Error updating category in cache:", error);
-//   }
-// };
-
-export const getCategoryByNameFromCache = async (categoryName: string) => {
+export const getCategoryByNameFromCache = async (
+  sessionId: string,
+  categoryName: string
+) => {
   try {
-    const data = await getCategoriesFromCache();
+    const data = await getSessionData(sessionId);
     const categoriesData = data.state;
+
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }
@@ -60,12 +43,14 @@ export const getCategoryByNameFromCache = async (categoryName: string) => {
 };
 
 export const getItemFromCache = async (
+  sessionId: string,
   categoryName: string,
   id: string | number
 ) => {
   try {
-    const data = await getCategoriesFromCache();
+    const data = await getSessionData(sessionId);
     const categoriesData = data.state;
+
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }

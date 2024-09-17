@@ -16,10 +16,10 @@ export const getValidToken = async (req: NextRequest): Promise<any> => {
       return token;
     }
   }
-  const response = await refreshToken();
 
-  // Extract the token from the new cookie
+  const response = await refreshToken();
   const refreshedTokenCookie = response.cookies.get("spotify_token");
+
   if (refreshedTokenCookie) {
     const { token } = JSON.parse(refreshedTokenCookie.value);
     return token;
@@ -53,12 +53,11 @@ export const refreshToken = async (): Promise<any> => {
   const token = data.access_token;
   const expiry = now + data.expires_in * 1000;
 
-  // Store the new token in an HTTP-only cookie
   const response = NextResponse.next();
   response.cookies.set("spotify_token", JSON.stringify({ token, expiry }), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    maxAge: data.expires_in, // expires_in is usually in seconds
+    maxAge: data.expires_in,
     path: "/",
   });
 
