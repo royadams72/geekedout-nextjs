@@ -1,19 +1,22 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 import {
   clearSelectedItem,
   selectIsFirstPage,
   selectSelectedItem,
+  selectSessionId,
+  setSessionId,
 } from "@/lib/features/uiData/uiDataSlice";
+
 import { isNotEmpty } from "@/utils/helpers";
 
 import styles from "@/styles/components/_category.module.scss";
-import CategoryItem from "./CategoryItem";
-import Loader from "../loader/Loader";
-import CategoryLoader from "./CategoryLoader";
+
+import CategoryItem from "@/shared/components/category/CategoryItem";
+import CategoryLoader from "@/shared/components/category/CategoryLoader";
 
 interface DisplayProps<T> {
   preloadedState: any;
@@ -22,6 +25,10 @@ interface DisplayProps<T> {
   title: string;
   sliceNumber: number;
 }
+
+const generateSessionId = (): string => {
+  return uuidv4();
+};
 
 const Category = <T extends { id: number | string | undefined }>({
   preloadedState,
@@ -32,26 +39,13 @@ const Category = <T extends { id: number | string | undefined }>({
 }: DisplayProps<T>) => {
   const dispatch = useAppDispatch();
   const items = useAppSelector(itemsSelector);
+  const sessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
   const isDetailsInStore = useAppSelector(selectSelectedItem);
 
   const [showLoader, setShowLoader] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
   const [isPreloadedState, setIsPreloadedState] = useState(false);
-
-  useEffect(() => {
-    if (isNotEmpty(items)) {
-      setItemsArray(isFirstPage ? items.slice(0, sliceNumber) : items);
-    }
-  }, [items, isFirstPage, sliceNumber, isPreloadedState]);
-
-  useEffect(() => {
-    (async () => {
-      if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
-        dispatch(clearSelectedItem());
-      }
-    })();
-  }, [dispatch, isDetailsInStore, title]);
 
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
@@ -62,6 +56,24 @@ const Category = <T extends { id: number | string | undefined }>({
       setShowLoader(true);
     }
   }, [preloadedStateAction, dispatch, preloadedState, title]);
+
+  useEffect(() => {
+    if (isNotEmpty(items)) {
+      setItemsArray(isFirstPage ? items.slice(0, sliceNumber) : items);
+    }
+  }, [items, isFirstPage, sliceNumber]);
+
+  useEffect(() => {
+    if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
+      dispatch(clearSelectedItem());
+    }
+  }, [dispatch, isDetailsInStore, title]);
+
+  useEffect(() => {
+    if (!sessionId) {
+      dispatch(setSessionId(generateSessionId()));
+    }
+  });
 
   const content = (
     <div className={styles.category}>
