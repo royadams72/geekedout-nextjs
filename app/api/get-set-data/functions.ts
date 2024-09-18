@@ -29,7 +29,7 @@ export const getCategoryData = async (
     }
 
     const data = await response.json();
-    return data.categoryData;
+    return data;
   } catch (error) {
     console.error("Failed to fetch data:", error);
     throw error;
@@ -42,22 +42,29 @@ export const getSessionIdFromCookie = () => {
   return sessionId;
 };
 
-export const createOrUpdateSession = (existingSessionId?: string) => {
-  const sessionId = existingSessionId || uuidv4();
-  const response = NextResponse.json({
-    message: existingSessionId
+export const ensureBrowserSession = (existingSessionId?: string) => {
+  const sessionId = getSessionIdFromCookie();
+  let response: any;
+
+  if (!existingSessionId) {
+    response = NextResponse.json({
+      message: "Session undefined",
+    });
+    return response;
+  }
+
+  response = NextResponse.json({
+    message: sessionId
       ? "Session already exists"
       : "Session created and data retrieved",
   });
 
-  console.log("sessionId in getSessionIdFromCookie() ===", sessionId);
-  if (!existingSessionId) {
-    response.cookies.set("sessionId", sessionId, {
+  if (!sessionId) {
+    response.cookies.set("sessionId", existingSessionId, {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
-      // secure: process.env.NODE_ENV === "production",
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       expires: new Date(Date.now() + 86400 * 1000),
     });
   }

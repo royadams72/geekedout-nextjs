@@ -1,6 +1,5 @@
-// app/api/fetch-category/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { createOrUpdateSession, getSessionIdFromCookie } from "../functions";
+import { getSessionIdFromCookie } from "../functions";
 import {
   getCategoryByNameFromCache,
   getItemFromCache,
@@ -10,6 +9,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const categoryName = searchParams.get("categoryName");
   const id = searchParams.get("id");
+  console.log("sessionId==");
 
   if (!categoryName) {
     return NextResponse.json(
@@ -17,10 +17,7 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
-
-  const existingSessionId = getSessionIdFromCookie();
-  const { sessionId, response } = createOrUpdateSession(existingSessionId);
-
+  const sessionId = getSessionIdFromCookie() as string;
   try {
     const categoryData = id
       ? await getItemFromCache(sessionId, categoryName, id)
@@ -30,8 +27,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });
     }
 
-    return NextResponse.json({ categoryData, response });
-    // return response;
+    console.log("sessionId==", categoryData);
+    return NextResponse.json(categoryData);
   } catch (error) {
     console.error("Error retrieving data:", error);
     return NextResponse.json(

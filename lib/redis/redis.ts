@@ -6,15 +6,14 @@ import { getMovieDetailServerSide } from "../features/movies/moviesSlice";
 import { getMusicDetailsServerSide } from "../features/music/musicSlice";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
+import { RootState } from "../store/store";
 
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
   port: Number(process.env.REDIS_PORT) || 6379,
 });
 
-export const saveSessionData = async (sessionId: string, data: any) => {
-  // console.log("saveSessionData() data===", data);
-
+export const saveSessionData = async (sessionId: string, data: RootState) => {
   await redis.set(`session:${sessionId}`, JSON.stringify(data));
 };
 
@@ -50,11 +49,12 @@ export const getItemFromCache = async (
   try {
     const data = await getSessionData(sessionId);
     const categoriesData = data.state;
+    let selectedData: any;
 
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }
-    let selectedData: any;
+
     switch (categoryName) {
       case CategoryType.Comics:
         selectedData = await setComicDetailsServerSide(

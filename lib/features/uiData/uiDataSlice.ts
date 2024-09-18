@@ -7,17 +7,18 @@ import { UiData } from "@/shared/interfaces/uiData";
 import { AllDetailsTypes } from "@/shared/types/all-categories";
 
 const initialState: UiData = {
-  selectedId: "",
-  selectedItem: null,
-  isFirstPage: true,
   currPrevUrls: {
     currentUrl: "/",
     previousUrl: "",
   },
+  isFirstPage: true,
   searchData: {
     searchTerm: "",
     items: [],
   },
+  selectedId: "",
+  selectedItem: null,
+  sessionId: "",
 };
 
 export const uiDataSlice = createAppSlice({
@@ -40,16 +41,29 @@ export const uiDataSlice = createAppSlice({
     clearSelectedItem: (state) => {
       state.selectedItem = null;
     },
+    setSessionId: (state, action: PayloadAction<string>) => {
+      state.sessionId = action.payload;
+    },
   },
   selectors: {
     selectCurrPrevUrls: (state) => state.currPrevUrls,
     selectIsFirstPage: (state) => state.isFirstPage,
     selectSelectedItem: (state) => state.selectedItem,
+    selectSessionId: (state) => state.sessionId,
   },
 });
 
-export const { setFirstPage, setUrls, setSelectedItem, clearSelectedItem } =
-  uiDataSlice.actions;
-export const { selectCurrPrevUrls, selectIsFirstPage, selectSelectedItem } =
-  uiDataSlice.selectors;
+export const {
+  setFirstPage,
+  setUrls,
+  setSelectedItem,
+  clearSelectedItem,
+  setSessionId,
+} = uiDataSlice.actions;
+export const {
+  selectCurrPrevUrls,
+  selectIsFirstPage,
+  selectSelectedItem,
+  selectSessionId,
+} = uiDataSlice.selectors;
 export const uiDataReducer = uiDataSlice.reducer;

@@ -2,22 +2,29 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { saveSessionData } from "@/lib/redis/redis";
 
-import { createOrUpdateSession, getSessionIdFromCookie } from "../functions";
+import { ensureBrowserSession } from "../functions";
 
 export async function POST(request: NextRequest) {
-  const existingSessionId = getSessionIdFromCookie();
-  const { sessionId, response } = createOrUpdateSession(existingSessionId);
-  console.log("sessionId in set data ===", sessionId);
-
   try {
-    const { sessionId: payloadSessionId, ...categoriesData } =
-      await request.json();
-    if (!categoriesData) {
-      return NextResponse.json({ error: "No data found" }, { status: 404 });
+    const categoriesData = await request.json();
+    const {
+      state: {
+        uiData: { sessionId },
+      },
+    } = categoriesData;
+    const maxAttempts = 4;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      if (sessionId) {
+        const { response } = ensureBrowserSession(sessionId);
+        await saveSessionData(sessionId, categoriesData);
+        return response;
+      }
     }
-    await saveSessionData(payloadSessionId || sessionId, categoriesData);
-    return response;
-    // return NextResponse.json(categoriesData);
+    return NextResponse.json(
+      { error: "Session ID is required" },
+      { status: 400 }
+    );
   } catch (error) {
     console.error("Failed to store data:", error);
 
