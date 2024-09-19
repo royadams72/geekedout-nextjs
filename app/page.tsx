@@ -1,12 +1,13 @@
-import MoviesCategory from "@/app/movies/components/MoviesCategory";
-import ComicsCategory from "@/app/comics/components/ComicsCategory";
-import MusicCategory from "@/app/music/components/MusicCategory";
-import GamesCategory from "./games/components/GamesCategory";
 import { getGamesStore } from "@/lib/features/games/gamesSlice";
 import { getComicsStore } from "@/lib/features/comics/comicsSlice";
 import { getMoviesStore } from "@/lib/features/movies/moviesSlice";
 import { getMusicStore } from "@/lib/features/music/musicSlice";
 import { CategoryType } from "@/shared/enums/category-type.enum";
+
+import MoviesCategory from "@/app/movies/components/MoviesCategory";
+import ComicsCategory from "@/app/comics/components/ComicsCategory";
+import MusicCategory from "@/app/music/components/MusicCategory";
+import GamesCategory from "./games/components/GamesCategory";
 
 const dataFetchers = [
   { key: CategoryType.Games, fetchFunction: getGamesStore },
@@ -14,7 +15,11 @@ const dataFetchers = [
   { key: CategoryType.Movies, fetchFunction: getMoviesStore },
   { key: CategoryType.Music, fetchFunction: getMusicStore },
 ];
-const Home = async () => {
+const Home = async ({
+  searchParams: { redirected },
+}: {
+  searchParams: { redirected: string };
+}) => {
   const preloadedState: Record<string, any> = {};
 
   for (const { key, fetchFunction } of dataFetchers) {
@@ -30,10 +35,22 @@ const Home = async () => {
 
   return (
     <>
-      <MoviesCategory preloadedState={preloadedState.movies} />
-      <ComicsCategory preloadedState={preloadedState.comics} />
-      <MusicCategory preloadedState={preloadedState.music} />
-      <GamesCategory preloadedState={preloadedState.games} />
+      <MoviesCategory
+        preloadedState={preloadedState.movies}
+        isRedirected={redirected}
+      />
+      <ComicsCategory
+        preloadedState={preloadedState.comics}
+        isRedirected={redirected}
+      />
+      <MusicCategory
+        preloadedState={preloadedState.music}
+        isRedirected={redirected}
+      />
+      <GamesCategory
+        preloadedState={preloadedState.games}
+        isRedirected={redirected}
+      />
     </>
   );
 };

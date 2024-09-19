@@ -11,6 +11,11 @@ export const getCategoryData = async (
 ) => {
   const idString = id ? `&id=${id}` : "";
   const sessionId = getSessionIdFromCookie();
+  // Edgecase: If somehow cookie is lost navigate to first page where the app automatically will put the sessionId into back
+  // TODO: Possibly add sessionId to session storage, on app init, as a fallback and only redirect if necessary
+  if (!sessionId) {
+    return { redirect: `${appConfig.url.BASE_URL}/?redirected=true` };
+  }
   try {
     const response = await fetch(
       `${appConfig.url.BASE_URL}/api/get-set-data/category-get-data?categoryName=${categoryName}${idString}`,

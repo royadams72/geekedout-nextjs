@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { v4 as uuidv4 } from "uuid";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
+
 import {
   clearSelectedItem,
   selectIsFirstPage,
@@ -24,19 +27,24 @@ interface DisplayProps<T> {
   preloadedStateAction: (stata: any) => any;
   title: string;
   sliceNumber: number;
+  isRedirected: string;
 }
 
 const generateSessionId = (): string => {
   return uuidv4();
 };
-
+const handleNavigation = () => {
+  router.refresh(); // Trigger a refresh to re-fetch data
+};
 const Category = <T extends { id: number | string | undefined }>({
   preloadedState,
   itemsSelector,
   preloadedStateAction,
   title,
   sliceNumber,
+  isRedirected,
 }: DisplayProps<T>) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const items = useAppSelector(itemsSelector);
   const sessionId = useAppSelector(selectSessionId);
@@ -74,6 +82,12 @@ const Category = <T extends { id: number | string | undefined }>({
       dispatch(setSessionId(generateSessionId()));
     }
   });
+
+  useEffect(() => {
+    if (isRedirected) {
+      router.refresh();
+    }
+  }, [isRedirected, router]);
 
   const content = (
     <div className={styles.category}>
