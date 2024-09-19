@@ -1,3 +1,5 @@
+import { checkIfRedirected } from "@/utils/helpers/";
+
 import { getCategoryData } from "@/app/api/get-set-data/functions";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
@@ -10,6 +12,9 @@ const MusicDetailsPage = async ({
   params: { id: number };
 }) => {
   const item = await getCategoryData(CategoryType.Music, id);
+
+  checkIfRedirected(item);
+
   return <MusicDetails preloadedState={item} />;
 };
 

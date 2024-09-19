@@ -13,8 +13,10 @@ import Category from "@/shared/components/category/Category";
 
 const MoviesCategory = ({
   preloadedState,
+  isRedirected,
 }: {
   preloadedState: MoviesSliceState;
+  isRedirected: string;
 }) => {
   return (
     <Category<Preview>
@@ -23,6 +25,7 @@ const MoviesCategory = ({
       preloadedStateAction={setMovies}
       preloadedState={preloadedState}
       sliceNumber={6}
+      isRedirected={isRedirected}
     />
   );
 };
