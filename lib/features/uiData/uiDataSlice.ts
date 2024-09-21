@@ -52,6 +52,9 @@ export const uiDataSlice = createAppSlice({
       const { searchTerm, items } = action.payload;
       state.searchData = { searchTerm, items };
     },
+    clearSearchData: (state) => {
+      state.searchData = { searchTerm: "", items: [] };
+    },
   },
   selectors: {
     selectCurrPrevUrls: (state) => state.currPrevUrls,
@@ -69,6 +72,7 @@ export const {
   clearSelectedItem,
   setSessionId,
   setSearchData,
+  clearSearchData,
 } = uiDataSlice.actions;
 
 export const {

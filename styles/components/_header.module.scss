@@ -3,10 +3,12 @@
 $bg-colour: #232323;
 
 .header {
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(2, auto);
+  margin: 0 auto;
+  position: relative;
+  z-index: 100;
 
   @include is-medium {
     grid-template-columns: 55% 1fr;
@@ -18,10 +20,10 @@ $bg-colour: #232323;
 
   &__logo {
     &_image {
+      display: block;
+      height: auto;
       margin: 0 auto;
       width: 70%;
-      height: auto;
-      display: block;
 
       @include is-medium {
         margin: 10px 0 10px 15px;

@@ -68,8 +68,7 @@ $games-colour: #d44d51;
   &__item_firstPage {
     padding: 0;
     height: 100%;
-    max-width: 300px; // Adjust as needed
-    // margin: 0 auto; /
+    max-width: 300px;
   }
 
   &__image_container {
@@ -97,11 +96,11 @@ $games-colour: #d44d51;
   &__image__movies {
     height: 100%;
     margin: 0;
-    position: absolute;
-    padding: 0;
-    width: 100%;
-    object-position: top center !important;
     object-fit: cover !important;
+    object-position: top center !important;
+    padding: 0;
+    position: absolute;
+    width: 100%;
   }
 
   &__image__comics,

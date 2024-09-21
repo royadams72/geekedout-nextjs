@@ -15,7 +15,7 @@ const CategoryItem = ({
 }) => {
   const title = item?.title as string;
   const imgLrg = item?.imageLarge as StaticImport;
-  const categoryColour = isSearch ? item?.category : "";
+  const categoryColour = isSearch ? `__${item?.category}` : "";
   const isFirstPage = useAppSelector(selectIsFirstPage);
   const itemLink = isFirstPage
     ? `${item.category}`
@@ -36,7 +36,7 @@ const CategoryItem = ({
               fill
               loading="lazy"
               sizes="25vw, 25vh"
-              className={styles[`category__image__${categoryColour}`]}
+              className={styles[`category__image${categoryColour}`]}
             />
           </div>
           <p className={styles.category__footer}>

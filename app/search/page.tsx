@@ -82,7 +82,6 @@ const SearchPage = () => {
   return (
     <>
       <div className={styles.search__container}>
-        {/* search field */}
         <input
           className={styles.search__input}
           onChange={(e) => search(e.target.value)}
@@ -96,7 +95,6 @@ const SearchPage = () => {
         </div>
       )}
       <div className={styles.category__items_container}>
-        {/* for loop */}
         {searchItems &&
           searchItems.map((item) => (
             <CategoryItem key={item.id} item={item} isSearch={true} />

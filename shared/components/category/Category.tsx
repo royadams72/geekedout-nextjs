@@ -7,8 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
 import {
+  clearSearchData,
   clearSelectedItem,
   selectIsFirstPage,
+  selectSearchData,
   selectSelectedItem,
   selectSessionId,
   setSessionId,
@@ -44,6 +46,7 @@ const Category = <T extends { id: number | string | undefined }>({
 }: DisplayProps<T>) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { items: searchItemsArray } = useAppSelector(selectSearchData);
   const items = useAppSelector(itemsSelector);
   const sessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
@@ -73,7 +76,10 @@ const Category = <T extends { id: number | string | undefined }>({
     if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
       dispatch(clearSelectedItem());
     }
-  }, [dispatch, isDetailsInStore, title]);
+    if (searchItemsArray?.length > 0) {
+      dispatch(clearSearchData());
+    }
+  }, [dispatch, isDetailsInStore, title, searchItemsArray]);
 
   useEffect(() => {
     if (!sessionId) {
