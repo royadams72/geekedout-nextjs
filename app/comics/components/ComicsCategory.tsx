@@ -14,8 +14,10 @@ import Category from "@/shared/components/category/Category";
 
 const ComicsDisplay = ({
   preloadedState,
+  isRedirected,
 }: {
   preloadedState: ComicsSliceState;
+  isRedirected?: string;
 }) => {
   return (
     <Category<Preview>

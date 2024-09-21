@@ -138,7 +138,7 @@ const mapAlbumDetail = (item: any): AlbumDetail => {
   };
 };
 
-export const selectMusicPreview = createSelector(
+export const selectMusicPreviews = createSelector(
   selectAllAlbums,
   (arr: Album[]) => {
     return arr.map((album) => ({

@@ -5,6 +5,7 @@ import { createAppSlice } from "@/lib/store/createAppSlice";
 import { UiData } from "@/shared/interfaces/uiData";
 
 import { AllDetailsTypes } from "@/shared/types/all-categories";
+import { Preview } from "@/shared/interfaces/preview";
 
 const initialState: UiData = {
   currPrevUrls: {
@@ -44,12 +45,20 @@ export const uiDataSlice = createAppSlice({
     setSessionId: (state, action: PayloadAction<string>) => {
       state.sessionId = action.payload;
     },
+    setSearchData: (
+      state,
+      action: PayloadAction<{ searchTerm: string; items: Preview[] }>
+    ) => {
+      const { searchTerm, items } = action.payload;
+      state.searchData = { searchTerm, items };
+    },
   },
   selectors: {
     selectCurrPrevUrls: (state) => state.currPrevUrls,
     selectIsFirstPage: (state) => state.isFirstPage,
     selectSelectedItem: (state) => state.selectedItem,
     selectSessionId: (state) => state.sessionId,
+    selectSearchData: (state) => state.searchData,
   },
 });
 
@@ -59,11 +68,15 @@ export const {
   setSelectedItem,
   clearSelectedItem,
   setSessionId,
+  setSearchData,
 } = uiDataSlice.actions;
+
 export const {
   selectCurrPrevUrls,
   selectIsFirstPage,
   selectSelectedItem,
   selectSessionId,
+  selectSearchData,
 } = uiDataSlice.selectors;
+
 export const uiDataReducer = uiDataSlice.reducer;

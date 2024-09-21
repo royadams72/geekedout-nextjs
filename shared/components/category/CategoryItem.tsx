@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAppSelector } from "@/lib/hooks/store.hooks";
@@ -9,13 +8,14 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 const CategoryItem = ({
   item,
-  parentIsLoaded,
+  isSearch,
 }: {
   item: Preview;
-  parentIsLoaded?: boolean;
+  isSearch?: boolean;
 }) => {
   const title = item?.title as string;
   const imgLrg = item?.imageLarge as StaticImport;
+  const categoryColour = isSearch ? item?.category : "";
   const isFirstPage = useAppSelector(selectIsFirstPage);
   const itemLink = isFirstPage
     ? `${item.category}`
@@ -29,16 +29,15 @@ const CategoryItem = ({
         }
       >
         <Link href={itemLink}>
-          <div className={styles.category__imageContainer}>
-            <div className={styles.category__image_wrapper}>
-              <Image
-                src={imgLrg}
-                alt={title}
-                fill
-                loading="lazy"
-                sizes="25vw, 25vh"
-              />
-            </div>
+          <div className={styles.category__image_container}>
+            <Image
+              src={imgLrg}
+              alt={title}
+              fill
+              loading="lazy"
+              sizes="25vw, 25vh"
+              className={styles[`category__image__${categoryColour}`]}
+            />
           </div>
           <p className={styles.category__footer}>
             <span className={styles.category__title}>{title}</span>

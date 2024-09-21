@@ -1,6 +1,6 @@
 "use client";
 import {
-  selectGamesPreview,
+  selectGamesPreviews,
   setGames,
   GamesSliceState,
 } from "@/lib/features/games/gamesSlice";
@@ -12,13 +12,14 @@ import Category from "@/shared/components/category/Category";
 
 const GamesCategory = ({
   preloadedState,
+  isRedirected,
 }: {
   preloadedState: any;
-  isFirstPage?: boolean;
+  isRedirected?: string;
 }) => {
   return (
     <Category<Preview>
-      itemsSelector={selectGamesPreview}
+      itemsSelector={selectGamesPreviews}
       title={CategoryTitle.Games}
       preloadedStateAction={setGames}
       preloadedState={preloadedState}

@@ -1,12 +1,22 @@
-
-
 .search {
   &__input {
+    border-width: 2px;
+    border-color: #57b4fe;
+    font-size: 1.5em;
     margin-bottom: 20px;
     margin-top: 20px;
+    width: 70%;
+    height: 30px;
+    border-radius: 4px;
 
     @include is-medium {
       margin-bottom: 40px;
+      width: 30%;
     }
+  }
+
+  &__container {
+    text-align: center;
+    width: 100%;
   }
 }
