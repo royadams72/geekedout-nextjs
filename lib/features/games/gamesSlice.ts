@@ -99,16 +99,19 @@ export const getGamesStore = async (): Promise<GamesSliceState> => {
 
 export const selectGames = createSelector(selectState, (state) => state.games);
 
-export const selectGamesPreview = createSelector(selectGames, (arr: Game[]) => {
-  return arr.map((game) => {
-    return {
-      category: CategoryType.Games,
-      id: game.id,
-      imageLarge: game.image || IMAGE_NOT_FOUND.LRG_450x210,
-      title: game.title,
-    };
-  });
-});
+export const selectGamesPreviews = createSelector(
+  selectGames,
+  (arr: Game[]) => {
+    return arr.map((game) => {
+      return {
+        category: CategoryType.Games,
+        id: game.id,
+        imageLarge: game.image || IMAGE_NOT_FOUND.LRG_450x210,
+        title: game.title,
+      };
+    });
+  }
+);
 
 export const mapGameDetail = (
   games: GamesSliceState,

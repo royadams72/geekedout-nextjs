@@ -14,11 +14,11 @@ const CategoryLoader = ({ title }: { title: string }) => {
           <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
             {`${title} loading...`}
           </h1>
-          <div className={styles.category__itemsContainer}>
+          <div className={styles.category__items_container}>
             {itemsArray.map((item: number) => (
               <div key={item} className={styles.category__item_firstPage}>
-                <div className={styles.category__imageContainer}>
-                  <div className={styles.category__image_wrapper}>
+                <div className={styles.category__image_container}>
+                  <div className={styles.category__image}>
                     <Image
                       src={"/images/defaultImage.png"}
                       alt={title}

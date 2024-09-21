@@ -92,7 +92,7 @@ export const { selectMovies, selectStatus } = moviesSlice.selectors;
 
 export const moviesReducer = moviesSlice.reducer;
 
-export const selectMoviesPreview = createSelector(
+export const selectMoviesPreviews = createSelector(
   selectMovies,
   (arr: Movie[]) => {
     return arr?.map((movie) => ({

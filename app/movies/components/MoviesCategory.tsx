@@ -3,7 +3,7 @@ import { Preview } from "@/shared/interfaces/preview";
 
 import {
   setMovies,
-  selectMoviesPreview,
+  selectMoviesPreviews,
   MoviesSliceState,
 } from "@/lib/features/movies/moviesSlice";
 
@@ -16,11 +16,11 @@ const MoviesCategory = ({
   isRedirected,
 }: {
   preloadedState: MoviesSliceState;
-  isRedirected: string;
+  isRedirected?: string;
 }) => {
   return (
     <Category<Preview>
-      itemsSelector={selectMoviesPreview}
+      itemsSelector={selectMoviesPreviews}
       title={CategoryTitle.Movies}
       preloadedStateAction={setMovies}
       preloadedState={preloadedState}

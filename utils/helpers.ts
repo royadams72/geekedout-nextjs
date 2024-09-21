@@ -20,8 +20,6 @@ export const isEmpty = (obj: any = {}): boolean | null | undefined => {
 };
 
 export const checkIfRedirected = (category: any) => {
-  console.log(category);
-
   if (category.redirect) {
     redirect(category.redirect);
     return null;

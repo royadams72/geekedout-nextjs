@@ -7,8 +7,10 @@ import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
 import {
+  clearSearchData,
   clearSelectedItem,
   selectIsFirstPage,
+  selectSearchData,
   selectSelectedItem,
   selectSessionId,
   setSessionId,
@@ -27,15 +29,13 @@ interface DisplayProps<T> {
   preloadedStateAction: (stata: any) => any;
   title: string;
   sliceNumber: number;
-  isRedirected: string;
+  isRedirected?: string;
 }
 
 const generateSessionId = (): string => {
   return uuidv4();
 };
-const handleNavigation = () => {
-  router.refresh(); // Trigger a refresh to re-fetch data
-};
+
 const Category = <T extends { id: number | string | undefined }>({
   preloadedState,
   itemsSelector,
@@ -46,6 +46,7 @@ const Category = <T extends { id: number | string | undefined }>({
 }: DisplayProps<T>) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { items: searchItemsArray } = useAppSelector(selectSearchData);
   const items = useAppSelector(itemsSelector);
   const sessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
@@ -75,7 +76,10 @@ const Category = <T extends { id: number | string | undefined }>({
     if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
       dispatch(clearSelectedItem());
     }
-  }, [dispatch, isDetailsInStore, title]);
+    if (searchItemsArray?.length > 0) {
+      dispatch(clearSearchData());
+    }
+  }, [dispatch, isDetailsInStore, title, searchItemsArray]);
 
   useEffect(() => {
     if (!sessionId) {
@@ -94,7 +98,7 @@ const Category = <T extends { id: number | string | undefined }>({
       <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
         {isPreloadedState ? `${title}` : `${title} loading...`}
       </h1>
-      <div className={styles.category__itemsContainer}>
+      <div className={styles.category__items_container}>
         {(itemsArray as T[]).map((item: T) => (
           <CategoryItem key={item.id} item={item} />
         ))}

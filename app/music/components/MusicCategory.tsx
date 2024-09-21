@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  selectMusicPreview,
+  selectMusicPreviews,
   setMusic,
   MusicSliceState,
 } from "@/lib/features/music/musicSlice";
@@ -13,13 +13,15 @@ import Category from "@/shared/components/category/Category";
 
 const MusicCategory = ({
   preloadedState,
+  isRedirected,
 }: {
   preloadedState: MusicSliceState;
+  isRedirected?: string;
 }) => {
   return (
     <Category<Preview>
       title={CategoryTitle.Music}
-      itemsSelector={selectMusicPreview}
+      itemsSelector={selectMusicPreviews}
       preloadedStateAction={setMusic}
       preloadedState={preloadedState}
       sliceNumber={6}

@@ -5,9 +5,12 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import styles from "@/styles/components/_detail.module.scss";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
-import { setSelectedItem } from "@/lib/features/uiData/uiDataSlice";
+import {
+  selectSearchData,
+  setSelectedItem,
+} from "@/lib/features/uiData/uiDataSlice";
 
 import {
   isAlbumDetail,
@@ -16,8 +19,9 @@ import {
   isMovieDetail,
 } from "@/shared/types/type-guards";
 
-import { useAppDispatch } from "@/lib/hooks/store.hooks";
-import Loader from "../loader/Loader";
+import styles from "@/styles/components/_detail.module.scss";
+
+import Loader from "@/shared/components/loader/Loader";
 
 const typeGuards = [isMovieDetail, isComicDetail, isAlbumDetail, isGameDetail];
 interface BasicDetail {
@@ -36,10 +40,14 @@ const ItemDetails = <T extends BasicDetail>({
   children,
 }: PropsWithChildren<ItemProps<T>>) => {
   const dispatch = useAppDispatch();
+
+  const { items } = useAppSelector(selectSearchData);
+
   const [itemDetails, setItemDetails] = useState<T>();
   const [backgroundImage, setBackgroundImage] = useState("");
   const [category, setCategory] = useState("");
   const [isFetching, setIsFetching] = useState(true);
+  const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {
     if (itemDetail) {
@@ -57,6 +65,12 @@ const ItemDetails = <T extends BasicDetail>({
     }
   }, [itemDetail, dispatch]);
 
+  useEffect(() => {
+    if (items?.length > 0) {
+      setIsSearch(true);
+    }
+  }, [dispatch, items]);
+
   const divStyle = {
     backgroundImage: `url(${backgroundImage})`,
   };
@@ -65,12 +79,20 @@ const ItemDetails = <T extends BasicDetail>({
 
   return (
     <>
+      {/* // <a *ngIf="isSearch" class="btn" [routerLink]="['/search', ]"><< Back to Search Results</a> */}
       <div className={styles.details_container}>
         <div className={styles[`details_container_${category.toLowerCase()}`]}>
           <div className={styles.details_btn_container}>
-            <Link href={`/${category.toLowerCase()}`} className="btn">
-              Back to {category}
-            </Link>
+            {!isSearch && (
+              <Link href={`/${category.toLowerCase()}`} className="btn">
+                Back to {category}
+              </Link>
+            )}
+            {isSearch && (
+              <Link className="btn" href="/search">
+                Back to Search Results
+              </Link>
+            )}
           </div>
           <div className={styles.details_games}>
             <h1 className={styles.details_title}>{itemDetails?.name}</h1>

@@ -1,4 +1,4 @@
-import { checkIfRedirected } from "@/utils/helpers/";
+import { checkIfRedirected } from "@/utils/helpers";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { getCategoryData } from "@/app/api/get-set-data/functions";
