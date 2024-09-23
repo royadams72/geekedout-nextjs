@@ -24,6 +24,7 @@ import styles from "@/styles/components/_category.module.scss";
 
 import CategoryItem from "@/shared/components/category/CategoryItem";
 import CategoryLoader from "@/shared/components/category/CategoryLoader";
+import LinkComponent from "@/shared/components/link/LinkComponent";
 
 interface DisplayProps<T> {
   preloadedState: any;
@@ -48,7 +49,7 @@ const Category = <T extends { id: number | string | undefined }>({
 }: DisplayProps<T>) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { items: searchItemsArray } = useAppSelector(selectSearchData);
+  const { items: searchedItems } = useAppSelector(selectSearchData);
   const items = useAppSelector(itemsSelector);
   const sessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
@@ -60,13 +61,24 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
-      dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
       setIsPreloadedState(true);
       setShowLoader(false);
     } else {
       setShowLoader(true);
     }
-  }, [preloadedStateAction, dispatch, preloadedState, title]);
+  }, [preloadedStateAction, preloadedState, title]);
+
+  useEffect(() => {
+    if (
+      isNotEmpty(preloadedState) &&
+      preloadedState[title.toLowerCase()] &&
+      isFirstPage
+    ) {
+      console.log("executing dispatch===", isFirstPage);
+
+      dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
+    }
+  }, [preloadedStateAction, dispatch, preloadedState, title, isFirstPage]);
 
   useEffect(() => {
     if (isNotEmpty(items)) {
@@ -78,10 +90,10 @@ const Category = <T extends { id: number | string | undefined }>({
     if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
       dispatch(clearSelectedItem());
     }
-    if (searchItemsArray?.length > 0) {
+    if (searchedItems?.length > 0) {
       dispatch(clearSearchData());
     }
-  }, [dispatch, isDetailsInStore, title, searchItemsArray]);
+  }, [dispatch, isDetailsInStore, title, searchedItems]);
 
   useEffect(() => {
     if (!sessionId) {
@@ -99,9 +111,9 @@ const Category = <T extends { id: number | string | undefined }>({
     <>
       {!isFirstPage && (
         <div className={styles.details_btn_container}>
-          <Link className="btn" href="/">
+          <LinkComponent className="btn" href="/">
             Back to main page
-          </Link>
+          </LinkComponent>
         </div>
       )}
       <div className={styles.category}>

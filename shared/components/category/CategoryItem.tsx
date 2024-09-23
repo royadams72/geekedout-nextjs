@@ -1,10 +1,16 @@
 import Image from "next/image";
-import Link from "next/link";
-import { useAppSelector } from "@/lib/hooks/store.hooks";
-import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
-import { Preview } from "@/shared/interfaces/preview";
-import styles from "@/styles/components/_category.module.scss";
+
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+
+import { useAppSelector } from "@/lib/hooks/store.hooks";
+
+import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
+
+import { Preview } from "@/shared/interfaces/preview";
+
+import styles from "@/styles/components/_category.module.scss";
+
+import LinkComponent from "@/shared/components/link/LinkComponent";
 
 const CategoryItem = ({
   item,
@@ -28,7 +34,7 @@ const CategoryItem = ({
           isFirstPage ? styles.category__item_firstPage : styles.category__item
         }
       >
-        <Link href={itemLink}>
+        <LinkComponent href={itemLink}>
           <div className={styles.category__image_container}>
             <Image
               src={imgLrg}
@@ -42,7 +48,7 @@ const CategoryItem = ({
           <p className={styles.category__footer}>
             <span className={styles.category__title}>{title}</span>
           </p>
-        </Link>
+        </LinkComponent>
       </div>
     </>
   );

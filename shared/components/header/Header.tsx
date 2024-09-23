@@ -1,4 +1,4 @@
-import Link from "next/link";
+import LinkComponent from "@/shared/components/link/LinkComponent";
 import Image from "next/image";
 
 import { Paths } from "@/shared/enums/paths.enums";
@@ -10,7 +10,7 @@ const Header = () => {
   const imgHeight = 100;
   return (
     <header className={styles.header}>
-      <Link href="/">
+      <LinkComponent href="/">
         <Image
           className={styles.header__logo_image}
           src={`${Paths.NAV_IMAGES}/logo@2x.png`}
@@ -18,12 +18,12 @@ const Header = () => {
           width={300}
           height={100}
         />
-      </Link>
+      </LinkComponent>
 
       <nav className={styles.header__nav}>
         <ul className={styles.header__nav_ul}>
           <li className={styles.header__nav_item}>
-            <Link href="/movies">
+            <LinkComponent href="/movies">
               <Image
                 className={styles.header__nav_item_img}
                 src={`${Paths.NAV_IMAGES}/movies@2x.png`}
@@ -31,10 +31,10 @@ const Header = () => {
                 width={imgWidth}
                 height={imgHeight}
               />
-            </Link>
+            </LinkComponent>
           </li>
           <li className={styles.header__nav_item}>
-            <Link href="/comics">
+            <LinkComponent href="/comics">
               <Image
                 className={styles.header__nav_item_img}
                 src={`${Paths.NAV_IMAGES}/comics@2x.png`}
@@ -42,10 +42,10 @@ const Header = () => {
                 width={imgWidth}
                 height={imgHeight}
               />
-            </Link>
+            </LinkComponent>
           </li>
           <li className={styles.header__nav_item}>
-            <Link href="/music">
+            <LinkComponent href="/music">
               <Image
                 className={styles.header__nav_item_img}
                 src={`${Paths.NAV_IMAGES}/music@2x.png`}
@@ -53,10 +53,10 @@ const Header = () => {
                 width={imgWidth}
                 height={imgHeight}
               />
-            </Link>
+            </LinkComponent>
           </li>
           <li className="header__nav-item">
-            <Link href="/games">
+            <LinkComponent href="/games">
               <Image
                 className={styles.header__nav_item_img}
                 src={`${Paths.NAV_IMAGES}/games@2x.png`}
@@ -64,10 +64,10 @@ const Header = () => {
                 width={imgWidth}
                 height={imgHeight}
               />
-            </Link>
+            </LinkComponent>
           </li>
           <li className={styles.header__nav_item}>
-            <Link href="/search">
+            <LinkComponent href="/search">
               <Image
                 className={styles.header__nav_item_img}
                 src={`${Paths.NAV_IMAGES}/search@2x.png`}
@@ -75,7 +75,7 @@ const Header = () => {
                 width={imgWidth}
                 height={imgHeight}
               />
-            </Link>
+            </LinkComponent>
           </li>
         </ul>
       </nav>
