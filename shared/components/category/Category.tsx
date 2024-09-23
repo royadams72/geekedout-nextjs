@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { v4 as uuidv4 } from "uuid";
@@ -94,16 +96,25 @@ const Category = <T extends { id: number | string | undefined }>({
   }, [isRedirected, router]);
 
   const content = (
-    <div className={styles.category}>
-      <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
-        {isPreloadedState ? `${title}` : `${title} loading...`}
-      </h1>
-      <div className={styles.category__items_container}>
-        {(itemsArray as T[]).map((item: T) => (
-          <CategoryItem key={item.id} item={item} />
-        ))}
+    <>
+      {!isFirstPage && (
+        <div className={styles.details_btn_container}>
+          <Link className="btn" href="/">
+            Back to main page
+          </Link>
+        </div>
+      )}
+      <div className={styles.category}>
+        <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
+          {isPreloadedState ? `${title}` : `${title} loading...`}
+        </h1>
+        <div className={styles.category__items_container}>
+          {(itemsArray as T[]).map((item: T) => (
+            <CategoryItem key={item.id} item={item} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 
   return (

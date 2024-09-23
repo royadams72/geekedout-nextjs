@@ -40,6 +40,7 @@ const SearchPage = () => {
   const dispatch = useAppDispatch();
 
   const { searchTerm, items: serachedItems } = useAppSelector(selectSearchData);
+
   const comics = useAppSelector(selectComicsPreviews);
   const music = useAppSelector(selectMusicPreviews);
   const movies = useAppSelector(selectMoviesPreviews);
