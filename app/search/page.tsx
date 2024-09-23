@@ -39,18 +39,14 @@ const shuffle = (array: Preview[]) => {
 const SearchPage = () => {
   const dispatch = useAppDispatch();
 
-  const { searchTerm, items } = useAppSelector(selectSearchData);
+  const { searchTerm, items: serachedItems } = useAppSelector(selectSearchData);
   const comics = useAppSelector(selectComicsPreviews);
   const music = useAppSelector(selectMusicPreviews);
   const movies = useAppSelector(selectMoviesPreviews);
   const games = useAppSelector(selectGamesPreviews);
 
-  const [searchVal, setSearchVal] = useState("");
-  const [searchItems, setSearchItems] = useState<Preview[]>([]);
-
   const search = (searchValue: string) => {
     const trimmedValue = searchValue.trim().toLocaleLowerCase();
-    const data: Preview[] = [];
     const categories = [...comics, ...music, ...games, ...movies];
 
     if (trimmedValue.length <= 2) {
@@ -67,17 +63,9 @@ const SearchPage = () => {
         dispatch(
           setSearchData({ searchTerm: trimmedValue, items: filteredItems })
         );
-        setSearchItems(filteredItems);
       }, 500);
     }
   };
-
-  useEffect(() => {
-    if (isNotEmpty(items) || searchTerm) {
-      setSearchVal(searchTerm);
-      setSearchItems(items);
-    }
-  }, [items, searchTerm]);
 
   return (
     <>
@@ -89,14 +77,14 @@ const SearchPage = () => {
           defaultValue={searchTerm}
         />
       </div>
-      {searchItems.length === 0 && searchTerm.length > 3 && (
+      {serachedItems.length === 0 && searchTerm.length > 3 && (
         <div className={styles.search__container}>
           <p>No results found</p>
         </div>
       )}
       <div className={styles.category__items_container}>
-        {searchItems &&
-          searchItems.map((item) => (
+        {serachedItems &&
+          serachedItems.map((item) => (
             <CategoryItem key={item.id} item={item} isSearch={true} />
           ))}
       </div>
