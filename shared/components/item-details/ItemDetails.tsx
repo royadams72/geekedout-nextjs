@@ -79,7 +79,6 @@ const ItemDetails = <T extends BasicDetail>({
 
   return (
     <>
-      {/* // <a *ngIf="isSearch" class="btn" [routerLink]="['/search', ]"><< Back to Search Results</a> */}
       <div className={styles.details_container}>
         <div className={styles[`details_container_${category.toLowerCase()}`]}>
           <div className={styles.details_btn_container}>
