@@ -10,6 +10,8 @@ listenerMiddleware.startListening({
 
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState();
+    console.log("action====", action);
+
     try {
       const res = await fetch(
         `${appConfig.url.BASE_URL}/api/get-set-data/category-set-data/`,

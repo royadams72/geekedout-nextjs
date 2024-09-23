@@ -23,13 +23,14 @@ const LinkComponent = ({
   const dispatch = useAppDispatch();
 
   const handleClick = () => {
-    dispatch(setUrls({ currentUrl: href, previousUrl: currentPath }));
+    console.log("href==", href, "currentPath===", currentPath);
 
     if (href !== "/") {
       dispatch(setFirstPage(false));
     } else {
       dispatch(setFirstPage(true));
     }
+    dispatch(setUrls({ currentUrl: href, previousUrl: currentPath }));
   };
 
   return (
