@@ -70,6 +70,9 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (loading) return;
+    if (!sessionId) {
+      dispatch(setSessionId(generateSessionId()));
+    }
     if (
       isNotEmpty(preloadedState) &&
       preloadedState[title.toLowerCase()] &&
@@ -85,6 +88,7 @@ const Category = <T extends { id: number | string | undefined }>({
     title,
     isFirstPage,
     loading,
+    sessionId,
   ]);
 
   useEffect(() => {
@@ -101,12 +105,6 @@ const Category = <T extends { id: number | string | undefined }>({
       dispatch(clearSearchData());
     }
   }, [dispatch, isDetailsInStore, title, searchedItems]);
-
-  useEffect(() => {
-    if (!sessionId) {
-      dispatch(setSessionId(generateSessionId()));
-    }
-  });
 
   useEffect(() => {
     if (isRedirected) {

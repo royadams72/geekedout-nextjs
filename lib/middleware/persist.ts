@@ -2,8 +2,8 @@ import { createListenerMiddleware } from "@reduxjs/toolkit";
 
 import { appConfig } from "@/shared/constants/appConfig";
 
-export const listenerMiddleware = createListenerMiddleware();
-listenerMiddleware.startListening({
+export const persisterMiddleware = createListenerMiddleware();
+persisterMiddleware.startListening({
   predicate: (action, currState: any, prevState: any) => {
     return JSON.stringify(currState) !== JSON.stringify(prevState);
   },
@@ -28,6 +28,7 @@ listenerMiddleware.startListening({
       }
     } catch (error) {
       console.error(`There was an error: ${error}`);
+      throw error;
     }
   },
 });
