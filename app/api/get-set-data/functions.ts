@@ -68,7 +68,6 @@ export const ensureBrowserSession = (existingSessionId?: string) => {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
-      expires: new Date(Date.now() + 86400 * 1000),
     });
   }
 
