@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -24,7 +24,6 @@ import styles from "@/styles/components/_category.module.scss";
 
 import CategoryItem from "@/shared/components/category/CategoryItem";
 import CategoryLoader from "@/shared/components/category/CategoryLoader";
-import LinkComponent from "@/shared/components/link/LinkComponent";
 
 interface DisplayProps<T> {
   preloadedState: any;
@@ -54,8 +53,9 @@ const Category = <T extends { id: number | string | undefined }>({
   const sessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
   const isDetailsInStore = useAppSelector(selectSelectedItem);
-
+  const currentPath = usePathname();
   const [showLoader, setShowLoader] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
   const [isPreloadedState, setIsPreloadedState] = useState(false);
 
@@ -66,19 +66,30 @@ const Category = <T extends { id: number | string | undefined }>({
     } else {
       setShowLoader(true);
     }
+    setLoading(false);
   }, [preloadedStateAction, preloadedState, title]);
 
   useEffect(() => {
+    if (loading) return;
     if (
       isNotEmpty(preloadedState) &&
       preloadedState[title.toLowerCase()] &&
-      isFirstPage
+      isFirstPage &&
+      currentPath
     ) {
       console.log("executing dispatch===", isFirstPage);
 
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
-  }, [preloadedStateAction, dispatch, preloadedState, title, isFirstPage]);
+  }, [
+    preloadedStateAction,
+    dispatch,
+    preloadedState,
+    title,
+    isFirstPage,
+    currentPath,
+    loading,
+  ]);
 
   useEffect(() => {
     if (isNotEmpty(items)) {
@@ -111,9 +122,9 @@ const Category = <T extends { id: number | string | undefined }>({
     <>
       {!isFirstPage && (
         <div className={styles.details_btn_container}>
-          <LinkComponent className="btn" href="/">
+          <Link className="btn" href="/">
             Back to main page
-          </LinkComponent>
+          </Link>
         </div>
       )}
       <div className={styles.category}>

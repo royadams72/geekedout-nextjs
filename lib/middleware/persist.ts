@@ -10,7 +10,6 @@ listenerMiddleware.startListening({
 
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState();
-    console.log("action====", action);
 
     try {
       const res = await fetch(
