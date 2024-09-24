@@ -14,7 +14,13 @@ const redis = new Redis({
 });
 
 export const saveSessionData = async (sessionId: string, data: RootState) => {
-  await redis.set(`session:${sessionId}`, JSON.stringify(data));
+  const sessionTTL = 86400;
+  await redis.set(
+    `session:${sessionId}`,
+    JSON.stringify(data),
+    "EX",
+    sessionTTL
+  );
 };
 
 export const getSessionData = async (sessionId: string) => {
