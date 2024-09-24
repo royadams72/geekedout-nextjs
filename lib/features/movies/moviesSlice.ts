@@ -1,10 +1,14 @@
+import { createSelector, PayloadAction } from "@reduxjs/toolkit";
+
 import { createAppSlice } from "@/lib/store/createAppSlice";
+
 import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import { StateLoading } from "@/shared/enums/loading";
-import { createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { Paths } from "@/shared/enums/paths.enums";
+import { appConfig } from "@/shared/constants/appConfig";
+import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
 export interface MoviesSliceState {
   movies: MoviesStore;
@@ -15,6 +19,8 @@ const initialState: MoviesSliceState = {
   movies: {} as MoviesStore,
   status: StateLoading.IDLE,
 };
+
+const MOVIES_API = "api/movies";
 
 export const moviesSlice = createAppSlice({
   name: CategoryType.Movies,
@@ -67,17 +73,20 @@ export const getMovieDetailServerSide = async (
 };
 
 const getAllMoviesApi = async () => {
-  const response = await fetch("http://localhost:3000/api/movies/get-data", {
-    method: "GET",
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${appConfig.url.BASE_URL}/${MOVIES_API}/${GET_DATA_FOLDER}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
   const data = await response.json();
   return data;
 };
 
 const getMovieApi = async (id: number) => {
   const response = await fetch(
-    `http://localhost:3000/api/movies/movie-details/${id}`,
+    `${appConfig.url.BASE_URL}/${MOVIES_API}/movie-details/${id}`,
     {
       method: "GET",
     }

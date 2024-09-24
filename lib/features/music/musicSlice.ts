@@ -1,15 +1,20 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
+
 import {
   Album,
   AlbumDetail,
   Artists,
   MusicStore,
 } from "@/shared/interfaces/music";
+
 import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
+import { appConfig } from "@/shared/constants/appConfig";
+
 import { refreshToken } from "@/app/api/music/token/getToken";
+import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
 export interface MusicSliceState {
   music: MusicStore;
@@ -20,11 +25,11 @@ const initialState: MusicSliceState = {
   music: {} as MusicStore,
   status: StateLoading.IDLE,
 };
+const MUSIC_API = "api/music";
 
 const fetchWithTokenRefresh = async (url: string, options: RequestInit) => {
   let response = await fetch(url, options);
   if (response.status === 401) {
-    console.log("Token expired or invalid, refreshing token...");
     await refreshToken();
     response = await fetch(url, options);
   }
@@ -57,8 +62,8 @@ export const musicReducer = musicSlice.reducer;
 export const getMusicDetailsServerSide = async (
   id: string
 ): Promise<AlbumDetail> => {
-  console.log("getMusicDetailsServerSide======", id);
   const selectedAlbum = await getAlbumDetails(id);
+
   if (!selectedAlbum) {
     throw new Error(`data was not loaded`);
   }
@@ -66,9 +71,8 @@ export const getMusicDetailsServerSide = async (
 };
 
 const getAllMusicApi = async () => {
-  console.log("Fetching music ...");
   const data = await fetchWithTokenRefresh(
-    "http://localhost:3000/api/music/get-data",
+    `${appConfig.url.BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
     {
       method: "GET",
       credentials: "include",
@@ -99,9 +103,8 @@ export const getMusicStore = async (): Promise<MusicSliceState> => {
 };
 
 const getAlbumDetails = async (id: string) => {
-  console.log("Fetching album details...");
   const data = await fetchWithTokenRefresh(
-    `http://localhost:3000/api/music/get-details?id=${id}`,
+    `${appConfig.url.BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
     {
       method: "POST",
     }

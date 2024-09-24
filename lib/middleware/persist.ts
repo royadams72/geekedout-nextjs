@@ -1,6 +1,7 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 
 import { appConfig } from "@/shared/constants/appConfig";
+import { GET_SET_DATA_API } from "@/shared/constants/urls";
 
 export const persisterMiddleware = createListenerMiddleware();
 persisterMiddleware.startListening({
@@ -13,7 +14,7 @@ persisterMiddleware.startListening({
 
     try {
       const res = await fetch(
-        `${appConfig.url.BASE_URL}/api/get-set-data/category-set-data/`,
+        `${appConfig.url.BASE_URL}/${GET_SET_DATA_API}/category-set-data`,
         {
           method: "POST",
           credentials: "include",

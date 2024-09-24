@@ -6,13 +6,11 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 export const getValidToken = async (req: NextRequest): Promise<any> => {
   const tokenCookie = req.cookies.get("spotify_token");
   const now = Date.now();
-  console.log("getValidToken called========", req.cookies.get("spotify_token"));
   // Check if the token is cached in the cookie and is still valid
   if (tokenCookie) {
     const { token, expiry } = JSON.parse(tokenCookie.value);
 
     if (expiry > now) {
-      console.log("Using cached token===", token);
       return token;
     }
   }
@@ -44,8 +42,6 @@ export const refreshToken = async (): Promise<any> => {
 
   if (!tokenResponse.ok) {
     const error = await tokenResponse.json();
-    console.log(`Failed to fetch token: ${error.error_description}`);
-
     throw new Error(`Failed to fetch token: ${error.error_description}`);
   }
 
@@ -60,11 +56,6 @@ export const refreshToken = async (): Promise<any> => {
     maxAge: data.expires_in,
     path: "/",
   });
-
-  console.log(
-    "New token stored in cookie===",
-    response.cookies.get("spotify_token")
-  );
 
   return response;
 };

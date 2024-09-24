@@ -13,6 +13,8 @@ import {
 import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
+import { appConfig } from "@/shared/constants/appConfig";
+import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
 export interface ComicsSliceState {
   comics: ComicStore;
@@ -55,7 +57,6 @@ export const mapComicDetail = (
   comics: ComicsSliceState,
   id: string
 ): ComicDetail | null => {
-  // console.log("mapComicDetail===", comics);
   const results = comics.comics.results || [];
   const item: Comic | undefined = results.find(
     (comic: Comic) => comic.id?.toString() === id
@@ -121,10 +122,13 @@ export const getComicsStore = async (): Promise<ComicsSliceState> => {
 };
 
 const getComicsApi = async (): Promise<ComicStore> => {
-  const response = await fetch("http://localhost:3000/api/comics/get-data", {
-    method: "GET",
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${appConfig.url.BASE_URL}/api/comics/${GET_DATA_FOLDER}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
   const data: ComicStore = await response.json();
   return data;
 };

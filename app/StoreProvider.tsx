@@ -14,7 +14,6 @@ export const StoreProvider = ({ children, preloadedState }: Props) => {
 
   if (!storeRef.current) {
     storeRef.current = makeStore(preloadedState?.state);
-    console.log("preloadedState loaded==", preloadedState);
   }
 
   return <Provider store={storeRef.current}>{children}</Provider>;
