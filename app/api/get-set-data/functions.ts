@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 import { appConfig } from "@/shared/constants/appConfig";
+import { GET_SET_DATA_API } from "@/shared/constants/urls";
 
 export const getCategoryData = async (
   categoryName: string,
@@ -16,7 +17,7 @@ export const getCategoryData = async (
   }
   try {
     const response = await fetch(
-      `${appConfig.url.BASE_URL}/api/get-set-data/category-get-data?categoryName=${categoryName}${idString}`,
+      `${appConfig.url.BASE_URL}/${GET_SET_DATA_API}/category-get-data?categoryName=${categoryName}${idString}`,
       {
         method: "GET",
         credentials: "include",

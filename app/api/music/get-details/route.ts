@@ -21,10 +21,9 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
   });
 
   if (response.status === 401) {
-    console.log("refreshing token=");
-
     const refreshResponse = await refreshToken();
     const refreshedTokenCookie = refreshResponse.cookies.get("spotify_token");
+
     if (refreshedTokenCookie) {
       token = JSON.parse(refreshedTokenCookie.value).token;
     }

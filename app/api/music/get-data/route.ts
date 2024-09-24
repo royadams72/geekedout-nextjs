@@ -5,10 +5,6 @@ import { getValidToken } from "@/app/api/music/token/getToken";
 
 export const GET = async (req: NextRequest) => {
   const data = await getAllAlbums(req);
-  // console.log(
-  //   "spotify_token in GET getAllAlbums=============================",
-  //   req.cookies.get("spotify_token")
-  // );
   return new Response(JSON.stringify({ data }), { status: 200 });
 };
 

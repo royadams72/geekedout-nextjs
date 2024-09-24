@@ -70,6 +70,7 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (loading) return;
+
     if (!sessionId) {
       dispatch(setSessionId(generateSessionId()));
     }
@@ -78,7 +79,6 @@ const Category = <T extends { id: number | string | undefined }>({
       preloadedState[title.toLowerCase()] &&
       isFirstPage
     ) {
-      console.log("executing dispatch===", isFirstPage);
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
   }, [
