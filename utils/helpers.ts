@@ -6,7 +6,7 @@ export const formatCurrency = (value: number) =>
   );
 
 export const isNotEmpty = (obj: any = {}): boolean | null | undefined => {
-  if (Object.prototype.toString.call(obj) === "[object Array]") {
+  if (Object?.prototype?.toString?.call(obj) === "[object Array]") {
     return obj?.length !== 0 || null || undefined;
   }
   return Object?.keys?.(obj)?.length !== 0;

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -47,26 +47,45 @@ const Category = <T extends { id: number | string | undefined }>({
   isRedirected,
 }: DisplayProps<T>) => {
   const router = useRouter();
+
   const dispatch = useAppDispatch();
-  const { items: searchItemsArray } = useAppSelector(selectSearchData);
+  const { items: searchedItems } = useAppSelector(selectSearchData);
   const items = useAppSelector(itemsSelector);
   const sessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
   const isDetailsInStore = useAppSelector(selectSelectedItem);
 
-  const [showLoader, setShowLoader] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
   const [isPreloadedState, setIsPreloadedState] = useState(false);
 
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
-      dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
       setIsPreloadedState(true);
-      setShowLoader(false);
+      setLoading(false);
     } else {
-      setShowLoader(true);
+      setLoading(true);
     }
-  }, [preloadedStateAction, dispatch, preloadedState, title]);
+  }, [preloadedStateAction, preloadedState, title]);
+
+  useEffect(() => {
+    if (loading) return;
+    if (
+      isNotEmpty(preloadedState) &&
+      preloadedState[title.toLowerCase()] &&
+      isFirstPage
+    ) {
+      console.log("executing dispatch===", isFirstPage);
+      dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
+    }
+  }, [
+    preloadedStateAction,
+    dispatch,
+    preloadedState,
+    title,
+    isFirstPage,
+    loading,
+  ]);
 
   useEffect(() => {
     if (isNotEmpty(items)) {
@@ -78,10 +97,10 @@ const Category = <T extends { id: number | string | undefined }>({
     if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
       dispatch(clearSelectedItem());
     }
-    if (searchItemsArray?.length > 0) {
+    if (searchedItems?.length > 0) {
       dispatch(clearSearchData());
     }
-  }, [dispatch, isDetailsInStore, title, searchItemsArray]);
+  }, [dispatch, isDetailsInStore, title, searchedItems]);
 
   useEffect(() => {
     if (!sessionId) {
@@ -123,8 +142,8 @@ const Category = <T extends { id: number | string | undefined }>({
         position: "relative",
       }}
     >
-      {showLoader && <CategoryLoader title={title} />}
-      {!showLoader && content}
+      {loading && <CategoryLoader title={title} />}
+      {!loading && content}
     </div>
   );
 };

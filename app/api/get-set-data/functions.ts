@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-import { v4 as uuidv4 } from "uuid";
-
 import { appConfig } from "@/shared/constants/appConfig";
 
 export const getCategoryData = async (
@@ -11,8 +9,8 @@ export const getCategoryData = async (
 ) => {
   const idString = id ? `&id=${id}` : "";
   const sessionId = getSessionIdFromCookie();
-  // Edgecase: If somehow cookie is lost navigate to first page where the app automatically will put the sessionId into back
-  // TODO: Possibly add sessionId to session storage, on app init, as a fallback and only redirect if necessary
+  // Edgecase: If somehow cookie is lost navigate to first page where the app automatically will put the sessionId back
+  // TODO: Possibly add sessionId to session storage as well, on app init, as a fallback and only redirect if necessary
   if (!sessionId) {
     return { redirect: `${appConfig.url.BASE_URL}/?redirected=true` };
   }

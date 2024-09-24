@@ -11,16 +11,23 @@ listenerMiddleware.startListening({
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState();
 
-    await fetch(
-      `${appConfig.url.BASE_URL}/api/get-set-data/category-set-data/`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ state }),
+    try {
+      const res = await fetch(
+        `${appConfig.url.BASE_URL}/api/get-set-data/category-set-data/`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ state }),
+        }
+      );
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
       }
-    );
+    } catch (error) {
+      console.error(`There was an error: ${error}`);
+    }
   },
 });

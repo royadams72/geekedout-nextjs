@@ -1,10 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useAppSelector } from "@/lib/hooks/store.hooks";
-import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
-import { Preview } from "@/shared/interfaces/preview";
-import styles from "@/styles/components/_category.module.scss";
+
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+
+import { useAppSelector } from "@/lib/hooks/store.hooks";
+
+import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
+
+import { Preview } from "@/shared/interfaces/preview";
+
+import styles from "@/styles/components/_category.module.scss";
 
 const CategoryItem = ({
   item,
