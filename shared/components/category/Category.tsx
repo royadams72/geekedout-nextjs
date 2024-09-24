@@ -47,7 +47,6 @@ const Category = <T extends { id: number | string | undefined }>({
   isRedirected,
 }: DisplayProps<T>) => {
   const router = useRouter();
-  const currentPath = usePathname();
 
   const dispatch = useAppDispatch();
   const { items: searchedItems } = useAppSelector(selectSearchData);
@@ -74,8 +73,7 @@ const Category = <T extends { id: number | string | undefined }>({
     if (
       isNotEmpty(preloadedState) &&
       preloadedState[title.toLowerCase()] &&
-      isFirstPage &&
-      currentPath
+      isFirstPage
     ) {
       console.log("executing dispatch===", isFirstPage);
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
@@ -86,7 +84,6 @@ const Category = <T extends { id: number | string | undefined }>({
     preloadedState,
     title,
     isFirstPage,
-    currentPath,
     loading,
   ]);
 
