@@ -47,14 +47,15 @@ const Category = <T extends { id: number | string | undefined }>({
   isRedirected,
 }: DisplayProps<T>) => {
   const router = useRouter();
+  const currentPath = usePathname();
+
   const dispatch = useAppDispatch();
   const { items: searchedItems } = useAppSelector(selectSearchData);
   const items = useAppSelector(itemsSelector);
   const sessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
   const isDetailsInStore = useAppSelector(selectSelectedItem);
-  const currentPath = usePathname();
-  const [showLoader, setShowLoader] = useState(true);
+
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
   const [isPreloadedState, setIsPreloadedState] = useState(false);
@@ -62,11 +63,10 @@ const Category = <T extends { id: number | string | undefined }>({
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
       setIsPreloadedState(true);
-      setShowLoader(false);
+      setLoading(false);
     } else {
-      setShowLoader(true);
+      setLoading(true);
     }
-    setLoading(false);
   }, [preloadedStateAction, preloadedState, title]);
 
   useEffect(() => {
@@ -78,7 +78,6 @@ const Category = <T extends { id: number | string | undefined }>({
       currentPath
     ) {
       console.log("executing dispatch===", isFirstPage);
-
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
   }, [
@@ -146,8 +145,8 @@ const Category = <T extends { id: number | string | undefined }>({
         position: "relative",
       }}
     >
-      {showLoader && <CategoryLoader title={title} />}
-      {!showLoader && content}
+      {loading && <CategoryLoader title={title} />}
+      {!loading && content}
     </div>
   );
 };
