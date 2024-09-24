@@ -12,20 +12,18 @@ interface Props {
   preloadedState?: any;
 }
 
-export const StoreProvider = ({ children }: Props) => {
+export const StoreProvider = ({ children, preloadedState }: Props) => {
   const storeRef = useRef<AppStore | null | any>(null);
   const persistorRef = useRef<Persistor | any>(null);
 
   if (!storeRef.current) {
-    storeRef.current = makeStore();
-    persistorRef.current = persistStore(storeRef.current); // Initialize persistence
+    if (preloadedState) {
+      storeRef.current = makeStore(preloadedState.state);
+      console.log("preloadedState loaded==", preloadedState);
+    } else {
+      storeRef.current = makeStore();
+    }
   }
 
-  return (
-    <Provider store={storeRef.current}>
-      <PersistGate loading={null} persistor={persistorRef.current}>
-        {children}
-      </PersistGate>
-    </Provider>
-  );
+  return <Provider store={storeRef.current}>{children}</Provider>;
 };
