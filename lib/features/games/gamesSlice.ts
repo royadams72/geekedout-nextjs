@@ -26,24 +26,10 @@ export const gamesSlice = createAppSlice({
     setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
       state.games = action.payload;
     }),
-    getGames: create.asyncThunk<Game[], void>(
-      async () => {
-        const data = await getAllGames();
-        return data;
-      },
-      {
-        pending: (state) => {
-          state.status = StateLoading.LOADING;
-        },
-        fulfilled: (state, action) => {
-          state.status = StateLoading.IDLE;
-          state.games = action.payload;
-        },
-        rejected: (state) => {
-          state.status = StateLoading.FAILED;
-        },
-      }
-    ),
+    getGames: create.asyncThunk<Game[], void>(async () => {
+      const data = await getAllGames();
+      return data;
+    }),
   }),
   selectors: {
     selectStatus: (state) => state.status,
@@ -75,7 +61,7 @@ const getAllGames = async (): Promise<Game[]> => {
   }
 };
 
-export const setGameDetailsServerSide = async (
+export const setGameDetails = async (
   serverSideStore: GamesSliceState,
   id: string
 ): Promise<GameDetail | null> => {
@@ -142,7 +128,7 @@ export const mapGameDetail = (
   } = item;
 
   return {
-    category: "Games",
+    category: CategoryType.Games,
     description,
     gamerpower_url,
     id,
