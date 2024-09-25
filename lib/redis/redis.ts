@@ -1,9 +1,9 @@
 import Redis from "ioredis";
 
-import { setComicDetailsServerSide } from "../features/comics/comicsSlice";
-import { setGameDetailsServerSide } from "../features/games/gamesSlice";
-import { getMovieDetailServerSide } from "../features/movies/moviesSlice";
-import { getMusicDetailsServerSide } from "../features/music/musicSlice";
+import { setComicDetails } from "../features/comics/comicsSlice";
+import { setGameDetails } from "../features/games/gamesSlice";
+import { getMovieDetails } from "../features/movies/moviesSlice";
+import { getMusicDetails } from "../features/music/musicSlice";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { RootState } from "../store/store";
@@ -63,22 +63,19 @@ export const getItemFromCache = async (
 
     switch (categoryName) {
       case CategoryType.Comics:
-        selectedData = await setComicDetailsServerSide(
+        selectedData = await setComicDetails(
           categoriesData.comics,
           id as string
         );
         break;
       case CategoryType.Games:
-        selectedData = await setGameDetailsServerSide(
-          categoriesData.games,
-          id as string
-        );
+        selectedData = await setGameDetails(categoriesData.games, id as string);
         break;
       case CategoryType.Movies:
-        selectedData = getMovieDetailServerSide(id as number);
+        selectedData = getMovieDetails(id as number);
         break;
       case CategoryType.Music:
-        selectedData = getMusicDetailsServerSide(id as string);
+        selectedData = getMusicDetails(id as string);
         break;
       default:
         break;

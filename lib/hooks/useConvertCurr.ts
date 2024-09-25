@@ -8,7 +8,7 @@ export const useConvertCurr = (amount: number) => {
   useEffect(() => {
     if (amount === null) {
       setConvertedAmount(null);
-      setLoading(false); // No conversion to be done
+      setLoading(false);
       return;
     }
 
@@ -22,7 +22,7 @@ export const useConvertCurr = (amount: number) => {
         setConvertedAmount(data.conversion_result);
       } catch (error) {
         console.error("Error fetching conversion rate:", error);
-        setConvertedAmount(null); // Handle error, set to null
+        setConvertedAmount(null);
       } finally {
         setLoading(false);
       }

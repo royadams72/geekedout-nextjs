@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { Paths } from "@/shared/enums/paths.enums";
+import { IMAGE_PATHS } from "@/shared/enums/paths.enums";
 
 import styles from "@/styles/components/_header.module.scss";
 
@@ -13,7 +13,7 @@ const Header = () => {
       <Link href="/">
         <Image
           className={styles.header__logo_image}
-          src={`${Paths.NAV_IMAGES}/logo@2x.png`}
+          src={`${IMAGE_PATHS.NAV_IMAGES}/logo@2x.png`}
           alt="Geeked Out"
           width={300}
           height={100}
@@ -26,7 +26,7 @@ const Header = () => {
             <Link href="/movies">
               <Image
                 className={styles.header__nav_item_img}
-                src={`${Paths.NAV_IMAGES}/movies@2x.png`}
+                src={`${IMAGE_PATHS.NAV_IMAGES}/movies@2x.png`}
                 alt="Movies"
                 width={imgWidth}
                 height={imgHeight}
@@ -37,7 +37,7 @@ const Header = () => {
             <Link href="/comics">
               <Image
                 className={styles.header__nav_item_img}
-                src={`${Paths.NAV_IMAGES}/comics@2x.png`}
+                src={`${IMAGE_PATHS.NAV_IMAGES}/comics@2x.png`}
                 alt="Comics"
                 width={imgWidth}
                 height={imgHeight}
@@ -48,7 +48,7 @@ const Header = () => {
             <Link href="/music">
               <Image
                 className={styles.header__nav_item_img}
-                src={`${Paths.NAV_IMAGES}/music@2x.png`}
+                src={`${IMAGE_PATHS.NAV_IMAGES}/music@2x.png`}
                 alt="Music"
                 width={imgWidth}
                 height={imgHeight}
@@ -59,7 +59,7 @@ const Header = () => {
             <Link href="/games">
               <Image
                 className={styles.header__nav_item_img}
-                src={`${Paths.NAV_IMAGES}/games@2x.png`}
+                src={`${IMAGE_PATHS.NAV_IMAGES}/games@2x.png`}
                 alt="Games"
                 width={imgWidth}
                 height={imgHeight}
@@ -70,7 +70,7 @@ const Header = () => {
             <Link href="/search">
               <Image
                 className={styles.header__nav_item_img}
-                src={`${Paths.NAV_IMAGES}/search@2x.png`}
+                src={`${IMAGE_PATHS.NAV_IMAGES}/search@2x.png`}
                 alt="Search"
                 width={imgWidth}
                 height={imgHeight}

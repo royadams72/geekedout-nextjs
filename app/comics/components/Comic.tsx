@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import styles from "@/styles/components/_detail.module.scss";
 
-import { formatDate } from "@/utils/date-functions";
+import { formatDate } from "@/utils/helpers";
 
 import { ComicDetail } from "@/shared/interfaces/comic";
 

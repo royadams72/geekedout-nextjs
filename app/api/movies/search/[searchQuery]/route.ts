@@ -18,5 +18,6 @@ export async function GET(
   );
   const data = await res.json();
   // TODO error handling
+  // IS this being used?
   return Response.json({ data });
 }

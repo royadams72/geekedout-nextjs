@@ -13,12 +13,7 @@ export const POST = async (req: NextRequest) => {
 const getAlbumDetails = async (req: NextRequest, id: string) => {
   let token = await getValidToken(req);
 
-  let response = await fetch(`${BASE_URL_MUSIC}/albums/${id}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  let response = await fetchAlbum(id, token);
 
   if (response.status === 401) {
     const refreshResponse = await refreshToken();
@@ -28,12 +23,7 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
       token = JSON.parse(refreshedTokenCookie.value).token;
     }
 
-    response = await fetch(`${BASE_URL_MUSIC}/albums/${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    response = await fetchAlbum(id, token);
   }
   const album = await response.json();
 
@@ -42,4 +32,14 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
   }
 
   return album;
+};
+
+const fetchAlbum = async (id: string, token: string) => {
+  const res = await fetch(`${BASE_URL_MUSIC}/albums/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res;
 };

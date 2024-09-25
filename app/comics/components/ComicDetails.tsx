@@ -1,5 +1,3 @@
-// app/comics/details/ComicDetails.tsx
-
 "use client";
 import ItemDetails from "@/shared/components/item-details/ItemDetails";
 import Comic from "@/app/comics/components/Comic";

@@ -6,7 +6,7 @@ import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { Paths } from "@/shared/enums/paths.enums";
+import { IMAGE_PATHS } from "@/shared/enums/paths.enums";
 import { appConfig } from "@/shared/constants/appConfig";
 import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
@@ -57,9 +57,7 @@ export const getMoviesStore = async (): Promise<MoviesSliceState> => {
   };
 };
 
-export const getMovieDetailServerSide = async (
-  id: number
-): Promise<MovieDetail> => {
+export const getMovieDetails = async (id: number): Promise<MovieDetail> => {
   try {
     const selectedMovie = await getMovieApi(id);
     if (!selectedMovie) {
@@ -108,10 +106,10 @@ export const selectMoviesPreviews = createSelector(
       category: CategoryType.Movies,
       id: movie.id,
       imageLarge: movie.poster_path
-        ? `${Paths.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
+        ? `${IMAGE_PATHS.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
         : IMAGE_NOT_FOUND.SM,
       imageSmall: movie.poster_path
-        ? `${Paths.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
+        ? `${IMAGE_PATHS.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
         : IMAGE_NOT_FOUND.SM,
       title: movie.title,
     }));
@@ -132,7 +130,7 @@ function mapMovieDetail(movie: Movie, id: number): MovieDetail {
   const genreNames = genres.map((genre: { name: string }) => genre.name);
 
   return {
-    category: "Movies",
+    category: CategoryType.Movies,
     genres: genreNames,
     homepage,
     id,

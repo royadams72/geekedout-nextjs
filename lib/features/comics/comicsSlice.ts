@@ -46,11 +46,11 @@ export const { selectComicsArray, selectStatus } = comicsSlice.selectors;
 
 export const comicsReducer = comicsSlice.reducer;
 
-export const setComicDetailsServerSide = async (
-  serverSideStore: ComicsSliceState,
+export const setComicDetails = async (
+  comicStore: ComicsSliceState,
   id: string
 ): Promise<ComicDetail | null> => {
-  return mapComicDetail(serverSideStore, id);
+  return mapComicDetail(comicStore, id);
 };
 
 export const mapComicDetail = (
@@ -89,7 +89,7 @@ export const mapComicDetail = (
     printPrice: prices.find((c: Price) => c.type === "printPrice")?.price,
     clickThrough,
     name,
-    category: "Comics",
+    category: CategoryType.Comics,
     id,
   };
 

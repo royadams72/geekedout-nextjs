@@ -59,9 +59,7 @@ export const { selectStatus, selectAllAlbums } = musicSlice.selectors;
 
 export const musicReducer = musicSlice.reducer;
 
-export const getMusicDetailsServerSide = async (
-  id: string
-): Promise<AlbumDetail> => {
+export const getMusicDetails = async (id: string): Promise<AlbumDetail> => {
   const selectedAlbum = await getAlbumDetails(id);
 
   if (!selectedAlbum) {
