@@ -46,7 +46,7 @@ export const getSessionIdFromCookie = () => {
   return sessionId;
 };
 
-export const ensureBrowserSession = (existingSessionId?: string) => {
+export const ensureBrowserSessionServerSide = (existingSessionId?: string) => {
   const sessionId = getSessionIdFromCookie();
   let response: any;
 
@@ -69,6 +69,7 @@ export const ensureBrowserSession = (existingSessionId?: string) => {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
+      expires: new Date(Date.now() + 86400 * 1000),
     });
   }
 

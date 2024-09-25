@@ -32,7 +32,7 @@ export default async function RootLayout({
         </Head>
         <body className="body">
           <main className="main">
-            <StoreProvider preloadedState={preloadedState}>
+            <StoreProvider>
               <NavigationActions />
               <Header />
               {children}

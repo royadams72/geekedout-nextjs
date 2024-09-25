@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { saveSessionData } from "@/lib/redis/redis";
 
-import { ensureBrowserSession } from "../functions";
+import { ensureBrowserSessionServerSide } from "../functions";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       if (sessionId) {
-        const { response } = ensureBrowserSession(sessionId);
+        const { response } = ensureBrowserSessionServerSide(sessionId);
         await saveSessionData(sessionId, categoriesData);
         return response;
       }

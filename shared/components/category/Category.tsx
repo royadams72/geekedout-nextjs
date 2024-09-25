@@ -70,10 +70,8 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (loading) return;
+    console.log("sessionId===", sessionId);
 
-    if (!sessionId) {
-      dispatch(setSessionId(generateSessionId()));
-    }
     if (
       isNotEmpty(preloadedState) &&
       preloadedState[title.toLowerCase()] &&
@@ -88,7 +86,6 @@ const Category = <T extends { id: number | string | undefined }>({
     title,
     isFirstPage,
     loading,
-    sessionId,
   ]);
 
   useEffect(() => {
@@ -98,19 +95,16 @@ const Category = <T extends { id: number | string | undefined }>({
   }, [items, isFirstPage, sliceNumber]);
 
   useEffect(() => {
-    if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
-      dispatch(clearSelectedItem());
-    }
-    if (searchedItems?.length > 0) {
-      dispatch(clearSearchData());
-    }
-  }, [dispatch, isDetailsInStore, title, searchedItems]);
-
-  useEffect(() => {
     if (isRedirected) {
       router.refresh();
     }
   }, [isRedirected, router]);
+
+  useEffect(() => {
+    if (!sessionId) {
+      dispatch(setSessionId(generateSessionId()));
+    }
+  });
 
   const content = (
     <>

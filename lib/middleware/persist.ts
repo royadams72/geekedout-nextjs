@@ -10,26 +10,30 @@ persisterMiddleware.startListening({
   },
 
   effect: async (action, listenerApi) => {
-    const state = listenerApi.getState();
-
-    try {
-      const res = await fetch(
-        `${appConfig.url.BASE_URL}/${GET_SET_DATA_API}/category-set-data`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ state }),
+    const state = listenerApi.getState() as any;
+    const sessionId = state?.uiData?.sessionId;
+    console.log(state.uiData.sessionId);
+    if (sessionId) {
+      try {
+        const res = await fetch(
+          `${appConfig.url.BASE_URL}/${GET_SET_DATA_API}/category-set-data`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Cookie: `sessionId=${sessionId}`,
+            },
+            body: JSON.stringify({ state }),
+          }
+        );
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
         }
-      );
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
+      } catch (error) {
+        console.error(`There was an error: ${error}`);
+        throw error;
       }
-    } catch (error) {
-      console.error(`There was an error: ${error}`);
-      throw error;
     }
   },
 });
