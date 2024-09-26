@@ -14,13 +14,13 @@ export async function POST(request: NextRequest) {
     } = categoriesData;
     const maxAttempts = 4;
 
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      if (sessionId) {
-        const { response } = ensureBrowserSessionServerSide(sessionId);
-        await saveSessionData(sessionId, categoriesData);
-        return response;
-      }
+    // for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    if (sessionId) {
+      const { response } = ensureBrowserSessionServerSide(sessionId);
+      await saveSessionData(sessionId, categoriesData);
+      return response;
     }
+    // }
     return NextResponse.json(
       { error: "Session ID is required" },
       { status: 400 }
