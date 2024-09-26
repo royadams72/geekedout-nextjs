@@ -43,6 +43,7 @@ export const getCategoryData = async (
 export const getSessionIdFromCookie = () => {
   const cookieHeader = cookies();
   const sessionId = cookieHeader.get("sessionId")?.value;
+
   return sessionId;
 };
 

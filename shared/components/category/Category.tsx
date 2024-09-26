@@ -49,7 +49,7 @@ const Category = <T extends { id: number | string | undefined }>({
   const dispatch = useAppDispatch();
   // const { items: searchedItems } = useAppSelector(selectSearchData);
   const items = useAppSelector(itemsSelector);
-  const sessionId = useAppSelector(selectSessionId);
+  const storeSessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
   // const isDetailsInStore = useAppSelector(selectSelectedItem);
 
@@ -99,12 +99,12 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (loading) return;
-    // console.log(sessionId);
-    if (!sessionId) {
+    console.log(storeSessionId);
+    if (!storeSessionId) {
       const sessionId = generateSessionId();
       dispatch(setSessionId(sessionId));
     }
-  }, [sessionId, dispatch, loading]);
+  }, [storeSessionId, dispatch, loading]);
 
   const content = (
     <>

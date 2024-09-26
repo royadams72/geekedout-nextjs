@@ -2,13 +2,13 @@ import { createListenerMiddleware } from "@reduxjs/toolkit";
 
 import { appConfig } from "@/shared/constants/appConfig";
 import { GET_SET_DATA_API } from "@/shared/constants/urls";
-import { useServerSideCookie } from "../hooks/useServerSideCookie";
+
 const ensureBrowserSessionCilentSide = (sessionId: string) => {
-  console.log("ensureBrowserSessionCilentSide===", sessionId);
-  if (!localStorage.getItem("sessionId")) {
-    localStorage.setItem("sessionId", sessionId);
-  }
+  console.log("setting session in local storage===", sessionId);
+  localStorage.setItem("sessionId", sessionId);
 };
+
+let count = 0;
 export const persisterMiddleware = createListenerMiddleware();
 persisterMiddleware.startListening({
   predicate: (action, currState: any, prevState: any) => {
@@ -17,18 +17,12 @@ persisterMiddleware.startListening({
 
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as any;
-    const sessionId = state?.uiData?.sessionId;
-    const response = await fetch("/api/get-session", {
-      method: "GET",
-      credentials: "include",
-    });
-    const data = await response.json();
-    const serverSession = data.sessionId;
-    console.log("sessionId==", sessionId, "serverSession==", serverSession);
+    let {
+      uiData: { sessionId },
+    } = state;
 
-    if (sessionId && sessionId === serverSession) {
-      ensureBrowserSessionCilentSide(sessionId);
-      console.log(state.uiData.sessionId);
+    ensureBrowserSessionCilentSide(sessionId);
+    if (sessionId) {
       try {
         const res = await fetch(
           `${appConfig.url.BASE_URL}/${GET_SET_DATA_API}/category-set-data`,

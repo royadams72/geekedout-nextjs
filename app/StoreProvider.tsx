@@ -21,7 +21,7 @@ interface Props {
 
 export const StoreProvider = ({ children }: Props) => {
   const [cookieValue, setCookieValue] = useState("");
-  const local = window.localStorage.getItem("sessionId");
+  // const local = window.localStorage.getItem("sessionId");
   // const cookieStore = useCookies();
   const serverCookie = useServerSideCookie();
   // setCookieValue(÷local);
