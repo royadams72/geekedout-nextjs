@@ -38,6 +38,8 @@ export type RootState = ReturnType<typeof rootReducer>;
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const makeStore = (preloadedState?: any) => {
+  console.log("preloadedState==", preloadedState);
+
   return configureStore({
     reducer: persistedReducer,
     preloadedState, // This allows SSR state to be injected

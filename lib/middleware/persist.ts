@@ -4,11 +4,12 @@ import { appConfig } from "@/shared/constants/appConfig";
 import { GET_SET_DATA_API } from "@/shared/constants/urls";
 
 const ensureBrowserSessionCilentSide = (sessionId: string) => {
-  console.log("setting session in local storage===", sessionId);
-  localStorage.setItem("sessionId", sessionId);
+  if (typeof window !== "undefined") {
+    // console.log("setting session in local storage===", sessionId);
+    localStorage.setItem("sessionId", sessionId);
+  }
 };
 
-let count = 0;
 export const persisterMiddleware = createListenerMiddleware();
 persisterMiddleware.startListening({
   predicate: (action, currState: any, prevState: any) => {

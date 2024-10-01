@@ -99,7 +99,7 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (loading) return;
-    console.log(storeSessionId);
+    // console.log(storeSessionId);
     if (!storeSessionId) {
       const sessionId = generateSessionId();
       dispatch(setSessionId(sessionId));
