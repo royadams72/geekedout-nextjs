@@ -10,7 +10,6 @@ import {
   Price,
 } from "@/shared/interfaces/comic";
 
-import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { appConfig } from "@/shared/constants/appConfig";
@@ -18,12 +17,10 @@ import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
 export interface ComicsSliceState {
   comics: ComicStore;
-  status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
 }
 
 const initialState: ComicsSliceState = {
   comics: {} as ComicStore,
-  status: StateLoading.IDLE,
 };
 
 export const comicsSlice = createAppSlice({
@@ -36,13 +33,12 @@ export const comicsSlice = createAppSlice({
   },
   selectors: {
     selectComicsArray: (comics) => comics.comics.results as Comic[],
-    selectStatus: (comics) => comics.status,
   },
 });
 
 export const { setComics } = comicsSlice.actions;
 
-export const { selectComicsArray, selectStatus } = comicsSlice.selectors;
+export const { selectComicsArray } = comicsSlice.selectors;
 
 export const comicsReducer = comicsSlice.reducer;
 
@@ -98,26 +94,20 @@ export const mapComicDetail = (
 
 export const getComicsStore = async (): Promise<ComicsSliceState> => {
   let comicStore: ComicStore;
-  let status = StateLoading.LOADING;
 
   try {
     comicStore = await getComicsApi();
 
     if (!comicStore) {
-      status = StateLoading.FAILED;
       throw new Error("Data was not loaded");
     }
-
-    status = StateLoading.IDLE;
   } catch (error) {
-    status = StateLoading.FAILED;
     console.error("Failed to fetch comic details:", error);
     throw error;
   }
 
   return {
     comics: comicStore,
-    status,
   };
 };
 
