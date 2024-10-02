@@ -3,17 +3,25 @@ import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { appConfig } from "@/shared/constants/appConfig";
 import { GET_SET_DATA_API } from "@/shared/constants/urls";
 
-const ensureBrowserSessionCilentSide = (sessionId: string) => {
+const persistStoreClientSide = (state: string) => {
   if (typeof window !== "undefined") {
-    // console.log("setting session in local storage===", sessionId);
-    localStorage.setItem("sessionId", sessionId);
+    try {
+      localStorage.setItem("redux-store", state);
+    } catch (error) {
+      console.error("Error saving to local storage:", error);
+    }
   }
 };
 
 export const persisterMiddleware = createListenerMiddleware();
 persisterMiddleware.startListening({
   predicate: (action, currState: any, prevState: any) => {
-    return JSON.stringify(currState) !== JSON.stringify(prevState);
+    // Only persist if the state has changed
+    if (JSON.stringify(currState) !== JSON.stringify(prevState)) {
+      persistStoreClientSide(JSON.stringify(currState));
+      return true;
+    }
+    return false;
   },
 
   effect: async (action, listenerApi) => {
@@ -22,7 +30,6 @@ persisterMiddleware.startListening({
       uiData: { sessionId },
     } = state;
 
-    ensureBrowserSessionCilentSide(sessionId);
     if (sessionId) {
       try {
         const res = await fetch(
