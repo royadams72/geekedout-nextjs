@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { saveSessionData } from "@/lib/redis/redis";
 
-import { ensureBrowserSession } from "../functions";
+import { ensureBrowserSessionServerSide } from "../functions";
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,19 +12,22 @@ export async function POST(request: NextRequest) {
         uiData: { sessionId },
       },
     } = categoriesData;
-    const maxAttempts = 4;
 
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      if (sessionId) {
-        const { response } = ensureBrowserSession(sessionId);
-        await saveSessionData(sessionId, categoriesData);
-        return response;
-      }
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: "Session ID is required" },
+        { status: 400 }
+      );
     }
-    return NextResponse.json(
-      { error: "Session ID is required" },
-      { status: 400 }
-    );
+
+    const { response } = await ensureBrowserSessionServerSide(sessionId);
+
+    if (response && response.status !== 200) {
+      return response;
+    }
+    await saveSessionData(sessionId as string, categoriesData);
+
+    return NextResponse.json({ message: "Data saved successfully to redis" });
   } catch (error) {
     console.error("Failed to store data:", error);
 

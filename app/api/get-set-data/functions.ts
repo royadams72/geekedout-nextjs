@@ -46,30 +46,32 @@ export const getSessionIdFromCookie = () => {
   return sessionId;
 };
 
-export const ensureBrowserSession = (existingSessionId?: string) => {
+export const ensureBrowserSessionServerSide = async (
+  existingSessionId?: string
+) => {
   const sessionId = getSessionIdFromCookie();
-  let response: any;
+  let response;
 
   if (!existingSessionId) {
     response = NextResponse.json({
       message: "Session undefined",
     });
-    return response;
-  }
-
-  response = NextResponse.json({
-    message: sessionId
-      ? "Session already exists"
-      : "Session created and data retrieved",
-  });
-
-  if (!sessionId) {
-    response.cookies.set("sessionId", existingSessionId, {
-      path: "/",
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+  } else {
+    response = NextResponse.json({
+      message: sessionId
+        ? "Session already exists"
+        : "Session created and data retrieved",
     });
+
+    if (!sessionId) {
+      response.cookies.set("sessionId", existingSessionId, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        expires: new Date(Date.now() + 86400 * 1000),
+      });
+    }
   }
 
   return { sessionId, response };

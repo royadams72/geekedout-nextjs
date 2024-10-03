@@ -1,4 +1,5 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
+
 import { createAppSlice } from "@/lib/store/createAppSlice";
 
 import {
@@ -8,7 +9,6 @@ import {
   MusicStore,
 } from "@/shared/interfaces/music";
 
-import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { appConfig } from "@/shared/constants/appConfig";
@@ -18,12 +18,10 @@ import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
 export interface MusicSliceState {
   music: MusicStore;
-  status: StateLoading;
 }
 
 const initialState: MusicSliceState = {
   music: {} as MusicStore,
-  status: StateLoading.IDLE,
 };
 const MUSIC_API = "api/music";
 
@@ -47,16 +45,11 @@ export const musicSlice = createAppSlice({
       state.music = action.payload;
     },
   },
-  selectors: {
-    selectStatus: (state) => state.status,
-    selectAllAlbums: (state) => state.music.items || [],
-  },
+  selectors: { selectAllAlbums: (state) => state.music.items || [] },
 });
 
 export const { setMusic } = musicSlice.actions;
-
-export const { selectStatus, selectAllAlbums } = musicSlice.selectors;
-
+export const { selectAllAlbums } = musicSlice.selectors;
 export const musicReducer = musicSlice.reducer;
 
 export const getMusicDetails = async (id: string): Promise<AlbumDetail> => {
@@ -81,33 +74,33 @@ const getAllMusicApi = async () => {
 
 export const getMusicStore = async (): Promise<MusicSliceState> => {
   let musicStore;
-  let status = StateLoading.LOADING;
   try {
     musicStore = await getAllMusicApi();
     if (!musicStore) {
-      status = StateLoading.FAILED;
       throw new Error(`data was not loaded`);
     }
-    status = StateLoading.IDLE;
   } catch (error) {
-    status = StateLoading.FAILED;
     console.error("Failed to fetch album details:", error);
     throw error;
   }
   return {
     music: musicStore.data?.albums || [],
-    status,
   };
 };
 
 const getAlbumDetails = async (id: string) => {
-  const data = await fetchWithTokenRefresh(
-    `${appConfig.url.BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
-    {
-      method: "POST",
-    }
-  );
-  return mapAlbumDetail(data.data);
+  try {
+    const data = await fetchWithTokenRefresh(
+      `${appConfig.url.BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
+      {
+        method: "POST",
+      }
+    );
+    return mapAlbumDetail(data.data);
+  } catch (error) {
+    console.error(`Failed to fetch movie details: ${error}`);
+    throw error;
+  }
 };
 
 const mapAlbumDetail = (item: any): AlbumDetail => {
@@ -141,13 +134,12 @@ const mapAlbumDetail = (item: any): AlbumDetail => {
 
 export const selectMusicPreviews = createSelector(
   selectAllAlbums,
-  (arr: Album[]) => {
-    return arr.map((album) => ({
+  (albums: Album[]) =>
+    albums?.map((album) => ({
       category: CategoryType.Music,
       id: album.id,
       imageLarge: album.images?.[0]?.url || IMAGE_NOT_FOUND.SM,
       imageSmall: album.images?.[1]?.url || IMAGE_NOT_FOUND.SM,
       title: album.name,
-    }));
-  }
+    }))
 );

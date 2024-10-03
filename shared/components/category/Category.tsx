@@ -9,8 +9,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
 import {
-  clearSearchData,
-  clearSelectedItem,
   selectIsFirstPage,
   selectSearchData,
   selectSelectedItem,
@@ -49,19 +47,19 @@ const Category = <T extends { id: number | string | undefined }>({
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-  const { items: searchedItems } = useAppSelector(selectSearchData);
+  // const { items: searchedItems } = useAppSelector(selectSearchData);
   const items = useAppSelector(itemsSelector);
-  const sessionId = useAppSelector(selectSessionId);
+  const storeSessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
-  const isDetailsInStore = useAppSelector(selectSelectedItem);
+  // const isDetailsInStore = useAppSelector(selectSelectedItem);
 
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
-  const [isPreloadedState, setIsPreloadedState] = useState(false);
+  // const [isPreloadedState, setIsPreloadedState] = useState(false);
 
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
-      setIsPreloadedState(true);
+      // setIsPreloadedState(true);
       setLoading(false);
     } else {
       setLoading(true);
@@ -71,9 +69,6 @@ const Category = <T extends { id: number | string | undefined }>({
   useEffect(() => {
     if (loading) return;
 
-    if (!sessionId) {
-      dispatch(setSessionId(generateSessionId()));
-    }
     if (
       isNotEmpty(preloadedState) &&
       preloadedState[title.toLowerCase()] &&
@@ -88,7 +83,6 @@ const Category = <T extends { id: number | string | undefined }>({
     title,
     isFirstPage,
     loading,
-    sessionId,
   ]);
 
   useEffect(() => {
@@ -98,19 +92,19 @@ const Category = <T extends { id: number | string | undefined }>({
   }, [items, isFirstPage, sliceNumber]);
 
   useEffect(() => {
-    if (isDetailsInStore && isNotEmpty(isDetailsInStore)) {
-      dispatch(clearSelectedItem());
-    }
-    if (searchedItems?.length > 0) {
-      dispatch(clearSearchData());
-    }
-  }, [dispatch, isDetailsInStore, title, searchedItems]);
-
-  useEffect(() => {
     if (isRedirected) {
       router.refresh();
     }
   }, [isRedirected, router]);
+
+  useEffect(() => {
+    if (loading) return;
+    // console.log(storeSessionId);
+    if (!storeSessionId) {
+      const sessionId = generateSessionId();
+      dispatch(setSessionId(sessionId));
+    }
+  }, [storeSessionId, dispatch, loading]);
 
   const content = (
     <>
@@ -123,7 +117,7 @@ const Category = <T extends { id: number | string | undefined }>({
       )}
       <div className={styles.category}>
         <h1 className={styles[`category__header_${title.toLowerCase()}`]}>
-          {isPreloadedState ? `${title}` : `${title} loading...`}
+          {loading ? `${title} loading...` : `${title}`}
         </h1>
         <div className={styles.category__items_container}>
           {(itemsArray as T[]).map((item: T) => (

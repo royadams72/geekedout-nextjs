@@ -3,7 +3,6 @@ import { createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 
 import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
-import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { IMAGE_PATHS } from "@/shared/enums/paths.enums";
@@ -12,12 +11,10 @@ import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
 export interface MoviesSliceState {
   movies: MoviesStore;
-  status: StateLoading;
 }
 
 const initialState: MoviesSliceState = {
   movies: {} as MoviesStore,
-  status: StateLoading.IDLE,
 };
 
 const MOVIES_API = "api/movies";
@@ -32,28 +29,22 @@ export const moviesSlice = createAppSlice({
   },
   selectors: {
     selectMovies: (movies) => movies.movies.results as Movie[],
-    selectStatus: (movies) => movies.status,
   },
 });
 
 export const getMoviesStore = async (): Promise<MoviesSliceState> => {
   let moviesStore: MoviesStore;
-  let status = StateLoading.LOADING;
   try {
     moviesStore = await getAllMoviesApi();
     if (!moviesStore) {
-      status = StateLoading.FAILED;
       throw new Error(`Data was not loaded`);
     }
-    status = StateLoading.IDLE;
   } catch (error) {
     console.error("Failed to fetch data:", error);
-    status = StateLoading.FAILED;
     throw error;
   }
   return {
     movies: moviesStore,
-    status,
   };
 };
 
@@ -83,26 +74,32 @@ const getAllMoviesApi = async () => {
 };
 
 const getMovieApi = async (id: number) => {
-  const response = await fetch(
-    `${appConfig.url.BASE_URL}/${MOVIES_API}/movie-details/${id}`,
-    {
-      method: "GET",
+  try {
+    const response = await fetch(
+      `${appConfig.url.BASE_URL}/${MOVIES_API}/movie-details/${id}`,
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`Failed to fetch movie details: ${data.error.message}`);
     }
-  );
-  const m = await response.json();
-  return mapMovieDetail(m, id);
+    return mapMovieDetail(data, id);
+  } catch (error) {
+    console.error(`Unable to load details: ${error}`);
+    throw error;
+  }
 };
 
 export const { setMovies } = moviesSlice.actions;
-
-export const { selectMovies, selectStatus } = moviesSlice.selectors;
-
+export const { selectMovies } = moviesSlice.selectors;
 export const moviesReducer = moviesSlice.reducer;
 
 export const selectMoviesPreviews = createSelector(
   selectMovies,
-  (arr: Movie[]) => {
-    return arr?.map((movie) => ({
+  (movie: Movie[]) =>
+    movie?.map((movie) => ({
       category: CategoryType.Movies,
       id: movie.id,
       imageLarge: movie.poster_path
@@ -112,8 +109,7 @@ export const selectMoviesPreviews = createSelector(
         ? `${IMAGE_PATHS.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
         : IMAGE_NOT_FOUND.SM,
       title: movie.title,
-    }));
-  }
+    }))
 );
 
 function mapMovieDetail(movie: Movie, id: number): MovieDetail {

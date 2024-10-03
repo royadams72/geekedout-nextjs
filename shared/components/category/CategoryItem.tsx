@@ -40,7 +40,7 @@ const CategoryItem = ({
               alt={title}
               fill
               loading="lazy"
-              sizes="25vw, 25vh"
+              sizes="(max-width: 600px) 50vw, (max-width: 1200px) 16vw, 16vw"
               className={styles[`category__image${categoryColour}`]}
             />
           </div>

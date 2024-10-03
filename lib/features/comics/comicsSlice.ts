@@ -10,7 +10,6 @@ import {
   Price,
 } from "@/shared/interfaces/comic";
 
-import { StateLoading } from "@/shared/enums/loading";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { appConfig } from "@/shared/constants/appConfig";
@@ -18,12 +17,10 @@ import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
 export interface ComicsSliceState {
   comics: ComicStore;
-  status: StateLoading.IDLE | StateLoading.LOADING | StateLoading.FAILED;
 }
 
 const initialState: ComicsSliceState = {
   comics: {} as ComicStore,
-  status: StateLoading.IDLE,
 };
 
 export const comicsSlice = createAppSlice({
@@ -36,14 +33,11 @@ export const comicsSlice = createAppSlice({
   },
   selectors: {
     selectComicsArray: (comics) => comics.comics.results as Comic[],
-    selectStatus: (comics) => comics.status,
   },
 });
 
 export const { setComics } = comicsSlice.actions;
-
-export const { selectComicsArray, selectStatus } = comicsSlice.selectors;
-
+export const { selectComicsArray } = comicsSlice.selectors;
 export const comicsReducer = comicsSlice.reducer;
 
 export const setComicDetails = async (
@@ -98,26 +92,20 @@ export const mapComicDetail = (
 
 export const getComicsStore = async (): Promise<ComicsSliceState> => {
   let comicStore: ComicStore;
-  let status = StateLoading.LOADING;
 
   try {
     comicStore = await getComicsApi();
 
     if (!comicStore) {
-      status = StateLoading.FAILED;
       throw new Error("Data was not loaded");
     }
-
-    status = StateLoading.IDLE;
   } catch (error) {
-    status = StateLoading.FAILED;
     console.error("Failed to fetch comic details:", error);
     throw error;
   }
 
   return {
     comics: comicStore,
-    status,
   };
 };
 
@@ -130,13 +118,17 @@ const getComicsApi = async (): Promise<ComicStore> => {
     }
   );
   const data: ComicStore = await response.json();
+
   return data;
 };
 
+// export const selectComicsArray = (state: RootState) =>
+//   state.comics.comics.results;
+
 export const selectComicsPreviews = createSelector(
   selectComicsArray,
-  (arr: Comic[]) => {
-    return arr?.map((comic) => {
+  (comic: Comic[]) =>
+    comic?.map((comic: Comic) => {
       const isImages = comic.images && comic.images.length > 0;
       return {
         category: CategoryType.Comics,
@@ -149,6 +141,5 @@ export const selectComicsPreviews = createSelector(
           ? `${comic.images[0].path}/standard_fantastic.jpg`
           : IMAGE_NOT_FOUND.MED_250x250,
       };
-    });
-  }
+    })
 );

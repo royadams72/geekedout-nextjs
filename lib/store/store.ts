@@ -1,6 +1,8 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
+import { CategoryType } from "@/shared/enums/category-type.enum";
+
 import { comicsReducer } from "@/lib/features/comics/comicsSlice";
 import { musicReducer } from "@/lib/features/music/musicSlice";
 import { gamesReducer } from "@/lib/features/games/gamesSlice";
@@ -18,7 +20,20 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-export const makeStore = (preloadedState?: any) => {
+// Load persisted state from local storage
+const loadState = () => {
+  if (typeof window !== "undefined") {
+    const serializedState = localStorage.getItem("redux-store");
+    if (serializedState) {
+      return JSON.parse(serializedState);
+    }
+  }
+  return undefined;
+};
+
+const preloadedState = loadState();
+
+export const makeStore = () => {
   return configureStore({
     reducer: rootReducer,
     preloadedState, // This allows SSR state to be injected

@@ -13,4 +13,5 @@ export interface UiData {
   selectedId: string;
   selectedItem: any;
   sessionId: string;
+  sessionIdLoaded: boolean;
 }

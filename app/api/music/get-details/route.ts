@@ -1,5 +1,5 @@
 import { BASE_URL_MUSIC } from "@/shared/constants/urls";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getValidToken, refreshToken } from "@/app/api/music/token/getToken";
 
 export const POST = async (req: NextRequest) => {
@@ -7,12 +7,11 @@ export const POST = async (req: NextRequest) => {
   const id = searchParams.get("id") as string;
 
   const data = await getAlbumDetails(req, id);
-  return new Response(JSON.stringify({ data }), { status: 200 });
+  return NextResponse.json(data, { status: 200 });
 };
 
 const getAlbumDetails = async (req: NextRequest, id: string) => {
   let token = await getValidToken(req);
-
   let response = await fetchAlbum(id, token);
 
   if (response.status === 401) {
@@ -20,7 +19,13 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
     const refreshedTokenCookie = refreshResponse.cookies.get("spotify_token");
 
     if (refreshedTokenCookie) {
-      token = JSON.parse(refreshedTokenCookie.value).token;
+      try {
+        token = JSON.parse(refreshedTokenCookie.value).token;
+      } catch (error) {
+        throw new Error("Invalid token format in refreshed token");
+      }
+    } else {
+      throw new Error("Failed to refresh token");
     }
 
     response = await fetchAlbum(id, token);
