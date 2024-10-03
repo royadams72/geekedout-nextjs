@@ -12,19 +12,23 @@ export async function POST(request: NextRequest) {
         uiData: { sessionId },
       },
     } = categoriesData;
-    const maxAttempts = 4;
 
-    // for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    if (sessionId) {
-      const { response } = ensureBrowserSessionServerSide(sessionId);
-      await saveSessionData(sessionId, categoriesData);
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: "Session ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const { sessionId: returnedSessionId, response } =
+      await ensureBrowserSessionServerSide(sessionId);
+
+    if (response && response.status !== 200) {
       return response;
     }
-    // }
-    return NextResponse.json(
-      { error: "Session ID is required" },
-      { status: 400 }
-    );
+    await saveSessionData(returnedSessionId as string, categoriesData);
+
+    return NextResponse.json({ message: "Data saved successfully to redis" });
   } catch (error) {
     console.error("Failed to store data:", error);
 

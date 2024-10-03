@@ -13,11 +13,19 @@ hash.update(`${privateKey}`);
 hash.update(`${publicKey}`);
 
 export async function GET() {
-  const res = await fetch(
-    `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`
-  );
+  try {
+    const res = await fetch(
+      `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`
+    );
 
-  const data = await res.json();
-  // TODO error handling
-  return Response.json(data.data);
+    if (!res.ok) {
+      return Response.json({ error: "No data found" }, { status: 404 });
+    }
+    const data = await res.json();
+
+    return Response.json(data.data, { status: 200 });
+  } catch (error) {
+    console.error(`There was an error requesting comic data:${error}`);
+    throw error;
+  }
 }

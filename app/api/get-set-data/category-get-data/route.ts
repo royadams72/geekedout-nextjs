@@ -11,13 +11,6 @@ export async function GET(request: NextRequest) {
   const categoryName = searchParams.get("categoryName") || undefined;
   const id = searchParams.get("id");
   const getAll = searchParams.get("getAll");
-  // console.log("categoryData===", getAll);
-  // if (!categoryName) {
-  //   return NextResponse.json(
-  //     { error: "Category name is required" },
-  //     { status: 400 }
-  //   );
-  // }
   const sessionId = getSessionIdFromCookie() as string;
   try {
     let categoryData = getAll
@@ -29,7 +22,6 @@ export async function GET(request: NextRequest) {
     if (!categoryData) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });
     }
-    // console.log("categoryData===", categoryData);
     return NextResponse.json(categoryData);
   } catch (error) {
     console.error("Error retrieving data:", error);
