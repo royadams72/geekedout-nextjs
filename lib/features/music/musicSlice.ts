@@ -1,4 +1,5 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
+
 import { createAppSlice } from "@/lib/store/createAppSlice";
 
 import {
@@ -44,15 +45,11 @@ export const musicSlice = createAppSlice({
       state.music = action.payload;
     },
   },
-  selectors: {
-    selectAllAlbums: (state) => state.music.items || [],
-  },
+  selectors: { selectAllAlbums: (state) => state.music.items || [] },
 });
 
 export const { setMusic } = musicSlice.actions;
-
 export const { selectAllAlbums } = musicSlice.selectors;
-
 export const musicReducer = musicSlice.reducer;
 
 export const getMusicDetails = async (id: string): Promise<AlbumDetail> => {
@@ -137,13 +134,12 @@ const mapAlbumDetail = (item: any): AlbumDetail => {
 
 export const selectMusicPreviews = createSelector(
   selectAllAlbums,
-  (arr: Album[]) => {
-    return arr.map((album) => ({
+  (albums: Album[]) =>
+    albums?.map((album) => ({
       category: CategoryType.Music,
       id: album.id,
       imageLarge: album.images?.[0]?.url || IMAGE_NOT_FOUND.SM,
       imageSmall: album.images?.[1]?.url || IMAGE_NOT_FOUND.SM,
       title: album.name,
-    }));
-  }
+    }))
 );

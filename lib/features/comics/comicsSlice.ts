@@ -37,9 +37,7 @@ export const comicsSlice = createAppSlice({
 });
 
 export const { setComics } = comicsSlice.actions;
-
 export const { selectComicsArray } = comicsSlice.selectors;
-
 export const comicsReducer = comicsSlice.reducer;
 
 export const setComicDetails = async (
@@ -120,13 +118,17 @@ const getComicsApi = async (): Promise<ComicStore> => {
     }
   );
   const data: ComicStore = await response.json();
+
   return data;
 };
 
+// export const selectComicsArray = (state: RootState) =>
+//   state.comics.comics.results;
+
 export const selectComicsPreviews = createSelector(
   selectComicsArray,
-  (arr: Comic[]) => {
-    return arr?.map((comic) => {
+  (comic: Comic[]) =>
+    comic?.map((comic: Comic) => {
       const isImages = comic.images && comic.images.length > 0;
       return {
         category: CategoryType.Comics,
@@ -139,6 +141,5 @@ export const selectComicsPreviews = createSelector(
           ? `${comic.images[0].path}/standard_fantastic.jpg`
           : IMAGE_NOT_FOUND.MED_250x250,
       };
-    });
-  }
+    })
 );

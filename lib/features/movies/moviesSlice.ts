@@ -93,15 +93,13 @@ const getMovieApi = async (id: number) => {
 };
 
 export const { setMovies } = moviesSlice.actions;
-
 export const { selectMovies } = moviesSlice.selectors;
-
 export const moviesReducer = moviesSlice.reducer;
 
 export const selectMoviesPreviews = createSelector(
   selectMovies,
-  (arr: Movie[]) => {
-    return arr?.map((movie) => ({
+  (movie: Movie[]) =>
+    movie?.map((movie) => ({
       category: CategoryType.Movies,
       id: movie.id,
       imageLarge: movie.poster_path
@@ -111,8 +109,7 @@ export const selectMoviesPreviews = createSelector(
         ? `${IMAGE_PATHS.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
         : IMAGE_NOT_FOUND.SM,
       title: movie.title,
-    }));
-  }
+    }))
 );
 
 function mapMovieDetail(movie: Movie, id: number): MovieDetail {

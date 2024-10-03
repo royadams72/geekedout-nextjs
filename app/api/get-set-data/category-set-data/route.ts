@@ -20,13 +20,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { sessionId: returnedSessionId, response } =
-      await ensureBrowserSessionServerSide(sessionId);
+    const { response } = await ensureBrowserSessionServerSide(sessionId);
 
     if (response && response.status !== 200) {
       return response;
     }
-    await saveSessionData(returnedSessionId as string, categoriesData);
+    await saveSessionData(sessionId as string, categoriesData);
 
     return NextResponse.json({ message: "Data saved successfully to redis" });
   } catch (error) {
