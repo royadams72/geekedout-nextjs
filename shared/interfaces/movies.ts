@@ -58,7 +58,7 @@ export interface MovieDetail {
 export interface MoviesStore {
   dates?: { maximun: string; minimum: string };
   page?: number;
-  results: Movie[] | MovieDetail[];
+  results: Movie[];
   total_pages?: number;
   total_results?: number;
 }

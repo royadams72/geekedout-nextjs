@@ -1,6 +1,7 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
 import { createAppSlice } from "@/lib/store/createAppSlice";
+import { RootState } from "@/lib/store/store";
 
 import {
   Album,
@@ -49,8 +50,24 @@ export const musicSlice = createAppSlice({
 });
 
 export const { setMusic } = musicSlice.actions;
-export const { selectAllAlbums } = musicSlice.selectors;
 export const musicReducer = musicSlice.reducer;
+
+export const selectAllAlbums = createSelector(
+  (state: RootState) => state?.music.music?.items || [],
+  (items) => items
+);
+
+export const selectMusicPreviews = createSelector(
+  selectAllAlbums,
+  (albums: Album[]) =>
+    albums?.map((album) => ({
+      category: CategoryType.Music,
+      id: album.id,
+      imageLarge: album.images?.[0]?.url || IMAGE_NOT_FOUND.SM,
+      imageSmall: album.images?.[1]?.url || IMAGE_NOT_FOUND.SM,
+      title: album.name,
+    }))
+);
 
 export const getMusicDetails = async (id: string): Promise<AlbumDetail> => {
   const selectedAlbum = await getAlbumDetails(id);
@@ -131,15 +148,3 @@ const mapAlbumDetail = (item: any): AlbumDetail => {
     category: "Music",
   };
 };
-
-export const selectMusicPreviews = createSelector(
-  selectAllAlbums,
-  (albums: Album[]) =>
-    albums?.map((album) => ({
-      category: CategoryType.Music,
-      id: album.id,
-      imageLarge: album.images?.[0]?.url || IMAGE_NOT_FOUND.SM,
-      imageSmall: album.images?.[1]?.url || IMAGE_NOT_FOUND.SM,
-      title: album.name,
-    }))
-);

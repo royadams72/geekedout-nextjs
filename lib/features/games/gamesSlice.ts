@@ -1,6 +1,7 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
 import { createAppSlice } from "@/lib/store/createAppSlice";
+import { RootState } from "@/lib/store/store";
 
 import { Game, GameDetail } from "@/shared/interfaces/game";
 import { CategoryType } from "@/shared/enums/category-type.enum";
@@ -32,8 +33,24 @@ export const gamesSlice = createAppSlice({
 });
 
 export const { getGames, setGames } = gamesSlice.actions;
-export const { selectGames } = gamesSlice.selectors;
 export const gamesReducer = gamesSlice.reducer;
+
+export const selectGames = createSelector(
+  (state: RootState) => state?.games.games || [],
+  (games) => games
+);
+export const selectGamesPreviews = createSelector(
+  selectGames,
+  (games: Game[]) =>
+    games?.map((game) => {
+      return {
+        category: CategoryType.Games,
+        id: game.id,
+        imageLarge: game.image || IMAGE_NOT_FOUND.LRG_450x210,
+        title: game.title,
+      };
+    })
+);
 
 const getAllGames = async (): Promise<Game[]> => {
   try {
@@ -77,20 +94,6 @@ export const getGamesStore = async (): Promise<GamesSliceState> => {
     games: gamesStore,
   };
 };
-
-// export const selectGames = (state: RootState) => state?.games?.games || [];
-export const selectGamesPreviews = createSelector(
-  selectGames,
-  (games: Game[]) =>
-    games?.map((game) => {
-      return {
-        category: CategoryType.Games,
-        id: game.id,
-        imageLarge: game.image || IMAGE_NOT_FOUND.LRG_450x210,
-        title: game.title,
-      };
-    })
-);
 
 export const mapGameDetail = (
   games: GamesSliceState,
