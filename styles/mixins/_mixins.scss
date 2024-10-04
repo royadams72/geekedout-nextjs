@@ -1,1 +1,29 @@
-@import './media-queries';
+@mixin is-small {
+  @media (max-width: 640px) {
+    @content;
+  }
+}
+
+@mixin is-medium {
+  @media (min-width: 640px) {
+    @content;
+  }
+}
+
+@mixin is-large {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin color-font-margin-bottom(
+  $type-font-colour,
+  $type-body-font-family,
+  $font-weight,
+  $margin-bottom
+) {
+  color: $type-font-colour;
+  font-family: $type-body-font-family;
+  font-weight: $font-weight;
+  margin-bottom: $margin-bottom;
+}

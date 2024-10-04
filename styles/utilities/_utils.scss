@@ -1,2 +1,3 @@
-@import './helpers-functions';
-@import './helpers';
+@function settings-colour($colour) {
+  @return map-get($settings-colours, $colour);
+}

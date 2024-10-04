@@ -96,7 +96,7 @@ const getAlbumDetails = async (id: string) => {
         method: "POST",
       }
     );
-    return mapAlbumDetail(data.data);
+    return mapAlbumDetail(data);
   } catch (error) {
     console.error(`Failed to fetch movie details: ${error}`);
     throw error;

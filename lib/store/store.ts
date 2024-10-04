@@ -36,7 +36,7 @@ const preloadedState = loadState();
 export const makeStore = () => {
   return configureStore({
     reducer: rootReducer,
-    preloadedState, // This allows SSR state to be injected
+    preloadedState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         immutableCheck: false,

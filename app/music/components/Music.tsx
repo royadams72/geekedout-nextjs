@@ -9,7 +9,7 @@ const Music = ({ albumDetails }: { albumDetails: AlbumDetail }) => {
     <>
       {albumDetails?.artists &&
         albumDetails?.artists.map((artist, index) => (
-          <h4 key={index} className={styles.details_sub_heading_music}>
+          <h2 key={index} className={styles.details_sub_heading_music}>
             <Link
               href={artist?.spotifyUrl}
               className={styles.details_link}
@@ -17,12 +17,12 @@ const Music = ({ albumDetails }: { albumDetails: AlbumDetail }) => {
             >
               {artist.name}
             </Link>
-          </h4>
+          </h2>
         ))}
-      <h4 className={styles.details_sub_heading_music}>
+      <h2 className={styles.details_sub_heading_music}>
         Realease Date: {albumDetails?.release_date}
-      </h4>
-      <h4 className={styles.details_list_heading}>TrackList</h4>
+      </h2>
+      <h2 className={styles.details_list_heading}>TrackList</h2>
       <div className={styles.details_ol}>
         <ol className={styles.details_ol_music}>
           {albumDetails.tracks &&

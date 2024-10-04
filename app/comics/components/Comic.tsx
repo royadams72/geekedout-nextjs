@@ -10,12 +10,12 @@ const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
   return (
     <>
       {comicDetails?.onsaleDate && (
-        <h4>
+        <h2>
           <span className={styles.details_alt_colour}>Published: </span>
           {formatDate(comicDetails?.onsaleDate)}
-        </h4>
+        </h2>
       )}
-      <h4>
+      <h2>
         {comicDetails?.printPrice !== 0 ? (
           <span>
             <span className={styles.details_alt_colour}>Price: </span>
@@ -24,11 +24,11 @@ const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
         ) : (
           <span className={styles.details_alt_colour}>No Price Available</span>
         )}
-      </h4>
-      <h4>
+      </h2>
+      <h2>
         <span className={styles.details_alt_colour}>Page Count: </span>
         {comicDetails?.pageCount}
-      </h4>
+      </h2>
       <ul className={styles.details_ul_comics}>
         {comicDetails?.creators &&
           comicDetails?.creators.map(
