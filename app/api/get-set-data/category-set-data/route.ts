@@ -21,13 +21,10 @@ export async function POST(request: NextRequest) {
     }
 
     const { response } = await ensureBrowserSessionServerSide(sessionId);
-
-    if (response && response.status !== 200) {
-      return response;
-    }
     await saveSessionData(sessionId as string, categoriesData);
+    // console.log("response set data:", response.cookies);
 
-    return NextResponse.json({ message: "Data saved successfully to redis" });
+    return response;
   } catch (error) {
     console.error("Failed to store data:", error);
 

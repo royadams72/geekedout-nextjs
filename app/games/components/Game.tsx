@@ -22,18 +22,18 @@ const Game = ({ gameDetail }: { gameDetail: GameDetail }) => {
 
   return (
     <>
-      <h4>
+      <h2>
         <span className={styles.details_alt_colour}>Price: </span>
         {displayValue}
-      </h4>
-      <h4>
+      </h2>
+      <h2>
         <span className={styles.details_alt_colour}>Published Date: </span>
         {formatDate(gameDetail?.published_date)}
-      </h4>
-      <h4>
+      </h2>
+      <h2>
         <span className={styles.details_alt_colour}>Game Type: </span>
         {gameDetail?.type}
-      </h4>
+      </h2>
       {gameDetail?.platforms && (
         <p className={styles.details_copy}>
           <span className={styles.details_alt_colour}>Platforms: </span>

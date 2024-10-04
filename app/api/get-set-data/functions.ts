@@ -69,9 +69,9 @@ export const ensureBrowserSessionServerSide = async (
         httpOnly: true,
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
-        expires: new Date(Date.now() + 86400 * 1000),
       });
     }
+    // console.log("response ensureBrowserSessionServerSide():", response.cookies);
   }
 
   return { sessionId, response };

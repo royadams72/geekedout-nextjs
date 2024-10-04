@@ -38,14 +38,6 @@ $details-width: 650px;
   }
 
   &_container_movies {
-    // .details_link {
-    //   color: $movies-colour;
-    // }
-
-    // .details_alt_colour {
-    //   color: $movies-colour;
-    // }
-
     :global {
       .btn {
         &:hover {
@@ -57,14 +49,6 @@ $details-width: 650px;
   }
 
   &_container_comics {
-    // .details_link {
-    //   color: $comics-colour;
-    // }
-
-    // .details_alt_colour {
-    //   color: $comics-colour;
-    // }
-
     :global {
       .btn {
         &:hover {
@@ -76,14 +60,6 @@ $details-width: 650px;
   }
 
   &_container_games {
-    // .details_link {
-    //   color: $games-colour;
-    // }
-
-    // .details_alt_colour {
-    //   color: $games-colour;
-    // }
-
     :global {
       .btn {
         &:hover {
@@ -95,10 +71,6 @@ $details-width: 650px;
   }
 
   &_container_music {
-    // .details_link {
-    //   color: $music-colour;
-    // }
-
     :global {
       .btn {
         &:hover {

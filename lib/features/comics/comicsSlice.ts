@@ -14,6 +14,7 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { appConfig } from "@/shared/constants/appConfig";
 import { GET_DATA_FOLDER } from "@/shared/constants/urls";
+import { RootState } from "@/lib/store/store";
 
 export interface ComicsSliceState {
   comics: ComicStore;
@@ -37,8 +38,29 @@ export const comicsSlice = createAppSlice({
 });
 
 export const { setComics } = comicsSlice.actions;
-export const { selectComicsArray } = comicsSlice.selectors;
 export const comicsReducer = comicsSlice.reducer;
+
+export const selectComicsArray = (state: RootState) =>
+  state.comics.comics.results;
+
+export const selectComicsPreviews = createSelector(
+  selectComicsArray,
+  (comic: Comic[]) =>
+    comic?.map((comic: Comic) => {
+      const isImages = comic.images && comic.images.length > 0;
+      return {
+        category: CategoryType.Comics,
+        id: comic.id,
+        title: comic.title,
+        imageLarge: isImages
+          ? `${comic.images[0].path}.jpg`
+          : IMAGE_NOT_FOUND.SM,
+        imageSmall: isImages
+          ? `${comic.images[0].path}/standard_fantastic.jpg`
+          : IMAGE_NOT_FOUND.MED_250x250,
+      };
+    })
+);
 
 export const setComicDetails = async (
   comicStore: ComicsSliceState,
@@ -121,25 +143,3 @@ const getComicsApi = async (): Promise<ComicStore> => {
 
   return data;
 };
-
-// export const selectComicsArray = (state: RootState) =>
-//   state.comics.comics.results;
-
-export const selectComicsPreviews = createSelector(
-  selectComicsArray,
-  (comic: Comic[]) =>
-    comic?.map((comic: Comic) => {
-      const isImages = comic.images && comic.images.length > 0;
-      return {
-        category: CategoryType.Comics,
-        id: comic.id,
-        title: comic.title,
-        imageLarge: isImages
-          ? `${comic.images[0].path}.jpg`
-          : IMAGE_NOT_FOUND.SM,
-        imageSmall: isImages
-          ? `${comic.images[0].path}/standard_fantastic.jpg`
-          : IMAGE_NOT_FOUND.MED_250x250,
-      };
-    })
-);

@@ -1,6 +1,7 @@
 import { createSelector, PayloadAction } from "@reduxjs/toolkit";
 
 import { createAppSlice } from "@/lib/store/createAppSlice";
+import { RootState } from "@/lib/store/store";
 
 import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import { CategoryType } from "@/shared/enums/category-type.enum";
@@ -27,9 +28,7 @@ export const moviesSlice = createAppSlice({
       state.movies = action.payload;
     },
   },
-  selectors: {
-    selectMovies: (movies) => movies.movies.results as Movie[],
-  },
+  selectors: {},
 });
 
 export const getMoviesStore = async (): Promise<MoviesSliceState> => {
@@ -93,13 +92,18 @@ const getMovieApi = async (id: number) => {
 };
 
 export const { setMovies } = moviesSlice.actions;
-export const { selectMovies } = moviesSlice.selectors;
+
 export const moviesReducer = moviesSlice.reducer;
+
+export const selectMovies = createSelector(
+  (state: RootState) => state?.movies?.movies?.results || [],
+  (results) => results
+);
 
 export const selectMoviesPreviews = createSelector(
   selectMovies,
-  (movie: Movie[]) =>
-    movie?.map((movie) => ({
+  (movies: Movie[]) =>
+    movies?.map((movie) => ({
       category: CategoryType.Movies,
       id: movie.id,
       imageLarge: movie.poster_path

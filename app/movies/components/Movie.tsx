@@ -7,13 +7,13 @@ import { MovieDetail } from "@/shared/interfaces/movies";
 const Movie = ({ movieDetails }: { movieDetails: MovieDetail }) => {
   return (
     <>
-      <h4>
+      <h2>
         <span className={styles.details_alt_colour}>Realease Date: </span>
         {movieDetails?.release_date}
-      </h4>
-      <h4 className={styles.details_alt_colour}>Overview</h4>
+      </h2>
+      <h2 className={styles.details_alt_colour}>Overview</h2>
       <p className={styles.details_copy}>{movieDetails?.overview}</p>
-      <h4 className={styles.details_alt_colour}>Genres</h4>
+      <h2 className={styles.details_alt_colour}>Genres</h2>
       <ul className={styles.details_ul_movies}>
         {movieDetails?.genres.map((genre, index) => (
           <li className={styles.details_ul_movies_li} key={index}>

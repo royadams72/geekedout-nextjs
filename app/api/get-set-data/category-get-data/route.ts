@@ -12,12 +12,24 @@ export async function GET(request: NextRequest) {
   const id = searchParams.get("id");
   const getAll = searchParams.get("getAll");
   const sessionId = getSessionIdFromCookie() as string;
+  console.log(categoryName, id);
+
   try {
-    let categoryData = getAll
-      ? await getSessionData(sessionId)
-      : id
-      ? await getItemFromCache(sessionId, categoryName as string, id)
-      : await getCategoryByNameFromCache(sessionId, categoryName as string);
+    let categoryData;
+    if (getAll) {
+      categoryData = await getSessionData(sessionId);
+    } else if (id && categoryName) {
+      categoryData = await getItemFromCache(
+        sessionId,
+        categoryName as string,
+        id
+      );
+    } else {
+      categoryData = await getCategoryByNameFromCache(
+        sessionId,
+        categoryName as string
+      );
+    }
 
     if (!categoryData) {
       return NextResponse.json({ error: "No data found" }, { status: 404 });

@@ -1,0 +1,119 @@
+//Mixins /
+
+$type-body-font-family: $font-main-font !default;
+$type-font-colour: settings-colour("text-primary") !default;
+$type-h1-font-family: $font-main-font !default;
+$type-h1-font-size-small: 25px !default;
+$type-h1-font-size-medium: 30px !default;
+$type-h1-line-height-small: 1.1 !default;
+$type-h1-line-height-medium: 1.1 !default;
+$type-h1-margin-bottom: 0 !default;
+$type-h1-weight: bold !default;
+$type-h1-colour: $type-font-colour !default;
+
+$type-h2-font-family: $font-main-font !default;
+$type-h2-font-size-small: 16px !default;
+$type-h2-font-size-medium: 20px !default;
+$type-h2-line-height-small: 1 !default;
+$type-h2-line-height-medium: 1 !default;
+$type-h2-margin-bottom: 0 !default;
+$type-h2-weight: bold !default;
+$type-h2-colour: $type-font-colour !default;
+
+$type-p-font-size-small: 15px !default;
+$type-p-font-size-medium: 18px !default;
+$type-p-line-height-small: 1.4 !default;
+$type-p-line-height-medium: 1.4 !default;
+$type-p-margin-top: 10px !default;
+$type-p-margin-bottom-small: 20px !default;
+$type-p-margin-bottom-medium: 20px !default;
+$type-p-weight: normal !default;
+$type-p-colour: $type-font-colour !default;
+
+$type-li-font-family: $font-main-font !default;
+$type-li-font-size-small: 15px !default;
+$type-li-font-size-medium: 18px !default;
+$type-li-line-height-small: 1.5 !default;
+$type-li-line-height-medium: 1.4 !default;
+$type-li-margin-bottom-small: 5px !default;
+$type-li-margin-bottom-medium: 9px !default;
+$type-li-weight: normal !default;
+$type-li-colour: $type-font-colour !default;
+
+h1,
+%h1 {
+  @include color-font-margin-bottom(
+    $type-h1-colour,
+    $type-h1-font-family,
+    $type-h1-weight,
+    $type-h1-margin-bottom
+  );
+  font-size: $type-h1-font-size-small;
+  line-height: $type-h1-line-height-small;
+  margin-top: 0;
+  padding-left: 10px;
+
+  @include is-medium {
+    font-size: $type-h1-font-size-medium;
+    line-height: $type-h1-line-height-medium;
+    padding-left: 20px;
+  }
+}
+
+h2,
+%h2 {
+  @include color-font-margin-bottom(
+    $type-h2-colour,
+    $type-h2-font-family,
+    $type-h2-weight,
+    $type-h2-margin-bottom
+  );
+  font-size: $type-h2-font-size-small;
+  line-height: $type-h2-line-height-small;
+
+  @include is-medium {
+    font-size: $type-h2-font-size-medium;
+    line-height: $type-h2-line-height-medium;
+  }
+}
+
+p,
+%p {
+  @include color-font-margin-bottom(
+    $type-p-colour,
+    $type-body-font-family,
+    normal,
+    $type-p-margin-bottom-small
+  );
+  font-size: $type-p-font-size-small;
+  line-height: $type-p-line-height-small;
+  margin-top: $type-p-margin-top;
+
+  @include is-medium {
+    font-size: $type-p-font-size-medium;
+    line-height: $type-p-line-height-medium;
+  }
+}
+
+li,
+%li {
+  @include color-font-margin-bottom(
+    $type-li-colour,
+    $type-li-font-family,
+    normal,
+    $type-li-margin-bottom-small
+  );
+  font-size: $type-li-font-size-small;
+  line-height: $type-li-line-height-small;
+  text-transform: capitalize;
+
+  @include is-medium {
+    font-size: $type-li-font-size-medium;
+    line-height: $type-li-line-height-medium;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
