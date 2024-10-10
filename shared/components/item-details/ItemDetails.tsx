@@ -16,14 +16,19 @@ import {
   isAlbumDetail,
   isComicDetail,
   isGameDetail,
-  isMovieDetail,
+  isMappedMovieDetail,
 } from "@/shared/types/type-guards";
 
 import styles from "@/styles/components/_detail.module.scss";
 
 import Loader from "@/shared/components/loader/Loader";
 
-const typeGuards = [isMovieDetail, isComicDetail, isAlbumDetail, isGameDetail];
+const typeGuards = [
+  isMappedMovieDetail,
+  isComicDetail,
+  isAlbumDetail,
+  isGameDetail,
+];
 interface BasicDetail {
   image: string;
   category: string;
@@ -93,8 +98,16 @@ const ItemDetails = <T extends BasicDetail>({
               </Link>
             )}
           </div>
-          <div className={styles.details_games}>
-            <h1 className={styles.details_title}>{itemDetails?.name}</h1>
+          <article
+            aria-labelledby={`${itemDetails?.name}-name`}
+            className={styles.details_games}
+          >
+            <h1
+              id={`${itemDetails?.name}-name`}
+              className={styles.details_title}
+            >
+              {itemDetails?.name}
+            </h1>
 
             <div className={styles.details_info}>{children}</div>
             <div className={styles.details_image}>
@@ -107,7 +120,7 @@ const ItemDetails = <T extends BasicDetail>({
                 />
               )}
             </div>
-          </div>
+          </article>
         </div>
       </div>
       <div style={divStyle} className={styles.backgroundImage}></div>

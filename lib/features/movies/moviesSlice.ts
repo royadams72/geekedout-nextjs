@@ -3,7 +3,11 @@ import { createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
-import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
+import {
+  Movie,
+  MappedMovieDetail,
+  MoviesStore,
+} from "@/shared/interfaces/movies";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { IMAGE_PATHS } from "@/shared/enums/paths.enums";
@@ -47,7 +51,9 @@ export const getMoviesStore = async (): Promise<MoviesSliceState> => {
   };
 };
 
-export const getMovieDetails = async (id: number): Promise<MovieDetail> => {
+export const getMovieDetails = async (
+  id: number
+): Promise<MappedMovieDetail> => {
   try {
     const selectedMovie = await getMovieApi(id);
     if (!selectedMovie) {
@@ -116,7 +122,7 @@ export const selectMoviesPreviews = createSelector(
     }))
 );
 
-function mapMovieDetail(movie: Movie, id: number): MovieDetail {
+function mapMovieDetail(movie: Movie, id: number): MappedMovieDetail {
   const {
     title: name,
     release_date,
@@ -127,12 +133,12 @@ function mapMovieDetail(movie: Movie, id: number): MovieDetail {
     overview,
   } = movie;
 
-  const genreNames = genres.map((genre: { name: string }) => genre.name);
+  const genreNames = genres?.map((genre: { name: string }) => genre.name) || [];
 
   return {
     category: CategoryType.Movies,
     genres: genreNames,
-    homepage,
+    homepage: homepage!,
     id,
     imdb_link: `http://www.imdb.com/title/${imdb_id}`,
     image: `https://image.tmdb.org/t/p/w300${poster_path}`,

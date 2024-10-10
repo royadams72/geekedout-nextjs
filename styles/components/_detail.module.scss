@@ -27,16 +27,6 @@ $details-width: 650px;
     }
   }
 
-  &_container_music {
-    .details_link {
-      text-decoration: underline;
-
-      &:hover {
-        color: $primary-colour;
-      }
-    }
-  }
-
   &_container_movies {
     :global {
       .btn {
@@ -45,6 +35,12 @@ $details-width: 650px;
           color: $movies-colour;
         }
       }
+    }
+    .details_alt_colour {
+      color: $movies-colour;
+    }
+    h1 {
+      color: $movies-colour;
     }
   }
 
@@ -57,6 +53,12 @@ $details-width: 650px;
         }
       }
     }
+    .details_alt_colour {
+      color: $comics-colour;
+    }
+    h1 {
+      color: $comics-colour;
+    }
   }
 
   &_container_games {
@@ -68,6 +70,12 @@ $details-width: 650px;
         }
       }
     }
+    .details_alt_colour {
+      color: $games-colour;
+    }
+    h1 {
+      color: $games-colour;
+    }
   }
 
   &_container_music {
@@ -78,6 +86,12 @@ $details-width: 650px;
           color: $music-colour;
         }
       }
+    }
+    .details_alt_colour {
+      color: $music-colour;
+    }
+    h1 {
+      color: $music-colour;
     }
   }
 
@@ -137,6 +151,9 @@ $details-width: 650px;
       }
     }
   }
+  &_info h2:first-child {
+    margin-top: 5px;
+  }
 
   &_info {
     margin: 0 auto;
@@ -145,6 +162,7 @@ $details-width: 650px;
   }
 
   &_image {
+    margin-top: 5px;
     width: 100%;
     & > img {
       width: 100%;
@@ -215,7 +233,7 @@ $details-width: 650px;
       color: $music-colour;
     }
 
-    &_li_alt {
+    &_li_alt_colour {
       color: $primary-colour;
     }
   }
@@ -247,13 +265,4 @@ $details-width: 650px;
   background-size: cover;
   opacity: 0.06;
   filter: blur(15px);
-}
-
-.details_music {
-  .btn {
-    &:hover {
-      border-color: $music-colour;
-      color: $music-colour;
-    }
-  }
 }

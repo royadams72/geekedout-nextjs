@@ -4,7 +4,7 @@ import { appConfig } from "@/shared/constants/appConfig";
 import { GET_SET_DATA_API } from "@/shared/constants/urls";
 
 let debounceTimeout: NodeJS.Timeout | null = null;
-const delayTime = 400;
+const delayTime = 300;
 
 if (typeof window !== "undefined") {
   window.addEventListener("beforeunload", () => {

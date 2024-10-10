@@ -19,6 +19,7 @@ const ComicsDisplay = ({
   preloadedState: ComicsSliceState;
   isRedirected?: string;
 }) => {
+  console.log(JSON.stringify(preloadedState.comics.results[0]));
   return (
     <Category<Preview>
       title={CategoryTitle.Comics}
