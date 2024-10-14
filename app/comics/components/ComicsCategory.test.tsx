@@ -27,7 +27,7 @@ jest.mock("next/navigation", () => ({
 
 let sessionId = "0b6b4eee-6802-47b3-9e9e-73bbc759f5e1";
 
-const comicsReducer = () => comicSliceMock;
+let comicsReducer = () => comicSliceMock || {};
 let uiDataReducer = () => ({
   isFirstPage: true,
   sessionId,
@@ -39,29 +39,22 @@ const makeStore = () => {
       comics: comicsReducer,
       uiData: uiDataReducer,
     }),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        immutableCheck: false,
+        serializableCheck: false,
+      }),
   });
 };
 
 describe("ComicCategory Component", () => {
   let store: any;
-  let comicStore: ComicsSliceState;
+  let comicStore: ComicsSliceState | {};
 
   beforeEach(async () => {
     store = makeStore();
     comicStore = comicSliceMock;
-    await act(async () => {
-      render(
-        <Provider store={store}>
-          <Category<Preview>
-            title={CategoryTitle.Comics}
-            itemsSelector={selectComicsPreviews}
-            preloadedStateAction={setComics}
-            preloadedState={comicStore}
-            sliceNumber={6}
-          />
-        </Provider>
-      );
-    });
+
     const mockUseRouter = jest.requireMock("next/navigation").useRouter;
     mockUseRouter.mockReturnValue({
       push: jest.fn(),
@@ -79,18 +72,23 @@ describe("ComicCategory Component", () => {
     }));
   });
   afterEach(cleanup);
-  it("renders correct number of items when ON the first page", async () => {
-    // uiDataReducer = () => ({
-    //   isFirstPage: false,
-    //   sessionId,
-    // });
-    // store = makeStore();
-    // console.log("comicStore==", comicStore.comics.results);
 
+  it("renders correct number of items when ON the first page", async () => {
+    await act(async () => {
+      render(
+        <Provider store={store}>
+          <Category<Preview>
+            title={CategoryTitle.Comics}
+            itemsSelector={selectComicsPreviews}
+            preloadedStateAction={setComics}
+            preloadedState={comicStore}
+            sliceNumber={6}
+          />
+        </Provider>
+      );
+    });
     const itemsLength = (await screen.findAllByRole("img")).length;
-    // screen.debug();
-    // console.log(itemsLength);
-    console.log("NO the first page", itemsLength);
+
     expect(itemsLength).toEqual(6);
   });
 
@@ -100,41 +98,63 @@ describe("ComicCategory Component", () => {
       sessionId,
     });
     store = makeStore();
-
+    await act(async () => {
+      render(
+        <Provider store={store}>
+          <Category<Preview>
+            title={CategoryTitle.Comics}
+            itemsSelector={selectComicsPreviews}
+            preloadedStateAction={setComics}
+            preloadedState={comicStore}
+            sliceNumber={6}
+          />
+        </Provider>
+      );
+    });
     const itemsLength = (await screen.findAllByRole("img")).length;
-    // screen.debug();
 
     expect(itemsLength).toBeGreaterThanOrEqual(6);
   });
 
   it("renders correctly with preloadedState", () => {
-    // render(
-    //   <Provider store={store}>
-    //     <Category<Preview>
-    //       title={CategoryTitle.Comics}
-    //       itemsSelector={selectComicsPreviews}
-    //       preloadedStateAction={setComics}
-    //       preloadedState={comicStore}
-    //       sliceNumber={6}
-    //     />
-    //   </Provider>
-    // );
+    render(
+      <Provider store={store}>
+        <Category<Preview>
+          title={CategoryTitle.Comics}
+          itemsSelector={selectComicsPreviews}
+          preloadedStateAction={setComics}
+          preloadedState={comicStore}
+          sliceNumber={6}
+        />
+      </Provider>
+    );
+    // });
     expect(
       screen.getByRole("heading", { name: /Comics/i })
     ).toBeInTheDocument();
   });
 
-  it("displays the loader when loading is true", () => {
-    jest
-      .spyOn(React, "useState")
-      .mockReturnValueOnce([true, jest.fn()])
-      .mockReturnValue([[], () => jest.fn()]);
+  it("displays the loader when loading is true", async () => {
+    comicsReducer = () => ({ comics: {} } as ComicsSliceState);
+    store = makeStore();
+    console.log(store.getState());
 
-    render(
-      <Provider store={store}>
-        <CategoryLoader title="Comics" />
-      </Provider>
-    );
-    expect(screen.getByText(/Comics loading.../i)).toBeInTheDocument();
+    await act(async () => {
+      render(
+        <Provider store={store}>
+          <Category<Preview>
+            title={CategoryTitle.Comics}
+            itemsSelector={selectComicsPreviews}
+            preloadedStateAction={setComics}
+            preloadedState={undefined}
+            sliceNumber={6}
+          />
+        </Provider>
+      );
+    });
+    await waitFor(() => {
+      expect(screen.getByText(/Comics loading.../i)).toBeInTheDocument();
+    });
+    screen.debug();
   });
 });

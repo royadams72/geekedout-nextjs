@@ -53,10 +53,12 @@ const Category = <T extends { id: number | string | undefined }>({
 
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
-  console.log("Category rendererd");
+  // console.log("Category rendererd");
 
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
+      console.log("component preloadedState:", preloadedState);
+
       setLoading(false);
     } else {
       setLoading(true);
@@ -131,8 +133,9 @@ const Category = <T extends { id: number | string | undefined }>({
         position: "relative",
       }}
     >
-      {loading && <CategoryLoader title={title} />}
-      {!loading && content}
+      {loading ? <CategoryLoader title={title} /> : content}
+      {/* {loading && <CategoryLoader title={title} />}
+      {!loading && content} */}
     </div>
   );
 };
