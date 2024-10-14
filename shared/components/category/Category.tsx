@@ -47,19 +47,16 @@ const Category = <T extends { id: number | string | undefined }>({
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-  // const { items: searchedItems } = useAppSelector(selectSearchData);
   const items = useAppSelector(itemsSelector);
   const storeSessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
-  // const isDetailsInStore = useAppSelector(selectSelectedItem);
 
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
-  // const [isPreloadedState, setIsPreloadedState] = useState(false);
+  console.log("Category rendererd");
 
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
-      // setIsPreloadedState(true);
       setLoading(false);
     } else {
       setLoading(true);
@@ -99,7 +96,7 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (loading) return;
-    // console.log(storeSessionId);
+
     if (!storeSessionId) {
       const sessionId = generateSessionId();
       dispatch(setSessionId(sessionId));

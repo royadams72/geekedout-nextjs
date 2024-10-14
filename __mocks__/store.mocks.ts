@@ -1,4 +1,4 @@
-import { comicSliceMock } from "./comics.mocks";
+import { comicSliceMock } from "./comics/comics.mocks";
 import { gamesSliceMock } from "./games.mocks";
 import { movieSliceMock } from "./movies.mock";
 import { musicSliceMock } from "./music.mocks";
