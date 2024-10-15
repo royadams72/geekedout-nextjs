@@ -53,17 +53,15 @@ const Category = <T extends { id: number | string | undefined }>({
 
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
-  // console.log("Category rendererd");
+  // console.log("Category rendererd", preloadedState[title.toLowerCase()]);
 
   useEffect(() => {
     if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
-      console.log("component preloadedState:", preloadedState);
-
       setLoading(false);
     } else {
       setLoading(true);
     }
-  }, [preloadedStateAction, preloadedState, title]);
+  }, [preloadedState, title]);
 
   useEffect(() => {
     if (loading) return;
@@ -101,6 +99,7 @@ const Category = <T extends { id: number | string | undefined }>({
 
     if (!storeSessionId) {
       const sessionId = generateSessionId();
+      console.log("storeSessionId2:", sessionId);
       dispatch(setSessionId(sessionId));
     }
   }, [storeSessionId, dispatch, loading]);
