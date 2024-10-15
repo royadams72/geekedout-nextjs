@@ -99,7 +99,6 @@ const Category = <T extends { id: number | string | undefined }>({
 
     if (!storeSessionId) {
       const sessionId = generateSessionId();
-      console.log("storeSessionId2:", sessionId);
       dispatch(setSessionId(sessionId));
     }
   }, [storeSessionId, dispatch, loading]);

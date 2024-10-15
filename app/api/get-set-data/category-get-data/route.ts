@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
   const id = searchParams.get("id");
   const getAll = searchParams.get("getAll");
   const sessionId = getSessionIdFromCookie() as string;
-  console.log(categoryName, id);
 
   try {
     let categoryData;

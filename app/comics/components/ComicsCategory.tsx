@@ -12,7 +12,7 @@ import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
 import Category from "@/shared/components/category/Category";
 
-const ComicsDisplay = ({
+const ComicsCategory = ({
   preloadedState,
   isRedirected,
 }: {
@@ -31,4 +31,4 @@ const ComicsDisplay = ({
   );
 };
 
-export default ComicsDisplay;
+export default ComicsCategory;

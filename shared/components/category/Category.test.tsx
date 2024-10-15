@@ -8,7 +8,7 @@ import {
   selectComicsPreviews,
   setComics,
 } from "@/lib/features/comics/comicsSlice";
-import { selectSessionId } from "@/lib/features/uiData/uiDataSlice";
+import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
 import Category from "@/shared/components/category/Category";
 import { Preview } from "@/shared/interfaces/preview";
 import { CategoryTitle } from "@/shared/enums/category-type.enum";
@@ -20,6 +20,7 @@ jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
   useNavigation: jest.fn(),
 }));
+const refreshMock = jest.fn();
 
 // Mock useAppDispatch globally (used in all tests)
 const mockDispatch = jest.fn();
@@ -28,7 +29,6 @@ jest.mock("@/lib/hooks/store.hooks", () => ({
   useAppSelector: jest.fn(),
 }));
 
-// Real Redux reducers
 let sessionId = "0b6b4eee-6802-47b3-9e9e-73bbc759f5e1";
 let comicsReducer = () => comicSliceMock;
 let uiDataReducer = () => ({
@@ -50,16 +50,17 @@ const makeStore = () => {
       }),
   });
 };
-
+let mockUseRouter: any;
 describe("ComicCategory Component", () => {
   let store: any;
-  let comicStore: ComicsSliceState | {};
+  let comicStore: ComicsSliceState;
+  let setItemsArraySpy: jest.SpyInstance;
 
   beforeEach(() => {
     store = makeStore();
     comicStore = comicSliceMock;
 
-    const mockUseRouter = jest.requireMock("next/navigation").useRouter;
+    mockUseRouter = jest.requireMock("next/navigation").useRouter;
     mockUseRouter.mockReturnValue({
       push: jest.fn(),
       prefetch: jest.fn(),
@@ -68,13 +69,26 @@ describe("ComicCategory Component", () => {
       route: "/",
       query: {},
       asPath: "/",
+      refresh: refreshMock,
     });
 
-    // Clear mockDispatch between tests
+    setItemsArraySpy = jest.spyOn(React, "useState");
     jest.clearAllMocks();
   });
 
   it("renders correct number of items when ON the first page", async () => {
+    let setItemsArrayMock:
+      | React.Dispatch<React.SetStateAction<any[]>>
+      | undefined;
+
+    setItemsArraySpy.mockImplementationOnce((init) => {
+      if (Array.isArray(init)) {
+        setItemsArrayMock = jest.fn(); // Mock the setter function
+        return [init, setItemsArrayMock]; // Return the initial value and setter
+      }
+      return [init, jest.fn()];
+    });
+
     // No mock for useAppSelector, rely on real Redux store behavior
     await act(async () => {
       render(
@@ -93,12 +107,25 @@ describe("ComicCategory Component", () => {
       // console.log(comicStore);
 
       const itemsLength = (await screen.findAllByRole("img")).length;
-      expect(itemsLength).toEqual(6);
+      expect(setItemsArrayMock).toHaveBeenCalledWith(
+        comicStore.comics.results.slice(0, 6)
+      );
       // screen.debug();
     });
   });
 
-  fit("renders correct number of items when NOT the first page", async () => {
+  it("renders correct number of items when NOT the first page", async () => {
+    let setItemsArrayMock:
+      | React.Dispatch<React.SetStateAction<any[]>>
+      | undefined;
+
+    setItemsArraySpy.mockImplementationOnce((init) => {
+      if (Array.isArray(init)) {
+        setItemsArrayMock = jest.fn(); // Mock the setter function
+        return [init, setItemsArrayMock]; // Return the initial value and setter
+      }
+      return [init, jest.fn()];
+    });
     // Modify uiDataReducer to simulate NOT being on the first page
     uiDataReducer = () => ({
       isFirstPage: false,
@@ -121,7 +148,7 @@ describe("ComicCategory Component", () => {
     });
     waitFor(async () => {
       const itemsLength = (await screen.findAllByRole("img")).length;
-      expect(itemsLength).toBeGreaterThanOrEqual(6);
+      expect(setItemsArrayMock).toHaveBeenCalledWith(comicStore.comics.results);
     });
   });
 
@@ -144,7 +171,6 @@ describe("ComicCategory Component", () => {
   });
 
   it("displays the loader when loading is true", async () => {
-    // Simulate loading state by modifying the reducer
     comicsReducer = () => ({ comics: {} } as ComicsSliceState);
     store = makeStore();
 
@@ -166,17 +192,9 @@ describe("ComicCategory Component", () => {
   });
 
   it("dispatches action if no sessionId", () => {
-    // Locally mock useAppSelector for this test
-    const { useAppSelector } = require("@/lib/hooks/store.hooks");
-    useAppSelector.mockImplementation((selector: any) => {
-      if (selector === selectSessionId) return ""; // Simulate no sessionId
-      return []; // Default behavior for comics
-    });
-
-    // Simulate missing sessionId
     uiDataReducer = () => ({
       isFirstPage: true,
-      sessionId: "", // Simulate missing sessionId
+      sessionId: "",
     });
     store = makeStore();
 
@@ -192,7 +210,48 @@ describe("ComicCategory Component", () => {
       </Provider>
     );
 
-    // Expect dispatch to have been called
     expect(mockDispatch).toHaveBeenCalled();
+  });
+
+  it("dispatches action to set loaded information in store", () => {
+    const { useAppSelector } = require("@/lib/hooks/store.hooks");
+    useAppSelector.mockImplementation((selector: any) => {
+      if (selector === selectIsFirstPage) return true;
+      return [];
+    });
+
+    render(
+      <Provider store={store}>
+        <Category<Preview>
+          title={CategoryTitle.Comics}
+          itemsSelector={selectComicsPreviews}
+          preloadedStateAction={setComics}
+          preloadedState={comicStore}
+          sliceNumber={6}
+        />
+      </Provider>
+    );
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: "comics/setComics",
+      payload: comicStore.comics,
+    });
+  });
+
+  it("should call router refresh if has been redirected", () => {
+    render(
+      <Provider store={store}>
+        <Category<Preview>
+          title={CategoryTitle.Comics}
+          itemsSelector={selectComicsPreviews}
+          preloadedStateAction={setComics}
+          preloadedState={comicStore}
+          sliceNumber={6}
+          isRedirected={"true"}
+        />
+      </Provider>
+    );
+
+    expect(refreshMock).toHaveBeenCalled();
   });
 });
