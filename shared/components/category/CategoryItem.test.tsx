@@ -138,7 +138,6 @@ describe("CategoryItem Component", () => {
     );
 
     const imgElement = screen.getByAltText(item.title);
-    screen.debug();
     expect(imgElement).toHaveClass(`category__image__${item.category}`);
   });
 

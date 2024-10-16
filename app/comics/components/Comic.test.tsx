@@ -5,10 +5,13 @@ import { ComicDetail } from "@/shared/interfaces/comic";
 import { comicDetailMock } from "@/__mocks__/comics/comics.mocks";
 
 import Comic from "@/app/comics/components/Comic";
+
 const mockComicDetails: ComicDetail = comicDetailMock;
+
 beforeEach(() => {
   render(<Comic comicDetails={mockComicDetails} />);
 });
+
 describe("ComicDetails Component", () => {
   // it("renders publication date if available", () => {
   //   render(<Comic comicDetails={mockComicDetails} />);

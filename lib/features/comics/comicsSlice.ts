@@ -48,17 +48,6 @@ export const selectComicsPreviews = createSelector(
   (comic: Comic[]) =>
     comic?.map((comic: Comic) => {
       const isImages = comic.images && comic.images.length > 0;
-      // console.log({
-      //   category: CategoryType.Comics,
-      //   id: comic.id,
-      //   title: comic.title,
-      //   imageLarge: isImages
-      //     ? `${comic.images[0].path}.jpg`
-      //     : IMAGE_NOT_FOUND.SM,
-      //   imageSmall: isImages
-      //     ? `${comic.images[0].path}/standard_fantastic.jpg`
-      //     : IMAGE_NOT_FOUND.MED_250x250,
-      // });
       return {
         category: CategoryType.Comics,
         id: comic.id,

@@ -1,5 +1,6 @@
 import { ComicsSliceState } from "@/lib/features/comics/comicsSlice";
 import { items } from "./items.mock";
+import { ComicStore } from "@/shared/interfaces/comic";
 
 export const comicDetailMock = {
   id: 1,
@@ -17,13 +18,14 @@ export const comicDetailMock = {
   clickThrough: "http://clickThrough/url",
 };
 
+export const comicsMock: ComicStore = {
+  count: 1,
+  limit: 10,
+  offset: 0,
+  results: items,
+};
 export const comicSliceMock: ComicsSliceState = {
-  comics: {
-    count: 1,
-    limit: 10,
-    offset: 0,
-    results: items,
-  },
+  comics: comicsMock,
 };
 
 export const comicsPreviewArray = [

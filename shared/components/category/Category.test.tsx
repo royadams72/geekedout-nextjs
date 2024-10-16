@@ -1,28 +1,31 @@
 import React from "react";
-import { act, render, screen, waitFor } from "@testing-library/react";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { act, render, screen, waitFor } from "@testing-library/react";
+
 import { comicSliceMock } from "@/__mocks__/comics/comics.mocks";
+
 import {
   ComicsSliceState,
   selectComicsPreviews,
   setComics,
 } from "@/lib/features/comics/comicsSlice";
 import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
-import Category from "@/shared/components/category/Category";
+
 import { Preview } from "@/shared/interfaces/preview";
 import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
-// Mock the next/router globally
+import Category from "@/shared/components/category/Category";
+
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
   usePathname: jest.fn(),
   useSearchParams: jest.fn(),
   useNavigation: jest.fn(),
 }));
+
 const refreshMock = jest.fn();
 
-// Mock useAppDispatch globally (used in all tests)
 const mockDispatch = jest.fn();
 jest.mock("@/lib/hooks/store.hooks", () => ({
   useAppDispatch: () => mockDispatch,
@@ -83,13 +86,12 @@ describe("ComicCategory Component", () => {
 
     setItemsArraySpy.mockImplementationOnce((init) => {
       if (Array.isArray(init)) {
-        setItemsArrayMock = jest.fn(); // Mock the setter function
-        return [init, setItemsArrayMock]; // Return the initial value and setter
+        setItemsArrayMock = jest.fn();
+        return [init, setItemsArrayMock];
       }
       return [init, jest.fn()];
     });
 
-    // No mock for useAppSelector, rely on real Redux store behavior
     await act(async () => {
       render(
         <Provider store={store}>
@@ -103,14 +105,12 @@ describe("ComicCategory Component", () => {
         </Provider>
       );
     });
-    waitFor(async () => {
-      // console.log(comicStore);
 
+    waitFor(async () => {
       const itemsLength = (await screen.findAllByRole("img")).length;
       expect(setItemsArrayMock).toHaveBeenCalledWith(
         comicStore.comics.results.slice(0, 6)
       );
-      // screen.debug();
     });
   });
 
@@ -121,17 +121,17 @@ describe("ComicCategory Component", () => {
 
     setItemsArraySpy.mockImplementationOnce((init) => {
       if (Array.isArray(init)) {
-        setItemsArrayMock = jest.fn(); // Mock the setter function
-        return [init, setItemsArrayMock]; // Return the initial value and setter
+        setItemsArrayMock = jest.fn();
+        return [init, setItemsArrayMock];
       }
       return [init, jest.fn()];
     });
-    // Modify uiDataReducer to simulate NOT being on the first page
+
     uiDataReducer = () => ({
       isFirstPage: false,
       sessionId,
     });
-    store = makeStore(); // Update store with new reducer
+    store = makeStore();
 
     await act(async () => {
       render(
