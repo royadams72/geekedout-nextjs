@@ -5,15 +5,15 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 
 import { comicSliceMock } from "@/__mocks__/comics/comics.mocks";
 
+import { Preview } from "@/shared/interfaces/preview";
+import { CategoryTitle } from "@/shared/enums/category-type.enum";
+
 import {
   ComicsSliceState,
   selectComicsPreviews,
   setComics,
 } from "@/lib/features/comics/comicsSlice";
 import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
-
-import { Preview } from "@/shared/interfaces/preview";
-import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
 import Category from "@/shared/components/category/Category";
 

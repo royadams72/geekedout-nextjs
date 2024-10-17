@@ -15,6 +15,7 @@ import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { appConfig } from "@/shared/constants/appConfig";
 import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 import { RootState } from "@/lib/store/store";
+import { isNotEmpty } from "@/utils/helpers";
 
 export interface ComicsSliceState {
   comics: ComicStore;
@@ -47,17 +48,18 @@ export const selectComicsPreviews = createSelector(
   selectComicsArray,
   (comic: Comic[]) =>
     comic?.map((comic: Comic) => {
-      const isImages = comic.images && comic.images.length > 0;
+      const isImages = comic.images && isNotEmpty(comic.images[0]);
+
       return {
         category: CategoryType.Comics,
         id: comic.id,
         title: comic.title,
         imageLarge: isImages
           ? `${comic.images[0].path}.jpg`
-          : IMAGE_NOT_FOUND.SM,
+          : IMAGE_NOT_FOUND.MED_250x250,
         imageSmall: isImages
           ? `${comic.images[0].path}/standard_fantastic.jpg`
-          : IMAGE_NOT_FOUND.MED_250x250,
+          : IMAGE_NOT_FOUND.SM,
       };
     })
 );

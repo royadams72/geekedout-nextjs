@@ -4,8 +4,8 @@ import { movieSliceMock } from "./movies.mock";
 import { musicSliceMock } from "./music.mocks";
 import { uiDataSliceMock } from "./uiData.mocks";
 
-export const storeMock = {
-  comic: comicSliceMock,
+export const rootStateMock = {
+  comics: comicSliceMock,
   games: gamesSliceMock,
   movies: movieSliceMock,
   music: musicSliceMock,
