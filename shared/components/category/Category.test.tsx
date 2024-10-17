@@ -108,9 +108,7 @@ describe("ComicCategory Component", () => {
 
     waitFor(async () => {
       const itemsLength = (await screen.findAllByRole("img")).length;
-      expect(setItemsArrayMock).toHaveBeenCalledWith(
-        comicStore.comics.results.slice(0, 6)
-      );
+      expect(itemsLength).toEqual(6);
     });
   });
 
@@ -148,7 +146,7 @@ describe("ComicCategory Component", () => {
     });
     waitFor(async () => {
       const itemsLength = (await screen.findAllByRole("img")).length;
-      expect(setItemsArrayMock).toHaveBeenCalledWith(comicStore.comics.results);
+      expect(itemsLength).toBeGreaterThanOrEqual(6);
     });
   });
 

@@ -15,7 +15,7 @@ import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { appConfig } from "@/shared/constants/appConfig";
 import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 import { RootState } from "@/lib/store/store";
-import { isNotEmpty } from "@/utils/helpers";
+import { isEmpty, isNotEmpty } from "@/utils/helpers";
 
 export interface ComicsSliceState {
   comics: ComicStore;

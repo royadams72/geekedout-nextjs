@@ -7,11 +7,17 @@ import { ComicStore } from "@/shared/interfaces/comic";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 
 import {
+  comicsSlice,
   ComicsSliceState,
+  getComicsStore,
   selectComicsPreviews,
   setComicDetails,
   setComics,
 } from "@/lib/features/comics/comicsSlice";
+
+const comicsInitialState: ComicsSliceState = {
+  comics: {} as ComicStore,
+};
 
 // let sessionId = "0b6b4eee-6802-47b3-9e9e-73bbc759f5e1";
 let comicsReducer = () => comicSliceMock;
@@ -28,10 +34,17 @@ const makeStore = () => {
   });
 };
 
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve(comicsMock),
+  })
+) as jest.Mock;
+
 describe("comicSlice", () => {
   let store: any;
   let comicStore: ComicStore;
   let state: ComicsSliceState;
+
   beforeEach(() => {
     store = makeStore();
     comicStore = comicsMock;
@@ -39,11 +52,14 @@ describe("comicSlice", () => {
   });
 
   it("should handle setComics action", () => {
-    store.dispatch(setComics(comicStore));
-    expect(state.comics.results.length).toBeGreaterThanOrEqual(1);
-    expect(state.comics.results[0].title).toEqual(
-      "Avengers Assemble (2024) #1 (Variant)"
-    );
+    const initialState = {
+      comics: {},
+    } as ComicsSliceState;
+
+    // Calling the reducer directly from the actual slice
+    const newState = comicsSlice.reducer(initialState, setComics(comicStore));
+
+    expect(newState.comics).toEqual(comicStore);
   });
 
   it("should handle selectComicsPreviews", () => {
@@ -55,10 +71,21 @@ describe("comicSlice", () => {
   });
 
   it("should handle selectComicsPreviews when no image", () => {
-    const clonedState = JSON.parse(JSON.stringify(rootStateMock));
-    // const originalArray = rootStateMock.comics.comics.results;
-    clonedState.comics.comics.results[0].thumbnail = {};
-    clonedState.comics.comics.results[0].images = [{}];
+    const clonedState = {
+      ...rootStateMock,
+      comics: {
+        comics: {
+          ...rootStateMock.comics.comics,
+          results: [
+            {
+              ...rootStateMock.comics.comics.results[0],
+              images: [],
+              thumbnail: {},
+            },
+          ],
+        },
+      },
+    };
 
     const previewComics = selectComicsPreviews(clonedState);
 
@@ -67,16 +94,50 @@ describe("comicSlice", () => {
   });
 
   it("should handle setComicDetails for details page", async () => {
-    let mappedData = await setComicDetails(state, "121402");
     const originalArrayItem1 = state.comics.results[0];
+
+    let mappedData = await setComicDetails(
+      state,
+      originalArrayItem1?.id?.toString() as string
+    );
 
     expect(mappedData?.name).toEqual(originalArrayItem1.title);
 
-    let clonedState = JSON.parse(JSON.stringify(state));
-    clonedState.comics.results = [];
-    mappedData = await setComicDetails(clonedState, "121402");
-    console.log(mappedData);
+    const clonedState = {
+      ...comicSliceMock,
+      comics: {
+        ...comicSliceMock.comics,
+        results: [],
+      },
+    };
+
+    mappedData = await setComicDetails(
+      clonedState,
+      originalArrayItem1.id as string
+    );
 
     expect(mappedData).toEqual(null);
+  });
+
+  it("should fetch and return the comics store", async () => {
+    state = await getComicsStore();
+    expect(state.comics.results.length).toBe(8);
+    expect(state.comics.results[0].title).toBe(
+      "Avengers Assemble (2024) #1 (Variant)"
+    );
+  });
+
+  it("should throw an error if the API fails", async () => {
+    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+      Promise.reject(new Error("API Error"))
+    );
+
+    const consoleErrorMock = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    await expect(getComicsStore()).rejects.toThrow("API Error");
+
+    consoleErrorMock.mockRestore();
   });
 });
