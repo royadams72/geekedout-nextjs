@@ -24,6 +24,7 @@ jest.mock("next/link", () => {
   }) => <a href={href}>{children}</a>;
   return mockLink;
 });
+
 jest.mock("next/image", () => {
   const mockImage = ({
     src,

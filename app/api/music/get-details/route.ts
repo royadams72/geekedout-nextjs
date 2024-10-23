@@ -12,6 +12,7 @@ export const POST = async (req: NextRequest) => {
 
 const getAlbumDetails = async (req: NextRequest, id: string) => {
   let token = await getValidToken(req);
+
   let response = await fetchAlbum(id, token);
 
   if (response.status === 401) {
@@ -21,7 +22,7 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
     if (refreshedTokenCookie) {
       try {
         token = JSON.parse(refreshedTokenCookie.value).token;
-      } catch (error) {
+      } catch (error: any) {
         throw new Error("Invalid token format in refreshed token");
       }
     } else {
@@ -46,5 +47,6 @@ const fetchAlbum = async (id: string, token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
+
   return res;
 };

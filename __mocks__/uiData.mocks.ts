@@ -10,10 +10,8 @@ export const uiDataMock = {
     searchTerm: "",
     items: [],
   },
-  selectedId: "",
   selectedItem: {},
   sessionId: "",
-  sessionIdLoaded: false,
 };
 
 export const selectedItem = {

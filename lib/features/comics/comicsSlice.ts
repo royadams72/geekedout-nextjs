@@ -34,7 +34,7 @@ export const comicsSlice = createAppSlice({
     },
   },
   selectors: {
-    selectComicsArray: (comics) => comics.comics.results as Comic[],
+    // selectComicsArray: (comics) => comics.comics.results as Comic[],
   },
 });
 
@@ -43,6 +43,7 @@ export const comicsReducer = comicsSlice.reducer;
 
 export const selectComicsArray = (state: RootState) =>
   state.comics.comics.results;
+// (results) => results.filter((item) => item !== null)
 
 export const selectComicsPreviews = createSelector(
   selectComicsArray,

@@ -15,14 +15,8 @@ import {
   setComics,
 } from "@/lib/features/comics/comicsSlice";
 
-const comicsInitialState: ComicsSliceState = {
-  comics: {} as ComicStore,
-};
-
-// let sessionId = "0b6b4eee-6802-47b3-9e9e-73bbc759f5e1";
 let comicsReducer = () => comicSliceMock;
 
-// Redux store creation function
 const makeStore = () => {
   return configureStore({
     reducer: comicsReducer,
@@ -56,7 +50,6 @@ describe("comicSlice", () => {
       comics: {},
     } as ComicsSliceState;
 
-    // Calling the reducer directly from the actual slice
     const newState = comicsSlice.reducer(initialState, setComics(comicStore));
 
     expect(newState.comics).toEqual(comicStore);
@@ -93,7 +86,7 @@ describe("comicSlice", () => {
     expect(previewComics[0].imageLarge).toEqual(IMAGE_NOT_FOUND.MED_250x250);
   });
 
-  it("should handle setComicDetails for details page", async () => {
+  it("should map item for details page via setComicDetails", async () => {
     const originalArrayItem1 = state.comics.results[0];
 
     let mappedData = await setComicDetails(
@@ -121,6 +114,7 @@ describe("comicSlice", () => {
 
   it("should fetch and return the comics store", async () => {
     state = await getComicsStore();
+
     expect(state.comics.results.length).toBe(8);
     expect(state.comics.results[0].title).toBe(
       "Avengers Assemble (2024) #1 (Variant)"

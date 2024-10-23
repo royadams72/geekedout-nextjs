@@ -29,7 +29,7 @@ export const gamesSlice = createAppSlice({
       return data;
     }),
   }),
-  selectors: { selectGames: (state) => state.games },
+  selectors: {},
 });
 
 export const { getGames, setGames } = gamesSlice.actions;
@@ -37,7 +37,7 @@ export const gamesReducer = gamesSlice.reducer;
 
 export const selectGames = createSelector(
   (state: RootState) => state?.games.games || [],
-  (games) => games
+  (games) => games.filter((game) => game !== null)
 );
 export const selectGamesPreviews = createSelector(
   selectGames,

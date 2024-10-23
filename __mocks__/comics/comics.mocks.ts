@@ -15,7 +15,7 @@ export const comicDetailMock = {
   ],
   pageCount: 30,
   printPrice: 4.99,
-  clickThrough: "http://clickThrough/url",
+  clickThrough: "http://gateway.marvel.com/v1/public/series/32866",
 };
 
 export const comicsMock: ComicStore = {

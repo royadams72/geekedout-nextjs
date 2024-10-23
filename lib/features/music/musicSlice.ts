@@ -26,18 +26,6 @@ const initialState: MusicSliceState = {
 };
 const MUSIC_API = "api/music";
 
-const fetchWithTokenRefresh = async (url: string, options: RequestInit) => {
-  let response = await fetch(url, options);
-  if (response.status === 401) {
-    await refreshToken();
-    response = await fetch(url, options);
-  }
-  if (!response.ok) {
-    throw new Error(`Network response was not ok: ${response.statusText}`);
-  }
-  return response.json();
-};
-
 export const musicSlice = createAppSlice({
   name: CategoryType.Music,
   initialState,
@@ -46,7 +34,7 @@ export const musicSlice = createAppSlice({
       state.music = action.payload;
     },
   },
-  selectors: { selectAllAlbums: (state) => state.music.items || [] },
+  selectors: {},
 });
 
 export const { setMusic } = musicSlice.actions;
@@ -54,7 +42,7 @@ export const musicReducer = musicSlice.reducer;
 
 export const selectAllAlbums = createSelector(
   (state: RootState) => state?.music.music?.items || [],
-  (items) => items
+  (items) => items.filter((item) => item !== null)
 );
 
 export const selectMusicPreviews = createSelector(
@@ -69,6 +57,22 @@ export const selectMusicPreviews = createSelector(
     }))
 );
 
+export const getMusicStore = async (): Promise<MusicSliceState> => {
+  let response;
+  try {
+    response = await getAllMusicApi();
+    if (!response) {
+      throw new Error(`data was not loaded`);
+    }
+  } catch (error) {
+    console.error("Failed to fetch album details:", error);
+    throw error;
+  }
+  return {
+    music: response.albums || {},
+  };
+};
+
 export const getMusicDetails = async (id: string): Promise<AlbumDetail> => {
   const selectedAlbum = await getAlbumDetails(id);
 
@@ -78,7 +82,22 @@ export const getMusicDetails = async (id: string): Promise<AlbumDetail> => {
   return selectedAlbum;
 };
 
-const getAllMusicApi = async () => {
+export const fetchWithTokenRefresh = async (
+  url: string,
+  options: RequestInit
+) => {
+  let response = await fetch(url, options);
+  if (response.status === 401) {
+    await refreshToken();
+    response = await fetch(url, options);
+  }
+  if (!response.ok) {
+    throw new Error(`Network response was not ok: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+export const getAllMusicApi = async () => {
   const data = await fetchWithTokenRefresh(
     `${appConfig.url.BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
     {
@@ -86,26 +105,11 @@ const getAllMusicApi = async () => {
       credentials: "include",
     }
   );
-  return data;
+
+  return data.albums;
 };
 
-export const getMusicStore = async (): Promise<MusicSliceState> => {
-  let musicStore;
-  try {
-    musicStore = await getAllMusicApi();
-    if (!musicStore) {
-      throw new Error(`data was not loaded`);
-    }
-  } catch (error) {
-    console.error("Failed to fetch album details:", error);
-    throw error;
-  }
-  return {
-    music: musicStore.data?.albums || [],
-  };
-};
-
-const getAlbumDetails = async (id: string) => {
+export const getAlbumDetails = async (id: string) => {
   try {
     const data = await fetchWithTokenRefresh(
       `${appConfig.url.BASE_URL}/${MUSIC_API}/get-details?id=${id}`,

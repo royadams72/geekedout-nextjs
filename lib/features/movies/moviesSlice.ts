@@ -103,7 +103,7 @@ export const moviesReducer = moviesSlice.reducer;
 
 export const selectMovies = createSelector(
   (state: RootState) => state?.movies?.movies?.results || [],
-  (results) => results
+  (results) => results.filter((item) => item !== null)
 );
 
 export const selectMoviesPreviews = createSelector(

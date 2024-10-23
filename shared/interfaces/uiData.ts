@@ -10,8 +10,6 @@ export interface UiData {
     searchTerm: string;
     items: Array<Preview>;
   };
-  selectedId: string;
   selectedItem: any;
   sessionId: string;
-  sessionIdLoaded: boolean;
 }
