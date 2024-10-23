@@ -22,7 +22,15 @@ export interface MusicSliceState {
 }
 
 const initialState: MusicSliceState = {
-  music: {} as MusicStore,
+  music: {
+    href: "",
+    items: [],
+    limit: 0,
+    next: "",
+    offset: 0,
+    previous: 0,
+    total: 0,
+  },
 };
 const MUSIC_API = "api/music";
 
@@ -41,7 +49,7 @@ export const { setMusic } = musicSlice.actions;
 export const musicReducer = musicSlice.reducer;
 
 export const selectAllAlbums = createSelector(
-  (state: RootState) => state?.music.music?.items || [],
+  (state: RootState) => state.music.music?.items || [],
   (items) => items.filter((item) => item !== null)
 );
 
@@ -105,8 +113,7 @@ export const getAllMusicApi = async () => {
       credentials: "include",
     }
   );
-
-  return data.albums;
+  return data.data;
 };
 
 export const getAlbumDetails = async (id: string) => {
@@ -130,7 +137,7 @@ const mapAlbumDetail = (item: any): AlbumDetail => {
     name,
     artists: artistArray,
     images,
-    external_urls: { spotify: spotifyLink },
+    external_urls: { spotify: spotifyLink } = { spotify: "" },
     release_date,
     tracks: { items },
   }: any = item;
@@ -145,7 +152,7 @@ const mapAlbumDetail = (item: any): AlbumDetail => {
     id,
     name,
     artists,
-    spotify_link: spotifyLink,
+    spotify_link: spotifyLink || "",
     image: images?.[0]?.url || IMAGE_NOT_FOUND.SM,
     release_date,
     tracks,

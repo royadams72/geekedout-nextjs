@@ -22,7 +22,7 @@ export interface ComicsSliceState {
 }
 
 const initialState: ComicsSliceState = {
-  comics: {} as ComicStore,
+  comics: { count: 0, limit: 0, offset: 0, results: [] },
 };
 
 export const comicsSlice = createAppSlice({
@@ -33,17 +33,16 @@ export const comicsSlice = createAppSlice({
       state.comics = action.payload;
     },
   },
-  selectors: {
-    // selectComicsArray: (comics) => comics.comics.results as Comic[],
-  },
+  selectors: {},
 });
 
 export const { setComics } = comicsSlice.actions;
 export const comicsReducer = comicsSlice.reducer;
 
-export const selectComicsArray = (state: RootState) =>
-  state.comics.comics.results;
-// (results) => results.filter((item) => item !== null)
+export const selectComicsArray = createSelector(
+  (state: RootState) => state.comics.comics.results || [],
+  (results) => results.filter((item) => item !== null)
+);
 
 export const selectComicsPreviews = createSelector(
   selectComicsArray,

@@ -19,7 +19,13 @@ export interface MoviesSliceState {
 }
 
 const initialState: MoviesSliceState = {
-  movies: {} as MoviesStore,
+  movies: {
+    dates: { maximum: "", minimum: "" },
+    page: 0,
+    results: [],
+    total_pages: 0,
+    total_results: 0,
+  },
 };
 
 const MOVIES_API = "api/movies";
@@ -103,7 +109,7 @@ export const moviesReducer = moviesSlice.reducer;
 
 export const selectMovies = createSelector(
   (state: RootState) => state?.movies?.movies?.results || [],
-  (results) => results.filter((item) => item !== null)
+  (items) => items.filter((item) => item !== null)
 );
 
 export const selectMoviesPreviews = createSelector(
