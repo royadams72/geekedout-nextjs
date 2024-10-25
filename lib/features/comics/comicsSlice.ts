@@ -119,7 +119,7 @@ export const getComicsStore = async (): Promise<ComicsSliceState> => {
 
   try {
     comicStore = await getComicsApi();
-
+    // console.log("getComicsApi(): ", comicStore);
     if (!comicStore) {
       throw new Error("Data was not loaded");
     }

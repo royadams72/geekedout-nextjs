@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 import { md5 } from "js-md5";
 import { BASE_URL_COMICS } from "@/shared/constants/urls";
 
@@ -19,11 +21,11 @@ export async function GET() {
     );
 
     if (!res.ok) {
-      return Response.json({ error: "No data found" }, { status: 404 });
+      return NextResponse.json({ error: "No data found" }, { status: 404 });
     }
     const data = await res.json();
 
-    return Response.json(data.data, { status: 200 });
+    return NextResponse.json(data.data, { status: 200 });
   } catch (error) {
     console.error(`There was an error requesting comic data:${error}`);
     throw error;

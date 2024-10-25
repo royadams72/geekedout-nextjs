@@ -61,6 +61,7 @@ persisterMiddleware.startListening({
               body: JSON.stringify({ state }),
             }
           );
+
           if (!res.ok) {
             throw new Error(`HTTP error! Status: ${res.status}`);
           }

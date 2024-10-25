@@ -19,6 +19,7 @@ const config: Config = {
     "<rootDir>/coverage/", // Ignore coverage reports
     "<rootDir>/logs/", // Ignore log files
   ],
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"],
   moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testEnvironment: "jsdom",

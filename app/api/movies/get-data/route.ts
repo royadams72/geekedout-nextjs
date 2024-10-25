@@ -10,7 +10,7 @@ export async function GET() {
       `${BASE_URL_MOVIES}/now_playing?api_key=${api_key}&language=en-GB&pageNum=${pageNum}&region=GB`
     );
     const data = await response.json();
-
+    console.log("movies:", data);
     if (!response.ok) {
       throw new Error(`Failed to fetch movies: ${data.error.message}`);
     }

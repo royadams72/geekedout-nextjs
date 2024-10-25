@@ -21,7 +21,7 @@ export interface MusicSliceState {
   music: MusicStore;
 }
 
-const initialState: MusicSliceState = {
+export const initialState: MusicSliceState = {
   music: {
     href: "",
     items: [],
@@ -48,6 +48,7 @@ export const musicSlice = createAppSlice({
 export const { setMusic } = musicSlice.actions;
 export const musicReducer = musicSlice.reducer;
 
+// import * as MusicSlice from "@/lib/features/music/musicSlice";
 export const selectAllAlbums = createSelector(
   (state: RootState) => state.music.music?.items || [],
   (items) => items.filter((item) => item !== null)
@@ -69,11 +70,13 @@ export const getMusicStore = async (): Promise<MusicSliceState> => {
   let response;
   try {
     response = await getAllMusicApi();
+    console.log("getMusicStore():", response);
+
     if (!response) {
       throw new Error(`data was not loaded`);
     }
   } catch (error) {
-    console.error("Failed to fetch album details:", error);
+    console.error("Failed to fetch albums:", error);
     throw error;
   }
   return {
@@ -90,7 +93,7 @@ export const getMusicDetails = async (id: string): Promise<AlbumDetail> => {
   return selectedAlbum;
 };
 
-export const fetchWithTokenRefresh = async (
+export const fetchAndRefreshTokenIfNeeded = async <T>(
   url: string,
   options: RequestInit
 ) => {
@@ -102,28 +105,37 @@ export const fetchWithTokenRefresh = async (
   if (!response.ok) {
     throw new Error(`Network response was not ok: ${response.statusText}`);
   }
-  return response.json();
-};
+  const data: T = await response.json();
+  // console.log("fetchAndRefreshTokenIfNeeded():", data);
 
+  return data;
+};
+export interface ApiResponse {
+  data: { albums: MusicStore };
+}
 export const getAllMusicApi = async () => {
-  const data = await fetchWithTokenRefresh(
+  const response = await fetchAndRefreshTokenIfNeeded<ApiResponse>(
     `${appConfig.url.BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
     {
       method: "GET",
       credentials: "include",
     }
   );
-  return data.data;
+  console.log("getAllMusicApi():", response.data);
+
+  return response.data;
 };
 
 export const getAlbumDetails = async (id: string) => {
+  console.log("getAlbumDetails():", id);
   try {
-    const data = await fetchWithTokenRefresh(
+    const data = await fetchAndRefreshTokenIfNeeded<Album>(
       `${appConfig.url.BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
       {
         method: "POST",
       }
     );
+
     return mapAlbumDetail(data);
   } catch (error) {
     console.error(`Failed to fetch movie details: ${error}`);
@@ -131,7 +143,7 @@ export const getAlbumDetails = async (id: string) => {
   }
 };
 
-const mapAlbumDetail = (item: any): AlbumDetail => {
+const mapAlbumDetail = (item: Album): AlbumDetail => {
   const {
     id,
     name,

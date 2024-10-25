@@ -5,6 +5,7 @@ import { getValidToken } from "@/app/api/music/token/getToken";
 
 export const GET = async (req: NextRequest) => {
   const data = await getAllAlbums(req);
+  console.log("GET res", data, { status: 200 });
   return NextResponse.json(data, { status: 200 });
 };
 
@@ -26,6 +27,8 @@ const getAllAlbums = async (req: NextRequest) => {
     if (!response.ok) {
       throw new Error(`Failed to fetch albums: ${data.error.message}`);
     }
+    // console.log("get", data.albums);
+
     return data;
   } catch (error) {
     console.error(`There was an error requesting music data:${error}`);

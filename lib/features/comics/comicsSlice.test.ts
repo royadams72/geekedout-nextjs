@@ -47,8 +47,8 @@ describe("comicSlice", () => {
 
   it("should handle setComics action", () => {
     const initialState = {
-      comics: {},
-    } as ComicsSliceState;
+      comics: { count: 0, limit: 0, offset: 0, results: [] },
+    };
 
     const newState = comicsSlice.reducer(initialState, setComics(comicStore));
 
@@ -113,8 +113,15 @@ describe("comicSlice", () => {
   });
 
   it("should fetch and return the comics store", async () => {
-    state = await getComicsStore();
+    const initialState = {
+      comics: { count: 0, limit: 0, offset: 0, results: [] },
+    };
+    state = initialState;
 
+    // console.log("comic state:", state);
+
+    state = await getComicsStore();
+    // console.log("comic state:", state);
     expect(state.comics.results.length).toBe(8);
     expect(state.comics.results[0].title).toBe(
       "Avengers Assemble (2024) #1 (Variant)"
