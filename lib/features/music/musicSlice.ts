@@ -70,7 +70,6 @@ export const getMusicStore = async (): Promise<MusicSliceState> => {
   let response;
   try {
     response = await getAllMusicApi();
-    console.log("getMusicStore():", response);
 
     if (!response) {
       throw new Error(`data was not loaded`);
@@ -121,13 +120,11 @@ export const getAllMusicApi = async () => {
       credentials: "include",
     }
   );
-  console.log("getAllMusicApi():", response.data);
 
   return response.data;
 };
 
 export const getAlbumDetails = async (id: string) => {
-  console.log("getAlbumDetails():", id);
   try {
     const data = await fetchAndRefreshTokenIfNeeded<Album>(
       `${appConfig.url.BASE_URL}/${MUSIC_API}/get-details?id=${id}`,

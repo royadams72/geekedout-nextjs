@@ -5,7 +5,6 @@ import { getValidToken } from "@/app/api/music/token/getToken";
 
 export const GET = async (req: NextRequest) => {
   const data = await getAllAlbums(req);
-  console.log("GET res", data, { status: 200 });
   return NextResponse.json(data, { status: 200 });
 };
 

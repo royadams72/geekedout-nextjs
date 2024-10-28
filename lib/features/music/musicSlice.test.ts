@@ -1,6 +1,9 @@
 /**
  * @jest-environment node
  */
+import { rootStateMock } from "@/__mocks__/store.mocks";
+import { MusicStore } from "@/shared/interfaces/music";
+import { musicDetailMock, musicSliceMock } from "@/__mocks__/music.mocks";
 
 import {
   setMusic,
@@ -12,28 +15,28 @@ import {
   getMusicStore,
   getAlbumDetails,
   getMusicDetails,
+  getAllMusicApi,
 } from "@/lib/features/music/musicSlice";
-import { MusicStore } from "@/shared/interfaces/music";
-import { musicDetailMock, musicSliceMock } from "@/__mocks__/music.mocks";
 
-import { rootStateMock } from "@/__mocks__/store.mocks";
-describe("musicSlice", () => {
+import { refreshToken } from "@/app/api/music/token/getToken";
+
+jest.mock("@/app/api/music/token/getToken", () => ({
+  refreshToken: jest.fn(),
+}));
+jest.mock("@/lib/features/music/musicSlice", () => ({
+  ...jest.requireActual("@/lib/features/music/musicSlice"),
+  getAllMusicApi: jest.fn(),
+}));
+fdescribe("musicSlice", () => {
   let store: any;
   let musicStore: MusicStore;
   let state: MusicSliceState;
-  // jest.mock("@/app/api/music/token/getToken", () => ({
-  //   getValidToken: jest.fn(),
-  //   refreshToken: jest.fn(),
-  // }));
-  jest.mock("@/app/api/music/token/getToken", () => ({
-    getAlbumDetails: jest.fn(),
-    // fetchAndRefreshTokenIfNeeded: jest.fn(),
-  }));
+
   beforeEach(() => {
     // store = makeStore();
     musicStore = musicSliceMock.music;
     // state = store.getState();
-
+    global.fetch = jest.fn();
     jest.clearAllMocks();
   });
 
@@ -45,31 +48,58 @@ describe("musicSlice", () => {
   it("selectAllAlbums should return all albums", () => {
     const albums = selectAllAlbums(rootStateMock);
     expect(albums.length).toBeGreaterThanOrEqual(1);
-    // expect(albums[0].name).toBe("Test Album");
   });
 
-  it("getMusicStore should fetch and return music data", async () => {
-    const result = await fetchAndRefreshTokenIfNeeded(
-      "http://localhost:3000/api/mocks/music/get-data",
-      {}
-    );
-    console.log(result);
+  it("should fetch music store data successfully", async () => {
+    const mockResponse = {
+      data: {
+        albums: musicSliceMock.music,
+      },
+    };
 
-    // expect(result).toEqual({ music: musicStore });
-    // expect(fetchAndRefreshTokenIfNeeded).toHaveBeenCalledTimes(1);
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await getMusicStore();
+
+    expect(result.music).toEqual(mockResponse.data.albums);
   });
-  it("should fetch album details by calling getAlbumDetails", async () => {
-    // Mock getAlbumDetails to return the expected value
-    (getAlbumDetails as jest.Mock).mockResolvedValue(musicDetailMock);
 
-    // Call getMusicDetails, which internally calls getAlbumDetails
-    const result = await getMusicDetails("1ZoZu4AeEVIKybGiGgOYdd");
+  it("should throw an error if no data is returned from getAllMusicApi", async () => {
+    const consoleErrorMock = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
-    // Verify that getAlbumDetails was called with the correct argument
-    expect(getAlbumDetails).toHaveBeenCalledTimes(1);
-    expect(getAlbumDetails).toHaveBeenCalledWith("1ZoZu4AeEVIKybGiGgOYdd");
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      status: 300,
+      json: async () => ({}),
+    });
 
-    // Verify the final mapped result from getMusicDetails
-    expect(result).toEqual(musicDetailMock);
+    await expect(getMusicStore()).rejects.toThrow("data was not loaded");
+
+    consoleErrorMock.mockRestore();
+  });
+
+  it("should throw an error if token is unavailable after refresh attempt for fetchAndRefreshTokenIfNeeded", async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: false, status: 401 })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        statusText: "Internal Server Error",
+      });
+
+    (refreshToken as jest.Mock).mockResolvedValueOnce(undefined);
+
+    await expect(
+      fetchAndRefreshTokenIfNeeded("http://fetch/url", {})
+    ).rejects.toThrow("Network response was not ok: Internal Server Error");
+
+    expect(refreshToken).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 });
