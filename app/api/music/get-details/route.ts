@@ -32,7 +32,6 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
     response = await fetchAlbum(id, token);
   }
   const album = await response.json();
-  // console.log(album);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch album details: ${album.error.message}`);
@@ -48,7 +47,6 @@ const fetchAlbum = async (id: string, token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  // console.log(res);
 
   return res;
 };

@@ -9,16 +9,19 @@ import {
   Artists,
   MusicStore,
 } from "@/shared/interfaces/music";
-
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { appConfig } from "@/shared/constants/appConfig";
-
 import { refreshToken } from "@/app/api/music/token/getToken";
 import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
+import { isEmpty } from "@/utils/helpers";
+
 export interface MusicSliceState {
   music: MusicStore;
+}
+export interface ApiResponse {
+  data: { albums: MusicStore };
 }
 
 export const initialState: MusicSliceState = {
@@ -48,7 +51,6 @@ export const musicSlice = createAppSlice({
 export const { setMusic } = musicSlice.actions;
 export const musicReducer = musicSlice.reducer;
 
-// import * as MusicSlice from "@/lib/features/music/musicSlice";
 export const selectAllAlbums = createSelector(
   (state: RootState) => state.music.music?.items || [],
   (items) => items.filter((item) => item !== null)
@@ -92,26 +94,6 @@ export const getMusicDetails = async (id: string): Promise<AlbumDetail> => {
   return selectedAlbum;
 };
 
-export const fetchAndRefreshTokenIfNeeded = async <T>(
-  url: string,
-  options: RequestInit
-) => {
-  let response = await fetch(url, options);
-  if (response.status === 401) {
-    await refreshToken();
-    response = await fetch(url, options);
-  }
-  if (!response.ok) {
-    throw new Error(`Network response was not ok: ${response.statusText}`);
-  }
-  const data: T = await response.json();
-  // console.log("fetchAndRefreshTokenIfNeeded():", data);
-
-  return data;
-};
-export interface ApiResponse {
-  data: { albums: MusicStore };
-}
 export const getAllMusicApi = async () => {
   const response = await fetchAndRefreshTokenIfNeeded<ApiResponse>(
     `${appConfig.url.BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
@@ -140,7 +122,28 @@ export const getAlbumDetails = async (id: string) => {
   }
 };
 
+export const fetchAndRefreshTokenIfNeeded = async <T>(
+  url: string,
+  options: RequestInit
+) => {
+  let response = await fetch(url, options);
+  if (response.status === 401) {
+    await refreshToken();
+    response = await fetch(url, options);
+  }
+  if (!response.ok) {
+    throw new Error(`Network response was not ok: ${response.statusText}`);
+  }
+  const data: T = await response.json();
+
+  return data;
+};
+
 const mapAlbumDetail = (item: Album): AlbumDetail => {
+  if (isEmpty(item)) {
+    throw new Error("Album details were not provided");
+  }
+
   const {
     id,
     name,

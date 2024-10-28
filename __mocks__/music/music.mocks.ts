@@ -1,36 +1,7 @@
 import { MusicSliceState } from "@/lib/features/music/musicSlice";
 import { Album } from "@/shared/interfaces/music";
 
-export const musicDetailMock = {
-  id: "1ZoZu4AeEVIKybGiGgOYdd",
-  name: "Odyssey",
-  artists: [
-    {
-      name: "Nubya Garcia",
-      spotifyUrl: "https://open.spotify.com/artist/6O5k8LLRfDK8v9jj1GazAQ",
-    },
-  ],
-  spotify_link: "https://open.spotify.com/album/1ZoZu4AeEVIKybGiGgOYdd",
-  image: "https://i.scdn.co/image/ab67616d0000b273817e40fcecdbdc6ca4273daa",
-  release_date: "2024-09-20",
-  tracks: [
-    "Dawn [ft. esperanza spalding]",
-    "Odyssey",
-    "Solstice",
-    "Set It Free",
-    "The Seer",
-    "Odyssey - Outerlude",
-    "We Walk In Gold [ft. Georgia Anne Muldrow]",
-    "Water's Path",
-    "Clarity",
-    "In Other Words, Living",
-    "Clarity - Outerlude",
-    "Triumphance",
-  ],
-  category: "Music",
-};
-
-export const albumsArray: Album[] = [
+export const mockAlbumsArray: Album[] = [
   {
     album_type: "album",
     artists: [
@@ -168,7 +139,7 @@ export const albumsArray: Album[] = [
 export const musicSliceMock: MusicSliceState = {
   music: {
     href: "https://api.spotify.com/v1/browse/new-releases?offset=0&limit=20&locale=*",
-    items: albumsArray,
+    items: mockAlbumsArray,
     limit: 20,
     next: "https://api.spotify.com/v1/browse/new-releases?offset=20&limit=20&locale=*",
     offset: 0,
