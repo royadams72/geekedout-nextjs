@@ -22,6 +22,7 @@ import {
 import styles from "@/styles/components/_detail.module.scss";
 
 import Loader from "@/shared/components/loader/Loader";
+import { isEmpty, isNotEmpty } from "@/utils/helpers";
 
 const typeGuards = [
   isMappedMovieDetail,
@@ -36,12 +37,10 @@ interface BasicDetail {
 }
 interface ItemProps<T> {
   itemDetail: T;
-  isLoading?: boolean;
 }
 
 const ItemDetails = <T extends BasicDetail>({
   itemDetail,
-  isLoading,
   children,
 }: PropsWithChildren<ItemProps<T>>) => {
   const dispatch = useAppDispatch();
@@ -55,7 +54,7 @@ const ItemDetails = <T extends BasicDetail>({
   const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {
-    if (itemDetail) {
+    if (isNotEmpty(itemDetail) && itemDetail.image && itemDetail.category) {
       setItemDetails(itemDetail);
       setBackgroundImage(itemDetail.image);
       setCategory(itemDetail.category);
@@ -68,6 +67,7 @@ const ItemDetails = <T extends BasicDetail>({
         }
       }
     }
+    setIsFetching(false); // Stop loading even if itemDetail is empty
   }, [itemDetail, dispatch]);
 
   useEffect(() => {
@@ -80,8 +80,8 @@ const ItemDetails = <T extends BasicDetail>({
     backgroundImage: `url(${backgroundImage})`,
   };
 
-  if (isLoading || isFetching) return <Loader />;
-
+  if (isFetching) return <Loader />;
+  if (isEmpty(itemDetail) && !isFetching) return <div>No Details</div>;
   return (
     <>
       <div className={styles.details_container}>

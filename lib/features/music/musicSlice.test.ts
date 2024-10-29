@@ -122,4 +122,19 @@ describe("musicSlice", () => {
     expect(resultMapped).toHaveProperty("spotify_link");
     expect(resultMapped).toHaveProperty("category");
   });
+
+  it("should fetch album details and map to new object", async () => {
+    const resultNotMapped = musicDetailMockNotMapped;
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(resultNotMapped),
+    });
+
+    const resultMapped = await getMusicDetails(resultNotMapped.id);
+
+    expect(resultNotMapped).toHaveProperty("external_urls");
+    expect(resultMapped).not.toHaveProperty("external_urls");
+    expect(resultMapped).toHaveProperty("spotify_link");
+    expect(resultMapped).toHaveProperty("category");
+  });
 });

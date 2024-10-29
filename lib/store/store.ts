@@ -20,7 +20,6 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-// Load persisted state from local storage
 const loadState = () => {
   if (typeof window !== "undefined") {
     const serializedState = localStorage.getItem("redux-store");

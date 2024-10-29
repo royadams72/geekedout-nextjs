@@ -13,7 +13,7 @@ export interface GamesSliceState {
   games: Game[];
 }
 
-const initialState: GamesSliceState = {
+export const initialState: GamesSliceState = {
   games: [],
 };
 
@@ -24,15 +24,11 @@ export const gamesSlice = createAppSlice({
     setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
       state.games = action.payload;
     }),
-    getGames: create.asyncThunk<Game[], void>(async () => {
-      const data = await getAllGames();
-      return data;
-    }),
   }),
   selectors: {},
 });
 
-export const { getGames, setGames } = gamesSlice.actions;
+export const { setGames } = gamesSlice.actions;
 export const gamesReducer = gamesSlice.reducer;
 
 export const selectGames = createSelector(
@@ -52,7 +48,27 @@ export const selectGamesPreviews = createSelector(
     })
 );
 
-const getAllGames = async (): Promise<Game[]> => {
+export const getGamesStore = async (): Promise<GamesSliceState | []> => {
+  let gamesStore: Game[] = [];
+
+  try {
+    gamesStore = await getAllGames();
+    if (!gamesStore || gamesStore.length === 0) {
+      console.error("data was not loaded getAllGames()");
+      gamesStore = [];
+    }
+  } catch (error) {
+    console.error("Failed to fetch game details getAllGames():", error);
+    gamesStore = [];
+  }
+  return {
+    games: gamesStore,
+  };
+};
+
+export const getAllGames = async (): Promise<Game[]> => {
+  console.log("getAllGames() fired:");
+
   try {
     const response = await fetch(
       `${appConfig.url.BASE_URL}/api/games/${GET_DATA_FOLDER}/`,
@@ -62,47 +78,31 @@ const getAllGames = async (): Promise<Game[]> => {
       }
     );
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      return [];
     }
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Failed to fetch games:", error);
-    throw error;
+    return [];
   }
 };
 
 export const setGameDetails = async (
   serverSideStore: GamesSliceState,
   id: string
-): Promise<GameDetail | null> => {
+): Promise<GameDetail | {}> => {
   return mapGameDetail(serverSideStore, id);
-};
-
-export const getGamesStore = async (): Promise<GamesSliceState> => {
-  let gamesStore: Game[];
-  try {
-    gamesStore = await getAllGames();
-    if (!gamesStore) {
-      throw new Error(`data was not loaded`);
-    }
-  } catch (error) {
-    console.error("Failed to fetch game details:", error);
-    throw error;
-  }
-  return {
-    games: gamesStore,
-  };
 };
 
 export const mapGameDetail = (
   games: GamesSliceState,
   id: string | number
-): GameDetail | null => {
+): GameDetail | {} => {
   const gamesArray = games.games || [];
   const item = gamesArray.find((game: Game) => game.id?.toString() === id);
   if (!item) {
-    return null;
+    return {};
   }
   const {
     description,

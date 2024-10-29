@@ -53,30 +53,28 @@ const Category = <T extends { id: number | string | undefined }>({
 
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
+  const [categoryState, setCategoryState] = useState<{} | null>(null);
   // console.log("Category rendererd", preloadedState[title.toLowerCase()]);
-
   useEffect(() => {
-    if (isNotEmpty(preloadedState) && preloadedState[title.toLowerCase()]) {
+    const currentCategoryState = preloadedState[title.toLowerCase()] || null;
+
+    if (currentCategoryState) {
+      setCategoryState(currentCategoryState);
       setLoading(false);
-    } else {
-      setLoading(true);
+      console.log(currentCategoryState);
     }
   }, [preloadedState, title]);
 
   useEffect(() => {
     if (loading) return;
 
-    if (
-      isNotEmpty(preloadedState) &&
-      preloadedState[title.toLowerCase()] &&
-      isFirstPage
-    ) {
-      dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
+    if (isNotEmpty(categoryState) && isFirstPage) {
+      dispatch(preloadedStateAction(categoryState));
     }
   }, [
     preloadedStateAction,
     dispatch,
-    preloadedState,
+    categoryState,
     title,
     isFirstPage,
     loading,
@@ -117,14 +115,20 @@ const Category = <T extends { id: number | string | undefined }>({
           {loading ? `${title} loading...` : `${title}`}
         </h1>
         <div className={styles.category__items_container}>
-          {(itemsArray as T[]).map((item: T) => (
-            <CategoryItem key={item.id} item={item} />
-          ))}
+          {itemsArray.length > 0 ? (
+            (itemsArray as T[]).map((item: T) => (
+              <CategoryItem key={item.id} item={item} />
+            ))
+          ) : (
+            <h1>No items loaded</h1>
+          )}
         </div>
       </div>
     </>
   );
 
+  // console.log("preloadedState:", preloadedState.games);
+  // if (preloadedState.games.length === 0) return <div>No games loaded</div>;
   return (
     <div
       style={{
@@ -132,8 +136,6 @@ const Category = <T extends { id: number | string | undefined }>({
       }}
     >
       {loading ? <CategoryLoader title={title} /> : content}
-      {/* {loading && <CategoryLoader title={title} />}
-      {!loading && content} */}
     </div>
   );
 };
