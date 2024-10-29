@@ -53,32 +53,20 @@ const Category = <T extends { id: number | string | undefined }>({
 
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
-  const [categoryState, setCategoryState] = useState<{} | null>(null);
-  // console.log("Category rendererd", preloadedState[title.toLowerCase()]);
-  useEffect(() => {
-    const currentCategoryState = preloadedState[title.toLowerCase()] || null;
 
-    if (currentCategoryState) {
-      setCategoryState(currentCategoryState);
+  useEffect(() => {
+    if (preloadedState && preloadedState[title.toLowerCase()]) {
       setLoading(false);
-      console.log(currentCategoryState);
     }
   }, [preloadedState, title]);
 
   useEffect(() => {
     if (loading) return;
 
-    if (isNotEmpty(categoryState) && isFirstPage) {
-      dispatch(preloadedStateAction(categoryState));
+    if (isNotEmpty(preloadedState[title.toLowerCase()]) && isFirstPage) {
+      dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
-  }, [
-    preloadedStateAction,
-    dispatch,
-    categoryState,
-    title,
-    isFirstPage,
-    loading,
-  ]);
+  }, [preloadedStateAction, dispatch, title, isFirstPage, loading]);
 
   useEffect(() => {
     if (isNotEmpty(items)) {
@@ -127,8 +115,6 @@ const Category = <T extends { id: number | string | undefined }>({
     </>
   );
 
-  // console.log("preloadedState:", preloadedState.games);
-  // if (preloadedState.games.length === 0) return <div>No games loaded</div>;
   return (
     <div
       style={{

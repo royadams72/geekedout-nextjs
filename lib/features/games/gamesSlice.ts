@@ -67,8 +67,6 @@ export const getGamesStore = async (): Promise<GamesSliceState | []> => {
 };
 
 export const getAllGames = async (): Promise<Game[]> => {
-  console.log("getAllGames() fired:");
-
   try {
     const response = await fetch(
       `${appConfig.url.BASE_URL}/api/games/${GET_DATA_FOLDER}/`,
@@ -80,6 +78,7 @@ export const getAllGames = async (): Promise<Game[]> => {
     if (!response.ok) {
       return [];
     }
+
     const data = await response.json();
     return data;
   } catch (error) {
