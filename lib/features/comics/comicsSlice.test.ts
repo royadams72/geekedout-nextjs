@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { comicSliceMock, comicsMock } from "@/__mocks__/comics/comics.mocks";
 import { rootStateMock } from "@/__mocks__/store.mocks";
 
-import { ComicStore } from "@/shared/interfaces/comic";
+import { ComicDetail, ComicStore } from "@/shared/interfaces/comic";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 
 import {
@@ -89,13 +89,16 @@ describe("comicSlice", () => {
   it("should map item for details page via setComicDetails", async () => {
     const originalArrayItem1 = state.comics.results[0];
 
-    let mappedData = await setComicDetails(
+    const mappedData = (await setComicDetails(
       state,
       originalArrayItem1?.id?.toString() as string
-    );
+    )) as ComicDetail;
 
     expect(mappedData?.name).toEqual(originalArrayItem1.title);
+  });
 
+  it("should return an empty object if cannot be mapped", async () => {
+    const originalArrayItem1 = state.comics.results[0];
     const clonedState = {
       ...comicSliceMock,
       comics: {
@@ -104,12 +107,12 @@ describe("comicSlice", () => {
       },
     };
 
-    mappedData = await setComicDetails(
+    const mappedData = await setComicDetails(
       clonedState,
       originalArrayItem1.id as string
     );
 
-    expect(mappedData).toEqual(null);
+    expect(mappedData).toEqual({});
   });
 
   it("should fetch and return the comics store", async () => {
@@ -118,17 +121,15 @@ describe("comicSlice", () => {
     };
     state = initialState;
 
-    // console.log("comic state:", state);
-
     state = await getComicsStore();
-    // console.log("comic state:", state);
+
     expect(state.comics.results.length).toBe(8);
     expect(state.comics.results[0].title).toBe(
       "Avengers Assemble (2024) #1 (Variant)"
     );
   });
 
-  it("should throw an error if the API fails", async () => {
+  it("should empty object if the API fails", async () => {
     (global.fetch as jest.Mock).mockImplementationOnce(() =>
       Promise.reject(new Error("API Error"))
     );
@@ -137,7 +138,26 @@ describe("comicSlice", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    await expect(getComicsStore()).rejects.toThrow("API Error");
+    const result = await getComicsStore();
+
+    expect(result).toEqual({ comics: {} });
+
+    consoleErrorMock.mockRestore();
+  });
+
+  it("should empty object if the the response not ok", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      status: 500,
+      json: async () => ({}),
+    });
+
+    const consoleErrorMock = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    const result = await getComicsStore();
+
+    expect(result).toEqual({ comics: {} });
 
     consoleErrorMock.mockRestore();
   });

@@ -81,7 +81,8 @@ const ItemDetails = <T extends BasicDetail>({
   };
 
   if (isFetching) return <Loader />;
-  if (isEmpty(itemDetail) && !isFetching) return <div>No Details</div>;
+  if (isEmpty(itemDetail) && !isFetching)
+    return <h1>No details loaded please go back and try again</h1>;
   return (
     <>
       <div className={styles.details_container}>

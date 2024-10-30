@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("Error retrieving data:", error);
     return NextResponse.json(
-      { error: "Failed to retrieve data" },
+      { error: `Failed to retrieve data: ${error}` },
       { status: 500 }
     );
   }

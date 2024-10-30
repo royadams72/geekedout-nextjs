@@ -81,9 +81,8 @@ describe("gamseSlice", () => {
       .mockImplementation(() => {});
 
     (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: false,
-      status: 200,
-      json: async () => undefined,
+      status: 500,
+      json: async () => ({ error: `Failed to retrieve data` }),
     });
 
     const result = (await getGamesStore()) as GamesSliceState;

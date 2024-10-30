@@ -28,6 +28,9 @@ export async function GET() {
     return NextResponse.json(data.data, { status: 200 });
   } catch (error) {
     console.error(`There was an error requesting comic data:${error}`);
-    throw error;
+    return NextResponse.json(
+      `There was an error requesting comic data:${error}`,
+      { status: 500 }
+    );
   }
 }

@@ -3,6 +3,8 @@ import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
+import { isEmpty } from "@/utils/helpers";
+
 import { Game, GameDetail } from "@/shared/interfaces/game";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
@@ -53,7 +55,7 @@ export const getGamesStore = async (): Promise<GamesSliceState | []> => {
 
   try {
     gamesStore = await getAllGames();
-    if (!gamesStore || gamesStore.length === 0) {
+    if (!gamesStore || isEmpty(gamesStore)) {
       console.error("data was not loaded getAllGames()");
       gamesStore = [];
     }
