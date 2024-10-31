@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { comicSliceMock, comicsMock } from "@/__mocks__/comics/comics.mocks";
+import { comicSliceMock } from "@/__mocks__/comics/comics.mocks";
 import { rootStateMock } from "@/__mocks__/store.mocks";
 
 import { ComicDetail, ComicStore } from "@/shared/interfaces/comic";
@@ -30,7 +30,7 @@ const makeStore = () => {
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
-    json: () => Promise.resolve(comicsMock),
+    json: () => Promise.resolve(comicSliceMock.comics),
   })
 ) as jest.Mock;
 
@@ -41,7 +41,7 @@ describe("comicSlice", () => {
 
   beforeEach(() => {
     store = makeStore();
-    comicStore = comicsMock;
+    comicStore = comicSliceMock.comics;
     state = store.getState();
   });
 
@@ -116,10 +116,19 @@ describe("comicSlice", () => {
   });
 
   it("should fetch and return the comics store", async () => {
+    const consoleErrorMock = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     const initialState = {
       comics: { count: 0, limit: 0, offset: 0, results: [] },
     };
     state = initialState;
+
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve(comicSliceMock.comics),
+    });
 
     state = await getComicsStore();
 
@@ -127,6 +136,8 @@ describe("comicSlice", () => {
     expect(state.comics.results[0].title).toBe(
       "Avengers Assemble (2024) #1 (Variant)"
     );
+
+    consoleErrorMock.mockRestore();
   });
 
   it("should empty object if the API fails", async () => {

@@ -21,7 +21,7 @@ jest.mock("@/lib/features/games/gamesSlice", () => ({
   getAllGames: jest.fn(),
 }));
 
-describe("gamseSlice", () => {
+fdescribe("gamseSlice", () => {
   beforeEach(() => {
     global.fetch = jest.fn();
     jest.clearAllMocks();
@@ -97,16 +97,22 @@ describe("gamseSlice", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    (global.fetch as jest.Mock).mockRejectedValueOnce(
-      new Error("Failed to fetch game details:")
-    );
-
+    // (global.fetch as jest.Mock).mockRejectedValueOnce(
+    //   new Error("Failed to fetch game details:")
+    // );
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      json: async () => ({
+        error: "Internal Server Error",
+      }),
+    });
     const result = (await getGamesStore()) as GamesSliceState;
 
     expect(result.games).toEqual([]);
 
     expect(consoleErrorMock).toHaveBeenCalledWith(
-      "data was not loaded getAllGames()"
+      "data was not loaded getGamesStore()"
     );
 
     consoleErrorMock.mockRestore();

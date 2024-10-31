@@ -30,11 +30,21 @@ jest.mock("@/lib/features/music/musicSlice", () => ({
 
 describe("musicSlice", () => {
   let musicStore: MusicStore;
+  let consoleErrorMock: jest.SpyInstance;
 
   beforeEach(() => {
     musicStore = musicSliceMock.music;
     global.fetch = jest.fn();
+
+    consoleErrorMock = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
     jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    consoleErrorMock.mockRestore();
   });
 
   it("should handle setMusic action", () => {
@@ -72,20 +82,15 @@ describe("musicSlice", () => {
     expect(result.music).toEqual(mockResponse.data.albums);
   });
 
-  it("should throw an error if no data is returned from getAllMusicApi", async () => {
-    const consoleErrorMock = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-
+  it("should return empty object if no data is returned from getAllMusicApi", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
       status: 300,
       json: async () => ({}),
     });
 
-    await expect(getMusicStore()).rejects.toThrow("data was not loaded");
-
-    consoleErrorMock.mockRestore();
+    const result = await getMusicStore();
+    expect(result).toEqual({ music: {} });
   });
 
   it("should throw an error if token is unavailable after refresh attempt for fetchAndRefreshTokenIfNeeded", async () => {
@@ -97,13 +102,11 @@ describe("musicSlice", () => {
         status: 500,
         statusText: "Internal Server Error",
       });
-
     (refreshToken as jest.Mock).mockResolvedValueOnce(undefined);
 
-    await expect(
-      fetchAndRefreshTokenIfNeeded("http://fetch/url", {})
-    ).rejects.toThrow("Network response was not ok: Internal Server Error");
+    const response = await fetchAndRefreshTokenIfNeeded("http://fetch/url", {});
 
+    expect(response).toEqual({});
     expect(refreshToken).toHaveBeenCalledTimes(1);
     expect(global.fetch).toHaveBeenCalledTimes(2);
   });
@@ -132,9 +135,21 @@ describe("musicSlice", () => {
 
     const resultMapped = await getMusicDetails(resultNotMapped.id);
 
-    expect(resultNotMapped).toHaveProperty("external_urls");
     expect(resultMapped).not.toHaveProperty("external_urls");
     expect(resultMapped).toHaveProperty("spotify_link");
     expect(resultMapped).toHaveProperty("category");
+  });
+
+  it("should return empty object if no details to map", async () => {
+    const item = musicDetailMockNotMapped;
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      status: 300,
+      json: async () => ({}),
+    });
+
+    const result = await getMusicDetails(item.id);
+
+    expect(result).toEqual({});
   });
 });

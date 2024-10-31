@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { BASE_URL_MOVIES } from "@/shared/constants/urls";
+import { ApiError } from "@/utils/helpers";
 
 const api_key = process.env.MOVIES_APIKEY;
 
@@ -24,15 +25,30 @@ export async function GET(
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch movie details: ${data.error.message}`);
+      throw new ApiError(
+        response.status,
+        data.error.message || "movies details API error"
+      );
     }
+
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error(`There has been an error fetching movie data: ${error}`);
-
-    return NextResponse.json(
-      { error: `Failed to fetch movie data: ${error}` },
-      { status: 500 }
-    );
+    if (error instanceof ApiError) {
+      console.error(
+        `There was an error requesting movies details: ${error.statusCode} - ${error.message}`
+      );
+      return NextResponse.json(
+        `There was an error requesting movies details: ${error.message}`,
+        { status: error.statusCode }
+      );
+    } else {
+      console.error(`Unexpected Error movies details API: ${error}`);
+      return NextResponse.json(
+        `Unexpected Error movies details API: ${error}`,
+        {
+          status: 500,
+        }
+      );
+    }
   }
 }

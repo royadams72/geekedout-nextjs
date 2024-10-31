@@ -1,17 +1,13 @@
 "use client";
 
-import { MappedMovieDetail } from "@/shared/interfaces/movies";
+import { MovieDetail } from "@/shared/interfaces/movies";
 
 import ItemDetails from "@/shared/components/item-details/ItemDetails";
 import Movie from "@/app/movies/components/Movie";
 
-const MovieDetails = ({
-  preloadedState,
-}: {
-  preloadedState: MappedMovieDetail;
-}) => {
+const MovieDetails = ({ preloadedState }: { preloadedState: MovieDetail }) => {
   return (
-    <ItemDetails<MappedMovieDetail> itemDetail={preloadedState}>
+    <ItemDetails<MovieDetail> itemDetail={preloadedState}>
       <Movie movieDetails={preloadedState} />
     </ItemDetails>
   );

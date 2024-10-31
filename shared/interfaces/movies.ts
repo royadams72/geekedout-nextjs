@@ -47,7 +47,7 @@ export interface MoviesImageData {
   still_sizes: Array<string>;
 }
 
-export interface MappedMovieDetail {
+export interface MovieDetail {
   category: string;
   genres: Array<string>;
   homepage: string;

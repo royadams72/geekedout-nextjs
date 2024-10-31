@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
 
     const { response } = await ensureBrowserSessionServerSide(sessionId);
     await saveSessionData(sessionId as string, categoriesData);
-    // console.log("response set data:", response.cookies);
 
     return response;
   } catch (error) {

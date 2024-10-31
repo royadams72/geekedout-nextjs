@@ -14,13 +14,10 @@ export const getValidToken = async (req: NextRequest): Promise<any> => {
       return token;
     }
   }
-  console.log("tokenCookie:", tokenCookie);
 
   const response = await refreshToken();
-
   const refreshedTokenCookie = response.cookies.get("spotify_token");
 
-  console.log("refreshToken() response:", refreshedTokenCookie);
   if (refreshedTokenCookie) {
     try {
       const { token } = JSON.parse(refreshedTokenCookie.value);

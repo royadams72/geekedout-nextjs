@@ -1,6 +1,6 @@
 import { comicSliceMock } from "./comics/comics.mocks";
 import { gamesSliceMock } from "./games.mocks";
-import { movieSliceMock } from "./movies.mock";
+import { movieSliceMock } from "./movies/movies.mocks";
 import { musicSliceMock } from "./music/music.mocks";
 import { uiDataSliceMock } from "./uiData.mocks";
 

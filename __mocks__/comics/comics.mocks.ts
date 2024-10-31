@@ -18,14 +18,13 @@ export const comicDetailMock = {
   clickThrough: "http://gateway.marvel.com/v1/public/series/32866",
 };
 
-export const comicsMock: ComicStore = {
-  count: 1,
-  limit: 10,
-  offset: 0,
-  results: items,
-};
 export const comicSliceMock: ComicsSliceState = {
-  comics: comicsMock,
+  comics: {
+    count: 1,
+    limit: 10,
+    offset: 0,
+    results: items,
+  },
 };
 
 export const comicsPreviewArray = [

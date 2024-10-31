@@ -65,6 +65,40 @@ export const selectComicsPreviews = createSelector(
     })
 );
 
+export const getComicsStore = async (): Promise<ComicsSliceState> => {
+  let comicStore = await getComicsApi();
+
+  if (!comicStore || isEmpty(comicStore)) {
+    console.error("Data was not loaded for comics:");
+    comicStore = {};
+  }
+  return {
+    comics: comicStore as ComicStore,
+  };
+};
+
+const getComicsApi = async (): Promise<ComicStore | {}> => {
+  try {
+    const response = await fetch(
+      `${appConfig.url.BASE_URL}/api/comics/${GET_DATA_FOLDER}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Response was not ok comics:", response.status);
+      return {};
+    }
+    const data: ComicStore = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch comics:", error);
+    return {};
+  }
+};
+
 export const setComicDetails = async (
   comicStore: ComicsSliceState,
   id: string
@@ -113,36 +147,4 @@ export const mapComicDetail = (
   };
 
   return selectedItem;
-};
-
-export const getComicsStore = async (): Promise<ComicsSliceState> => {
-  let comicStore: ComicStore | {};
-
-  try {
-    comicStore = await getComicsApi();
-
-    if (!comicStore || isEmpty(comicStore)) {
-      comicStore = {};
-    }
-  } catch (error) {
-    console.error("Failed to fetch comic details:", error);
-    comicStore = {};
-  }
-
-  return {
-    comics: comicStore as ComicStore,
-  };
-};
-
-const getComicsApi = async (): Promise<ComicStore> => {
-  const response = await fetch(
-    `${appConfig.url.BASE_URL}/api/comics/${GET_DATA_FOLDER}`,
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
-  const data: ComicStore = await response.json();
-
-  return data;
 };

@@ -51,18 +51,13 @@ export const selectGamesPreviews = createSelector(
 );
 
 export const getGamesStore = async (): Promise<GamesSliceState | []> => {
-  let gamesStore: Game[] = [];
+  let gamesStore = await getAllGames();
 
-  try {
-    gamesStore = await getAllGames();
-    if (!gamesStore || isEmpty(gamesStore)) {
-      console.error("data was not loaded getAllGames()");
-      gamesStore = [];
-    }
-  } catch (error) {
-    console.error("Failed to fetch game details getAllGames():", error);
+  if (!gamesStore || isEmpty(gamesStore)) {
+    console.error("data was not loaded getGamesStore()");
     gamesStore = [];
   }
+
   return {
     games: gamesStore,
   };
@@ -77,14 +72,15 @@ export const getAllGames = async (): Promise<Game[]> => {
         credentials: "include",
       }
     );
+
     if (!response.ok) {
-      return [];
+      throw new Error(`Failed to fetch games: ${response.status}`);
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Failed to fetch games:", error);
+    console.error("Failed to fetch games getAllGames():", error);
     return [];
   }
 };

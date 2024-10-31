@@ -75,7 +75,6 @@ export const ensureBrowserSessionServerSide = async (
         secure: process.env.NODE_ENV === "production",
       });
     }
-    // console.log("response ensureBrowserSessionServerSide():", response.cookies);
   }
 
   return { sessionId, response };
