@@ -4,7 +4,6 @@ import { comicSliceMock } from "@/__mocks__/comics/comics.mocks";
 import { cookieMock } from "@/__mocks__/cookie.mock";
 
 import {
-  initialState as uiDataInititialState,
   setFirstPage,
   setSessionId,
   uiDataSlice,
@@ -12,17 +11,17 @@ import {
 import { comicsSlice, setComics } from "@/lib/features/comics/comicsSlice";
 
 import { RootState } from "@/lib/store/store";
-import { debounceTimeout, persisterMiddleware } from "@/lib/middleware/persist";
-import { uiDataMock } from "@/__mocks__/uiData.mocks";
-import { appConfig } from "@/shared/constants/appConfig";
-import { GET_SET_DATA_API } from "@/shared/constants/urls";
+
+import { persisterMiddleware } from "@/lib/middleware/persist";
 
 let rootReducers = combineReducers({
   comics: comicsSlice.reducer,
   uiData: uiDataSlice.reducer,
 });
+
 Storage.prototype.setItem = jest.fn();
 jest.useFakeTimers();
+
 const makeStore = () => {
   return configureStore({
     reducer: rootReducers,
@@ -103,14 +102,14 @@ describe("persist store", () => {
     store.dispatch(setSessionId(sessionId));
     jest.runAllTimers();
 
-    expect(setTimeout).toHaveBeenCalledTimes(1); // Works fine
-    expect(consoleErrorSpy).toHaveBeenCalled(); //not called even though the lines of code in the function are coverd
-
+    expect(setTimeout).toHaveBeenCalledTimes(1);
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    //  expect(consoleErrorSpy).toHaveBeenCalledWith(
+    //     "There was an error: Error: HTTP error! Status: 500"
+    //   ); //not called even though the lines of code in the function are coverd
     consoleErrorSpy.mockRestore();
   });
-  //  expect(consoleErrorSpy).toHaveBeenCalledWith(
-  //     "There was an error: Error: HTTP error! Status: 500"
-  //   ); //not called even though the lines of code in the function are coverd
+
   it("should log an error if localStorage.setItem throws a QuotaExceededError", () => {
     const quotaExceededError = new Error("QuotaExceededError");
     jest.spyOn(Storage.prototype, "setItem").mockImplementation(() => {

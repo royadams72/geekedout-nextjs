@@ -1,8 +1,6 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import { CategoryType } from "@/shared/enums/category-type.enum";
-
 import { comicsReducer } from "@/lib/features/comics/comicsSlice";
 import { musicReducer } from "@/lib/features/music/musicSlice";
 import { gamesReducer } from "@/lib/features/games/gamesSlice";
@@ -20,7 +18,7 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-const loadState = () => {
+export const loadState = () => {
   if (typeof window !== "undefined") {
     const serializedState = localStorage.getItem("redux-store");
     if (serializedState) {
