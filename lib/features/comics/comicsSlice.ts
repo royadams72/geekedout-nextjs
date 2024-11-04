@@ -102,11 +102,9 @@ const getComicsApi = async (): Promise<ComicStore | {}> => {
 export const setComicDetails = async (
   comicStore: ComicsSliceState,
   id: string
-): Promise<ComicDetail | {}> => {
-  return mapComicDetail(comicStore, id);
-};
+): Promise<ComicDetail | {}> => mapComicDetail(comicStore, id);
 
-export const mapComicDetail = (
+const mapComicDetail = (
   comics: ComicsSliceState,
   id: string
 ): ComicDetail | {} => {

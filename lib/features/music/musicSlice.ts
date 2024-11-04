@@ -132,7 +132,7 @@ export const fetchAndRefreshTokenIfNeeded = async <T>(
   }
 };
 
-const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
+export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
   if (isEmpty(item)) {
     return {};
   }

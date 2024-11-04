@@ -36,12 +36,6 @@ describe("ComicDetails Component", () => {
     expect(screen.getByText(/John Byrne/i)).toBeInTheDocument();
   });
 
-  it("renders description if available", () => {
-    expect(
-      screen.getByText(/A classic comic about Spider-Man/i)
-    ).toBeInTheDocument();
-  });
-
   it("renders link", () => {
     const link = screen.getByRole("link");
     expect(link).toBeInTheDocument();

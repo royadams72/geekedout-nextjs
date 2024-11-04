@@ -34,8 +34,9 @@ global.fetch = jest.fn(() =>
     json: () => Promise.resolve(movieSliceMock.movies),
   })
 ) as jest.Mock;
+
 let consoleErrorMock: any;
-fdescribe("movieSlice", () => {
+describe("movieSlice", () => {
   let store: any;
   let moviesStore: MoviesStore;
   let state: MoviesSliceState;
@@ -127,6 +128,7 @@ fdescribe("movieSlice", () => {
       status: 200,
       json: () => Promise.resolve(movieSliceMock.movies),
     });
+
     state = (await getMoviesStore()) as MoviesSliceState;
 
     expect(state.movies.results.length).toBeGreaterThanOrEqual(1);

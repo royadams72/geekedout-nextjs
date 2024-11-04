@@ -1,6 +1,6 @@
 import Redis from "ioredis";
 
-import { setComicDetails } from "../features/comics/comicsSlice";
+import { setComicDetails } from "@/lib/features/comics/comicsSlice";
 import { setGameDetails } from "../features/games/gamesSlice";
 import { getMovieDetails } from "../features/movies/moviesSlice";
 import { getMusicDetails } from "../features/music/musicSlice";
@@ -13,8 +13,10 @@ const redis = new Redis({
   port: Number(process.env.REDIS_PORT) || 6379,
 });
 
-export const saveSessionData = async (sessionId: string, data: RootState) => {
+export const saveSessionData = async (sessionId: string, data: any) => {
   const sessionTTL = 86400;
+  // console.log(data);
+
   await redis.set(
     `session:${sessionId}`,
     JSON.stringify(data),
@@ -54,8 +56,10 @@ export const getItemFromCache = async (
 ) => {
   try {
     const data = await getSessionData(sessionId);
-    const categoriesData = data.state;
+
+    // console.log("data:", categoriesData.comics.comics.results[0]);
     let selectedData: any;
+    const categoriesData = data.state;
 
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
@@ -67,6 +71,7 @@ export const getItemFromCache = async (
           categoriesData.comics,
           id as string
         );
+        // console.log("selectedData in redis", selectedData);
         break;
       case CategoryType.Games:
         selectedData = await setGameDetails(categoriesData.games, id as string);

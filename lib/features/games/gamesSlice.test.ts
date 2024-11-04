@@ -1,7 +1,6 @@
 import {
   getGamesStore,
   selectGames,
-  getAllGames,
   selectGamesPreviews,
   gamesSlice,
   initialState,
@@ -21,7 +20,7 @@ jest.mock("@/lib/features/games/gamesSlice", () => ({
   getAllGames: jest.fn(),
 }));
 
-fdescribe("gamseSlice", () => {
+describe("gamseSlice", () => {
   beforeEach(() => {
     global.fetch = jest.fn();
     jest.clearAllMocks();
@@ -97,9 +96,6 @@ fdescribe("gamseSlice", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    // (global.fetch as jest.Mock).mockRejectedValueOnce(
-    //   new Error("Failed to fetch game details:")
-    // );
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
       status: 500,

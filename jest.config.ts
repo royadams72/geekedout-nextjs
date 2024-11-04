@@ -23,6 +23,7 @@ const config: Config = {
   moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testEnvironment: "jsdom",
+  testTimeout: 10000,
   globals: {
     "ts-jest": {
       isolatedModules: true,

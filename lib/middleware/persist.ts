@@ -3,7 +3,7 @@ import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { appConfig } from "@/shared/constants/appConfig";
 import { GET_SET_DATA_API } from "@/shared/constants/urls";
 
-let debounceTimeout: NodeJS.Timeout | null = null;
+export let debounceTimeout: NodeJS.Timeout | null = null;
 const delayTime = 300;
 
 if (typeof window !== "undefined") {
@@ -15,6 +15,7 @@ if (typeof window !== "undefined") {
 const stopTimer = () => {
   if (debounceTimeout) {
     clearTimeout(debounceTimeout);
+    debounceTimeout = null; // Reset to null after clearing
   }
 };
 
@@ -63,11 +64,11 @@ persisterMiddleware.startListening({
           );
 
           if (!res.ok) {
+            console.error(`HTTP error! Status: ${res.status}`);
             throw new Error(`HTTP error! Status: ${res.status}`);
           }
         } catch (error) {
           console.error(`There was an error: ${error}`);
-          throw error;
         }
       }
     }, delayTime);

@@ -1,18 +1,18 @@
 import { ComicsSliceState } from "@/lib/features/comics/comicsSlice";
 import { items } from "./items.mock";
-import { ComicStore } from "@/shared/interfaces/comic";
+import { ComicDetail } from "@/shared/interfaces/comic";
 
-export const comicDetailMock = {
-  id: 1,
-  name: "Amazing Spider-Man",
-  description: "A classic comic about Spider-Man",
-  image: "http://i.annihil.us/u/prod/marvel/i/mg/3/30/66df01b952153",
-  onsaleDate: "2024-10-01T00:00:00Z",
+export const comicDetailMock: ComicDetail = {
+  name: items[0].title,
+  description: items[0].description,
+  id: items[0].id,
+  image: items[0].images[0].path,
   category: "comic",
   creators: [
     { name: "John Byrne", role: "Artist" },
     { name: "Stan Lee", role: "writer" },
   ],
+  onsaleDate: "2024-10-01T00:00:00Z",
   pageCount: 30,
   printPrice: 4.99,
   clickThrough: "http://gateway.marvel.com/v1/public/series/32866",
