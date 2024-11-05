@@ -14,6 +14,7 @@ export const getValidToken = async (req: NextRequest): Promise<any> => {
       return token;
     }
   }
+
   const response = await refreshToken();
   const refreshedTokenCookie = response.cookies.get("spotify_token");
 

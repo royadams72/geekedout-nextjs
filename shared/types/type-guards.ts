@@ -3,7 +3,7 @@ import { GameDetail } from "../interfaces/game";
 import { MovieDetail } from "../interfaces/movies";
 import { AlbumDetail } from "../interfaces/music";
 
-export const isMovieDetail = (detail: any): detail is MovieDetail => {
+export const isMappedMovieDetail = (detail: any): detail is MovieDetail => {
   return detail && "imdb_link" in detail;
 };
 

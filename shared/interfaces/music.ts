@@ -2,19 +2,14 @@ export interface Album {
   album_type: string;
   artists: Artists[];
   available_markets: Array<string>;
-  copyrights: Array<{}>;
-  external_ids: object;
   external_urls: ExternalUrls;
-  genres: [];
   href: string;
   id: string;
   images: Images[];
   name: string;
-  popularity: number;
   release_date: string;
   release_date_precision: string;
   total_tracks: number;
-  tracks: Tracks;
   type: string;
   uri: string;
 }
@@ -47,7 +42,7 @@ export interface MusicStore {
   limit?: number;
   next?: string;
   offset?: number;
-  previous?: number;
+  previous?: number | null;
   total?: number;
 }
 
@@ -77,27 +72,6 @@ export interface Tracks {
   offset: number;
   previous: number | null;
   total: number;
-}
-
-export interface Album {
-  album_type: string;
-  artists: Artists[];
-  available_markets: Array<string>;
-  copyrights: Array<{}>;
-  external_ids: object;
-  external_urls: ExternalUrls;
-  genres: [];
-  href: string;
-  id: string;
-  images: Images[];
-  name: string;
-  popularity: number;
-  release_date: string;
-  release_date_precision: string;
-  total_tracks: number;
-  tracks: Tracks;
-  type: string;
-  uri: string;
 }
 
 export interface AlbumDetail {

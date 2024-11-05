@@ -6,7 +6,7 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 
 import MovieDetails from "@/app/movies/components/MovieDetails";
 
-const MovieDetailsPage = async ({
+const MappedMovieDetailsPage = async ({
   params: { id },
 }: {
   params: { id: number };
@@ -18,4 +18,4 @@ const MovieDetailsPage = async ({
   return <MovieDetails preloadedState={item} />;
 };
 
-export default MovieDetailsPage;
+export default MappedMovieDetailsPage;

@@ -16,6 +16,5 @@ export const useClientSideCookies = (cookieName: string) => {
     setCookieValue(cookie); // Save the cookie value in state
   }, [cookieName]); // Re-run if cookieName changes
 
-  console.log(cookieName, cookieValue);
   return cookieValue;
 };

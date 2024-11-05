@@ -13,7 +13,7 @@ export interface Game {
   thumbnail: string;
   title: string;
   type: string;
-  users: string;
+  users: number;
   worth: string;
 }
 

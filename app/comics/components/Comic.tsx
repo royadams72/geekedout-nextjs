@@ -29,6 +29,9 @@ const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
         <span className={styles.details_alt_colour}>Page Count: </span>
         {comicDetails?.pageCount}
       </h2>
+      <h2>
+        <span className={styles.details_alt_colour}>Creators: </span>
+      </h2>
       <ul className={styles.details_ul_comics}>
         {comicDetails?.creators &&
           comicDetails?.creators.map(
@@ -42,11 +45,14 @@ const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
             )
           )}
       </ul>
+      <h2 className={styles.details_alt_colour}>Description:</h2>
       {comicDetails?.description && <p>{comicDetails?.description}</p>}
 
       <Link
         href={comicDetails?.clickThrough as string}
         target="_blank"
+        rel="noopener noreferrer"
+        role="link"
         className="btn"
       >
         Go to Mavel Website

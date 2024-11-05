@@ -25,7 +25,6 @@ const Home = async ({
   for (const { key, fetchFunction } of dataFetchers) {
     try {
       const data = await fetchFunction();
-
       preloadedState[key] = data;
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);

@@ -3,6 +3,8 @@ import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
+import { isEmpty } from "@/utils/helpers";
+
 import { Game, GameDetail } from "@/shared/interfaces/game";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
@@ -13,7 +15,7 @@ export interface GamesSliceState {
   games: Game[];
 }
 
-const initialState: GamesSliceState = {
+export const initialState: GamesSliceState = {
   games: [],
 };
 
@@ -24,20 +26,16 @@ export const gamesSlice = createAppSlice({
     setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
       state.games = action.payload;
     }),
-    getGames: create.asyncThunk<Game[], void>(async () => {
-      const data = await getAllGames();
-      return data;
-    }),
   }),
-  selectors: { selectGames: (state) => state.games },
+  selectors: {},
 });
 
-export const { getGames, setGames } = gamesSlice.actions;
+export const { setGames } = gamesSlice.actions;
 export const gamesReducer = gamesSlice.reducer;
 
 export const selectGames = createSelector(
   (state: RootState) => state?.games.games || [],
-  (games) => games
+  (games) => games.filter((game) => game !== null)
 );
 export const selectGamesPreviews = createSelector(
   selectGames,
@@ -52,7 +50,20 @@ export const selectGamesPreviews = createSelector(
     })
 );
 
-const getAllGames = async (): Promise<Game[]> => {
+export const getGamesStore = async (): Promise<GamesSliceState | []> => {
+  let gamesStore = await getAllGames();
+
+  if (!gamesStore || isEmpty(gamesStore)) {
+    console.error("data was not loaded getGamesStore()");
+    gamesStore = [];
+  }
+
+  return {
+    games: gamesStore,
+  };
+};
+
+export const getAllGames = async (): Promise<Game[]> => {
   try {
     const response = await fetch(
       `${appConfig.url.BASE_URL}/api/games/${GET_DATA_FOLDER}/`,
@@ -61,48 +72,34 @@ const getAllGames = async (): Promise<Game[]> => {
         credentials: "include",
       }
     );
+
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error(`Failed to fetch games: ${response.status}`);
     }
+
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Failed to fetch games:", error);
-    throw error;
+    console.error("Failed to fetch games getAllGames():", error);
+    return [];
   }
 };
 
 export const setGameDetails = async (
   serverSideStore: GamesSliceState,
   id: string
-): Promise<GameDetail | null> => {
+): Promise<GameDetail | {}> => {
   return mapGameDetail(serverSideStore, id);
-};
-
-export const getGamesStore = async (): Promise<GamesSliceState> => {
-  let gamesStore: Game[];
-  try {
-    gamesStore = await getAllGames();
-    if (!gamesStore) {
-      throw new Error(`data was not loaded`);
-    }
-  } catch (error) {
-    console.error("Failed to fetch game details:", error);
-    throw error;
-  }
-  return {
-    games: gamesStore,
-  };
 };
 
 export const mapGameDetail = (
   games: GamesSliceState,
   id: string | number
-): GameDetail | null => {
+): GameDetail | {} => {
   const gamesArray = games.games || [];
   const item = gamesArray.find((game: Game) => game.id?.toString() === id);
   if (!item) {
-    return null;
+    return {};
   }
   const {
     description,

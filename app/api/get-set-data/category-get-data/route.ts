@@ -5,6 +5,7 @@ import {
   getItemFromCache,
   getSessionData,
 } from "@/lib/redis/redis";
+import { ApiError } from "@/utils/helpers";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -12,7 +13,6 @@ export async function GET(request: NextRequest) {
   const id = searchParams.get("id");
   const getAll = searchParams.get("getAll");
   const sessionId = getSessionIdFromCookie() as string;
-  console.log(categoryName, id);
 
   try {
     let categoryData;
@@ -32,14 +32,28 @@ export async function GET(request: NextRequest) {
     }
 
     if (!categoryData) {
-      return NextResponse.json({ error: "No data found" }, { status: 404 });
+      const data = await categoryData.json();
+      throw new ApiError(
+        categoryData.status,
+        data.error.message || "category data API error"
+      );
     }
+
     return NextResponse.json(categoryData);
   } catch (error) {
-    console.error("Error retrieving data:", error);
-    return NextResponse.json(
-      { error: "Failed to retrieve data" },
-      { status: 500 }
-    );
+    if (error instanceof ApiError) {
+      console.error(
+        `There was an error requesting category data: ${error.statusCode} - ${error.message}`
+      );
+      return NextResponse.json(
+        `There was an error requesting category data: ${error.message}`,
+        { status: error.statusCode }
+      );
+    } else {
+      console.error(`Unexpected Error category data API: ${error}`);
+      return NextResponse.json(`Unexpected Error category data API: ${error}`, {
+        status: 500,
+      });
+    }
   }
 }

@@ -29,14 +29,18 @@ export const getCategoryData = async (
     );
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      console.error(`HTTP error! Status: ${response.status}`);
+      return NextResponse.json(
+        { error: `HTTP error! Status: ${response.status}` },
+        { status: 404 }
+      );
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Failed to fetch data:", error);
-    throw error;
+    return NextResponse.json({ error }, { status: 500 });
   }
 };
 
@@ -71,7 +75,6 @@ export const ensureBrowserSessionServerSide = async (
         secure: process.env.NODE_ENV === "production",
       });
     }
-    // console.log("response ensureBrowserSessionServerSide():", response.cookies);
   }
 
   return { sessionId, response };

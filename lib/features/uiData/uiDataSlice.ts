@@ -7,7 +7,7 @@ import { UiData } from "@/shared/interfaces/uiData";
 import { AllDetailsTypes } from "@/shared/types/all-categories";
 import { Preview } from "@/shared/interfaces/preview";
 
-const initialState: UiData = {
+export const initialState: UiData = {
   currPrevUrls: {
     currentUrl: "/",
     previousUrl: "",
@@ -17,10 +17,8 @@ const initialState: UiData = {
     searchTerm: "",
     items: [],
   },
-  selectedId: "",
   selectedItem: null,
   sessionId: "",
-  sessionIdLoaded: false,
 };
 
 export const uiDataSlice = createAppSlice({
@@ -45,7 +43,6 @@ export const uiDataSlice = createAppSlice({
     },
     setSessionId: (state, action: PayloadAction<string>) => {
       state.sessionId = action.payload;
-      state.sessionIdLoaded = true;
     },
     setSearchData: (
       state,
@@ -63,7 +60,6 @@ export const uiDataSlice = createAppSlice({
     selectIsFirstPage: (state) => state.isFirstPage,
     selectSelectedItem: (state) => state.selectedItem,
     selectSessionId: (state) => state.sessionId,
-    selectSessionIdLoaded: (state) => state.sessionIdLoaded,
     selectSearchData: (state) => state.searchData,
   },
 });
@@ -84,9 +80,6 @@ export const {
   selectSelectedItem,
   selectSessionId,
   selectSearchData,
-  selectSessionIdLoaded,
 } = uiDataSlice.selectors;
 
-export const selectSessionInitialized = (state: any) =>
-  state.uiData.sessionIdLoaded;
 export const uiDataReducer = uiDataSlice.reducer;

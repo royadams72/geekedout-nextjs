@@ -2,6 +2,8 @@ import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
 import { createAppSlice } from "@/lib/store/createAppSlice";
 
+import { isEmpty, isNotEmpty } from "@/utils/helpers";
+
 import {
   Comic,
   ComicDetail,
@@ -21,7 +23,7 @@ export interface ComicsSliceState {
 }
 
 const initialState: ComicsSliceState = {
-  comics: {} as ComicStore,
+  comics: { count: 0, limit: 0, offset: 0, results: [] },
 };
 
 export const comicsSlice = createAppSlice({
@@ -32,54 +34,87 @@ export const comicsSlice = createAppSlice({
       state.comics = action.payload;
     },
   },
-  selectors: {
-    selectComicsArray: (comics) => comics.comics.results as Comic[],
-  },
+  selectors: {},
 });
 
 export const { setComics } = comicsSlice.actions;
 export const comicsReducer = comicsSlice.reducer;
 
-export const selectComicsArray = (state: RootState) =>
-  state.comics.comics.results;
+export const selectComicsArray = createSelector(
+  (state: RootState) => state.comics.comics.results || [],
+  (results) => results.filter((item) => item !== null)
+);
 
 export const selectComicsPreviews = createSelector(
   selectComicsArray,
   (comic: Comic[]) =>
     comic?.map((comic: Comic) => {
-      const isImages = comic.images && comic.images.length > 0;
+      const isImages = comic.images && isNotEmpty(comic.images[0]);
+
       return {
         category: CategoryType.Comics,
         id: comic.id,
         title: comic.title,
         imageLarge: isImages
           ? `${comic.images[0].path}.jpg`
-          : IMAGE_NOT_FOUND.SM,
+          : IMAGE_NOT_FOUND.MED_250x250,
         imageSmall: isImages
           ? `${comic.images[0].path}/standard_fantastic.jpg`
-          : IMAGE_NOT_FOUND.MED_250x250,
+          : IMAGE_NOT_FOUND.SM,
       };
     })
 );
 
+export const getComicsStore = async (): Promise<ComicsSliceState> => {
+  let comicStore = await getComicsApi();
+
+  if (!comicStore || isEmpty(comicStore)) {
+    console.error("Data was not loaded for comics:");
+    comicStore = {};
+  }
+  return {
+    comics: comicStore as ComicStore,
+  };
+};
+
+const getComicsApi = async (): Promise<ComicStore | {}> => {
+  try {
+    const response = await fetch(
+      `${appConfig.url.BASE_URL}/api/comics/${GET_DATA_FOLDER}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Response was not ok comics:", response.status);
+      return {};
+    }
+    const data: ComicStore = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch comics:", error);
+    return {};
+  }
+};
+
 export const setComicDetails = async (
   comicStore: ComicsSliceState,
   id: string
-): Promise<ComicDetail | null> => {
-  return mapComicDetail(comicStore, id);
-};
+): Promise<ComicDetail | {}> => mapComicDetail(comicStore, id);
 
-export const mapComicDetail = (
+const mapComicDetail = (
   comics: ComicsSliceState,
   id: string
-): ComicDetail | null => {
+): ComicDetail | {} => {
   const results = comics.comics.results || [];
   const item: Comic | undefined = results.find(
     (comic: Comic) => comic.id?.toString() === id
   );
 
   if (!item) {
-    return null;
+    return {};
   }
 
   const {
@@ -110,36 +145,4 @@ export const mapComicDetail = (
   };
 
   return selectedItem;
-};
-
-export const getComicsStore = async (): Promise<ComicsSliceState> => {
-  let comicStore: ComicStore;
-
-  try {
-    comicStore = await getComicsApi();
-
-    if (!comicStore) {
-      throw new Error("Data was not loaded");
-    }
-  } catch (error) {
-    console.error("Failed to fetch comic details:", error);
-    throw error;
-  }
-
-  return {
-    comics: comicStore,
-  };
-};
-
-const getComicsApi = async (): Promise<ComicStore> => {
-  const response = await fetch(
-    `${appConfig.url.BASE_URL}/api/comics/${GET_DATA_FOLDER}`,
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
-  const data: ComicStore = await response.json();
-
-  return data;
 };

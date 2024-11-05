@@ -16,14 +16,20 @@ import {
   isAlbumDetail,
   isComicDetail,
   isGameDetail,
-  isMovieDetail,
+  isMappedMovieDetail,
 } from "@/shared/types/type-guards";
 
 import styles from "@/styles/components/_detail.module.scss";
 
 import Loader from "@/shared/components/loader/Loader";
+import { isEmpty, isNotEmpty } from "@/utils/helpers";
 
-const typeGuards = [isMovieDetail, isComicDetail, isAlbumDetail, isGameDetail];
+const typeGuards = [
+  isMappedMovieDetail,
+  isComicDetail,
+  isAlbumDetail,
+  isGameDetail,
+];
 interface BasicDetail {
   image: string;
   category: string;
@@ -31,12 +37,10 @@ interface BasicDetail {
 }
 interface ItemProps<T> {
   itemDetail: T;
-  isLoading?: boolean;
 }
 
 const ItemDetails = <T extends BasicDetail>({
   itemDetail,
-  isLoading,
   children,
 }: PropsWithChildren<ItemProps<T>>) => {
   const dispatch = useAppDispatch();
@@ -50,7 +54,7 @@ const ItemDetails = <T extends BasicDetail>({
   const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {
-    if (itemDetail) {
+    if (isNotEmpty(itemDetail) && itemDetail.image && itemDetail.category) {
       setItemDetails(itemDetail);
       setBackgroundImage(itemDetail.image);
       setCategory(itemDetail.category);
@@ -63,6 +67,7 @@ const ItemDetails = <T extends BasicDetail>({
         }
       }
     }
+    setIsFetching(false); // Stop loading even if itemDetail is empty
   }, [itemDetail, dispatch]);
 
   useEffect(() => {
@@ -75,8 +80,9 @@ const ItemDetails = <T extends BasicDetail>({
     backgroundImage: `url(${backgroundImage})`,
   };
 
-  if (isLoading || isFetching) return <Loader />;
-
+  if (isFetching) return <Loader />;
+  if (isEmpty(itemDetail) && !isFetching)
+    return <h1>No details loaded please go back and try again</h1>;
   return (
     <>
       <div className={styles.details_container}>
@@ -93,8 +99,16 @@ const ItemDetails = <T extends BasicDetail>({
               </Link>
             )}
           </div>
-          <div className={styles.details_games}>
-            <h1 className={styles.details_title}>{itemDetails?.name}</h1>
+          <article
+            aria-labelledby={`${itemDetails?.name}-name`}
+            className={styles.details_games}
+          >
+            <h1
+              id={`${itemDetails?.name}-name`}
+              className={styles.details_title}
+            >
+              {itemDetails?.name}
+            </h1>
 
             <div className={styles.details_info}>{children}</div>
             <div className={styles.details_image}>
@@ -107,7 +121,7 @@ const ItemDetails = <T extends BasicDetail>({
                 />
               )}
             </div>
-          </div>
+          </article>
         </div>
       </div>
       <div style={divStyle} className={styles.backgroundImage}></div>

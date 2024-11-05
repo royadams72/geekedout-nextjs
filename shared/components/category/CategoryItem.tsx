@@ -33,7 +33,7 @@ const CategoryItem = ({
           isFirstPage ? styles.category__item_firstPage : styles.category__item
         }
       >
-        <Link href={itemLink}>
+        <Link href={itemLink} role="link">
           <div className={styles.category__image_container}>
             <Image
               src={imgLrg}

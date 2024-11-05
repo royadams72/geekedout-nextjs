@@ -7,7 +7,7 @@ export const formatCurrency = (value: number) =>
 
 export const isNotEmpty = (obj: any = {}): boolean | null | undefined => {
   if (Object?.prototype?.toString?.call(obj) === "[object Array]") {
-    return obj?.length !== 0 || null || undefined;
+    return obj?.length !== 0;
   }
   return Object?.keys?.(obj)?.length !== 0;
 };
@@ -48,3 +48,10 @@ export const formatDate = (isoString: string, withTime: boolean = false) => {
   }
   return `${formattedDate}`;
 };
+
+export class ApiError extends Error {
+  constructor(public statusCode: number, message: string) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
