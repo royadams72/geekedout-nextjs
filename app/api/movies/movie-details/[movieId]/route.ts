@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { BASE_URL_MOVIES } from "@/shared/constants/urls";
 import { ApiError } from "@/utils/helpers";
 
 const api_key = process.env.MOVIES_APIKEY;
+const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
 
 export async function GET(
   request: NextRequest,

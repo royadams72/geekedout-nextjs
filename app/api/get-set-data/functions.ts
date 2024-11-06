@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-import { appConfig } from "@/shared/constants/appConfig";
-import { GET_SET_DATA_API } from "@/shared/constants/urls";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const GET_SET_DATA_API = process.env.NEXT_PUBLIC_GET_SET_DATA_API;
 
 export const getCategoryData = async (
   categoryName: string,
@@ -13,11 +13,11 @@ export const getCategoryData = async (
   // Edgecase: If somehow cookie is lost navigate to first page where the app automatically will put the sessionId back
   // TODO: Possibly add sessionId to session storage as well, on app init, as a fallback and only redirect if necessary
   if (!sessionId) {
-    return { redirect: `${appConfig.url.BASE_URL}/?redirected=true` };
+    return { redirect: `${BASE_URL}/?redirected=true` };
   }
   try {
     const response = await fetch(
-      `${appConfig.url.BASE_URL}/${GET_SET_DATA_API}/category-get-data?categoryName=${categoryName}${idString}`,
+      `${BASE_URL}/${GET_SET_DATA_API}/category-get-data?categoryName=${categoryName}${idString}`,
       {
         method: "GET",
         credentials: "include",

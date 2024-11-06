@@ -1,6 +1,7 @@
-import { BASE_URL_MUSIC } from "@/shared/constants/urls";
 import { NextRequest, NextResponse } from "next/server";
 import { getValidToken, refreshToken } from "@/app/api/music/token/getToken";
+
+const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
 export const POST = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);

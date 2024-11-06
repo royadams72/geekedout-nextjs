@@ -11,12 +11,12 @@ import {
 } from "@/shared/interfaces/music";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { appConfig } from "@/shared/constants/appConfig";
 import { refreshToken } from "@/app/api/music/token/getToken";
-import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 
 import { isEmpty } from "@/utils/helpers";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 export interface MusicSliceState {
   music: MusicStore;
 }
@@ -86,7 +86,7 @@ export const getMusicDetails = async (
 
 export const getAllMusicApi = async () => {
   const response = await fetchAndRefreshTokenIfNeeded<ApiResponse>(
-    `${appConfig.url.BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
+    `${BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
     {
       method: "GET",
       credentials: "include",
@@ -98,7 +98,7 @@ export const getAllMusicApi = async () => {
 
 export const getAlbumDetails = async (id: string) => {
   const data = await fetchAndRefreshTokenIfNeeded<Album>(
-    `${appConfig.url.BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
+    `${BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
     {
       method: "POST",
     }
