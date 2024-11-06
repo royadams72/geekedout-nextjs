@@ -1,9 +1,8 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 
-import { appConfig } from "@/shared/constants/appConfig";
-import { GET_SET_DATA_API } from "@/shared/constants/urls";
-
-export let debounceTimeout: NodeJS.Timeout | null = null;
+const GET_SET_DATA_API = process.env.NEXT_PUBLIC_GET_SET_DATA_API;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+let debounceTimeout: NodeJS.Timeout | null = null;
 const delayTime = 300;
 
 if (typeof window !== "undefined") {
@@ -51,7 +50,7 @@ persisterMiddleware.startListening({
       if (sessionId) {
         try {
           const res = await fetch(
-            `${appConfig.url.BASE_URL}/${GET_SET_DATA_API}/category-set-data`,
+            `${BASE_URL}/${GET_SET_DATA_API}/category-set-data`,
             {
               method: "POST",
               credentials: "include",
@@ -68,7 +67,7 @@ persisterMiddleware.startListening({
             throw new Error(`HTTP error! Status: ${res.status}`);
           }
         } catch (error) {
-          console.error(`There was an error: ${error}`);
+          console.error(`There was an error persist middleware: ${error}`);
         }
       }
     }, delayTime);

@@ -7,10 +7,11 @@ import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { IMAGE_PATHS } from "@/shared/enums/paths.enums";
-import { appConfig } from "@/shared/constants/appConfig";
-import { GET_DATA_FOLDER } from "@/shared/constants/urls";
+
 import { isEmpty } from "@/utils/helpers";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 export interface MoviesSliceState {
   movies: MoviesStore;
 }
@@ -68,7 +69,7 @@ export const getMovieDetails = async (
 const getAllMoviesApi = async (): Promise<MoviesStore | {}> => {
   try {
     const response = await fetch(
-      `${appConfig.url.BASE_URL}/${MOVIES_API}/${GET_DATA_FOLDER}`,
+      `${BASE_URL}/${MOVIES_API}/${GET_DATA_FOLDER}`,
       {
         method: "GET",
         credentials: "include",
@@ -89,7 +90,7 @@ const getAllMoviesApi = async (): Promise<MoviesStore | {}> => {
 const getMovieApi = async (id: number): Promise<MovieDetail | {}> => {
   try {
     const response = await fetch(
-      `${appConfig.url.BASE_URL}/${MOVIES_API}/movie-details/${id}`,
+      `${BASE_URL}/${MOVIES_API}/movie-details/${id}`,
       {
         method: "GET",
       }

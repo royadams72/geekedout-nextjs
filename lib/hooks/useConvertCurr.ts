@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { appConfig } from "@/shared/constants/appConfig";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const useConvertCurr = (amount: number) => {
   const [convertedAmount, setConvertedAmount] = useState(null);
@@ -16,7 +17,7 @@ export const useConvertCurr = (amount: number) => {
     (async () => {
       try {
         const response = await fetch(
-          `${appConfig.url.BASE_URL}/api/exchange-rate/convert/${amount}`
+          `${BASE_URL}/api/exchange-rate/convert/${amount}`
         );
         const data = await response.json();
         setConvertedAmount(data.conversion_result);

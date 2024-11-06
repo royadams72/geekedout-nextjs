@@ -1,7 +1,8 @@
 import { NextRequest } from "next/server";
 
-import { BASE_URL_EXCHANGE } from "@/shared/constants/urls";
 const privateKey = process.env.EXCHANGE_RATE_APIKEY;
+const BASE_URL_EXCHANGE = process.env.BASE_URL_EXCHANGE;
+
 export async function GET(
   request: NextRequest,
   {
