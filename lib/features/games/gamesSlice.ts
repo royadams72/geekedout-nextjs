@@ -8,8 +8,9 @@ import { isEmpty } from "@/utils/helpers";
 import { Game, GameDetail } from "@/shared/interfaces/game";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { appConfig } from "@/shared/constants/appConfig";
-import { GET_DATA_FOLDER } from "@/shared/constants/urls";
+
+const BASE_URL = process.env.BASE_URL;
+const GET_DATA_FOLDER = process.env.GET_DATA_FOLDER;
 
 export interface GamesSliceState {
   games: Game[];
@@ -65,13 +66,10 @@ export const getGamesStore = async (): Promise<GamesSliceState | []> => {
 
 export const getAllGames = async (): Promise<Game[]> => {
   try {
-    const response = await fetch(
-      `${appConfig.url.BASE_URL}/api/games/${GET_DATA_FOLDER}/`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${BASE_URL}/api/games/${GET_DATA_FOLDER}/`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch games: ${response.status}`);

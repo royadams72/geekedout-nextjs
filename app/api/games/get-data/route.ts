@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-
-import { BASE_URL_GAMES } from "@/shared/constants/urls";
 import { ApiError } from "@/utils/helpers";
+
+const BASE_URL_GAMES = process.env.BASE_URL_GAMES as string;
 
 export async function GET() {
   try {

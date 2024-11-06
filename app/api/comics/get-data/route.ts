@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 
 import { md5 } from "js-md5";
-import { BASE_URL_COMICS } from "@/shared/constants/urls";
+// import { BASE_URL_COMICS } from "@/shared/constants/urls";
 import { ApiError } from "@/utils/helpers";
 
 const ts = Date.now();
 const privateKey = process.env.COMICS_PRIVATE_APIKEY;
 const publicKey = process.env.COMICS_PUBLIC_APIKEY;
+const BASE_URL_COMICS = process.env.BASE_URL_COMICS;
 const offset = "0";
 const limit = "100";
 
