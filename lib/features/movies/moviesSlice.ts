@@ -10,8 +10,8 @@ import { IMAGE_PATHS } from "@/shared/enums/paths.enums";
 
 import { isEmpty } from "@/utils/helpers";
 
-const BASE_URL = process.env.BASE_URL;
-const GET_DATA_FOLDER = process.env.GET_DATA_FOLDER;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 export interface MoviesSliceState {
   movies: MoviesStore;
 }
