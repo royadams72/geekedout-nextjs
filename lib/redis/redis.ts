@@ -8,14 +8,13 @@ import { getMusicDetails } from "../features/music/musicSlice";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { RootState } from "../store/store";
 
-// const redis = new Redis({
-//   host: process.env.REDIS_HOST || "localhost",
-//   port: Number(process.env.REDIS_PORT) || 6379,
-// });
 const redis = new Redis({
-  host: process.env.REDIS_HOST || "localhost",
+  host: process.env.REDIS_HOST,
   port: Number(process.env.REDIS_PORT) || 6379,
+  password: process.env.REDIS_PASSWORD || undefined, // Optional: Only if ElastiCache Redis auth is enabled
+  tls: process.env.NODE_ENV === "production" ? {} : undefined, // Use TLS in production for added security
 });
+
 export const saveSessionData = async (sessionId: string, data: any) => {
   const sessionTTL = 86400;
   // console.log(data);
