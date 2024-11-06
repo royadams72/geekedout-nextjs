@@ -1,7 +1,7 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 
-const GET_SET_DATA_API = process.env.GET_SET_DATA_API;
-const BASE_URL = process.env.BASE_URL;
+const GET_SET_DATA_API = process.env.NEXT_PUBLIC_GET_SET_DATA_API;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 let debounceTimeout: NodeJS.Timeout | null = null;
 const delayTime = 300;
 
