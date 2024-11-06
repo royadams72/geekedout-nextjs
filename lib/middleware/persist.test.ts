@@ -35,19 +35,22 @@ const makeStore = () => {
 describe("persist store", () => {
   let store: any;
   let state: RootState;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     jest.clearAllMocks();
     store = makeStore();
     state = store.getState();
     global.fetch = jest.fn();
-    jest.spyOn(global.console, "error").mockImplementation(() => {});
+    consoleErrorSpy = jest
+      .spyOn(global.console, "error")
+      .mockImplementation(() => {});
 
     jest.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.spyOn(global.console, "error").mockRestore();
+    consoleErrorSpy.mockRestore();
     jest.restoreAllMocks();
   });
 
@@ -90,6 +93,9 @@ describe("persist store", () => {
   });
 
   it("should throw error if state cannot be stored in", async () => {
+    consoleErrorSpy = jest
+      .spyOn(global.console, "error")
+      .mockImplementation(() => {});
     const sessionId = cookieMock.body.sessionId;
     jest.spyOn(global, "setTimeout").mockReturnValueOnce;
 
@@ -101,10 +107,13 @@ describe("persist store", () => {
 
     store.dispatch(setSessionId(sessionId));
     jest.runAllTimers();
-    expect(setTimeout).toHaveBeenCalledTimes(1);
-    // console.log("setTimeout", jest.spyOn(global, "setTimeout").mock);
 
+    expect(setTimeout).toHaveBeenCalledTimes(1);
+    // console.log("console.error", consoleErrorSpy.mock);
     // console.log("console.error", jest.spyOn(console, "error").mock);
+    // console.log("setTimeout", jest.spyOn(global, "setTimeout").mock.calls);
+    // expect(consoleErrorSpy).toHaveBeenCalled();
+
     // expect(jest.spyOn(global.console, "error")).toHaveBeenCalled();
   });
 

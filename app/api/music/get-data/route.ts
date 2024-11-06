@@ -1,8 +1,8 @@
-import { BASE_URL_MUSIC } from "@/shared/constants/urls";
-
 import { NextRequest, NextResponse } from "next/server";
 import { getValidToken } from "@/app/api/music/token/getToken";
 import { ApiError } from "@/utils/helpers";
+
+const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
 export const GET = async (req: NextRequest) => {
   const data = await getAllAlbums(req);

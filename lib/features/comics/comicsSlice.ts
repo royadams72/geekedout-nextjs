@@ -14,10 +14,10 @@ import {
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { appConfig } from "@/shared/constants/appConfig";
-import { GET_DATA_FOLDER } from "@/shared/constants/urls";
 import { RootState } from "@/lib/store/store";
 
+const BASE_URL = process.env.BASE_URL;
+const GET_DATA_FOLDER = process.env.GET_DATA_FOLDER;
 export interface ComicsSliceState {
   comics: ComicStore;
 }
@@ -79,13 +79,10 @@ export const getComicsStore = async (): Promise<ComicsSliceState> => {
 
 const getComicsApi = async (): Promise<ComicStore | {}> => {
   try {
-    const response = await fetch(
-      `${appConfig.url.BASE_URL}/api/comics/${GET_DATA_FOLDER}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${BASE_URL}/api/comics/${GET_DATA_FOLDER}`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     if (!response.ok) {
       console.error("Response was not ok comics:", response.status);
