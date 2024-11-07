@@ -6,25 +6,33 @@ import { getMovieDetails } from "../features/movies/moviesSlice";
 import { getMusicDetails } from "../features/music/musicSlice";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { RootState } from "../store/store";
 
 const redis = new Redis({
   host: process.env.REDIS_HOST,
   port: Number(process.env.REDIS_PORT) || 6379,
-  password: process.env.REDIS_PASSWORD || undefined, // Optional: Only if ElastiCache Redis auth is enabled
-  tls: process.env.NODE_ENV === "production" ? {} : undefined, // Use TLS in production for added security
+  // password: process.env.REDIS_PASSWORD || undefined, // Optional: Only if ElastiCache Redis auth is enabled
+  // tls: process.env.NODE_ENV === "production" ? {} : undefined, // Use TLS in production for added security
 });
 
 export const saveSessionData = async (sessionId: string, data: any) => {
   const sessionTTL = 86400;
   // console.log(data);
+  try {
+    const response = await redis.set(
+      `session:${sessionId}`,
+      JSON.stringify(data),
+      "EX",
+      sessionTTL
+    );
 
-  await redis.set(
-    `session:${sessionId}`,
-    JSON.stringify(data),
-    "EX",
-    sessionTTL
-  );
+    if (response !== "OK") {
+      throw new Error(
+        `Could not save data saveSessionData() ${process.env.REDIS_HOST}`
+      );
+    }
+  } catch (error) {
+    return { message: "Error getting data:", error };
+  }
 };
 
 export const getSessionData = async (sessionId: string) => {
