@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     console.error("Failed to store data:", error);
 
     return NextResponse.json(
-      { error: "Failed to store data" },
+      { message: `Failed to store data ${error}` },
       { status: 500 }
     );
   }
