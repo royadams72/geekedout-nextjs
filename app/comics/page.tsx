@@ -10,7 +10,9 @@ const ComicsPage = async () => {
   const category = await getCategoryData(CategoryType.Comics);
 
   checkIfRedirected(category);
-
+  if (category.error) {
+    return <div>Error: {category.error}</div>;
+  }
   return <ComicsCategory preloadedState={category} />;
 };
 
