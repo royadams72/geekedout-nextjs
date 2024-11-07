@@ -2,21 +2,7 @@ import { createListenerMiddleware } from "@reduxjs/toolkit";
 
 const GET_SET_DATA_API = process.env.NEXT_PUBLIC_GET_SET_DATA_API;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-let debounceTimeout: NodeJS.Timeout | null = null;
 const delayTime = 300;
-
-if (typeof window !== "undefined") {
-  window.addEventListener("beforeunload", () => {
-    stopTimer();
-  });
-}
-
-const stopTimer = () => {
-  if (debounceTimeout) {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = null; // Reset to null after clearing
-  }
-};
 
 const persistStoreClientSide = (state: string) => {
   if (typeof window !== "undefined") {
@@ -44,32 +30,26 @@ persisterMiddleware.startListening({
       uiData: { sessionId },
     } = state;
 
-    stopTimer();
-
-    debounceTimeout = setTimeout(async () => {
-      if (sessionId) {
-        try {
-          const res = await fetch(
-            `${BASE_URL}/${GET_SET_DATA_API}/category-set-data`,
-            {
-              method: "POST",
-              credentials: "include",
-              headers: {
-                "Content-Type": "application/json",
-                Cookie: `sessionId=${sessionId}`,
-              },
-              body: JSON.stringify({ state }),
-            }
-          );
-
-          if (!res.ok) {
-            console.error(`HTTP error! Status: ${res.status}`);
-            throw new Error(`HTTP error! Status: ${res.status}`);
+    if (sessionId) {
+      try {
+        const res = await fetch(
+          `${BASE_URL}/${GET_SET_DATA_API}/category-set-data`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ state }),
           }
-        } catch (error) {
-          console.error(`There was an error persist middleware: ${error}`);
+        );
+
+        if (!res.ok) {
+          console.error(`HTTP error! Status: ${res.status}`);
+          throw new Error(`HTTP error! Status: ${res.status}`);
         }
+      } catch (error) {
+        console.error(`There was an error persist middleware: ${error}`);
       }
-    }, delayTime);
+    }
   },
 });

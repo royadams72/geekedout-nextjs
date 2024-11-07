@@ -45,8 +45,6 @@ describe("persist store", () => {
     consoleErrorSpy = jest
       .spyOn(global.console, "error")
       .mockImplementation(() => {});
-
-    jest.useFakeTimers();
   });
 
   afterEach(() => {
@@ -87,18 +85,13 @@ describe("persist store", () => {
     });
 
     store.dispatch(setSessionId(sessionId));
-    jest.runAllTimers();
     const updatedState = store.getState();
+
     expect(updatedState.uiData.sessionId).toBe(sessionId);
   });
 
   it("should throw error if state cannot be stored in", async () => {
-    consoleErrorSpy = jest
-      .spyOn(global.console, "error")
-      .mockImplementation(() => {});
     const sessionId = cookieMock.body.sessionId;
-    jest.spyOn(global, "setTimeout").mockReturnValueOnce;
-
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: false,
       status: 500,
@@ -106,15 +99,8 @@ describe("persist store", () => {
     });
 
     store.dispatch(setSessionId(sessionId));
-    jest.runAllTimers();
-
-    expect(setTimeout).toHaveBeenCalledTimes(1);
     // console.log("console.error", consoleErrorSpy.mock);
-    // console.log("console.error", jest.spyOn(console, "error").mock);
-    // console.log("setTimeout", jest.spyOn(global, "setTimeout").mock.calls);
     // expect(consoleErrorSpy).toHaveBeenCalled();
-
-    // expect(jest.spyOn(global.console, "error")).toHaveBeenCalled();
   });
 
   it("should log an error if localStorage.setItem throws a QuotaExceededError", () => {
@@ -122,10 +108,6 @@ describe("persist store", () => {
     jest.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw quotaExceededError;
     });
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    const updatedState = store.getState();
 
     store.dispatch(setFirstPage(false));
 
