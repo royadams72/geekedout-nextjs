@@ -53,7 +53,6 @@ const Category = <T extends { id: number | string | undefined }>({
 
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
-
   useEffect(() => {
     if (preloadedState && preloadedState[title.toLowerCase()]) {
       setLoading(false);
@@ -66,7 +65,14 @@ const Category = <T extends { id: number | string | undefined }>({
     if (isNotEmpty(preloadedState[title.toLowerCase()]) && isFirstPage) {
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
-  }, [preloadedStateAction, dispatch, title, isFirstPage, loading]);
+  }, [
+    preloadedState,
+    preloadedStateAction,
+    dispatch,
+    title,
+    isFirstPage,
+    loading,
+  ]);
 
   useEffect(() => {
     if (isNotEmpty(items)) {

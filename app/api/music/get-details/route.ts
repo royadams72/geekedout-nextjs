@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getValidToken, refreshToken } from "@/app/api/music/token/getToken";
+import {
+  getSpotifyToken,
+  refreshSpotifyToken,
+} from "@/app/api/music/token/getToken";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
@@ -12,12 +15,12 @@ export const POST = async (req: NextRequest) => {
 };
 
 const getAlbumDetails = async (req: NextRequest, id: string) => {
-  let token = await getValidToken(req);
+  let token = await getSpotifyToken(req);
 
   let response = await fetchAlbum(id, token);
 
   if (response.status === 401) {
-    const refreshResponse = await refreshToken();
+    const refreshResponse = await refreshSpotifyToken();
     const refreshedTokenCookie = refreshResponse.cookies.get("spotify_token");
 
     if (refreshedTokenCookie) {

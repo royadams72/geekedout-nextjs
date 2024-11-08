@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getValidToken } from "@/app/api/music/token/getToken";
+import { getSpotifyToken } from "@/app/api/music/token/getToken";
 import { ApiError } from "@/utils/helpers";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
 };
 
 const getAllAlbums = async (req: NextRequest) => {
-  const token = await getValidToken(req);
+  const token = await getSpotifyToken(req);
   try {
     const response = await fetch(
       `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,

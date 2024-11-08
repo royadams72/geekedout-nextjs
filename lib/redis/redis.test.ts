@@ -6,7 +6,7 @@ import { gamesSliceMock } from "@/__mocks__/games.mocks";
 import { movieSliceMock } from "@/__mocks__/movies/movies.mocks";
 import { musicSliceMock } from "@/__mocks__/music/music.mocks";
 
-import { refreshToken } from "@/app/api/music/token/getToken";
+import { refreshSpotifyToken } from "@/app/api/music/token/getToken";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 
@@ -23,7 +23,7 @@ import { setComicDetails } from "@/lib/features/comics/comicsSlice";
 jest.mock("ioredis", () => require("ioredis-mock"));
 
 jest.mock("@/app/api/music/token/getToken", () => ({
-  refreshToken: jest.fn(),
+  refreshSpotifyToken: jest.fn(),
 }));
 
 jest.mock("@/lib/features/comics/comicsSlice", () => ({

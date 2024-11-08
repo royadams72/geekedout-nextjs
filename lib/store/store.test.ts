@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-// import { refreshToken } from "@/app/api/music/token/getToken";
+// import { refreshSpotifyToken } from "@/app/api/music/token/getToken";
 import { comicsSlice } from "../features/comics/comicsSlice";
 import { uiDataSlice } from "../features/uiData/uiDataSlice";
 import { loadState, RootState, makeStore as realMakeStore } from "./store";
 
 jest.mock("@/app/api/music/token/getToken", () => ({
-  refreshToken: jest.fn(),
+  refreshSpotifyToken: jest.fn(),
 }));
 
 let rootReducers = combineReducers({

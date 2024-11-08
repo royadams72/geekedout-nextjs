@@ -11,7 +11,7 @@ import {
 } from "@/shared/interfaces/music";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { refreshToken } from "@/app/api/music/token/getToken";
+import { refreshSpotifyToken } from "@/app/api/music/token/getToken";
 
 import { isEmpty } from "@/utils/helpers";
 
@@ -114,7 +114,7 @@ export const fetchAndRefreshTokenIfNeeded = async <T>(
   try {
     let response = await fetch(url, options);
     if (response.status === 401) {
-      await refreshToken();
+      await refreshSpotifyToken();
       response = await fetch(url, options);
     }
     if (!response.ok && response.status !== 401) {

@@ -18,10 +18,10 @@ import {
 
 import { MusicStore } from "@/shared/interfaces/music";
 
-import { refreshToken } from "@/app/api/music/token/getToken";
+import { refreshSpotifyToken } from "@/app/api/music/token/getToken";
 
 jest.mock("@/app/api/music/token/getToken", () => ({
-  refreshToken: jest.fn(),
+  refreshSpotifyToken: jest.fn(),
 }));
 jest.mock("@/lib/features/music/musicSlice", () => ({
   ...jest.requireActual("@/lib/features/music/musicSlice"),
@@ -102,12 +102,12 @@ describe("musicSlice", () => {
         status: 500,
         statusText: "Internal Server Error",
       });
-    (refreshToken as jest.Mock).mockResolvedValueOnce(undefined);
+    (refreshSpotifyToken as jest.Mock).mockResolvedValueOnce(undefined);
 
     const response = await fetchAndRefreshTokenIfNeeded("http://fetch/url", {});
 
     expect(response).toEqual({});
-    expect(refreshToken).toHaveBeenCalledTimes(1);
+    expect(refreshSpotifyToken).toHaveBeenCalledTimes(1);
     expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 

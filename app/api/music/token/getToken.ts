@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const clientID = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
-export const getValidToken = async (req: NextRequest): Promise<any> => {
+export const getSpotifyToken = async (req: NextRequest): Promise<any> => {
   const tokenCookie = req.cookies.get("spotify_token");
   const now = Date.now();
   // Check if the token is cached in the cookie and is still valid
@@ -15,7 +15,7 @@ export const getValidToken = async (req: NextRequest): Promise<any> => {
     }
   }
 
-  const response = await refreshToken();
+  const response = await refreshSpotifyToken();
   const refreshedTokenCookie = response.cookies.get("spotify_token");
 
   if (refreshedTokenCookie) {
@@ -24,13 +24,13 @@ export const getValidToken = async (req: NextRequest): Promise<any> => {
       return token;
     } catch (error) {
       throw new Error(
-        `Failed to retrieve a valid token after refresh refreshToken(): ${error}`
+        `Failed to retrieve a valid token after refresh refreshSpotifyToken(): ${error}`
       );
     }
   }
 };
 
-export const refreshToken = async (): Promise<any> => {
+export const refreshSpotifyToken = async (): Promise<any> => {
   const now = Date.now();
   try {
     const tokenResponse = await fetch(
@@ -52,7 +52,7 @@ export const refreshToken = async (): Promise<any> => {
     if (!tokenResponse.ok) {
       const error = await tokenResponse.json();
       throw new Error(
-        `Failed to fetch token refreshToken(): ${error.error_description}`
+        `Failed to fetch token refreshSpotifyToken(): ${error.error_description}`
       );
     }
 
@@ -71,6 +71,6 @@ export const refreshToken = async (): Promise<any> => {
 
     return response;
   } catch (error) {
-    throw new Error(`Failed to refresh token refreshToken(): ${error}`);
+    throw new Error(`Failed to refresh token refreshSpotifyToken(): ${error}`);
   }
 };
