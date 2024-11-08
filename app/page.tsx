@@ -67,6 +67,7 @@ import {
 import { cookies } from "next/headers";
 const pageNum = "1";
 const api_key = process.env.MOVIES_APIKEY;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
@@ -88,7 +89,7 @@ const dataFetchers = [
     url: `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
   },
 ];
-
+import { headers } from "next/headers";
 const Home = async ({
   searchParams: { redirected },
 }: {
@@ -100,49 +101,46 @@ const Home = async ({
   console.log("spotifyTokenCookie:", spotifyTokenCookie);
 
   let headers = {};
-  let cookieResponse: any;
-  const getCats = async () => {
-    for (const { key, url } of dataFetchers) {
-      try {
-        if (key === CategoryType.Music) {
-          if (!spotifyTokenCookie) {
-            cookieResponse = await refreshSpotifyToken();
-            console.log("!spotifyTokenCookie cookieResponse:", cookieResponse);
-            spotifyTokenCookie =
-              cookieResponse.cookies.get("spotify_token")?.value;
-            if (spotifyTokenCookie) {
-              const { token, expiry } = JSON.parse(spotifyTokenCookie);
-              headers = {
-                Authorization: `Bearer ${token}`,
-              };
-            } else {
-              console.error("Failed to retrieve a valid token after refresh.");
-            }
+  for (const { key, url } of dataFetchers) {
+    try {
+      if (key === CategoryType.Music) {
+        if (!spotifyTokenCookie) {
+          const response = await fetch(`${BASE_URL}/api/music/token`, {
+            method: "POST",
+          });
+          if (response.ok) {
+            spotifyTokenCookie = (await response.json()).token;
+          } else {
+            console.error("Failed to fetch Spotify token");
           }
         }
-        const response = await fetch(url, {
-          method: "GET",
-          credentials: "include",
-          headers,
-        });
+        console.log("!spotifyTokenCookie cookieResponse:", spotifyTokenCookie);
 
-        if (!response.ok) {
-          // console.log(await response.json()); //works
-          throw new Error(`Failed to fetch ${key}: ${response.status}`);
-        }
-        const data = await response.json();
-
-        preloadedState[key] = { [key]: { [key]: data } };
-        // return response;
-        // console.log(preloadedState[key]);
-      } catch (error) {
-        console.error(`Error fetching data for ${key}:`, error);
-        preloadedState[key] = null;
+        headers = {
+          Authorization: `Bearer ${spotifyTokenCookie}`,
+        };
       }
+      const response = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers,
+      });
+
+      if (!response.ok) {
+        // console.log(await response.json()); //works
+        throw new Error(`Failed to fetch ${key}: ${response.status}`);
+      }
+      const data = await response.json();
+
+      preloadedState[key] = { [key]: { [key]: data } };
+      // return response;
+      // console.log(preloadedState[key]);
+    } catch (error) {
+      console.error(`Error fetching data for ${key}:`, error);
+      preloadedState[key] = null;
     }
-    return cookieResponse;
-  };
-  await getCats();
+  }
+
   return (
     <>
       <MoviesCategory
