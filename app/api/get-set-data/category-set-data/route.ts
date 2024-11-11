@@ -43,7 +43,10 @@ export async function POST(request: NextRequest) {
     await saveSessionData(sessionId, categoriesData);
 
     // Merge the session response with the CORS headers
-    sessionResponse.headers.set("Access-Control-Allow-Origin", "*"); // Replace '*' with your frontend's URL if not using '*'
+    sessionResponse.headers.set(
+      "Access-Control-Allow-Origin",
+      "https://geekedout-nextjs.vercel.app/"
+    );
     sessionResponse.headers.set(
       "Access-Control-Allow-Methods",
       "POST, OPTIONS"
