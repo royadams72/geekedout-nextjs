@@ -67,9 +67,7 @@ describe("musicSlice", () => {
 
   it("should fetch music store data successfully", async () => {
     const mockResponse = {
-      data: {
-        albums: musicSliceMock.music,
-      },
+      albums: musicSliceMock.music,
     };
 
     (global.fetch as jest.Mock).mockResolvedValueOnce({
@@ -79,7 +77,7 @@ describe("musicSlice", () => {
 
     const result = await getMusicStore();
 
-    expect(result.music).toEqual(mockResponse.data.albums);
+    expect(result.music).toEqual(mockResponse.albums);
   });
 
   it("should return empty object if no data is returned from getAllMusicApi", async () => {

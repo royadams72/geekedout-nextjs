@@ -21,7 +21,7 @@ export interface MusicSliceState {
   music: MusicStore;
 }
 export interface ApiResponse {
-  data: { albums: MusicStore };
+  albums: MusicStore;
 }
 
 export const initialState: MusicSliceState = {
@@ -93,7 +93,7 @@ export const getAllMusicApi = async () => {
     }
   );
 
-  return response.data;
+  return response;
 };
 
 export const getAlbumDetails = async (id: string) => {
