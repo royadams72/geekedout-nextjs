@@ -55,7 +55,7 @@ $games-colour: #d44d51;
   &__items_container {
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(2, 50%);
+    grid-template-columns: repeat(2, 49%);
     gap: 10px;
 
     @include is-medium {
@@ -68,6 +68,10 @@ $games-colour: #d44d51;
     padding: 0;
     height: 100%;
     max-width: 300px;
+  }
+
+  &__item_firstPage {
+    max-width: 500px;
   }
 
   &__image_container {
