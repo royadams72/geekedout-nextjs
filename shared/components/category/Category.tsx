@@ -10,8 +10,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
 import {
   selectIsFirstPage,
-  selectSearchData,
-  selectSelectedItem,
   selectSessionId,
   setSessionId,
 } from "@/lib/features/uiData/uiDataSlice";
@@ -63,10 +61,26 @@ const Category = <T extends { id: number | string | undefined }>({
   useEffect(() => {
     if (loading) return;
 
+    if (!storeSessionId) {
+      const sessionId = generateSessionId();
+      dispatch(setSessionId(sessionId));
+    }
+  }, [storeSessionId, dispatch, loading]);
+
+  useEffect(() => {
+    if (loading) return;
+
     if (isNotEmpty(preloadedState[title.toLowerCase()]) && isFirstPage) {
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
-  }, [preloadedStateAction, dispatch, title, isFirstPage, loading]);
+  }, [
+    preloadedState,
+    preloadedStateAction,
+    dispatch,
+    title,
+    isFirstPage,
+    loading,
+  ]);
 
   useEffect(() => {
     if (isNotEmpty(items)) {
@@ -79,15 +93,6 @@ const Category = <T extends { id: number | string | undefined }>({
       router.refresh();
     }
   }, [isRedirected, router]);
-
-  useEffect(() => {
-    if (loading) return;
-
-    if (!storeSessionId) {
-      const sessionId = generateSessionId();
-      dispatch(setSessionId(sessionId));
-    }
-  }, [storeSessionId, dispatch, loading]);
 
   const content = (
     <>
