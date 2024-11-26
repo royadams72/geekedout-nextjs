@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Lamda node_modules
+/lib/lambda-redis-function/function/node_modules
