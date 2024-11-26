@@ -81,7 +81,6 @@ export const getItemFromCache = async (
           categoriesData.comics,
           id as string
         );
-        // console.log("selectedData in redis", selectedData);
         break;
       case CategoryType.Games:
         selectedData = await setGameDetails(categoriesData.games, id as string);
