@@ -68,7 +68,6 @@ export const getItemFromCache = async (
   try {
     const data = await getSessionData(sessionId);
 
-    // console.log("data:", categoriesData.comics.comics.results[0]);
     let selectedData: any;
     const categoriesData = data.state;
 
