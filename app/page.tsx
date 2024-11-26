@@ -8,6 +8,7 @@ import MoviesCategory from "@/app/movies/components/MoviesCategory";
 import ComicsCategory from "@/app/comics/components/ComicsCategory";
 import MusicCategory from "@/app/music/components/MusicCategory";
 import GamesCategory from "./games/components/GamesCategory";
+import { API_GATEWAY_URL } from "@/lib/redis/redis";
 
 const dataFetchers = [
   { key: CategoryType.Games, fetchFunction: getGamesStore },
@@ -15,6 +16,7 @@ const dataFetchers = [
   { key: CategoryType.Movies, fetchFunction: getMoviesStore },
   { key: CategoryType.Music, fetchFunction: getMusicStore },
 ];
+
 const Home = async ({
   searchParams: { redirected },
 }: {
@@ -34,6 +36,7 @@ const Home = async ({
 
   return (
     <>
+      {API_GATEWAY_URL}
       <MoviesCategory
         preloadedState={preloadedState.movies}
         isRedirected={redirected}
