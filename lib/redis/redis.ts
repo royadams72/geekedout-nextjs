@@ -22,7 +22,9 @@ type LambdaResponse = {
   data?: any;
 };
 
-const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL as string;
+// const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL as string;
+const API_GATEWAY_URL =
+  "https://uk0huty5m6.execute-api.eu-west-2.amazonaws.com/Redis1";
 
 const invokeLambdaFunction = async (
   action: string,
