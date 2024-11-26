@@ -10,7 +10,7 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 // const redis = new Redis(redis_url);
 // Updated redis host in env var2
 const redis = new Redis({
-  host: process.env.REDIS_HOST || "localhost",
+  host: process.env.REDIS_HOST,
   port: Number(process.env.REDIS_PORT) || 6379,
   password: process.env.REDIS_PASSWORD || undefined,
   tls: process.env.NODE_ENV === "production" ? {} : undefined,
