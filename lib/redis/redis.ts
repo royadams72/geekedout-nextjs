@@ -18,7 +18,6 @@ const redis = new Redis({
 
 export const saveSessionData = async (sessionId: string, data: any) => {
   const sessionTTL = 86400;
-  // console.log(data);
   try {
     const response = await redis.set(
       `session:${sessionId}`,
