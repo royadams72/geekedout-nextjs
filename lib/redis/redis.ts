@@ -12,8 +12,8 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
   port: Number(process.env.REDIS_PORT) || 6379,
-  password: process.env.REDIS_PASSWORD || undefined, // Optional: Only if ElastiCache Redis auth is enabled
-  tls: process.env.NODE_ENV === "production" ? {} : undefined, // Use TLS in production for added security
+  password: process.env.REDIS_PASSWORD || undefined,
+  tls: process.env.NODE_ENV === "production" ? {} : undefined,
 });
 
 export const saveSessionData = async (sessionId: string, data: any) => {
