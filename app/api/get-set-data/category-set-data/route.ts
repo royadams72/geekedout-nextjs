@@ -10,7 +10,10 @@ import { ensureBrowserSessionServerSide } from "../functions";
 export async function POST(request: NextRequest) {
   // Set CORS headers
   const response = NextResponse.next();
-  response.headers.set("Access-Control-Allow-Origin", "*"); // Replace '*' with your frontend's URL if not using '*'
+  response.headers.set(
+    "Access-Control-Allow-Origin",
+    "https://deploy-to-aws.dwcu85yjdoh0o.amplifyapp.com/"
+  ); // Replace '*' with your frontend's URL if not using '*'
   response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
   response.headers.set(
     "Access-Control-Allow-Headers",
@@ -45,7 +48,7 @@ export async function POST(request: NextRequest) {
     // Merge the session response with the CORS headers
     sessionResponse.headers.set(
       "Access-Control-Allow-Origin",
-      "https://geekedout-nextjs.vercel.app"
+      "https://deploy-to-aws.dwcu85yjdoh0o.amplifyapp.com/"
     );
     sessionResponse.headers.set(
       "Access-Control-Allow-Methods",
