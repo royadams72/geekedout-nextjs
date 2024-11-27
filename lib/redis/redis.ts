@@ -8,7 +8,7 @@ import { getMusicDetails } from "../features/music/musicSlice";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 // const redis_url = process.env.REDIS_URL as string;
 // const redis = new Redis(redis_url);
-// Updated redis host in env var2
+// Updated SGs on AWS
 const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
   port: Number(process.env.REDIS_PORT) || 6379,
