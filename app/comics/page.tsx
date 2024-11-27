@@ -7,7 +7,8 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 import ComicsCategory from "@/app/comics/components/ComicsCategory";
 
 const ComicsPage = async () => {
-  const category = await getCategoryData(CategoryType.Comics);
+  const response = await getCategoryData(CategoryType.Comics);
+  const category = await response.json();
 
   checkIfRedirected(category);
   if (category.error) {
