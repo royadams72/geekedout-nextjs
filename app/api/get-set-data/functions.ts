@@ -44,16 +44,16 @@ export const getCategoryData = async (
   }
 };
 
-export const getSessionIdFromCookie = () => {
+export const getSessionIdFromCookie = async () => {
   const cookieHeader = cookies();
-  const sessionId = cookieHeader.get("sessionId")?.value;
+  const sessionId = (await cookieHeader).get("sessionId")?.value;
   return sessionId;
 };
 
 export const ensureBrowserSessionServerSide = async (
   existingSessionId?: string
 ) => {
-  const sessionId = getSessionIdFromCookie();
+  const sessionId = await getSessionIdFromCookie();
   let response;
 
   if (!existingSessionId) {
@@ -76,6 +76,5 @@ export const ensureBrowserSessionServerSide = async (
       });
     }
   }
-
   return { sessionId, response };
 };

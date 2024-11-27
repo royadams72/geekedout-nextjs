@@ -6,12 +6,13 @@ const BASE_URL_EXCHANGE = process.env.BASE_URL_EXCHANGE;
 export async function GET(
   request: NextRequest,
   {
-    params: { amount },
+    params,
   }: {
-    params: { amount: string };
+    params: Promise<{ amount: string }>;
   }
 ) {
   try {
+    const { amount } = await params;
     const amountToConvert = Number(amount.replace("$", ""));
     const res = await fetch(
       `${BASE_URL_EXCHANGE}/${privateKey}/pair/USD/GBP/${amountToConvert}`

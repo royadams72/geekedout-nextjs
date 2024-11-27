@@ -8,11 +8,12 @@ const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
 export async function GET(
   request: NextRequest,
   {
-    params: { movieId },
+    params,
   }: {
-    params: { movieId: string };
+    params: Promise<{ movieId: string }>;
   }
 ) {
+  const { movieId } = await params;
   try {
     const response = await fetch(
       `${BASE_URL_MOVIES}/${movieId}?api_key=${api_key}&language=en-GB&region=GB`,
