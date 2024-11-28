@@ -20,9 +20,7 @@ jobs:
       BASE_URL_MOVIES: ${{ secrets.BASE_URL_MOVIES }}
       BASE_URL_MUSIC: ${{ secrets.BASE_URL_MUSIC }}
       BASE_URL_EXCHANGE: ${{ secrets.BASE_URL_EXCHANGE }}
-      REDIS_HOST: ${{ secrets.REDIS_HOST }}
-      REDIS_PORT: ${{ secrets.REDIS_PORT }}
-      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
       COMICS_PUBLIC_APIKEY: ${{ secrets.COMICS_PUBLIC_APIKEY }}
       COMICS_PRIVATE_APIKEY: ${{ secrets.COMICS_PRIVATE_APIKEY }}
       X_MASHAPE_KEY: ${{ secrets.X_MASHAPE_KEY }}
