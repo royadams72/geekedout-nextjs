@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import { Provider } from "react-redux";
 import type { ReactNode } from "react";
-import { AppStore, makeStore } from "@/lib/store/store"; // Adjust import as needed
+import { AppStore, makeStore } from "@/lib/store/store";
 
 interface Props {
   readonly children: ReactNode;

@@ -7,10 +7,11 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 import MusicDetails from "../../components/MusicDetails";
 
 const MusicDetailsPage = async ({
-  params: { id },
+  params,
 }: {
-  params: { id: number };
+  params: Promise<{ id: number }>;
 }) => {
+  const { id } = await params;
   const item = await getCategoryData(CategoryType.Music, id);
 
   checkIfRedirected(item);

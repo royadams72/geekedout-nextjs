@@ -16,10 +16,11 @@ const dataFetchers = [
   { key: CategoryType.Music, fetchFunction: getMusicStore },
 ];
 const Home = async ({
-  searchParams: { redirected },
+  searchParams,
 }: {
-  searchParams: { redirected: string };
+  searchParams: Promise<{ redirected: string }>;
 }) => {
+  const { redirected } = await searchParams;
   const preloadedState: Record<string, any> = {};
 
   for (const { key, fetchFunction } of dataFetchers) {

@@ -11,6 +11,26 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+      NEXT_PUBLIC_GET_SET_DATA_API: ${{ secrets.NEXT_PUBLIC_GET_SET_DATA_API }}
+      NEXT_PUBLIC_GET_DATA_FOLDER: ${{ secrets.NEXT_PUBLIC_GET_DATA_FOLDER }}
+      BASE_URL_COMICS: ${{ secrets.BASE_URL_COMICS }}
+      BASE_URL_GAMES: ${{ secrets.BASE_URL_GAMES }}
+      BASE_URL_MOVIES: ${{ secrets.BASE_URL_MOVIES }}
+      BASE_URL_MUSIC: ${{ secrets.BASE_URL_MUSIC }}
+      BASE_URL_EXCHANGE: ${{ secrets.BASE_URL_EXCHANGE }}
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PORT: ${{ secrets.REDIS_PORT }}
+      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+      COMICS_PUBLIC_APIKEY: ${{ secrets.COMICS_PUBLIC_APIKEY }}
+      COMICS_PRIVATE_APIKEY: ${{ secrets.COMICS_PRIVATE_APIKEY }}
+      X_MASHAPE_KEY: ${{ secrets.X_MASHAPE_KEY }}
+      MOVIES_APIKEY: ${{ secrets.MOVIES_APIKEY }}
+      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+      IGDB_APIKEY: ${{ secrets.IGDB_APIKEY }}
+      EXCHANGE_RATE_APIKEY: ${{ secrets.EXCHANGE_RATE_APIKEY }}
 
     steps:
       - name: Check out repository
@@ -19,10 +39,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "19"
+          node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Run tests
         run: npm test

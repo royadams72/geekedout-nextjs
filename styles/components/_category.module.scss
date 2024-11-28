@@ -133,9 +133,10 @@ $games-colour: #d44d51;
   }
 
   &__title {
-    @include truncate(1, 1.5, 1.2);
     color: #ffffff;
     margin: 0 5px;
+
+    @include truncate(1, 1.5, 1.2);
   }
 }
 

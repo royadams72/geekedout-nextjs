@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const categoryName = searchParams.get("categoryName") || undefined;
   const id = searchParams.get("id");
   const getAll = searchParams.get("getAll");
-  const sessionId = getSessionIdFromCookie() as string;
+  const sessionId = (await getSessionIdFromCookie()) as string;
 
   try {
     let categoryData;

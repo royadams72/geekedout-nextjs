@@ -42,16 +42,17 @@ $type-li-colour: $type-font-colour !default;
 
 h1,
 %h1 {
+  font-size: $type-h1-font-size-small;
+  line-height: $type-h1-line-height-small;
+  margin-top: 0;
+  padding-left: 10px;
+
   @include color-font-margin-bottom(
     $type-h1-colour,
     $type-h1-font-family,
     $type-h1-weight,
     $type-h1-margin-bottom
   );
-  font-size: $type-h1-font-size-small;
-  line-height: $type-h1-line-height-small;
-  margin-top: 0;
-  padding-left: 10px;
 
   @include is-medium {
     font-size: $type-h1-font-size-medium;
@@ -62,14 +63,15 @@ h1,
 
 h2,
 %h2 {
+  font-size: $type-h2-font-size-small;
+  line-height: $type-h2-line-height-small;
+
   @include color-font-margin-bottom(
     $type-h2-colour,
     $type-h2-font-family,
     $type-h2-weight,
     $type-h2-margin-bottom
   );
-  font-size: $type-h2-font-size-small;
-  line-height: $type-h2-line-height-small;
 
   @include is-medium {
     font-size: $type-h2-font-size-medium;
@@ -79,15 +81,16 @@ h2,
 
 p,
 %p {
+  font-size: $type-p-font-size-small;
+  line-height: $type-p-line-height-small;
+  margin-top: $type-p-margin-top;
+
   @include color-font-margin-bottom(
     $type-p-colour,
     $type-body-font-family,
     normal,
     $type-p-margin-bottom-small
   );
-  font-size: $type-p-font-size-small;
-  line-height: $type-p-line-height-small;
-  margin-top: $type-p-margin-top;
 
   @include is-medium {
     font-size: $type-p-font-size-medium;
@@ -97,15 +100,16 @@ p,
 
 li,
 %li {
+  font-size: $type-li-font-size-small;
+  line-height: $type-li-line-height-small;
+  text-transform: capitalize;
+
   @include color-font-margin-bottom(
     $type-li-colour,
     $type-li-font-family,
     normal,
     $type-li-margin-bottom-small
   );
-  font-size: $type-li-font-size-small;
-  line-height: $type-li-line-height-small;
-  text-transform: capitalize;
 
   @include is-medium {
     font-size: $type-li-font-size-medium;

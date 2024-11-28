@@ -7,10 +7,11 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 import MovieDetails from "@/app/movies/components/MovieDetails";
 
 const MappedMovieDetailsPage = async ({
-  params: { id },
+  params,
 }: {
-  params: { id: number };
+  params: Promise<{ id: number }>;
 }) => {
+  const { id } = await params;
   const item = await getCategoryData(CategoryType.Movies, id);
 
   checkIfRedirected(item);
