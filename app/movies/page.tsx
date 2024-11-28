@@ -6,8 +6,7 @@ import { getCategoryData } from "@/app/api/get-set-data/functions";
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
 
 const MoviesPage = async () => {
-  const response = await getCategoryData(CategoryType.Movies);
-  const category = await response.json();
+  const category = await getCategoryData(CategoryType.Movies);
 
   checkIfRedirected(category);
 

@@ -9,7 +9,7 @@ import { ApiError } from "@/utils/helpers";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const categoryName = searchParams.get("categoryName") || undefined;
+  const categoryName = searchParams.get("categoryName") as string;
   const id = searchParams.get("id");
   const getAll = searchParams.get("getAll");
   const sessionId = (await getSessionIdFromCookie()) as string;
@@ -19,16 +19,9 @@ export async function GET(request: NextRequest) {
     if (getAll) {
       categoryData = await getSessionData(sessionId);
     } else if (id && categoryName) {
-      categoryData = await getItemFromCache(
-        sessionId,
-        categoryName as string,
-        id
-      );
+      categoryData = await getItemFromCache(sessionId, categoryName, id);
     } else {
-      categoryData = await getCategoryByNameFromCache(
-        sessionId,
-        categoryName as string
-      );
+      categoryData = await getCategoryByNameFromCache(sessionId, categoryName);
     }
 
     if (!categoryData) {
