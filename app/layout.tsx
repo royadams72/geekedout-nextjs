@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import Head from "next/head";
-import { cookies } from "next/headers";
 
 import "./globals.scss";
 import { StoreProvider } from "./StoreProvider";
-import { getSessionData } from "@/lib/redis/redis";
 
 import Header from "@/shared/components/header/Header";
 import NavigationActions from "@/shared/components/navigation-actions/NavigationActions";

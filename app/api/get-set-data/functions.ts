@@ -9,7 +9,7 @@ export const getCategoryData = async (
   id?: string | number
 ) => {
   const idString = id ? `&id=${id}` : "";
-  const sessionId = getSessionIdFromCookie();
+  const sessionId = await getSessionIdFromCookie();
   // Edgecase: If somehow cookie is lost navigate to first page where the app automatically will put the sessionId back
   // TODO: Possibly add sessionId to session storage as well, on app init, as a fallback and only redirect if necessary
   if (!sessionId) {
@@ -44,10 +44,15 @@ export const getCategoryData = async (
   }
 };
 
-export const getSessionIdFromCookie = async () => {
-  const cookieHeader = cookies();
-  const sessionId = (await cookieHeader).get("sessionId")?.value;
-  return sessionId;
+export const getSessionIdFromCookie = async (): Promise<string | null> => {
+  const cookieHeader = await cookies();
+  const sessionId = cookieHeader.get("sessionId")?.value;
+
+  if (sessionId) {
+    return sessionId;
+  } else {
+    return null;
+  }
 };
 
 export const ensureBrowserSessionServerSide = async (
