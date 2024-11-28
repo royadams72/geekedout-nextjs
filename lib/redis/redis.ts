@@ -6,12 +6,16 @@ import { getMovieDetails } from "../features/movies/moviesSlice";
 import { getMusicDetails } from "../features/music/musicSlice";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
-const redis_url = process.env.REDIS_URL as string;
-const redis = new Redis(redis_url);
+
+const redis = new Redis({
+  host: process.env.REDIS_HOST || "localhost",
+  port: Number(process.env.REDIS_PORT) || 6379,
+  password: process.env.REDIS_PASSWORD || undefined,
+  tls: process.env.NODE_ENV === "production" ? {} : undefined,
+});
 
 export const saveSessionData = async (sessionId: string, data: any) => {
   const sessionTTL = 86400;
-  // console.log(data);
   try {
     const response = await redis.set(
       `session:${sessionId}`,
