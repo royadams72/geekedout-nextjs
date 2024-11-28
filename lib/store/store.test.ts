@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-// import { refreshToken } from "@/app/api/music/token/getToken";
 import { comicsSlice } from "../features/comics/comicsSlice";
 import { uiDataSlice } from "../features/uiData/uiDataSlice";
 import { loadState, RootState, makeStore as realMakeStore } from "./store";
@@ -29,7 +28,6 @@ fdescribe("store", () => {
   let state: RootState;
 
   beforeEach(() => {
-    // jest.clearAllMocks();
     store = makeStore();
     state = store.getState();
   });
@@ -41,7 +39,6 @@ fdescribe("store", () => {
   it("should call getItem", () => {
     const ls = jest.spyOn(Storage.prototype, "getItem");
     const preloadedState = loadState();
-    console.log(preloadedState);
   });
 
   it("should call getItem", () => {
