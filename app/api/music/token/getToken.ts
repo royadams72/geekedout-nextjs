@@ -16,18 +16,19 @@ export const getValidToken = async (req: NextRequest): Promise<any> => {
   }
 
   const response = await refreshToken();
-  const refreshedTokenCookie = response.cookies.get("spotify_token");
-
-  if (refreshedTokenCookie) {
-    try {
-      const { token } = JSON.parse(refreshedTokenCookie.value);
-      return token;
-    } catch (error) {
-      throw new Error(
-        `Failed to retrieve a valid token after refresh refreshToken(): ${error}`
-      );
-    }
-  }
+  // const refreshedTokenCookie = response.cookies.get("spotify_token");
+  console.log("response in getvalid", response);
+  return response;
+  // if (refreshedTokenCookie) {
+  //   try {
+  //     const { token } = JSON.parse(refreshedTokenCookie.value);
+  //     return { token, refreshedTokenCookie };
+  //   } catch (error) {
+  //     throw new Error(
+  //       `Failed to retrieve a valid token after refresh refreshToken(): ${error}`
+  //     );
+  //   }
+  // }
 };
 
 export const refreshToken = async (): Promise<any> => {
@@ -55,21 +56,22 @@ export const refreshToken = async (): Promise<any> => {
         `Failed to fetch token refreshToken(): ${error.error_description}`
       );
     }
-
     const data = await tokenResponse.json();
+    console.log("tokenResponse::", data);
+    // const { token } = JSON.parse(data.access_token);
     const token = data.access_token;
     const expiry = now + data.expires_in * 1000;
 
-    const response = NextResponse.next();
+    // const response = NextResponse.next();
 
-    response.cookies.set("spotify_token", JSON.stringify({ token, expiry }), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: data.expires_in,
-      path: "/",
-    });
+    // response.cookies.set("spotify_token", token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   maxAge: data.expires_in,
+    //   path: "/",
+    // });
 
-    return response;
+    return data;
   } catch (error) {
     throw new Error(`Failed to refresh token refreshToken(): ${error}`);
   }

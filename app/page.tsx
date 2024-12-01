@@ -8,7 +8,7 @@ import MoviesCategory from "@/app/movies/components/MoviesCategory";
 import ComicsCategory from "@/app/comics/components/ComicsCategory";
 import MusicCategory from "@/app/music/components/MusicCategory";
 import GamesCategory from "./games/components/GamesCategory";
-
+let cookie: any;
 const dataFetchers = [
   { key: CategoryType.Games, fetchFunction: getGamesStore },
   { key: CategoryType.Comics, fetchFunction: getComicsStore },
@@ -21,12 +21,20 @@ const Home = async ({
   searchParams: Promise<{ redirected: string }>;
 }) => {
   const { redirected } = await searchParams;
-  const preloadedState: Record<string, any> = {};
-
+  // const preloadedState: Record<string, any> = {};
+  const preloadedState: any = {};
   for (const { key, fetchFunction } of dataFetchers) {
     try {
       const data = await fetchFunction();
-      preloadedState[key] = data;
+      if (key === CategoryType.Music) {
+        // console.log("data", data);
+
+        preloadedState[key] = { music: data.data.albums };
+        cookie = data.refreshedTokenCookie;
+        console.log("data", data.refreshedTokenCookie);
+      } else {
+        preloadedState[key] = data;
+      }
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
       preloadedState[key] = null;
@@ -35,6 +43,11 @@ const Home = async ({
 
   return (
     <>
+      <MusicCategory
+        preloadedState={preloadedState.music}
+        isRedirected={redirected}
+        cookie={cookie}
+      />
       <MoviesCategory
         preloadedState={preloadedState.movies}
         isRedirected={redirected}
@@ -43,10 +56,7 @@ const Home = async ({
         preloadedState={preloadedState.comics}
         isRedirected={redirected}
       />
-      <MusicCategory
-        preloadedState={preloadedState.music}
-        isRedirected={redirected}
-      />
+
       <GamesCategory
         preloadedState={preloadedState.games}
         isRedirected={redirected}

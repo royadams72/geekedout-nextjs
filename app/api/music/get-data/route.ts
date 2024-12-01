@@ -11,13 +11,14 @@ export const GET = async (req: NextRequest) => {
 
 const getAllAlbums = async (req: NextRequest) => {
   const token = await getValidToken(req);
+  console.log("token:::", JSON.stringify(token));
   try {
     const response = await fetch(
       `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${JSON.stringify(token)}`,
         },
       }
     );
@@ -31,7 +32,7 @@ const getAllAlbums = async (req: NextRequest) => {
       );
     }
 
-    return data;
+    return { data, token };
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(
