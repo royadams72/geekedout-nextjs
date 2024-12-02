@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 const clientID = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 export const getValidToken = async (req: NextRequest): Promise<any> => {
   const tokenCookie = req.cookies.get("spotify_token");
+  console.log(tokenCookie);
+
   const now = Date.now();
   // Check if the token is cached in the cookie and is still valid
   if (tokenCookie) {
@@ -16,19 +18,8 @@ export const getValidToken = async (req: NextRequest): Promise<any> => {
   }
 
   const response = await refreshToken();
-  // const refreshedTokenCookie = response.cookies.get("spotify_token");
-  console.log("response in getvalid", response);
+  // console.log("response in getvalid", response);
   return response;
-  // if (refreshedTokenCookie) {
-  //   try {
-  //     const { token } = JSON.parse(refreshedTokenCookie.value);
-  //     return { token, refreshedTokenCookie };
-  //   } catch (error) {
-  //     throw new Error(
-  //       `Failed to retrieve a valid token after refresh refreshToken(): ${error}`
-  //     );
-  //   }
-  // }
 };
 
 export const refreshToken = async (): Promise<any> => {
@@ -56,22 +47,21 @@ export const refreshToken = async (): Promise<any> => {
         `Failed to fetch token refreshToken(): ${error.error_description}`
       );
     }
-    const data = await tokenResponse.json();
-    console.log("tokenResponse::", data);
-    // const { token } = JSON.parse(data.access_token);
-    const token = data.access_token;
-    const expiry = now + data.expires_in * 1000;
+    const { access_token, expires_in } = await tokenResponse.json();
+    const token = {
+      name: "spotify_token",
+      value: access_token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: expires_in,
+      path: "/",
+    };
 
-    // const response = NextResponse.next();
-
-    // response.cookies.set("spotify_token", token, {
-    //   httpOnly: true,
-    //   secure: process.env.NODE_ENV === "production",
-    //   maxAge: data.expires_in,
-    //   path: "/",
-    // });
-
-    return data;
+    //   access_token: 'BQDsqbB4yPsbbzpfRwtpD0O835vEcbFGNB1HvtuG7Dlcb-aukqOsQ5xCpFvJMYoQIrnruLJVLCsIWns87RVpx3Y2oA2b9aAcIk7EftV3P3k-zhSBgxQ',
+    //   token_type: 'Bearer',
+    //   expires_in: 3600
+    // }
+    return token;
   } catch (error) {
     throw new Error(`Failed to refresh token refreshToken(): ${error}`);
   }

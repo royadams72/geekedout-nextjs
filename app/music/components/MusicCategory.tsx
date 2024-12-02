@@ -16,16 +16,14 @@ import { setCookie } from "@/lib/actions/setCookie";
 const MusicCategory = ({
   preloadedState,
   isRedirected,
-  cookie,
+  cookieToken,
 }: {
   preloadedState: MusicSliceState;
   isRedirected?: string;
-  cookie?: any;
+  cookieToken?: any;
 }) => {
   // useEffect(() => {
   //   (async () => {
-  //     console.log("fire!!!!!!");
-
   //     if (cookie) {
   //       await setCookie(cookie);
   //     }
