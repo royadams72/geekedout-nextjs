@@ -10,14 +10,21 @@ export const GET = async (req: NextRequest) => {
 };
 
 const getAllAlbums = async (req: NextRequest) => {
-  const token = await getValidToken(req);
+  const requestCookie = req.cookies.get("spotify_token");
+  const parsedCookie = JSON.parse(requestCookie!.value);
+
+  const cookieToken = await getValidToken(parsedCookie);
+  const parsedToken = JSON.parse(cookieToken.value);
+  const { access_token: token } = parsedToken;
+  console.log("token()", token);
+
   try {
     const response = await fetch(
       `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token.value}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -31,7 +38,7 @@ const getAllAlbums = async (req: NextRequest) => {
       );
     }
 
-    return { data, token };
+    return { data, cookieToken };
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(

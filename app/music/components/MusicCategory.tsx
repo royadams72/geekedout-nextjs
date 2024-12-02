@@ -22,13 +22,13 @@ const MusicCategory = ({
   isRedirected?: string;
   cookieToken?: any;
 }) => {
-  // useEffect(() => {
-  //   (async () => {
-  //     if (cookie) {
-  //       await setCookie(cookie);
-  //     }
-  //   })();
-  // }, [cookie]);
+  useEffect(() => {
+    (async () => {
+      if (cookieToken) {
+        await setCookie(cookieToken);
+      }
+    })();
+  }, []);
 
   return (
     <Category<Preview>

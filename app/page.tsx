@@ -36,6 +36,7 @@ const Home = async ({
   for (const { key, url } of dataFetchers) {
     try {
       const token = cookieStore.get("spotify_token");
+      console.log("token in page::::", token);
       const res = await fetch(url, {
         method: "GET",
         credentials: "include",
@@ -47,9 +48,8 @@ const Home = async ({
         // console.log("data", data);
         data = await res.json();
         preloadedState[key] = { music: data.data.albums };
-        cookieToken = data.token;
+        cookieToken = data.cookieToken;
       } else {
-        // console.log("data other");
         preloadedState[key] = data;
       }
     } catch (error) {
