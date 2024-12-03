@@ -35,7 +35,7 @@ const MusicCategory = ({
         setLoadedState(preloadedState);
       }
     })();
-  }, []);
+  }, [preloadedState]);
 
   return (
     <Category<Preview>

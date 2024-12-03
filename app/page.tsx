@@ -7,7 +7,6 @@ import ComicsCategory from "@/app/comics/components/ComicsCategory";
 import MusicCategory from "@/app/music/components/MusicCategory";
 import GamesCategory from "./games/components/GamesCategory";
 
-const cookieStore = await cookies();
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 const dataFetchers = [
@@ -38,6 +37,7 @@ const Home = async ({
   let headers = {};
   for (const { key, url } of dataFetchers) {
     try {
+      const cookieStore = await cookies();
       const token = cookieStore.get("spotify_token");
       // console.log("token in page::::", token);
       if (key === CategoryType.Music) {

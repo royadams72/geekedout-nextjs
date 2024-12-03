@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionId } from "../ensureBrowserSession";
+import { getSessionId } from "@/lib/actions/getSessionId";
 import {
   getCategoryByNameFromCache,
   getItemFromCache,
