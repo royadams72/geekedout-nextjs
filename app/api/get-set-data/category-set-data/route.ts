@@ -4,7 +4,7 @@ export const maxDuration = 60;
 // Import necessary modules
 import { NextRequest, NextResponse } from "next/server";
 import { saveSessionData } from "@/lib/redis/redis";
-import { ensureBrowserSessionServerSide } from "../functions";
+import { ensureBrowserSession } from "@/app/api/get-set-data/ensureBrowserSession";
 
 // Define the POST handler
 export async function POST(request: NextRequest) {
@@ -37,9 +37,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { response: sessionResponse } = await ensureBrowserSessionServerSide(
-      sessionId
-    );
+    const { response: sessionResponse } = await ensureBrowserSession(sessionId);
     await saveSessionData(sessionId, categoriesData);
 
     // Merge the session response with the CORS headers

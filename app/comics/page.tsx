@@ -1,6 +1,6 @@
 import { checkIfRedirected } from "@/utils/helpers";
 
-import { getCategoryData } from "@/app/api/get-set-data/functions";
+import { getCategoryData } from "@/lib/actions/getCategoryData";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 

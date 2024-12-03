@@ -11,7 +11,6 @@ import {
   initialState,
   selectAllAlbums,
   fetchAndRefreshTokenIfNeeded,
-  getMusicStore,
   getMusicDetails,
   selectMusicPreviews,
 } from "@/lib/features/music/musicSlice";
@@ -63,32 +62,6 @@ describe("musicSlice", () => {
   it("selectAllAlbums should return all albums", () => {
     const albums = selectAllAlbums(rootStateMock);
     expect(albums.length).toBeGreaterThanOrEqual(1);
-  });
-
-  it("should fetch music store data successfully", async () => {
-    const mockResponse = {
-      albums: musicSliceMock.music,
-    };
-
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
-    });
-
-    const result = await getMusicStore();
-
-    expect(result.music).toEqual(mockResponse.albums);
-  });
-
-  it("should return empty object if no data is returned from getAllMusicApi", async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      status: 300,
-      json: async () => ({}),
-    });
-
-    const result = await getMusicStore();
-    expect(result).toEqual({ music: {} });
   });
 
   it("should throw an error if token is unavailable after refresh attempt for fetchAndRefreshTokenIfNeeded", async () => {

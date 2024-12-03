@@ -1,7 +1,7 @@
 import { checkIfRedirected } from "@/utils/helpers";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { getCategoryData } from "@/app/api/get-set-data/functions";
+import { getCategoryData } from "@/lib/actions/getCategoryData";
 
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
 

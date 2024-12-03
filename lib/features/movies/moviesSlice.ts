@@ -15,7 +15,6 @@ const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 export interface MoviesSliceState {
   movies: MoviesStore;
 }
-const MOVIES_API = "api/movies";
 
 export const initialState: MoviesSliceState = {
   movies: {
@@ -41,18 +40,6 @@ export const moviesSlice = createAppSlice({
 export const { setMovies } = moviesSlice.actions;
 export const moviesReducer = moviesSlice.reducer;
 
-export const getMoviesStore = async (): Promise<MoviesSliceState | {}> => {
-  let moviesStore = await getAllMoviesApi();
-
-  if (!moviesStore || isEmpty(moviesStore)) {
-    moviesStore = {};
-  }
-
-  return {
-    movies: moviesStore as MoviesStore,
-  };
-};
-
 export const getMovieDetails = async (
   id: number
 ): Promise<MovieDetail | {}> => {
@@ -66,35 +53,11 @@ export const getMovieDetails = async (
   return selectedMovie;
 };
 
-const getAllMoviesApi = async (): Promise<MoviesStore | {}> => {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/${MOVIES_API}/${GET_DATA_FOLDER}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch movies: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`Failed to fetch movies getAllMoviesApi(): ${error}`);
-    return {};
-  }
-};
-
 const getMovieApi = async (id: number): Promise<MovieDetail | {}> => {
   try {
-    const response = await fetch(
-      `${BASE_URL}/${MOVIES_API}/movie-details/${id}`,
-      {
-        method: "GET",
-      }
-    );
+    const response = await fetch(`${BASE_URL}/api/movies/movie-details/${id}`, {
+      method: "GET",
+    });
     const data = await response.json();
     if (!response.ok) {
       throw new Error(`Failed to fetch movie: ${response.status}`);
