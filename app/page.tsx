@@ -14,16 +14,24 @@ let cookieToken: any;
 const cookieStore = await cookies();
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
+const MOVIES_API = "api/movies";
 const MUSIC_API = "api/music";
 const dataFetchers = [
-  // { key: CategoryType.Games, fetchFunction: getGamesStore },
-  // { key: CategoryType.Comics, fetchFunction: getComicsStore },
-  // { key: CategoryType.Movies, fetchFunction: getMoviesStore },
+  { key: CategoryType.Games, url: `${BASE_URL}/api/games/${GET_DATA_FOLDER}/` },
+  {
+    key: CategoryType.Comics,
+    url: `${BASE_URL}/api/comics/${GET_DATA_FOLDER}`,
+  },
+  {
+    key: CategoryType.Movies,
+    url: `${BASE_URL}/${MOVIES_API}/${GET_DATA_FOLDER}`,
+  },
   {
     key: CategoryType.Music,
     url: `${BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
   },
 ];
+
 const Home = async ({
   searchParams,
 }: {
@@ -31,27 +39,29 @@ const Home = async ({
 }) => {
   const { redirected } = await searchParams;
   let data: any;
-  // const preloadedState: Record<string, any> = {};
-  const preloadedState: any = {};
+  const preloadedState: Record<string, any> = {};
+  // const preloadedState: any = {};
+  let headers = {};
   for (const { key, url } of dataFetchers) {
     try {
       const token = cookieStore.get("spotify_token");
       // console.log("token in page::::", token);
+      if (key === CategoryType.Music) {
+        headers = {
+          Cookie: `spotify_token=${JSON.stringify(token)}`,
+        };
+      }
+
       const res = await fetch(url, {
         method: "GET",
         credentials: "include",
-        headers: {
-          Cookie: `spotify_token=${JSON.stringify(token)}`,
-        },
+        headers,
       });
-      if (key === CategoryType.Music) {
-        data = await res.json();
-        // console.log("data in page", data);
-        preloadedState[key] = { [key]: data };
-        // cookieToken = data.cookieToken;
-      } else {
-        preloadedState[key] = data;
-      }
+
+      console.log(url);
+
+      data = await res.json();
+      preloadedState[key] = { [key]: data };
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
       preloadedState[key] = null;
@@ -64,7 +74,7 @@ const Home = async ({
         preloadedState={preloadedState.music}
         isRedirected={redirected}
       />
-      {/* <MoviesCategory
+      <MoviesCategory
         preloadedState={preloadedState.movies}
         isRedirected={redirected}
       />
@@ -76,7 +86,7 @@ const Home = async ({
       <GamesCategory
         preloadedState={preloadedState.games}
         isRedirected={redirected}
-      /> */}
+      />
     </>
   );
 };
