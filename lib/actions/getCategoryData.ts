@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+
+import { getSessionId } from "@/lib/actions/getSessionId";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GET_SET_DATA_API = process.env.NEXT_PUBLIC_GET_SET_DATA_API;
@@ -9,7 +10,7 @@ export const getCategoryData = async (
   id?: string | number
 ) => {
   const idString = id ? `&id=${id}` : "";
-  const sessionId = await getSessionIdFromCookie();
+  const sessionId = await getSessionId();
   // Edgecase: If somehow cookie is lost navigate to first page where the app automatically will put the sessionId back
   // TODO: Possibly add sessionId to session storage as well, on app init, as a fallback and only redirect if necessary
   if (!sessionId) {
@@ -42,44 +43,4 @@ export const getCategoryData = async (
     console.error("Failed to fetch data:", error);
     return NextResponse.json({ error }, { status: 500 });
   }
-};
-
-export const getSessionIdFromCookie = async (): Promise<string | null> => {
-  const cookieHeader = await cookies();
-  const sessionId = cookieHeader.get("sessionId")?.value;
-
-  if (sessionId) {
-    return sessionId;
-  } else {
-    return null;
-  }
-};
-
-export const ensureBrowserSessionServerSide = async (
-  existingSessionId?: string
-) => {
-  const sessionId = await getSessionIdFromCookie();
-  let response;
-
-  if (!existingSessionId) {
-    response = NextResponse.json({
-      message: "Session undefined",
-    });
-  } else {
-    response = NextResponse.json({
-      message: sessionId
-        ? "Session already exists"
-        : "Session created and data retrieved",
-    });
-
-    if (!sessionId) {
-      response.cookies.set("sessionId", existingSessionId, {
-        path: "/",
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-      });
-    }
-  }
-  return { sessionId, response };
 };

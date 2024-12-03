@@ -9,7 +9,6 @@ import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import {
   comicsSlice,
   ComicsSliceState,
-  getComicsStore,
   selectComicsPreviews,
   setComicDetails,
   setComics,
@@ -113,63 +112,5 @@ describe("comicSlice", () => {
     );
 
     expect(mappedData).toEqual({});
-  });
-
-  it("should fetch and return the comics store", async () => {
-    const consoleErrorMock = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    const initialState = {
-      comics: { count: 0, limit: 0, offset: 0, results: [] },
-    };
-    state = initialState;
-
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve(comicSliceMock.comics),
-    });
-
-    state = await getComicsStore();
-
-    expect(state.comics.results.length).toBe(8);
-    expect(state.comics.results[0].title).toBe(
-      "Avengers Assemble (2024) #1 (Variant)"
-    );
-
-    consoleErrorMock.mockRestore();
-  });
-
-  it("should empty object if the API fails", async () => {
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
-      Promise.reject(new Error("API Error"))
-    );
-
-    const consoleErrorMock = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-
-    const result = await getComicsStore();
-
-    expect(result).toEqual({ comics: {} });
-
-    consoleErrorMock.mockRestore();
-  });
-
-  it("should empty object if the the response not ok", async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      status: 500,
-      json: async () => ({}),
-    });
-
-    const consoleErrorMock = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-
-    const result = await getComicsStore();
-
-    expect(result).toEqual({ comics: {} });
-
-    consoleErrorMock.mockRestore();
   });
 });

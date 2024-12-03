@@ -1,8 +1,5 @@
 import { cookies } from "next/headers";
-import { getGamesStore } from "@/lib/features/games/gamesSlice";
-import { getComicsStore } from "@/lib/features/comics/comicsSlice";
-import { getMoviesStore } from "@/lib/features/movies/moviesSlice";
-import { getMusicStore } from "@/lib/features/music/musicSlice";
+
 import { CategoryType } from "@/shared/enums/category-type.enum";
 
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
@@ -10,12 +7,9 @@ import ComicsCategory from "@/app/comics/components/ComicsCategory";
 import MusicCategory from "@/app/music/components/MusicCategory";
 import GamesCategory from "./games/components/GamesCategory";
 
-let cookieToken: any;
 const cookieStore = await cookies();
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
-const MOVIES_API = "api/movies";
-const MUSIC_API = "api/music";
 const dataFetchers = [
   { key: CategoryType.Games, url: `${BASE_URL}/api/games/${GET_DATA_FOLDER}/` },
   {
@@ -24,11 +18,11 @@ const dataFetchers = [
   },
   {
     key: CategoryType.Movies,
-    url: `${BASE_URL}/${MOVIES_API}/${GET_DATA_FOLDER}`,
+    url: `${BASE_URL}/api/movies/${GET_DATA_FOLDER}`,
   },
   {
     key: CategoryType.Music,
-    url: `${BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
+    url: `${BASE_URL}/api/music/${GET_DATA_FOLDER}/`,
   },
 ];
 

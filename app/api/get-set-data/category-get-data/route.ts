@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionIdFromCookie } from "../functions";
+import { getSessionId } from "../ensureBrowserSession";
 import {
   getCategoryByNameFromCache,
   getItemFromCache,
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const categoryName = searchParams.get("categoryName") as string;
   const id = searchParams.get("id");
   const getAll = searchParams.get("getAll");
-  const sessionId = (await getSessionIdFromCookie()) as string;
+  const sessionId = (await getSessionId()) as string;
 
   try {
     let categoryData;

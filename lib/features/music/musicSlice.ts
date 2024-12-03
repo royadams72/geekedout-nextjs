@@ -68,14 +68,6 @@ export const selectMusicPreviews = createSelector(
     }))
 );
 
-export const getMusicStore = async (): Promise<MusicSliceState> => {
-  const response = await getAllMusicApi();
-  return response;
-  // return {
-  //   music: isEmpty(response) ? ({} as MusicStore) : response.albums,
-  // };
-};
-
 export const getMusicDetails = async (
   id: string
 ): Promise<AlbumDetail | {}> => {
@@ -92,7 +84,6 @@ export const getAllMusicApi = async () => {
       credentials: "include",
     }
   );
-  // console.log("getAllMusicApi response::", response);
 
   return response;
 };
@@ -102,6 +93,7 @@ export const getAlbumDetails = async (id: string) => {
     `${BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
     {
       method: "POST",
+      credentials: "include",
     }
   );
 

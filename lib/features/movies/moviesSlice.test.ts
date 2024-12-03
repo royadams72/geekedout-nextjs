@@ -8,7 +8,6 @@ import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import {
   getMovieDetails,
-  getMoviesStore,
   initialState as moviesInitialState,
   moviesSlice,
   MoviesSliceState,
@@ -119,36 +118,5 @@ describe("movieSlice", () => {
     const mappedData = await getMovieDetails(originalArrayItem1.id);
 
     expect(mappedData).toEqual({});
-  });
-
-  it("should fetch and return the movies store", async () => {
-    state = moviesInitialState;
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve(movieSliceMock.movies),
-    });
-
-    state = (await getMoviesStore()) as MoviesSliceState;
-
-    expect(state.movies.results.length).toBeGreaterThanOrEqual(1);
-    expect(state.movies.results[0].title).toBe("Inside Out 2");
-  });
-
-  it("should empty object if the the response not ok", async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      status: 500,
-      json: async () => ({}),
-    });
-
-    const consoleErrorMock = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-
-    const result = await getMoviesStore();
-
-    expect(result).toEqual({ movies: {} });
-
-    consoleErrorMock.mockRestore();
   });
 });
