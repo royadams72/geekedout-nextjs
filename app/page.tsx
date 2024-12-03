@@ -36,7 +36,7 @@ const Home = async ({
   for (const { key, url } of dataFetchers) {
     try {
       const token = cookieStore.get("spotify_token");
-      console.log("token in page::::", token);
+      // console.log("token in page::::", token);
       const res = await fetch(url, {
         method: "GET",
         credentials: "include",
@@ -45,10 +45,10 @@ const Home = async ({
         },
       });
       if (key === CategoryType.Music) {
-        // console.log("data", data);
         data = await res.json();
-        preloadedState[key] = { music: data.data.albums };
-        cookieToken = data.cookieToken;
+        // console.log("data in page", data);
+        preloadedState[key] = { [key]: data };
+        // cookieToken = data.cookieToken;
       } else {
         preloadedState[key] = data;
       }
@@ -63,7 +63,6 @@ const Home = async ({
       <MusicCategory
         preloadedState={preloadedState.music}
         isRedirected={redirected}
-        cookieToken={cookieToken}
       />
       {/* <MoviesCategory
         preloadedState={preloadedState.movies}

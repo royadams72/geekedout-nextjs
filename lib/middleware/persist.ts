@@ -42,7 +42,6 @@ persisterMiddleware.startListening({
             body: JSON.stringify({ state }),
           }
         );
-        console.log("This is the response from set data:", res);
 
         if (!res.ok) {
           console.error(`HTTP error! Status: ${res.status}`);

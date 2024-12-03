@@ -1,31 +1,38 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   selectMusicPreviews,
   setMusic,
   MusicSliceState,
+  initialState,
 } from "@/lib/features/music/musicSlice";
 
 import { Preview } from "@/shared/interfaces/preview";
 import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
-import Category from "@/shared/components/category/Category";
-import { useEffect } from "react";
+import { MusicStore } from "@/shared/interfaces/music";
 import { setCookie } from "@/lib/actions/setCookie";
+
+import Category from "@/shared/components/category/Category";
 
 const MusicCategory = ({
   preloadedState,
   isRedirected,
-  cookieToken,
 }: {
   preloadedState: MusicSliceState;
   isRedirected?: string;
-  cookieToken?: any;
 }) => {
+  const [loadedState, setLoadedState] = useState<any>();
   useEffect(() => {
     (async () => {
-      if (cookieToken) {
+      if (preloadedState && preloadedState.music.cookieToken) {
+        const { cookieToken, ...musicWithoutCookie } = preloadedState.music;
+
         await setCookie(cookieToken);
+        setLoadedState({ music: musicWithoutCookie });
+      } else {
+        setLoadedState(preloadedState);
       }
     })();
   }, []);
@@ -35,7 +42,7 @@ const MusicCategory = ({
       title={CategoryTitle.Music}
       itemsSelector={selectMusicPreviews}
       preloadedStateAction={setMusic}
-      preloadedState={preloadedState}
+      preloadedState={loadedState}
       sliceNumber={6}
     />
   );

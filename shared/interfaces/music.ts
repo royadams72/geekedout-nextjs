@@ -37,6 +37,7 @@ export interface ArtistDetails {
   spotifyUrl: string;
 }
 export interface MusicStore {
+  cookieToken?: CookieToken;
   href?: string;
   items: Album[];
   limit?: number;
@@ -45,7 +46,15 @@ export interface MusicStore {
   previous?: number | null;
   total?: number;
 }
-
+export interface CookieToken {
+  name: string;
+  value: string;
+  httpOnly: boolean;
+  secure: boolean;
+  maxAge: number;
+  path: string;
+  expires: string;
+}
 export interface Tracks {
   href: string;
   items: [

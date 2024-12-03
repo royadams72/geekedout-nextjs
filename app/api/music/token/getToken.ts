@@ -5,7 +5,6 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 export const getValidToken = async (tokenCookie: any): Promise<any> => {
   const now = Date.now();
-
   if (tokenCookie && tokenCookie?.value !== "undefined") {
     const { expiry } = JSON.parse(tokenCookie!.value);
 
@@ -16,6 +15,7 @@ export const getValidToken = async (tokenCookie: any): Promise<any> => {
 
   const response = await refreshToken();
   const refreshedTokenCookie = response.cookies.get("spotify_token");
+  // console.log("refreshedTokenCookie::::", refreshedTokenCookie);
 
   if (refreshedTokenCookie) {
     try {
@@ -26,7 +26,6 @@ export const getValidToken = async (tokenCookie: any): Promise<any> => {
       );
     }
   }
-
   return response;
 };
 
@@ -70,6 +69,19 @@ export const refreshToken = async (): Promise<any> => {
       }
     );
 
+    // const token = {
+    //   name: "spotify_token",
+    //   value: JSON.stringify({ access_token, expiry }),
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   maxAge: expires_in,
+    //   path: "/",
+    // };
+
+    // //   access_token: 'BQDsqbB4yPsbbzpfRwtpD0O835vEcbFGNB1HvtuG7Dlcb-aukqOsQ5xCpFvJMYoQIrnruLJVLCsIWns87RVpx3Y2oA2b9aAcIk7EftV3P3k-zhSBgxQ',
+    // //   token_type: 'Bearer',
+    // //   expires_in: 3600
+    // // }
     return response;
   } catch (error) {
     throw new Error(`Failed to refresh token refreshToken(): ${error}`);
