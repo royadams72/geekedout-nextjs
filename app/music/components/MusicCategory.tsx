@@ -5,13 +5,11 @@ import {
   selectMusicPreviews,
   setMusic,
   MusicSliceState,
-  initialState,
 } from "@/lib/features/music/musicSlice";
 
 import { Preview } from "@/shared/interfaces/preview";
 import { CategoryTitle } from "@/shared/enums/category-type.enum";
 
-import { MusicStore } from "@/shared/interfaces/music";
 import { setCookie } from "@/lib/actions/setCookie";
 
 import Category from "@/shared/components/category/Category";
