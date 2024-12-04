@@ -11,11 +11,10 @@ export const GET = async (req: NextRequest) => {
 
 const getAllAlbums = async (req: NextRequest) => {
   const requestCookie = req.cookies.get("spotify_token");
-  console.log("token()", requestCookie);
   let parsedCookie;
+
   if (requestCookie && requestCookie?.value !== "undefined") {
     parsedCookie = JSON.parse(requestCookie!.value);
-    // You can now use parsedCookie here
   }
   const cookieToken = await getValidToken(parsedCookie);
   const parsedToken = JSON.parse(cookieToken.value);
@@ -40,10 +39,7 @@ const getAllAlbums = async (req: NextRequest) => {
         data.error.message || "music API error"
       );
     }
-    // data.cookieToken;
     const returnedData = { ...data.albums, cookieToken };
-    // console.log("returned data from route", returnedData.cookieToken);
-
     return returnedData;
   } catch (error) {
     if (error instanceof ApiError) {

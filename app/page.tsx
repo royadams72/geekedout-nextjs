@@ -39,7 +39,7 @@ const Home = async ({
     try {
       const cookieStore = await cookies();
       const token = cookieStore.get("spotify_token");
-      // console.log("token in page::::", token);
+
       if (key === CategoryType.Music) {
         headers = {
           Cookie: `spotify_token=${JSON.stringify(token)}`,
@@ -52,13 +52,11 @@ const Home = async ({
         headers,
       });
 
-      console.log(url);
-
       data = await res.json();
       preloadedState[key] = { [key]: data };
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
-      preloadedState[key] = null;
+      preloadedState[key] = {};
     }
   }
 
@@ -76,7 +74,6 @@ const Home = async ({
         preloadedState={preloadedState.comics}
         isRedirected={redirected}
       />
-
       <GamesCategory
         preloadedState={preloadedState.games}
         isRedirected={redirected}
