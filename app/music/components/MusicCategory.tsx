@@ -23,6 +23,7 @@ const MusicCategory = ({
   isRedirected?: string;
 }) => {
   const loadedState = useGetCookieFromState(preloadedState);
+
   return (
     <Category<Preview>
       title={CategoryTitle.Music}

@@ -1,16 +1,24 @@
 import { useState, useEffect } from "react";
+import { isNotEmpty } from "@/utils/helpers";
 import { setCookie } from "../actions/setCookie"; // Make sure this function is available
 
 export const useGetCookieFromState = (preloadedState: any) => {
   const [loadedState, setLoadedState] = useState<any>();
-  // console.log("preloadedState.music::", preloadedState.music.cookieData);
 
   useEffect(() => {
+    const stateString = JSON.stringify(preloadedState);
+    const hasCookieData = stateString.search("cookieData") > -1;
+    console.log(hasCookieData);
+
     const fetchData = async () => {
       let cookieData;
       let musicWithoutCookie;
-
-      if (preloadedState) {
+      if (isNotEmpty(preloadedState) && hasCookieData) {
+        console.log(
+          "has cookie data hasCookieData:",
+          hasCookieData,
+          preloadedState
+        );
         if (preloadedState.music && preloadedState.music.cookieData) {
           ({ cookieData, ...musicWithoutCookie } = preloadedState.music);
           setLoadedState({ music: musicWithoutCookie });
@@ -23,6 +31,11 @@ export const useGetCookieFromState = (preloadedState: any) => {
           await setCookie(cookieData);
         }
       } else {
+        console.log(
+          "dose not have cookies, hasCookieData:",
+          hasCookieData,
+          preloadedState
+        );
         setLoadedState(preloadedState);
       }
     };

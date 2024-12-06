@@ -5,7 +5,7 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
   const requestCookie = req.cookies.get("spotify_token");
-  console.log(requestCookie);
+  // console.log(requestCookie);
 
   if (isExpiredOrNull(requestCookie)) {
     const response = await refreshToken();
@@ -18,7 +18,7 @@ export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
   } else {
     const parsedToken = JSON.parse(requestCookie!.value);
     const { access_token: cookieValue } = parsedToken;
-    console.log("Else:::", cookieValue);
+    console.log("Do not refresh cookie:::", cookieValue);
     return { cookieValue };
   }
 };
@@ -89,24 +89,25 @@ export const refreshToken = async (): Promise<any> => {
 };
 
 const parseCookie = (cookieDate: any) => {
-  console.log("requestCookie in pareCookie", cookieDate);
+  // console.log("requestCookie in pareCookie", cookieDate);
 
   return JSON.parse(cookieDate!.value);
 };
 
 const isExpiredOrNull = (cookie: any) => {
   const tokenCookie = parseCookie(cookie);
-  console.log("cookie=", cookie, "tokenCookie=", tokenCookie);
+
   const now = Date.now();
 
   if (cookie?.value === "undefined" || cookie?.value === "null" || null) {
     return true;
-  }
-  if (tokenCookie && tokenCookie?.access_token && tokenCookie?.expiry) {
+  } else if (tokenCookie && tokenCookie?.access_token && tokenCookie?.expiry) {
     const { expiry } = tokenCookie;
+    // console.log("expiry > now:::", expiry < now);
 
-    if (expiry > now) {
+    if (expiry < now) {
       return true;
     }
   }
+  return false;
 };

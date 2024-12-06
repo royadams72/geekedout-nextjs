@@ -13,7 +13,6 @@ export const GET = async (req: NextRequest) => {
 
 const getAllAlbums = async (req: NextRequest) => {
   const { cookieData, cookieValue } = await checkSpotifyCookie(req);
-  // console.log("cookieData, cookieValue", cookieData, cookieValue);
 
   try {
     const response = await fetch(
@@ -35,6 +34,7 @@ const getAllAlbums = async (req: NextRequest) => {
       );
     }
     const returnedData = { ...data.albums, cookieData };
+    // console.log("returnedData:", returnedData);
     return returnedData;
   } catch (error) {
     if (error instanceof ApiError) {
