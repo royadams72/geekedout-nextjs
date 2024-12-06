@@ -1,12 +1,12 @@
 import { checkIfRedirected } from "@/utils/helpers";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { getCategoryData } from "@/lib/actions/getCategoryData";
+import { getCategoryDataFromApi } from "@/lib/actions/getCategoryDataFromApi";
 
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
 
 const MoviesPage = async () => {
-  const category = await getCategoryData(CategoryType.Movies);
+  const category = await getCategoryDataFromApi(CategoryType.Movies);
 
   checkIfRedirected(category);
 

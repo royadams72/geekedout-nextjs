@@ -2,6 +2,7 @@ export interface Album {
   album_type: string;
   artists: Artists[];
   available_markets: Array<string>;
+  cookieData: CookieData;
   external_urls: ExternalUrls;
   href: string;
   id: string;
@@ -37,7 +38,7 @@ export interface ArtistDetails {
   spotifyUrl: string;
 }
 export interface MusicStore {
-  cookieToken?: CookieToken;
+  cookieData?: CookieData;
   href?: string;
   items: Album[];
   limit?: number;
@@ -46,7 +47,7 @@ export interface MusicStore {
   previous?: number | null;
   total?: number;
 }
-export interface CookieToken {
+export interface CookieData {
   name: string;
   value: string;
   httpOnly: boolean;
@@ -84,12 +85,13 @@ export interface Tracks {
 }
 
 export interface AlbumDetail {
-  id: string;
   artists: ArtistDetails[];
+  category: string;
+  cookieData?: CookieData;
+  id: string;
   image: string;
   name: string;
   release_date: string;
   spotify_link: string;
   tracks: Array<string>;
-  category: string;
 }

@@ -40,13 +40,16 @@ export const moviesSlice = createAppSlice({
 export const { setMovies } = moviesSlice.actions;
 export const moviesReducer = moviesSlice.reducer;
 
-export const getMovieDetails = async (
+export const getMovieDetailsFromApi = async (
   id: number
 ): Promise<MovieDetail | {}> => {
   let selectedMovie = await getMovieApi(id);
 
   if (!selectedMovie || isEmpty(selectedMovie)) {
-    console.error("Data was not loaded for movie ID getMovieDetails():", id);
+    console.error(
+      "Data was not loaded for movie ID getMovieDetailsFromApi():",
+      id
+    );
     selectedMovie = {};
   }
 

@@ -65,7 +65,7 @@ export const selectComicsPreviews = createSelector(
     })
 );
 
-export const setComicDetails = async (
+export const setComicDetailsFromRedis = async (
   comicStore: ComicsSliceState,
   id: string
 ): Promise<ComicDetail | {}> => mapComicDetail(comicStore, id);

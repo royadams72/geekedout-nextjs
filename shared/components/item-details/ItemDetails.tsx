@@ -85,6 +85,7 @@ const ItemDetails = <T extends BasicDetail>({
     return <h1>No details loaded please go back and try again</h1>;
   return (
     <>
+      {`${itemDetail}`}
       <div className={styles.details_container}>
         <div className={styles[`details_container_${category.toLowerCase()}`]}>
           <div className={styles.details_btn_container}>

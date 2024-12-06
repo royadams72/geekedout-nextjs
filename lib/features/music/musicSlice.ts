@@ -68,62 +68,58 @@ export const selectMusicPreviews = createSelector(
     }))
 );
 
-export const getMusicDetails = async (
+export const getMusicDetailsFromApi = async (
   id: string
 ): Promise<AlbumDetail | {}> => {
-  const selectedAlbum = await getAlbumDetails(id);
-
-  return selectedAlbum;
-};
-
-export const getAllMusicApi = async () => {
-  const response = await fetchAndRefreshTokenIfNeeded<any>(
-    `${BASE_URL}/${MUSIC_API}/${GET_DATA_FOLDER}/`,
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
-
-  return response;
-};
-
-export const getAlbumDetails = async (id: string) => {
-  const data = await fetchAndRefreshTokenIfNeeded<Album>(
+  const response = await fetch(
     `${BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
     {
       method: "POST",
       credentials: "include",
     }
   );
+  const data = await response.json();
 
   return mapAlbumDetail(data);
 };
 
-export const fetchAndRefreshTokenIfNeeded = async <T>(
-  url: string,
-  options: RequestInit
-) => {
-  try {
-    let response = await fetch(url, options);
-    if (response.status === 401) {
-      await refreshToken();
-      response = await fetch(url, options);
-    }
-    if (!response.ok && response.status !== 401) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
-    }
-    const data: T = await response.json();
+// export const getAlbumDetails = async (id: string) => {
+//   const response = await fetch(
+//     `${BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
+//     {
+//       method: "POST",
+//       credentials: "include",
+//     }
+//   );
+//   const data = await response.json();
 
-    return data;
-  } catch (error) {
-    console.error(
-      "Failed to fetch data: fetchAndRefreshTokenIfNeeded()",
-      error
-    );
-    return {} as T;
-  }
-};
+//   return mapAlbumDetail(data);
+// };
+
+// export const fetchAndRefreshTokenIfNeeded = async <T>(
+//   url: string,
+//   options: RequestInit
+// ) => {
+//   try {
+//     let response = await fetch(url, options);
+//     if (response.status === 401) {
+//       await refreshToken();
+//       response = await fetch(url, options);
+//     }
+//     if (!response.ok && response.status !== 401) {
+//       throw new Error(`Network response was not ok: ${response.statusText}`);
+//     }
+//     const data: T = await response.json();
+
+//     return data;
+//   } catch (error) {
+//     console.error(
+//       "Failed to fetch data: fetchAndRefreshTokenIfNeeded()",
+//       error
+//     );
+//     return {} as T;
+//   }
+// };
 
 export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
   if (isEmpty(item)) {
@@ -138,6 +134,7 @@ export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
     external_urls: { spotify: spotifyLink } = { spotify: "" },
     release_date,
     tracks: { items },
+    cookieData,
   }: any = item;
 
   const tracks = items.map((arrayItem: Artists) => arrayItem.name);
@@ -146,6 +143,7 @@ export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
     spotifyUrl: arrayItem.external_urls.spotify,
   }));
 
+  // console.log(cookieData);
   return {
     id,
     name,
@@ -155,5 +153,6 @@ export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
     release_date,
     tracks,
     category: "Music",
+    cookieData,
   };
 };

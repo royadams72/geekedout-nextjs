@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getValidToken } from "@/app/api/music/token/getToken";
+
+import { checkSpotifyCookie } from "@/app/api/music/token/getToken";
+
 import { ApiError } from "@/utils/helpers";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
@@ -10,15 +12,8 @@ export const GET = async (req: NextRequest) => {
 };
 
 const getAllAlbums = async (req: NextRequest) => {
-  const requestCookie = req.cookies.get("spotify_token");
-  let parsedCookie;
-
-  if (requestCookie && requestCookie?.value !== "undefined") {
-    parsedCookie = JSON.parse(requestCookie!.value);
-  }
-  const cookieToken = await getValidToken(parsedCookie);
-  const parsedToken = JSON.parse(cookieToken.value);
-  const { access_token: token } = parsedToken;
+  const { cookieData, cookieValue } = await checkSpotifyCookie(req);
+  // console.log("cookieData, cookieValue", cookieData, cookieValue);
 
   try {
     const response = await fetch(
@@ -26,7 +21,7 @@ const getAllAlbums = async (req: NextRequest) => {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${cookieValue}`,
         },
       }
     );
@@ -39,7 +34,7 @@ const getAllAlbums = async (req: NextRequest) => {
         data.error.message || "music API error"
       );
     }
-    const returnedData = { ...data.albums, cookieToken };
+    const returnedData = { ...data.albums, cookieData };
     return returnedData;
   } catch (error) {
     if (error instanceof ApiError) {

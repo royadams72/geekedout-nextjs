@@ -1,6 +1,6 @@
 import { checkIfRedirected } from "@/utils/helpers";
 
-import { getCategoryData } from "@/lib/actions/getCategoryData";
+import { getCategoryDataFromApi } from "@/lib/actions/getCategoryDataFromApi";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 
@@ -12,7 +12,7 @@ const MappedMovieDetailsPage = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const item = await getCategoryData(CategoryType.Movies, id);
+  const item = await getCategoryDataFromApi(CategoryType.Movies, id);
 
   checkIfRedirected(item);
 

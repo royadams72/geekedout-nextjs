@@ -1,6 +1,6 @@
 import { checkIfRedirected } from "@/utils/helpers";
 
-import { getCategoryData } from "@/lib/actions/getCategoryData";
+import { getCategoryDataFromApi } from "@/lib/actions/getCategoryDataFromApi";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 
@@ -12,7 +12,7 @@ const MusicDetailsPage = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const item = await getCategoryData(CategoryType.Music, id);
+  const item = await getCategoryDataFromApi(CategoryType.Music, id);
 
   checkIfRedirected(item);
 
