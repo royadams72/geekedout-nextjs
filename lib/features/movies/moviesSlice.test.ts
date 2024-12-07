@@ -7,7 +7,7 @@ import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 
 import { MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import {
-  getMovieDetails,
+  getMovieDetailsFromApi,
   initialState as moviesInitialState,
   moviesSlice,
   MoviesSliceState,
@@ -95,14 +95,14 @@ describe("movieSlice", () => {
     expect(previewMovie[0].imageLarge).toEqual(IMAGE_NOT_FOUND.MED_250x250);
   });
 
-  it("should map item for details page via getMovieDetails", async () => {
+  it("should map item for details page via getMovieDetailsFromApi", async () => {
     const originalArrayItem1 = state.movies.results[0];
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       status: 200,
       json: () => Promise.resolve(movieSliceMock.movies.results[0]),
     });
-    const mappedData = (await getMovieDetails(
+    const mappedData = (await getMovieDetailsFromApi(
       originalArrayItem1?.id
     )) as MovieDetail;
 
@@ -115,7 +115,7 @@ describe("movieSlice", () => {
       status: 500,
       json: () => ({}),
     });
-    const mappedData = await getMovieDetails(originalArrayItem1.id);
+    const mappedData = await getMovieDetailsFromApi(originalArrayItem1.id);
 
     expect(mappedData).toEqual({});
   });

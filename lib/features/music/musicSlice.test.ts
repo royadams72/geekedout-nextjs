@@ -10,8 +10,7 @@ import {
   musicReducer,
   initialState,
   selectAllAlbums,
-  fetchAndRefreshTokenIfNeeded,
-  getMusicDetails,
+  getMusicDetailsFromApi,
   selectMusicPreviews,
 } from "@/lib/features/music/musicSlice";
 
@@ -64,24 +63,6 @@ describe("musicSlice", () => {
     expect(albums.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("should throw an error if token is unavailable after refresh attempt for fetchAndRefreshTokenIfNeeded", async () => {
-    global.fetch = jest
-      .fn()
-      .mockResolvedValueOnce({ ok: false, status: 401 })
-      .mockResolvedValueOnce({
-        ok: false,
-        status: 500,
-        statusText: "Internal Server Error",
-      });
-    (refreshToken as jest.Mock).mockResolvedValueOnce(undefined);
-
-    const response = await fetchAndRefreshTokenIfNeeded("http://fetch/url", {});
-
-    expect(response).toEqual({});
-    expect(refreshToken).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledTimes(2);
-  });
-
   it("should fetch album details and map to new object", async () => {
     const resultNotMapped = musicDetailMockNotMapped;
     (global.fetch as jest.Mock).mockResolvedValueOnce({
@@ -89,7 +70,7 @@ describe("musicSlice", () => {
       json: () => Promise.resolve(resultNotMapped),
     });
 
-    const resultMapped = await getMusicDetails(resultNotMapped.id);
+    const resultMapped = await getMusicDetailsFromApi(resultNotMapped.id);
 
     expect(resultNotMapped).toHaveProperty("external_urls");
     expect(resultMapped).not.toHaveProperty("external_urls");
@@ -104,7 +85,7 @@ describe("musicSlice", () => {
       json: () => Promise.resolve(resultNotMapped),
     });
 
-    const resultMapped = await getMusicDetails(resultNotMapped.id);
+    const resultMapped = await getMusicDetailsFromApi(resultNotMapped.id);
 
     expect(resultMapped).not.toHaveProperty("external_urls");
     expect(resultMapped).toHaveProperty("spotify_link");
@@ -119,7 +100,7 @@ describe("musicSlice", () => {
       json: async () => ({}),
     });
 
-    const result = await getMusicDetails(item.id);
+    const result = await getMusicDetailsFromApi(item.id);
 
     expect(result).toEqual({});
   });
