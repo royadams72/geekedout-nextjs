@@ -47,14 +47,8 @@ export const getCategoryByName = async (
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }
-    // console.log("categoriesData::", categoriesData[categoryName]);
-    if (categoryName === CategoryType.Music) {
-      returnedData = { ...categoriesData[categoryName], cookieData };
-    } else {
-      returnedData = categoriesData[categoryName];
-    }
-    // console.log("returnedData::", returnedData);
-    return returnedData;
+
+    return categoriesData[categoryName];
   } catch (error) {
     console.error("Error getting category from cache:", error);
     return null;
@@ -64,8 +58,7 @@ export const getCategoryByName = async (
 export const getItem = async (
   sessionId: string,
   categoryName: string,
-  id: string | number,
-  cookieData?: any
+  id: string | number
 ) => {
   try {
     let selectedData: any;
