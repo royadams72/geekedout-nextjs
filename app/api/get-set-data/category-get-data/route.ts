@@ -10,22 +10,13 @@ export async function GET(request: NextRequest) {
   const categoryName = searchParams.get("categoryName") as string;
   const id = searchParams.get("id");
   const sessionId = (await getCookie("sessionId")) as string;
-  const { cookieData } = await checkSpotifyCookie(request);
-  // console.log("cookieData in get route", cookieData);
-
-  const addCookieIfMusic =
-    categoryName === CategoryType.Music ? cookieData : undefined;
 
   try {
     let categoryData;
     if (id && categoryName) {
       categoryData = await getItem(sessionId, categoryName, id);
     } else {
-      categoryData = await getCategoryByName(
-        sessionId,
-        categoryName,
-        addCookieIfMusic
-      );
+      categoryData = await getCategoryByName(sessionId, categoryName);
     }
 
     if (!categoryData) {

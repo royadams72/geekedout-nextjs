@@ -8,36 +8,18 @@ export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
   // console.log(requestCookie);
 
   if (isExpiredOrNull(requestCookie)) {
+    console.log("Refreshing token");
     const response = await refreshToken();
     const cookieData = response.cookies.get("spotify_token");
-    // console.log("isExpiredOrNull:::", cookieData);
-    const parsedToken = JSON.parse(cookieData.value);
-    const { access_token: cookieValue } = parsedToken;
+    const cookieValue = parseAndGetToken(cookieData);
 
     return { cookieData, cookieValue };
   } else {
-    const parsedToken = JSON.parse(requestCookie!.value);
-    const { access_token: cookieValue } = parsedToken;
+    const cookieValue = parseAndGetToken(requestCookie);
     console.log("Do not refresh cookie:::", cookieValue);
     return { cookieValue };
   }
 };
-
-// export const getValidToken = async (tokenCookie: any): Promise<any> => {
-//   const response = await refreshToken();
-//   const refreshedTokenCookie = response.cookies.get("spotify_token");
-
-//   if (refreshedTokenCookie) {
-//     try {
-//       return refreshedTokenCookie;
-//     } catch (error) {
-//       throw new Error(
-//         `Failed to retrieve a valid token after refresh refreshToken(): ${error}`
-//       );
-//     }
-//   }
-//   return response;
-// };
 
 export const refreshToken = async (): Promise<any> => {
   const now = Date.now();
@@ -88,14 +70,14 @@ export const refreshToken = async (): Promise<any> => {
   }
 };
 
-const parseCookie = (cookieDate: any) => {
-  // console.log("requestCookie in pareCookie", cookieDate);
-
-  return JSON.parse(cookieDate!.value);
+const parseAndGetToken = (cookieData: any) => {
+  const parsedToken = JSON.parse(cookieData.value);
+  const { access_token: cookieValue } = parsedToken;
+  return cookieValue;
 };
 
 const isExpiredOrNull = (cookie: any) => {
-  const tokenCookie = parseCookie(cookie);
+  const tokenCookie = JSON.parse(cookie.value);
 
   const now = Date.now();
 
