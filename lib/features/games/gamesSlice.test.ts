@@ -5,7 +5,7 @@ import {
   initialState,
   setGames,
   GamesSliceState,
-  setGameDetails,
+  setGameDetailsFromRedis,
 } from "@/lib/features/games/gamesSlice";
 import { rootStateMock } from "@/__mocks__/store.mocks";
 
@@ -45,13 +45,13 @@ describe("gamseSlice", () => {
   });
 
   it("should set and map the game details with data from the store ", async () => {
-    const gameDetail = await setGameDetails(gamesSliceMock, "2677");
+    const gameDetail = await setGameDetailsFromRedis(gamesSliceMock, "2677");
     expect(gameDetail).not.toHaveProperty("title");
     expect(gameDetail).toHaveProperty("name");
   });
 
   it("should empty game details if no data", async () => {
-    const gameDetail = await setGameDetails(gamesSliceMock, "9999");
+    const gameDetail = await setGameDetailsFromRedis(gamesSliceMock, "9999");
     expect(gameDetail).toEqual({});
   });
 });

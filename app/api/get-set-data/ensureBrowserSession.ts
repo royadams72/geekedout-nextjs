@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { getSessionId } from "@/lib/actions/getSessionId";
+import { getCookie } from "@/lib/actions/getCookie";
 
 export const ensureBrowserSession = async (existingSessionId?: string) => {
-  const sessionId = await getSessionId();
+  const sessionId = await getCookie("sessionId");
   let response;
 
   if (!existingSessionId) {

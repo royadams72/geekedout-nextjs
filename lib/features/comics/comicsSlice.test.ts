@@ -10,7 +10,7 @@ import {
   comicsSlice,
   ComicsSliceState,
   selectComicsPreviews,
-  setComicDetails,
+  setComicDetailsFromRedis,
   setComics,
 } from "@/lib/features/comics/comicsSlice";
 
@@ -85,10 +85,10 @@ describe("comicSlice", () => {
     expect(previewComics[0].imageLarge).toEqual(IMAGE_NOT_FOUND.MED_250x250);
   });
 
-  it("should map item for details page via setComicDetails", async () => {
+  it("should map item for details page via setComicDetailsFromRedis", async () => {
     const originalArrayItem1 = state.comics.results[0];
 
-    const mappedData = (await setComicDetails(
+    const mappedData = (await setComicDetailsFromRedis(
       state,
       originalArrayItem1?.id?.toString() as string
     )) as ComicDetail;
@@ -106,7 +106,7 @@ describe("comicSlice", () => {
       },
     };
 
-    const mappedData = await setComicDetails(
+    const mappedData = await setComicDetailsFromRedis(
       clonedState,
       originalArrayItem1.id as string
     );

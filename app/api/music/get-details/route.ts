@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getValidToken, refreshToken } from "@/app/api/music/token/getToken";
+import { checkSpotifyCookie } from "@/app/api/music/token/getToken";
+import { ApiError } from "@/utils/helpers";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
@@ -12,40 +13,51 @@ export const POST = async (req: NextRequest) => {
 };
 
 const getAlbumDetails = async (req: NextRequest, id: string) => {
-  let token = await getValidToken(req);
+  let response: any;
 
-  let response = await fetchAlbum(id, token);
+  const { cookieData, cookieValue } = await checkSpotifyCookie(req);
+  console.log("cookieData:", cookieValue);
 
-  if (response.status === 401) {
-    const refreshResponse = await refreshToken();
-    const refreshedTokenCookie = refreshResponse.cookies.get("spotify_token");
+  try {
+    response = await fetchAlbum(id, cookieValue);
 
-    if (refreshedTokenCookie) {
-      try {
-        token = JSON.parse(refreshedTokenCookie.value).token;
-      } catch (error: any) {
-        throw new Error("Invalid token format in refreshed token");
-      }
-    } else {
-      throw new Error("Failed to refresh token");
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        data.error.message || "music details API error"
+      );
     }
 
-    response = await fetchAlbum(id, token);
-  }
-  const album = await response.json();
+    const returnedData = { ...data, cookieData };
+    // console.log("cookieData in returnes data", returnedData);
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch album details: ${album.error.message}`);
+    return returnedData;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      console.error(
+        `There was an error requesting music details: ${error.statusCode} - ${error.message}`
+      );
+      return NextResponse.json(
+        { error: `Failed to fetch music details: ${error.message}` },
+        { status: error.statusCode }
+      );
+    } else {
+      console.error(`Unexpected music details API Error: ${error}`);
+      return NextResponse.json(
+        { error: `Unexpected music API details Error: ${error}` },
+        { status: 500 }
+      );
+    }
   }
-
-  return album;
 };
 
-const fetchAlbum = async (id: string, token: string) => {
+const fetchAlbum = async (id: string, cookieValue: string) => {
   const res = await fetch(`${BASE_URL_MUSIC}/albums/${id}`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${cookieValue}`,
     },
   });
 

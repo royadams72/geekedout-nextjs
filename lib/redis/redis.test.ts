@@ -12,13 +12,13 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 
 import {
   saveSessionData,
-  getSessionData,
-  getCategoryByNameFromCache,
-  getItemFromCache,
+  getStoreData,
+  getCategoryByName,
+  getItem,
 } from "./redis";
 
 import { Comic, ComicDetail } from "@/shared/interfaces/comic";
-import { setComicDetails } from "@/lib/features/comics/comicsSlice";
+import { setComicDetailsFromRedis } from "@/lib/features/comics/comicsSlice";
 
 jest.mock("ioredis", () => require("ioredis-mock"));
 
@@ -27,7 +27,7 @@ jest.mock("@/app/api/music/token/getToken", () => ({
 }));
 
 jest.mock("@/lib/features/comics/comicsSlice", () => ({
-  setComicDetails: jest.fn(),
+  setComicDetailsFromRedis: jest.fn(),
   mapComicDetail: jest.fn(),
 }));
 
@@ -53,20 +53,17 @@ describe("Redis Cache Functions", () => {
   });
 
   it("should save and retrieve session data", async () => {
-    const data = await getSessionData(sessionId);
+    const data = await getStoreData(sessionId);
     expect(data).toEqual({ state: mockState });
   });
 
   it("should retrieve category data from cache", async () => {
-    const comicsData = await getCategoryByNameFromCache(
-      sessionId,
-      CategoryType.Comics
-    );
+    const comicsData = await getCategoryByName(sessionId, CategoryType.Comics);
     expect(comicsData).toEqual(mockState.comics);
   });
 
   it("should handle non-existent category gracefully", async () => {
-    const nonExistentCategory = await getCategoryByNameFromCache(
+    const nonExistentCategory = await getCategoryByName(
       sessionId,
       "non-existent-category"
     );
@@ -76,9 +73,9 @@ describe("Redis Cache Functions", () => {
   it("should retrieve item data from cache by item id", async () => {
     const item = mockState.comics.comics.results[0] as Comic;
     const mappedItem = comicDetailMock;
-    (setComicDetails as jest.Mock).mockResolvedValueOnce(mappedItem);
+    (setComicDetailsFromRedis as jest.Mock).mockResolvedValueOnce(mappedItem);
 
-    const comicDetailsData = await getItemFromCache(
+    const comicDetailsData = await getItem(
       sessionId,
       CategoryType.Comics,
       item.id as string
@@ -93,7 +90,7 @@ describe("Redis Cache Functions", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    await getItemFromCache(sessionId, "fake_category", "12345");
+    await getItem(sessionId, "fake_category", "12345");
 
     expect(consoleErrorMock).toHaveBeenCalled();
   });

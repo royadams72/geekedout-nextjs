@@ -51,7 +51,7 @@ export const selectGamesPreviews = createSelector(
     })
 );
 
-export const setGameDetails = async (
+export const setGameDetailsFromRedis = async (
   serverSideStore: GamesSliceState,
   id: string
 ): Promise<GameDetail | {}> => {

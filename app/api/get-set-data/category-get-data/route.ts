@@ -1,27 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionId } from "@/lib/actions/getSessionId";
-import {
-  getCategoryByNameFromCache,
-  getItemFromCache,
-  getSessionData,
-} from "@/lib/redis/redis";
+import { getCookie } from "@/lib/actions/getCookie";
+import { getCategoryByName, getItem } from "@/lib/redis/redis";
 import { ApiError } from "@/utils/helpers";
+import { checkSpotifyCookie } from "../../music/token/getToken";
+import { CategoryType } from "@/shared/enums/category-type.enum";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const categoryName = searchParams.get("categoryName") as string;
   const id = searchParams.get("id");
-  const getAll = searchParams.get("getAll");
-  const sessionId = (await getSessionId()) as string;
+  const sessionId = (await getCookie("sessionId")) as string;
 
   try {
     let categoryData;
-    if (getAll) {
-      categoryData = await getSessionData(sessionId);
-    } else if (id && categoryName) {
-      categoryData = await getItemFromCache(sessionId, categoryName, id);
+    if (id && categoryName) {
+      categoryData = await getItem(sessionId, categoryName, id);
     } else {
-      categoryData = await getCategoryByNameFromCache(sessionId, categoryName);
+      categoryData = await getCategoryByName(sessionId, categoryName);
     }
 
     if (!categoryData) {

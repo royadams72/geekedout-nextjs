@@ -13,6 +13,7 @@ import { CategoryTitle } from "@/shared/enums/category-type.enum";
 import { setCookie } from "@/lib/actions/setCookie";
 
 import Category from "@/shared/components/category/Category";
+import { useGetCookieFromState } from "@/lib/hooks/useGetCookieFromState";
 
 const MusicCategory = ({
   preloadedState,
@@ -21,19 +22,7 @@ const MusicCategory = ({
   preloadedState: MusicSliceState;
   isRedirected?: string;
 }) => {
-  const [loadedState, setLoadedState] = useState<any>();
-  useEffect(() => {
-    (async () => {
-      if (preloadedState && preloadedState.music.cookieToken) {
-        const { cookieToken, ...musicWithoutCookie } = preloadedState.music;
-
-        await setCookie(cookieToken);
-        setLoadedState({ music: musicWithoutCookie });
-      } else {
-        setLoadedState(preloadedState);
-      }
-    })();
-  }, []);
+  const loadedState = useGetCookieFromState(preloadedState);
 
   return (
     <Category<Preview>

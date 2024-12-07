@@ -1,6 +1,6 @@
-import { cookies } from "next/headers";
-
 import { CategoryType } from "@/shared/enums/category-type.enum";
+
+import { getCookie } from "@/lib/actions/getCookie";
 
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
 import ComicsCategory from "@/app/comics/components/ComicsCategory";
@@ -37,12 +37,11 @@ const Home = async ({
   let headers = {};
   for (const { key, url } of dataFetchers) {
     try {
-      const cookieStore = await cookies();
-      const token = cookieStore.get("spotify_token");
+      const token = await getCookie("spotify_token");
 
       if (key === CategoryType.Music) {
         headers = {
-          Cookie: `spotify_token=${JSON.stringify(token)}`,
+          Cookie: `spotify_token=${token}`,
         };
       }
 
