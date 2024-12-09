@@ -1,8 +1,7 @@
 import { checkIfRedirected } from "@/lib/utils/redirect";
+import { getMovieDetailsFromApi } from "@/lib/services/getMovieDetailsFromApi";
 
-import { getCategoryDataFromApi } from "@/lib/services/getCategoryDataFromApi";
-
-import { CategoryType } from "@/shared/enums/category-type.enum";
+import { MovieDetail } from "@/shared/interfaces/movies";
 
 import MovieDetails from "@/app/movies/components/MovieDetails";
 
@@ -12,11 +11,11 @@ const MappedMovieDetailsPage = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const item = await getCategoryDataFromApi(CategoryType.Movies, id);
+  const item = await getMovieDetailsFromApi(id);
 
   checkIfRedirected(item);
 
-  return <MovieDetails preloadedState={item} />;
+  return <MovieDetails preloadedState={item as MovieDetail} />;
 };
 
 export default MappedMovieDetailsPage;

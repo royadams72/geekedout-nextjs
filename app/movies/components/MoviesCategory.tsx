@@ -21,7 +21,7 @@ const MoviesCategory = ({
   return (
     <Category<Preview>
       itemsSelector={selectMoviesPreviews}
-      title={CategoryTitle.Movies}
+      title={CategoryTitle.MOVIES}
       preloadedStateAction={setMovies}
       preloadedState={preloadedState}
       sliceNumber={6}

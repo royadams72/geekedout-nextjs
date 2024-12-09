@@ -40,8 +40,8 @@ export const useGetCookieFromState = (preloadedState: any) => {
       }
     };
 
-    fetchData(); // Call the async function
-  }, []); // Dependency array to rerun when preloadedState changes
+    fetchData();
+  }, []);
 
   return loadedState;
 };

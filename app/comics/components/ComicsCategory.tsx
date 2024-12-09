@@ -21,7 +21,7 @@ const ComicsCategory = ({
 }) => {
   return (
     <Category<Preview>
-      title={CategoryTitle.Comics}
+      title={CategoryTitle.COMICS}
       itemsSelector={selectComicsPreviews}
       preloadedStateAction={setComics}
       preloadedState={preloadedState}

@@ -1,6 +1,8 @@
-import { CategoryType } from "@/shared/enums/category-type.enum";
-
 import { getCookie } from "@/lib/actions/getCookie";
+
+import { CategoryType } from "@/shared/enums/category-type.enum";
+import { ApiPaths } from "@/shared/enums/paths.enums";
+import { CookieNames } from "@/shared/enums/cookie-names.enum";
 
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
 import ComicsCategory from "@/app/comics/components/ComicsCategory";
@@ -10,18 +12,21 @@ import GamesCategory from "./games/components/GamesCategory";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 const dataFetchers = [
-  { key: CategoryType.Games, url: `${BASE_URL}/api/games/${GET_DATA_FOLDER}/` },
   {
-    key: CategoryType.Comics,
-    url: `${BASE_URL}/api/comics/${GET_DATA_FOLDER}`,
+    key: CategoryType.GAMES,
+    url: `${BASE_URL}/${ApiPaths.GAMES_API}/${GET_DATA_FOLDER}/`,
   },
   {
-    key: CategoryType.Movies,
-    url: `${BASE_URL}/api/movies/${GET_DATA_FOLDER}`,
+    key: CategoryType.COMICS,
+    url: `${BASE_URL}/${ApiPaths.COMICS_API}/${GET_DATA_FOLDER}`,
   },
   {
-    key: CategoryType.Music,
-    url: `${BASE_URL}/api/music/${GET_DATA_FOLDER}/`,
+    key: CategoryType.MOVIES,
+    url: `${BASE_URL}/${ApiPaths.MOVIES_API}/${GET_DATA_FOLDER}`,
+  },
+  {
+    key: CategoryType.MUSIC,
+    url: `${BASE_URL}/${ApiPaths.MOVIES_API}/${GET_DATA_FOLDER}/`,
   },
 ];
 
@@ -33,13 +38,12 @@ const Home = async ({
   const { redirected } = await searchParams;
   let data: any;
   const preloadedState: Record<string, any> = {};
-  // const preloadedState: any = {};
   let headers = {};
   for (const { key, url } of dataFetchers) {
     try {
-      const token = await getCookie("spotify_token");
+      const token = await getCookie(CookieNames.SPOTIFY_TOKEN);
 
-      if (key === CategoryType.Music) {
+      if (key === CategoryType.MUSIC) {
         headers = {
           Cookie: `spotify_token=${token}`,
         };

@@ -13,7 +13,7 @@ import {
 } from "@/shared/interfaces/comic";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
+import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
 import { RootState } from "@/lib/store/store";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -27,7 +27,7 @@ const initialState: ComicsSliceState = {
 };
 
 export const comicsSlice = createAppSlice({
-  name: CategoryType.Comics,
+  name: CategoryType.COMICS,
   initialState,
   reducers: {
     setComics: (state, action: PayloadAction<ComicStore>) => {
@@ -52,63 +52,15 @@ export const selectComicsPreviews = createSelector(
       const isImages = comic.images && isNotEmpty(comic.images[0]);
 
       return {
-        category: CategoryType.Comics,
+        category: CategoryType.COMICS,
         id: comic.id,
         title: comic.title,
         imageLarge: isImages
           ? `${comic.images[0].path}.jpg`
-          : IMAGE_NOT_FOUND.MED_250x250,
+          : ImageNotFound.MED_250x250,
         imageSmall: isImages
           ? `${comic.images[0].path}/standard_fantastic.jpg`
-          : IMAGE_NOT_FOUND.SM,
+          : ImageNotFound.SM,
       };
     })
 );
-
-export const setComicDetailsFromRedis = async (
-  comicStore: ComicsSliceState,
-  id: string
-): Promise<ComicDetail | {}> => mapComicDetail(comicStore, id);
-
-const mapComicDetail = (
-  comics: ComicsSliceState,
-  id: string
-): ComicDetail | {} => {
-  const results = comics.comics.results || [];
-  const item: Comic | undefined = results.find(
-    (comic: Comic) => comic.id?.toString() === id
-  );
-
-  if (!item) {
-    return {};
-  }
-
-  const {
-    description,
-    pageCount,
-    prices,
-    title: name,
-    urls: [{ url: clickThrough }],
-    images: [{ path, extension }],
-    dates: [{ date: onsaleDate }],
-    creators: { items: creators },
-  } = item;
-
-  const selectedItem: ComicDetail = {
-    onsaleDate: onsaleDate || "TBA",
-    creators: creators.map((c: Items) => ({
-      name: c.name,
-      role: c.role || "unknown",
-    })),
-    description: description || "No Description",
-    image: `${path}.${extension}`,
-    pageCount,
-    printPrice: prices.find((c: Price) => c.type === "printPrice")?.price,
-    clickThrough,
-    name,
-    category: CategoryType.Comics,
-    id,
-  };
-
-  return selectedItem;
-};

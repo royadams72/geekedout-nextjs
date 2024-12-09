@@ -1,13 +1,13 @@
 export enum CategoryType {
-  Comics = "comics",
-  Music = "music",
-  Games = "games",
-  Movies = "movies",
+  COMICS = "comics",
+  MUSIC = "music",
+  GAMES = "games",
+  MOVIES = "movies",
 }
 
 export enum CategoryTitle {
-  Comics = "Comics",
-  Music = "Music",
-  Games = "Games",
-  Movies = "Movies",
+  COMICS = "Comics",
+  MUSIC = "Music",
+  GAMES = "Games",
+  MOVIES = "Movies",
 }

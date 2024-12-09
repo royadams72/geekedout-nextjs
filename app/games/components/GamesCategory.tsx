@@ -20,7 +20,7 @@ const GamesCategory = ({
   return (
     <Category<Preview>
       itemsSelector={selectGamesPreviews}
-      title={CategoryTitle.Games}
+      title={CategoryTitle.GAMES}
       preloadedStateAction={setGames}
       preloadedState={preloadedState}
       sliceNumber={6}

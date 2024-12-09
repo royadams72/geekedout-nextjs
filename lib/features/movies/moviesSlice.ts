@@ -5,13 +5,11 @@ import { RootState } from "@/lib/store/store";
 
 import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
 import { CategoryType } from "@/shared/enums/category-type.enum";
-import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { IMAGE_PATHS } from "@/shared/enums/paths.enums";
+import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
+import { ImagePaths } from "@/shared/enums/paths.enums";
 
 import { isEmpty } from "@/lib/utils/validation";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 export interface MoviesSliceState {
   movies: MoviesStore;
 }
@@ -27,7 +25,7 @@ export const initialState: MoviesSliceState = {
 };
 
 export const moviesSlice = createAppSlice({
-  name: CategoryType.Movies,
+  name: CategoryType.MOVIES,
   initialState,
   reducers: {
     setMovies: (state, action: PayloadAction<MoviesStore>) => {
@@ -40,38 +38,6 @@ export const moviesSlice = createAppSlice({
 export const { setMovies } = moviesSlice.actions;
 export const moviesReducer = moviesSlice.reducer;
 
-export const getMovieDetailsFromApi = async (
-  id: number
-): Promise<MovieDetail | {}> => {
-  let selectedMovie = await getMovieApi(id);
-
-  if (!selectedMovie || isEmpty(selectedMovie)) {
-    console.error(
-      "Data was not loaded for movie ID getMovieDetailsFromApi():",
-      id
-    );
-    selectedMovie = {};
-  }
-
-  return selectedMovie;
-};
-
-const getMovieApi = async (id: number): Promise<MovieDetail | {}> => {
-  try {
-    const response = await fetch(`${BASE_URL}/api/movies/movie-details/${id}`, {
-      method: "GET",
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(`Failed to fetch movie: ${response.status}`);
-    }
-    return mapMovieDetail(data, id);
-  } catch (error) {
-    console.error(`Unable to load details getAllMovieApi(): ${error}`);
-    return {};
-  }
-};
-
 export const selectMovies = createSelector(
   (state: RootState) => state?.movies?.movies?.results || [],
   (items) => items.filter((item) => item !== null)
@@ -81,43 +47,14 @@ export const selectMoviesPreviews = createSelector(
   selectMovies,
   (movies: Movie[]) =>
     movies?.map((movie) => ({
-      category: CategoryType.Movies,
+      category: CategoryType.MOVIES,
       id: movie.id,
       imageLarge: movie.poster_path
-        ? `${IMAGE_PATHS.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
-        : IMAGE_NOT_FOUND.MED_250x250,
+        ? `${ImagePaths.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
+        : ImageNotFound.MED_250x250,
       imageSmall: movie.poster_path
-        ? `${IMAGE_PATHS.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
-        : IMAGE_NOT_FOUND.SM,
+        ? `${ImagePaths.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
+        : ImageNotFound.SM,
       title: movie.title,
     }))
 );
-
-function mapMovieDetail(movie: Movie, id: number): MovieDetail | {} {
-  if (isEmpty(movie)) {
-    return {};
-  }
-  const {
-    title: name,
-    release_date,
-    poster_path,
-    homepage,
-    imdb_id,
-    genres,
-    overview,
-  } = movie;
-
-  const genreNames = genres?.map((genre: { name: string }) => genre.name) || [];
-
-  return {
-    category: CategoryType.Movies,
-    genres: genreNames,
-    homepage: homepage!,
-    id,
-    imdb_link: `http://www.imdb.com/title/${imdb_id}`,
-    image: `https://image.tmdb.org/t/p/w300${poster_path}`,
-    name,
-    overview,
-    release_date,
-  };
-}

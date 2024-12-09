@@ -26,7 +26,7 @@ const MusicCategory = ({
 
   return (
     <Category<Preview>
-      title={CategoryTitle.Music}
+      title={CategoryTitle.MUSIC}
       itemsSelector={selectMusicPreviews}
       preloadedStateAction={setMusic}
       preloadedState={loadedState}
