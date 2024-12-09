@@ -2,7 +2,7 @@ import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
 import { createAppSlice } from "@/lib/store/createAppSlice";
 
-import { isEmpty, isNotEmpty } from "@/utils/helpers";
+import { isNotEmpty } from "@/lib/utils/validation";
 
 import {
   Comic,

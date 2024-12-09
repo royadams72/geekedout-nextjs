@@ -14,7 +14,7 @@ import {
   setSessionId,
 } from "@/lib/features/uiData/uiDataSlice";
 
-import { isNotEmpty } from "@/utils/helpers";
+import { isNotEmpty } from "@/lib/utils/validation";
 
 import styles from "@/styles/components/_category.module.scss";
 

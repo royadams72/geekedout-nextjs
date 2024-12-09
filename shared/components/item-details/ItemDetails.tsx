@@ -22,7 +22,7 @@ import {
 import styles from "@/styles/components/_detail.module.scss";
 
 import Loader from "@/shared/components/loader/Loader";
-import { isEmpty, isNotEmpty } from "@/utils/helpers";
+import { isEmpty, isNotEmpty } from "@/lib/utils/validation";
 
 const typeGuards = [
   isMappedMovieDetail,
@@ -85,7 +85,6 @@ const ItemDetails = <T extends BasicDetail>({
     return <h1>No details loaded please go back and try again</h1>;
   return (
     <>
-      {`${itemDetail}`}
       <div className={styles.details_container}>
         <div className={styles[`details_container_${category.toLowerCase()}`]}>
           <div className={styles.details_btn_container}>

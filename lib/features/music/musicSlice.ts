@@ -11,12 +11,10 @@ import {
 } from "@/shared/interfaces/music";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { refreshToken } from "@/app/api/music/token/getToken";
 
-import { isEmpty } from "@/utils/helpers";
+import { isEmpty } from "@/lib/utils/validation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 export interface MusicSliceState {
   music: MusicStore;
 }

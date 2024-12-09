@@ -43,7 +43,6 @@ export const getCategoryByName = async (
   try {
     const data = await getStoreData(sessionId);
     const categoriesData = data?.state;
-    let returnedData;
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
     }

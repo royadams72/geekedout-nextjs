@@ -77,18 +77,20 @@ const parseAndGetToken = (cookieData: any) => {
 };
 
 const isExpiredOrNull = (cookie: any) => {
-  const tokenCookie = JSON.parse(cookie.value);
+  console.log("cookie:::::::", cookie);
 
   const now = Date.now();
 
-  if (cookie?.value === "undefined" || cookie?.value === "null" || null) {
+  if (!cookie || cookie?.value === "undefined" || cookie?.value === "null") {
     return true;
-  } else if (tokenCookie && tokenCookie?.access_token && tokenCookie?.expiry) {
-    const { expiry } = tokenCookie;
-    // console.log("expiry > now:::", expiry < now);
-
-    if (expiry < now) {
-      return true;
+  } else if (cookie) {
+    const tokenCookie = JSON.parse(cookie?.value);
+    if (tokenCookie && tokenCookie?.access_token && tokenCookie?.expiry) {
+      const { expiry } = tokenCookie;
+      // console.log("expiry > now:::", expiry < now);
+      if (expiry < now) {
+        return true;
+      }
     }
   }
   return false;

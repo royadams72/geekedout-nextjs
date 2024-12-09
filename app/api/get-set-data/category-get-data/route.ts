@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCookie } from "@/lib/actions/getCookie";
 import { getCategoryByName, getItem } from "@/lib/redis/redis";
-import { ApiError } from "@/utils/helpers";
+import { ApiError } from "@/lib/utils/error";
 import { checkSpotifyCookie } from "../../music/token/getToken";
 import { CategoryType } from "@/shared/enums/category-type.enum";
 

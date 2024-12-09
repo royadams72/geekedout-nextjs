@@ -1,6 +1,6 @@
-import { checkIfRedirected } from "@/utils/helpers";
+import { checkIfRedirected } from "@/lib/utils/error";
 
-import { getCategoryDataFromApi } from "@/lib/actions/getCategoryDataFromApi";
+import { getCategoryDataFromApi } from "@/lib/services/getCategoryDataFromApi";
 
 import { CategoryType } from "@/shared/enums/category-type.enum";
 

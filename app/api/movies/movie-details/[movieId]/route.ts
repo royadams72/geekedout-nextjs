@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { ApiError } from "@/utils/helpers";
+import { ApiError } from "@/lib/utils/error";
 
 const api_key = process.env.MOVIES_APIKEY;
 const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;

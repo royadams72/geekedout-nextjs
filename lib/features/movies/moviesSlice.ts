@@ -8,7 +8,7 @@ import { CategoryType } from "@/shared/enums/category-type.enum";
 import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
 import { IMAGE_PATHS } from "@/shared/enums/paths.enums";
 
-import { isEmpty } from "@/utils/helpers";
+import { isEmpty } from "@/lib/utils/validation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { isNotEmpty } from "@/utils/helpers";
+import { isNotEmpty } from "@/lib/utils/validation";
 import { setCookie } from "../actions/setCookie"; // Make sure this function is available
 
 export const useGetCookieFromState = (preloadedState: any) => {
