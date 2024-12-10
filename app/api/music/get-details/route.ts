@@ -16,7 +16,6 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
   let response: any;
 
   const { cookieData, cookieValue } = await checkSpotifyCookie(req);
-  console.log("cookieData:", cookieValue);
 
   try {
     response = await fetch(`${BASE_URL_MUSIC}/albums/${id}`, {
