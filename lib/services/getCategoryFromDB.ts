@@ -4,8 +4,8 @@ import { getStoreData } from "../db/redis";
 
 export const getCategoryFromDB = async (categoryName: string) => {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const sessionId = await getCookie(CookieNames.SESSION_ID);
   try {
-    const sessionId = await getCookie(CookieNames.SESSION_ID);
     if (!sessionId) {
       return { redirect: `${BASE_URL}/?redirected=true` };
     }
