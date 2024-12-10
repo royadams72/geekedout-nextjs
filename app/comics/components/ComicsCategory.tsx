@@ -19,8 +19,6 @@ const ComicsCategory = ({
   preloadedState: ComicsSliceState;
   isRedirected?: string;
 }) => {
-  // console.log("comics preloaded state:", preloadedState);
-
   return (
     <Category<Preview>
       title={CategoryTitle.COMICS}
