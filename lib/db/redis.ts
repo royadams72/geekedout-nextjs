@@ -12,7 +12,10 @@ export const saveSessionData = async (sessionId: string, data: any) => {
       "EX",
       sessionTTL
     );
-    console.log("saving sessionData to redis", response);
+    console.log(
+      "saving sessionData to redis",
+      data.state.comics.comics.results[0]
+    );
 
     if (response !== "OK") {
       throw new Error(
@@ -26,7 +29,7 @@ export const saveSessionData = async (sessionId: string, data: any) => {
 
 export const getStoreData = async (sessionId: string) => {
   const data = await redis.get(`session:${sessionId}`);
-  console.log("Getting store data:", data);
+  // console.log("Getting store data:", data);
 
   return data ? JSON.parse(data) : null;
 };

@@ -8,7 +8,6 @@ export const setGameDetailsFromDB = async (
 ): Promise<GameDetail | {}> => {
   try {
     const storeData = await getCategoryFromDB(CategoryType.GAMES);
-    console.log("games storeData:", storeData);
     if (!storeData) {
       throw new Error("Could not get games storeData from DB");
     }

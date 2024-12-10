@@ -8,7 +8,7 @@ export const setComicDetailsFromDB = async (
 ): Promise<ComicDetail | {}> => {
   try {
     const storeData = await getCategoryFromDB(CategoryType.COMICS);
-    console.log("comics storeData:", storeData);
+    // console.log("comics storeData:", storeData);
     if (!storeData) {
       throw new Error("Could not get comics storeData from DB");
     }
