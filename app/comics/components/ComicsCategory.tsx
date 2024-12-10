@@ -19,7 +19,7 @@ const ComicsCategory = ({
   preloadedState: ComicsSliceState;
   isRedirected?: string;
 }) => {
-  console.log("comics preloaded state:", preloadedState);
+  // console.log("comics preloaded state:", preloadedState);
 
   return (
     <Category<Preview>
