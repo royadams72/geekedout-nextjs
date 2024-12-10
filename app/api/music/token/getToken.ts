@@ -76,8 +76,6 @@ const parseAndGetToken = (cookieData: any) => {
 };
 
 const isExpiredOrNull = (cookie: any) => {
-  console.log("cookie:::::::", cookie);
-
   const now = Date.now();
 
   if (!cookie || cookie?.value === "undefined" || cookie?.value === "null") {

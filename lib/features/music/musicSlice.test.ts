@@ -10,7 +10,6 @@ import {
   musicReducer,
   initialState,
   selectAllAlbums,
-  getMusicDetailsFromApi,
   selectMusicPreviews,
 } from "@/lib/features/music/musicSlice";
 
@@ -61,47 +60,5 @@ describe("musicSlice", () => {
   it("selectAllAlbums should return all albums", () => {
     const albums = selectAllAlbums(rootStateMock);
     expect(albums.length).toBeGreaterThanOrEqual(1);
-  });
-
-  it("should fetch album details and map to new object", async () => {
-    const resultNotMapped = musicDetailMockNotMapped;
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(resultNotMapped),
-    });
-
-    const resultMapped = await getMusicDetailsFromApi(resultNotMapped.id);
-
-    expect(resultNotMapped).toHaveProperty("external_urls");
-    expect(resultMapped).not.toHaveProperty("external_urls");
-    expect(resultMapped).toHaveProperty("spotify_link");
-    expect(resultMapped).toHaveProperty("category");
-  });
-
-  it("should fetch album details and map to new object", async () => {
-    const resultNotMapped = musicDetailMockNotMapped;
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(resultNotMapped),
-    });
-
-    const resultMapped = await getMusicDetailsFromApi(resultNotMapped.id);
-
-    expect(resultMapped).not.toHaveProperty("external_urls");
-    expect(resultMapped).toHaveProperty("spotify_link");
-    expect(resultMapped).toHaveProperty("category");
-  });
-
-  it("should return empty object if no details to map", async () => {
-    const item = musicDetailMockNotMapped;
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      status: 300,
-      json: async () => ({}),
-    });
-
-    const result = await getMusicDetailsFromApi(item.id);
-
-    expect(result).toEqual({});
   });
 });

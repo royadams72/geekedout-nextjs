@@ -96,7 +96,7 @@ describe("ComicCategory Component", () => {
       render(
         <Provider store={store}>
           <Category<Preview>
-            title={CategoryTitle.Comics}
+            title={CategoryTitle.COMICS}
             itemsSelector={selectComicsPreviews}
             preloadedStateAction={setComics}
             preloadedState={comicStore}
@@ -135,7 +135,7 @@ describe("ComicCategory Component", () => {
       render(
         <Provider store={store}>
           <Category<Preview>
-            title={CategoryTitle.Comics}
+            title={CategoryTitle.COMICS}
             itemsSelector={selectComicsPreviews}
             preloadedStateAction={setComics}
             preloadedState={comicStore}
@@ -154,7 +154,7 @@ describe("ComicCategory Component", () => {
     render(
       <Provider store={store}>
         <Category<Preview>
-          title={CategoryTitle.Comics}
+          title={CategoryTitle.COMICS}
           itemsSelector={selectComicsPreviews}
           preloadedStateAction={setComics}
           preloadedState={comicStore}
@@ -176,7 +176,7 @@ describe("ComicCategory Component", () => {
       render(
         <Provider store={store}>
           <Category<Preview>
-            title={CategoryTitle.Comics}
+            title={CategoryTitle.COMICS}
             itemsSelector={selectComicsPreviews}
             preloadedStateAction={setComics}
             preloadedState={undefined}
@@ -199,7 +199,7 @@ describe("ComicCategory Component", () => {
     render(
       <Provider store={store}>
         <Category<Preview>
-          title={CategoryTitle.Comics}
+          title={CategoryTitle.COMICS}
           itemsSelector={selectComicsPreviews}
           preloadedStateAction={setComics}
           preloadedState={comicStore}
@@ -221,7 +221,7 @@ describe("ComicCategory Component", () => {
     render(
       <Provider store={store}>
         <Category<Preview>
-          title={CategoryTitle.Comics}
+          title={CategoryTitle.COMICS}
           itemsSelector={selectComicsPreviews}
           preloadedStateAction={setComics}
           preloadedState={comicStore}
@@ -240,7 +240,7 @@ describe("ComicCategory Component", () => {
     render(
       <Provider store={store}>
         <Category<Preview>
-          title={CategoryTitle.Comics}
+          title={CategoryTitle.COMICS}
           itemsSelector={selectComicsPreviews}
           preloadedStateAction={setComics}
           preloadedState={comicStore}
