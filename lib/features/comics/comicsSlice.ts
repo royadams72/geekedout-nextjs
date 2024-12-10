@@ -32,7 +32,7 @@ export const comicsSlice = createAppSlice({
   reducers: {
     setComics: (state, action: PayloadAction<ComicStore>) => {
       state.comics = action.payload;
-      console.log("state.comics:", state);
+      // console.log("state.comics:", state);
     },
   },
   selectors: {},

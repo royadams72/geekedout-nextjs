@@ -5,7 +5,6 @@ import { getStoreData } from "../db/redis";
 export const getCategoryFromDB = async (categoryName: string) => {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   const sessionId = await getCookie(CookieNames.SESSION_ID);
-  console.log("BASE_URL:", BASE_URL, "sessionId:", sessionId);
 
   try {
     if (!sessionId) {

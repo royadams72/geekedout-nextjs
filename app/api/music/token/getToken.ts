@@ -7,7 +7,7 @@ export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
   const requestCookie = req.cookies.get("spotify_token");
 
   if (isExpiredOrNull(requestCookie)) {
-    console.log("Refreshing token");
+    // console.log("Refreshing token");
     const response = await refreshToken();
     const cookieData = response.cookies.get("spotify_token");
     const cookieValue = parseAndGetToken(cookieData);
@@ -15,7 +15,7 @@ export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
     return { cookieData, cookieValue };
   } else {
     const cookieValue = parseAndGetToken(requestCookie);
-    console.log("Do not refresh cookie:::", cookieValue);
+    // console.log("Do not refresh cookie:::", cookieValue);
     return { cookieValue };
   }
 };

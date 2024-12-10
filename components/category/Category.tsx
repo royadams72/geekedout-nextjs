@@ -69,12 +69,12 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (loading) return;
-    console.log(
-      "preloadedStateAction:",
-      title.toLowerCase(),
-      ">>>",
-      preloadedState[title.toLowerCase()]
-    );
+    // console.log(
+    //   "preloadedStateAction:",
+    //   title.toLowerCase(),
+    //   ">>>",
+    //   preloadedState[title.toLowerCase()]
+    // );
     if (isNotEmpty(preloadedState[title.toLowerCase()]) && isFirstPage) {
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }

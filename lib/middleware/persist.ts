@@ -47,7 +47,7 @@ persisterMiddleware.startListening({
           }
         );
 
-        console.log("perist state:", state);
+        // console.log("perist state:", state);
 
         if (!res.ok) {
           console.error(`HTTP error! Status: ${res.status}`);
