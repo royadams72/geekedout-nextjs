@@ -14,7 +14,7 @@ export const saveSessionData = async (sessionId: string, data: any) => {
     );
     console.log(
       "saving sessionData to redis",
-      data.state.comics.comics.results[0]
+      JSON.stringify(data.state.comics.comics.results[0])
     );
 
     if (response !== "OK") {
