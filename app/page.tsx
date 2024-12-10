@@ -65,16 +65,16 @@ const Home = async ({
 
   return (
     <>
-      <MusicCategory
-        preloadedState={preloadedState.music}
-        isRedirected={redirected}
-      />
       <MoviesCategory
         preloadedState={preloadedState.movies}
         isRedirected={redirected}
       />
       <ComicsCategory
         preloadedState={preloadedState.comics}
+        isRedirected={redirected}
+      />
+      <MusicCategory
+        preloadedState={preloadedState.music}
         isRedirected={redirected}
       />
       <GamesCategory

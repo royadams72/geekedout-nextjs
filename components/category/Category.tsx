@@ -71,6 +71,8 @@ const Category = <T extends { id: number | string | undefined }>({
     if (loading) return;
 
     if (isNotEmpty(preloadedState[title.toLowerCase()]) && isFirstPage) {
+      console.log("preloadedStateAction:", preloadedState[title.toLowerCase()]);
+
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }
   }, [
