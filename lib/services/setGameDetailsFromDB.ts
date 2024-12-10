@@ -6,8 +6,17 @@ import { getCategoryFromDB } from "@/lib/services/getCategoryFromDB";
 export const setGameDetailsFromDB = async (
   id: string
 ): Promise<GameDetail | {}> => {
-  const storeData = await getCategoryFromDB(CategoryType.GAMES);
-  return mapGameDetail(storeData, id);
+  try {
+    const storeData = await getCategoryFromDB(CategoryType.GAMES);
+    console.log("games storeData:", storeData);
+    if (!storeData) {
+      throw new Error("Could not get games storeData from DB");
+    }
+    return mapGameDetail(storeData, id);
+  } catch (error) {
+    console.error(`error in setGameDetailsFromDB: ${error}`);
+    return {};
+  }
 };
 
 export const mapGameDetail = (

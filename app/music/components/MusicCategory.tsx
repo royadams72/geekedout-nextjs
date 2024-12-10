@@ -10,8 +10,6 @@ import {
 import { Preview } from "@/types/interfaces/preview";
 import { CategoryTitle } from "@/types/enums/category-type.enum";
 
-import { setCookie } from "@/lib/actions/setCookie";
-
 import Category from "@/components/category/Category";
 import { useGetCookieFromState } from "@/lib/hooks/useGetCookieFromState";
 

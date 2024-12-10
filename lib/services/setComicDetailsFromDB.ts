@@ -6,8 +6,17 @@ import { getCategoryFromDB } from "@/lib/services/getCategoryFromDB";
 export const setComicDetailsFromDB = async (
   id: string
 ): Promise<ComicDetail | {}> => {
-  const storeData = await getCategoryFromDB(CategoryType.COMICS);
-  return mapComicDetail(storeData, id);
+  try {
+    const storeData = await getCategoryFromDB(CategoryType.COMICS);
+    console.log("comics storeData:", storeData);
+    if (!storeData) {
+      throw new Error("Could not get comics storeData from DB");
+    }
+    return mapComicDetail(storeData, id);
+  } catch (error) {
+    console.error(`error in setComicDetailsFromDB: ${error}`);
+    return {};
+  }
 };
 
 const mapComicDetail = (
