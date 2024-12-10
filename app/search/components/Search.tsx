@@ -11,10 +11,10 @@ import { selectMusicPreviews } from "@/lib/features/music/musicSlice";
 import { selectMoviesPreviews } from "@/lib/features/movies/moviesSlice";
 import { selectGamesPreviews } from "@/lib/features/games/gamesSlice";
 
-import { Preview } from "@/shared/interfaces/preview";
+import { Preview } from "@/types/interfaces/preview";
 
 import styles from "@/styles/components/_category.module.scss";
-import CategoryItem from "@/shared/components/category/CategoryItem";
+import CategoryItem from "@/components/category/CategoryItem";
 
 const shuffle = (array: Preview[]) => {
   let currentIndex = array.length;

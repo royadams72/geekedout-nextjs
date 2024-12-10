@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import { ComicDetail } from "@/shared/interfaces/comic";
+import { ComicDetail } from "@/types/interfaces/comic";
 import { comicDetailMock } from "@/__mocks__/comics/comics.mocks";
 
 import ComicDetails from "@/app/comics/components/ComicDetails";
 
-jest.mock("@/shared/components/item-details/ItemDetails", () => {
+jest.mock("@/components/item-details/ItemDetails", () => {
   const MockItemDetails = ({ children }: any) => (
     <div data-testid="item-details">{children}</div>
   );

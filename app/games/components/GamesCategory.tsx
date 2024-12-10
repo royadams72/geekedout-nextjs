@@ -5,10 +5,10 @@ import {
   GamesSliceState,
 } from "@/lib/features/games/gamesSlice";
 
-import { Preview } from "@/shared/interfaces/preview";
-import { CategoryTitle } from "@/shared/enums/category-type.enum";
+import { Preview } from "@/types/interfaces/preview";
+import { CategoryTitle } from "@/types/enums/category-type.enum";
 
-import Category from "@/shared/components/category/Category";
+import Category from "@/components/category/Category";
 
 const GamesCategory = ({
   preloadedState,
@@ -20,7 +20,7 @@ const GamesCategory = ({
   return (
     <Category<Preview>
       itemsSelector={selectGamesPreviews}
-      title={CategoryTitle.Games}
+      title={CategoryTitle.GAMES}
       preloadedStateAction={setGames}
       preloadedState={preloadedState}
       sliceNumber={6}

@@ -3,11 +3,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import { movieSliceMock } from "@/__mocks__/movies/movies.mocks";
 import { rootStateMock } from "@/__mocks__/store.mocks";
 
-import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
-import { MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
+import { MoviesStore } from "@/types/interfaces/movies";
 import {
-  getMovieDetailsFromApi,
   initialState as moviesInitialState,
   moviesSlice,
   MoviesSliceState,
@@ -91,32 +90,7 @@ describe("movieSlice", () => {
 
     const previewMovie = selectMoviesPreviews(clonedState);
 
-    expect(previewMovie[0].imageSmall).toEqual(IMAGE_NOT_FOUND.SM);
-    expect(previewMovie[0].imageLarge).toEqual(IMAGE_NOT_FOUND.MED_250x250);
-  });
-
-  it("should map item for details page via getMovieDetailsFromApi", async () => {
-    const originalArrayItem1 = state.movies.results[0];
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve(movieSliceMock.movies.results[0]),
-    });
-    const mappedData = (await getMovieDetailsFromApi(
-      originalArrayItem1?.id
-    )) as MovieDetail;
-
-    expect(mappedData?.name).toEqual(originalArrayItem1.title);
-  });
-
-  it("should return an empty object if cannot be mapped", async () => {
-    const originalArrayItem1 = state.movies.results[0];
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      status: 500,
-      json: () => ({}),
-    });
-    const mappedData = await getMovieDetailsFromApi(originalArrayItem1.id);
-
-    expect(mappedData).toEqual({});
+    expect(previewMovie[0].imageSmall).toEqual(ImageNotFound.SM);
+    expect(previewMovie[0].imageLarge).toEqual(ImageNotFound.MED_250x250);
   });
 });

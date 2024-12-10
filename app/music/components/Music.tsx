@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import styles from "@/styles/components/_detail.module.scss";
 
-import { AlbumDetail } from "@/shared/interfaces/music";
+import { AlbumDetail } from "@/types/interfaces/music";
 
 const Music = ({ albumDetails }: { albumDetails: AlbumDetail }) => {
   return (

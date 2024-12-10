@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkSpotifyCookie } from "@/app/api/music/token/getToken";
-import { ApiError } from "@/utils/helpers";
+import { ApiError } from "@/lib/utils/error";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
@@ -19,7 +19,12 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
   console.log("cookieData:", cookieValue);
 
   try {
-    response = await fetchAlbum(id, cookieValue);
+    response = await fetch(`${BASE_URL_MUSIC}/albums/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${cookieValue}`,
+      },
+    });
 
     const data = await response.json();
 
@@ -31,7 +36,6 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
     }
 
     const returnedData = { ...data, cookieData };
-    // console.log("cookieData in returnes data", returnedData);
 
     return returnedData;
   } catch (error) {
@@ -51,15 +55,4 @@ const getAlbumDetails = async (req: NextRequest, id: string) => {
       );
     }
   }
-};
-
-const fetchAlbum = async (id: string, cookieValue: string) => {
-  const res = await fetch(`${BASE_URL_MUSIC}/albums/${id}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${cookieValue}`,
-    },
-  });
-
-  return res;
 };

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { checkSpotifyCookie } from "@/app/api/music/token/getToken";
 
-import { ApiError } from "@/utils/helpers";
+import { ApiError } from "@/lib/utils/error";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
@@ -34,7 +34,6 @@ const getAllAlbums = async (req: NextRequest) => {
       );
     }
     const returnedData = { ...data.albums, cookieData };
-    // console.log("returnedData:", returnedData);
     return returnedData;
   } catch (error) {
     if (error instanceof ApiError) {

@@ -3,14 +3,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { comicSliceMock } from "@/__mocks__/comics/comics.mocks";
 import { rootStateMock } from "@/__mocks__/store.mocks";
 
-import { ComicDetail, ComicStore } from "@/shared/interfaces/comic";
-import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
+import { ComicStore } from "@/types/interfaces/comic";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
 import {
   comicsSlice,
   ComicsSliceState,
   selectComicsPreviews,
-  setComicDetailsFromRedis,
   setComics,
 } from "@/lib/features/comics/comicsSlice";
 
@@ -81,36 +80,7 @@ describe("comicSlice", () => {
 
     const previewComics = selectComicsPreviews(clonedState);
 
-    expect(previewComics[0].imageSmall).toEqual(IMAGE_NOT_FOUND.SM);
-    expect(previewComics[0].imageLarge).toEqual(IMAGE_NOT_FOUND.MED_250x250);
-  });
-
-  it("should map item for details page via setComicDetailsFromRedis", async () => {
-    const originalArrayItem1 = state.comics.results[0];
-
-    const mappedData = (await setComicDetailsFromRedis(
-      state,
-      originalArrayItem1?.id?.toString() as string
-    )) as ComicDetail;
-
-    expect(mappedData?.name).toEqual(originalArrayItem1.title);
-  });
-
-  it("should return an empty object if cannot be mapped", async () => {
-    const originalArrayItem1 = state.comics.results[0];
-    const clonedState = {
-      ...comicSliceMock,
-      comics: {
-        ...comicSliceMock.comics,
-        results: [],
-      },
-    };
-
-    const mappedData = await setComicDetailsFromRedis(
-      clonedState,
-      originalArrayItem1.id as string
-    );
-
-    expect(mappedData).toEqual({});
+    expect(previewComics[0].imageSmall).toEqual(ImageNotFound.SM);
+    expect(previewComics[0].imageLarge).toEqual(ImageNotFound.MED_250x250);
   });
 });

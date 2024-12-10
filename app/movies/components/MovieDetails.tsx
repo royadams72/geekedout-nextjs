@@ -1,8 +1,8 @@
 "use client";
 
-import { MovieDetail } from "@/shared/interfaces/movies";
+import { MovieDetail } from "@/types/interfaces/movies";
 
-import ItemDetails from "@/shared/components/item-details/ItemDetails";
+import ItemDetails from "@/components/item-details/ItemDetails";
 import Movie from "@/app/movies/components/Movie";
 
 const MovieDetails = ({ preloadedState }: { preloadedState: MovieDetail }) => {

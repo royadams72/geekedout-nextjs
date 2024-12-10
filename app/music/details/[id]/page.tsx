@@ -1,10 +1,9 @@
-import { checkIfRedirected } from "@/utils/helpers";
+import { checkIfRedirected } from "@/lib/utils/redirect";
+import { getMusicDetailsFromApi } from "@/lib/services/getMusicDetailsFromApi";
 
-import { getCategoryDataFromApi } from "@/lib/actions/getCategoryDataFromApi";
+import { AlbumDetail } from "@/types/interfaces/music";
 
-import { CategoryType } from "@/shared/enums/category-type.enum";
-
-import MusicDetails from "../../components/MusicDetails";
+import MusicDetails from "@/app/music/components/MusicDetails";
 
 const MusicDetailsPage = async ({
   params,
@@ -12,11 +11,11 @@ const MusicDetailsPage = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const item = await getCategoryDataFromApi(CategoryType.Music, id);
+  const item = await getMusicDetailsFromApi(id);
 
   checkIfRedirected(item);
 
-  return <MusicDetails preloadedState={item} />;
+  return <MusicDetails preloadedState={item as AlbumDetail} />;
 };
 
 export default MusicDetailsPage;

@@ -1,8 +1,7 @@
-import { checkIfRedirected } from "@/utils/helpers";
+import { checkIfRedirected } from "@/lib/utils/redirect";
+import { setGameDetailsFromDB } from "@/lib/services/setGameDetailsFromDB";
 
-import { getCategoryDataFromApi } from "@/lib/actions/getCategoryDataFromApi";
-
-import { CategoryType } from "@/shared/enums/category-type.enum";
+import { GameDetail } from "@/types/interfaces/game";
 
 import GamesDetails from "@/app/games/components/GamesDetails";
 
@@ -12,11 +11,11 @@ const GameDetailsPage = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  const item = await getCategoryDataFromApi(CategoryType.Games, id);
+  const item = await setGameDetailsFromDB(id);
 
   checkIfRedirected(item);
 
-  return <GamesDetails preloadedState={item} />;
+  return <GamesDetails preloadedState={item as GameDetail} />;
 };
 
 export default GameDetailsPage;

@@ -8,15 +8,12 @@ import {
   AlbumDetail,
   Artists,
   MusicStore,
-} from "@/shared/interfaces/music";
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-import { refreshToken } from "@/app/api/music/token/getToken";
+} from "@/types/interfaces/music";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
-import { isEmpty } from "@/utils/helpers";
+import { isEmpty } from "@/lib/utils/validation";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 export interface MusicSliceState {
   music: MusicStore;
 }
@@ -35,10 +32,9 @@ export const initialState: MusicSliceState = {
     total: 0,
   },
 };
-const MUSIC_API = "api/music";
 
 export const musicSlice = createAppSlice({
-  name: CategoryType.Music,
+  name: CategoryType.MUSIC,
   initialState,
   reducers: {
     setMusic: (state, action: PayloadAction<MusicStore>) => {
@@ -60,99 +56,10 @@ export const selectMusicPreviews = createSelector(
   selectAllAlbums,
   (albums: Album[]) =>
     albums?.map((album) => ({
-      category: CategoryType.Music,
+      category: CategoryType.MUSIC,
       id: album.id,
-      imageLarge: album.images?.[0]?.url || IMAGE_NOT_FOUND.SM,
-      imageSmall: album.images?.[1]?.url || IMAGE_NOT_FOUND.SM,
+      imageLarge: album.images?.[0]?.url || ImageNotFound.SM,
+      imageSmall: album.images?.[1]?.url || ImageNotFound.SM,
       title: album.name,
     }))
 );
-
-export const getMusicDetailsFromApi = async (
-  id: string
-): Promise<AlbumDetail | {}> => {
-  const response = await fetch(
-    `${BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
-    {
-      method: "POST",
-      credentials: "include",
-    }
-  );
-  const data = await response.json();
-
-  return mapAlbumDetail(data);
-};
-
-// export const getAlbumDetails = async (id: string) => {
-//   const response = await fetch(
-//     `${BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
-//     {
-//       method: "POST",
-//       credentials: "include",
-//     }
-//   );
-//   const data = await response.json();
-
-//   return mapAlbumDetail(data);
-// };
-
-// export const fetchAndRefreshTokenIfNeeded = async <T>(
-//   url: string,
-//   options: RequestInit
-// ) => {
-//   try {
-//     let response = await fetch(url, options);
-//     if (response.status === 401) {
-//       await refreshToken();
-//       response = await fetch(url, options);
-//     }
-//     if (!response.ok && response.status !== 401) {
-//       throw new Error(`Network response was not ok: ${response.statusText}`);
-//     }
-//     const data: T = await response.json();
-
-//     return data;
-//   } catch (error) {
-//     console.error(
-//       "Failed to fetch data: fetchAndRefreshTokenIfNeeded()",
-//       error
-//     );
-//     return {} as T;
-//   }
-// };
-
-export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
-  if (isEmpty(item)) {
-    return {};
-  }
-
-  const {
-    id,
-    name,
-    artists: artistArray,
-    images,
-    external_urls: { spotify: spotifyLink } = { spotify: "" },
-    release_date,
-    tracks: { items },
-    cookieData,
-  }: any = item;
-
-  const tracks = items.map((arrayItem: Artists) => arrayItem.name);
-  const artists = artistArray.map((arrayItem: Artists) => ({
-    name: arrayItem.name,
-    spotifyUrl: arrayItem.external_urls.spotify,
-  }));
-
-  // console.log(cookieData);
-  return {
-    id,
-    name,
-    artists,
-    spotify_link: spotifyLink || "",
-    image: images?.[0]?.url || IMAGE_NOT_FOUND.SM,
-    release_date,
-    tracks,
-    category: "Music",
-    cookieData,
-  };
-};

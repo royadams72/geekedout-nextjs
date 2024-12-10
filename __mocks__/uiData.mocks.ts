@@ -1,4 +1,4 @@
-import { UiData } from "@/shared/interfaces/uiData";
+import { UiData } from "@/types/interfaces/uiData";
 
 export const uiDataMock = {
   currPrevUrls: {

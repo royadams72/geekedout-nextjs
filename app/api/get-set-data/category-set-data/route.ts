@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { saveSessionData } from "@/lib/redis/redis";
+import { saveSessionData } from "@/lib/db/redis";
 import { ensureBrowserSession } from "@/app/api/get-set-data/ensureBrowserSession";
 
 export async function POST(request: NextRequest) {

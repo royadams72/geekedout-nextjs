@@ -5,7 +5,6 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
   const requestCookie = req.cookies.get("spotify_token");
-  // console.log(requestCookie);
 
   if (isExpiredOrNull(requestCookie)) {
     console.log("Refreshing token");
@@ -77,18 +76,17 @@ const parseAndGetToken = (cookieData: any) => {
 };
 
 const isExpiredOrNull = (cookie: any) => {
-  const tokenCookie = JSON.parse(cookie.value);
-
   const now = Date.now();
 
-  if (cookie?.value === "undefined" || cookie?.value === "null" || null) {
+  if (!cookie || cookie?.value === "undefined" || cookie?.value === "null") {
     return true;
-  } else if (tokenCookie && tokenCookie?.access_token && tokenCookie?.expiry) {
-    const { expiry } = tokenCookie;
-    // console.log("expiry > now:::", expiry < now);
-
-    if (expiry < now) {
-      return true;
+  } else if (cookie) {
+    const tokenCookie = JSON.parse(cookie?.value);
+    if (tokenCookie && tokenCookie?.access_token && tokenCookie?.expiry) {
+      const { expiry } = tokenCookie;
+      if (expiry < now) {
+        return true;
+      }
     }
   }
   return false;

@@ -7,12 +7,12 @@ import {
   MusicSliceState,
 } from "@/lib/features/music/musicSlice";
 
-import { Preview } from "@/shared/interfaces/preview";
-import { CategoryTitle } from "@/shared/enums/category-type.enum";
+import { Preview } from "@/types/interfaces/preview";
+import { CategoryTitle } from "@/types/enums/category-type.enum";
 
 import { setCookie } from "@/lib/actions/setCookie";
 
-import Category from "@/shared/components/category/Category";
+import Category from "@/components/category/Category";
 import { useGetCookieFromState } from "@/lib/hooks/useGetCookieFromState";
 
 const MusicCategory = ({
@@ -26,7 +26,7 @@ const MusicCategory = ({
 
   return (
     <Category<Preview>
-      title={CategoryTitle.Music}
+      title={CategoryTitle.MUSIC}
       itemsSelector={selectMusicPreviews}
       preloadedStateAction={setMusic}
       preloadedState={loadedState}

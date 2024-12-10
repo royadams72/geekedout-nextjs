@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ApiError } from "@/utils/helpers";
+import { ApiError } from "@/lib/utils/error";
 
 const BASE_URL_GAMES = process.env.BASE_URL_GAMES as string;
 

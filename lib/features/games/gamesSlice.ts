@@ -3,14 +3,9 @@ import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
-import { isEmpty } from "@/utils/helpers";
-
-import { Game, GameDetail } from "@/shared/interfaces/game";
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { IMAGE_NOT_FOUND } from "@/shared/enums/image-not-found.enum";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
+import { Game } from "@/types/interfaces/game";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
 export interface GamesSliceState {
   games: Game[];
@@ -21,7 +16,7 @@ export const initialState: GamesSliceState = {
 };
 
 export const gamesSlice = createAppSlice({
-  name: CategoryType.Games,
+  name: CategoryType.GAMES,
   initialState,
   reducers: (create) => ({
     setGames: create.reducer((state, action: PayloadAction<Game[]>) => {
@@ -43,53 +38,10 @@ export const selectGamesPreviews = createSelector(
   (games: Game[]) =>
     games?.map((game) => {
       return {
-        category: CategoryType.Games,
+        category: CategoryType.GAMES,
         id: game.id,
-        imageLarge: game.image || IMAGE_NOT_FOUND.LRG_450x210,
+        imageLarge: game.image || ImageNotFound.LRG_450x210,
         title: game.title,
       };
     })
 );
-
-export const setGameDetailsFromRedis = async (
-  serverSideStore: GamesSliceState,
-  id: string
-): Promise<GameDetail | {}> => {
-  return mapGameDetail(serverSideStore, id);
-};
-
-export const mapGameDetail = (
-  games: GamesSliceState,
-  id: string | number
-): GameDetail | {} => {
-  const gamesArray = games.games || [];
-  const item = gamesArray.find((game: Game) => game.id?.toString() === id);
-  if (!item) {
-    return {};
-  }
-  const {
-    description,
-    gamerpower_url,
-    image,
-    instructions,
-    platforms,
-    published_date,
-    title: name,
-    type,
-    worth,
-  } = item;
-
-  return {
-    category: CategoryType.Games,
-    description,
-    gamerpower_url,
-    id,
-    image,
-    instructions,
-    platforms,
-    published_date,
-    name,
-    type,
-    worth,
-  };
-};

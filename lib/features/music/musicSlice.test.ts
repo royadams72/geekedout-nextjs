@@ -3,18 +3,16 @@
  */
 import { rootStateMock } from "@/__mocks__/store.mocks";
 import { musicSliceMock } from "@/__mocks__/music/music.mocks";
-import { musicDetailMockNotMapped } from "@/__mocks__/music/mockedMusiciItem";
 
 import {
   setMusic,
   musicReducer,
   initialState,
   selectAllAlbums,
-  getMusicDetailsFromApi,
   selectMusicPreviews,
 } from "@/lib/features/music/musicSlice";
 
-import { MusicStore } from "@/shared/interfaces/music";
+import { MusicStore } from "@/types/interfaces/music";
 
 import { refreshToken } from "@/app/api/music/token/getToken";
 
@@ -61,47 +59,5 @@ describe("musicSlice", () => {
   it("selectAllAlbums should return all albums", () => {
     const albums = selectAllAlbums(rootStateMock);
     expect(albums.length).toBeGreaterThanOrEqual(1);
-  });
-
-  it("should fetch album details and map to new object", async () => {
-    const resultNotMapped = musicDetailMockNotMapped;
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(resultNotMapped),
-    });
-
-    const resultMapped = await getMusicDetailsFromApi(resultNotMapped.id);
-
-    expect(resultNotMapped).toHaveProperty("external_urls");
-    expect(resultMapped).not.toHaveProperty("external_urls");
-    expect(resultMapped).toHaveProperty("spotify_link");
-    expect(resultMapped).toHaveProperty("category");
-  });
-
-  it("should fetch album details and map to new object", async () => {
-    const resultNotMapped = musicDetailMockNotMapped;
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(resultNotMapped),
-    });
-
-    const resultMapped = await getMusicDetailsFromApi(resultNotMapped.id);
-
-    expect(resultMapped).not.toHaveProperty("external_urls");
-    expect(resultMapped).toHaveProperty("spotify_link");
-    expect(resultMapped).toHaveProperty("category");
-  });
-
-  it("should return empty object if no details to map", async () => {
-    const item = musicDetailMockNotMapped;
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      status: 300,
-      json: async () => ({}),
-    });
-
-    const result = await getMusicDetailsFromApi(item.id);
-
-    expect(result).toEqual({});
   });
 });

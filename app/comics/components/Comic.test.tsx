@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 
-import { ComicDetail } from "@/shared/interfaces/comic";
+import { ComicDetail } from "@/types/interfaces/comic";
 import { comicDetailMock } from "@/__mocks__/comics/comics.mocks";
 
 import Comic from "@/app/comics/components/Comic";

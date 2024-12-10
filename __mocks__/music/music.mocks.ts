@@ -1,5 +1,5 @@
 import { MusicSliceState } from "@/lib/features/music/musicSlice";
-import { Album } from "@/shared/interfaces/music";
+import { Album } from "@/types/interfaces/music";
 
 export const mockAlbumsArray: Album[] = [
   {

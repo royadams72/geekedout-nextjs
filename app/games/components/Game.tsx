@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 import { useConvertCurr } from "@/lib/hooks/useConvertCurr";
-import { formatCurrency } from "@/utils/helpers";
-import { formatDate } from "@/utils/helpers";
+import { formatCurrency } from "@/lib/utils/currency";
+import { formatDate } from "@/lib/utils/date";
 
 import styles from "@/styles/components/_detail.module.scss";
 
-import { GameDetail } from "@/shared/interfaces/game";
+import { GameDetail } from "@/types/interfaces/game";
 
 const Game = ({ gameDetail }: { gameDetail: GameDetail }) => {
   const amountStr = gameDetail?.worth.replace("$", "");

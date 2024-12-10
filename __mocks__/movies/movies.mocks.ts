@@ -1,6 +1,6 @@
 import { MoviesSliceState } from "@/lib/features/movies/moviesSlice";
-import { MusicSliceState } from "@/lib/features/music/musicSlice";
-import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
+
+import { Movie, MovieDetail } from "@/types/interfaces/movies";
 
 export const MovieDetailMock: MovieDetail = {
   category: "movies",

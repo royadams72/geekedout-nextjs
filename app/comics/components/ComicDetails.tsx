@@ -1,7 +1,7 @@
 "use client";
-import ItemDetails from "@/shared/components/item-details/ItemDetails";
+import ItemDetails from "@/components/item-details/ItemDetails";
 import Comic from "@/app/comics/components/Comic";
-import { ComicDetail } from "@/shared/interfaces/comic";
+import { ComicDetail } from "@/types/interfaces/comic";
 
 const ComicDetails = ({ preloadedState }: { preloadedState: ComicDetail }) => {
   return (

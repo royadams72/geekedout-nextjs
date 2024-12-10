@@ -1,12 +1,12 @@
-import { checkIfRedirected } from "@/utils/helpers";
-import { getCategoryDataFromApi } from "@/lib/actions/getCategoryDataFromApi";
+import { checkIfRedirected } from "@/lib/utils/redirect";
+import { getCategoryFromDB } from "@/lib/services/getCategoryFromDB";
 
-import { CategoryType } from "@/shared/enums/category-type.enum";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 import GamesCategory from "./components/GamesCategory";
 
 const GamesPage = async () => {
-  const category = await getCategoryDataFromApi(CategoryType.Games);
+  const category = await getCategoryFromDB(CategoryType.GAMES);
 
   checkIfRedirected(category);
 

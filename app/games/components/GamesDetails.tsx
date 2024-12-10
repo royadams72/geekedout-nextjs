@@ -1,8 +1,8 @@
 "use client";
 
-import { GameDetail } from "@/shared/interfaces/game";
+import { GameDetail } from "@/types/interfaces/game";
 
-import ItemDetails from "@/shared/components/item-details/ItemDetails";
+import ItemDetails from "@/components/item-details/ItemDetails";
 import Game from "@/app/games/components/Game";
 
 const GamesDetails = ({ preloadedState }: { preloadedState: GameDetail }) => {
