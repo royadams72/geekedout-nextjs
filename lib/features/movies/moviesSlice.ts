@@ -3,10 +3,10 @@ import { createSelector, PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
-import { Movie, MovieDetail, MoviesStore } from "@/shared/interfaces/movies";
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
-import { ImagePaths } from "@/shared/enums/paths.enums";
+import { Movie, MoviesStore } from "@/types/interfaces/movies";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
+import { ImagePaths } from "@/types/enums/paths.enums";
 
 import { isEmpty } from "@/lib/utils/validation";
 

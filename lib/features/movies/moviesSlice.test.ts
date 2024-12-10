@@ -3,9 +3,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import { movieSliceMock } from "@/__mocks__/movies/movies.mocks";
 import { rootStateMock } from "@/__mocks__/store.mocks";
 
-import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
-import { MoviesStore } from "@/shared/interfaces/movies";
+import { MoviesStore } from "@/types/interfaces/movies";
 import {
   initialState as moviesInitialState,
   moviesSlice,

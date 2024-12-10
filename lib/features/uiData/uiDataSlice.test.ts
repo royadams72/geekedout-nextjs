@@ -6,7 +6,7 @@ import {
   comicsPreviewArray,
 } from "@/__mocks__/comics/comics.mocks";
 
-import { UiData } from "@/shared/interfaces/uiData";
+import { UiData } from "@/types/interfaces/uiData";
 
 import {
   clearSearchData,

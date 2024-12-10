@@ -18,8 +18,8 @@ import { isNotEmpty } from "@/lib/utils/validation";
 
 import styles from "@/styles/components/_category.module.scss";
 
-import CategoryItem from "@/shared/components/category/CategoryItem";
-import CategoryLoader from "@/shared/components/category/CategoryLoader";
+import CategoryItem from "@/components/category/CategoryItem";
+import CategoryLoader from "@/components/category/CategoryLoader";
 
 interface DisplayProps<T> {
   preloadedState: any;

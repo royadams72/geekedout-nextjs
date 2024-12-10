@@ -1,8 +1,8 @@
 import { getCookie } from "@/lib/actions/getCookie";
 
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { ApiPaths } from "@/shared/enums/paths.enums";
-import { CookieNames } from "@/shared/enums/cookie-names.enum";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { ApiPaths } from "@/types/enums/paths.enums";
+import { CookieNames } from "@/types/enums/cookie-names.enum";
 
 import MoviesCategory from "@/app/movies/components/MoviesCategory";
 import ComicsCategory from "@/app/comics/components/ComicsCategory";

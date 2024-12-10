@@ -8,11 +8,11 @@ import { musicSliceMock } from "@/__mocks__/music/music.mocks";
 
 import { refreshToken } from "@/app/api/music/token/getToken";
 
-import { CategoryType } from "@/shared/enums/category-type.enum";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 import { saveSessionData, getStoreData } from "./redis";
 
-import { Comic } from "@/shared/interfaces/comic";
+import { Comic } from "@/types/interfaces/comic";
 
 jest.mock("ioredis", () => require("ioredis-mock"));
 

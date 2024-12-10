@@ -6,7 +6,7 @@ import {
   comicSliceMock,
   comicsPreviewArray,
 } from "@/__mocks__/comics/comics.mocks";
-import CategoryItem from "@/shared/components/category/CategoryItem";
+import CategoryItem from "@/components/category/CategoryItem";
 import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
 
 // Mock the Redux hooks

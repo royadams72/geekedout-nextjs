@@ -1,6 +1,6 @@
 import { GamesSliceState } from "@/lib/features/games/gamesSlice";
 
-import { Game, GameDetail } from "@/shared/interfaces/game";
+import { Game, GameDetail } from "@/types/interfaces/game";
 
 export const gameSelectedMock: GameDetail = {
   category: "games",

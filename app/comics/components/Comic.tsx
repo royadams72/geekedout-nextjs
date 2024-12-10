@@ -4,7 +4,7 @@ import styles from "@/styles/components/_detail.module.scss";
 
 import { formatDate } from "@/lib/utils/date";
 
-import { ComicDetail } from "@/shared/interfaces/comic";
+import { ComicDetail } from "@/types/interfaces/comic";
 
 const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
   return (

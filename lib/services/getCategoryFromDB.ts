@@ -1,4 +1,4 @@
-import { CookieNames } from "@/shared/enums/cookie-names.enum";
+import { CookieNames } from "@/types/enums/cookie-names.enum";
 import { getCookie } from "../actions/getCookie";
 import { getStoreData } from "../db/redis";
 

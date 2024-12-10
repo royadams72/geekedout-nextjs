@@ -1,5 +1,5 @@
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { ComicDetail, Comic, Items, Price } from "@/shared/interfaces/comic";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { ComicDetail, Comic, Items, Price } from "@/types/interfaces/comic";
 import { ComicsSliceState } from "@/lib/features/comics/comicsSlice";
 import { getCategoryFromDB } from "@/lib/services/getCategoryFromDB";
 

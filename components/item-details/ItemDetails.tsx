@@ -17,11 +17,11 @@ import {
   isComicDetail,
   isGameDetail,
   isMappedMovieDetail,
-} from "@/shared/types/type-guards";
+} from "@/types/type-guards/all-categories";
 
 import styles from "@/styles/components/_detail.module.scss";
 
-import Loader from "@/shared/components/loader/Loader";
+import Loader from "@/components/loader/Loader";
 import { isEmpty, isNotEmpty } from "@/lib/utils/validation";
 
 const typeGuards = [

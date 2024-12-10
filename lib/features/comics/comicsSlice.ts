@@ -10,10 +10,10 @@ import {
   ComicStore,
   Items,
   Price,
-} from "@/shared/interfaces/comic";
+} from "@/types/interfaces/comic";
 
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 import { RootState } from "@/lib/store/store";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;

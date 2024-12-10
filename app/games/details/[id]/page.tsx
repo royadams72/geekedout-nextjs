@@ -1,7 +1,7 @@
 import { checkIfRedirected } from "@/lib/utils/redirect";
 import { setGameDetailsFromDB } from "@/lib/services/setGameDetailsFromDB";
 
-import { GameDetail } from "@/shared/interfaces/game";
+import { GameDetail } from "@/types/interfaces/game";
 
 import GamesDetails from "@/app/games/components/GamesDetails";
 

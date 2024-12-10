@@ -1,8 +1,8 @@
 "use client";
 
-import { AlbumDetail } from "@/shared/interfaces/music";
+import { AlbumDetail } from "@/types/interfaces/music";
 
-import ItemDetails from "@/shared/components/item-details/ItemDetails";
+import ItemDetails from "@/components/item-details/ItemDetails";
 import Music from "@/app/music/components/Music";
 import { useGetCookieFromState } from "@/lib/hooks/useGetCookieFromState";
 

@@ -7,7 +7,7 @@ import { useAppSelector } from "@/lib/hooks/store.hooks";
 
 import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
 
-import { Preview } from "@/shared/interfaces/preview";
+import { Preview } from "@/types/interfaces/preview";
 
 import styles from "@/styles/components/_category.module.scss";
 

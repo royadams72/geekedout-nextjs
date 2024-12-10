@@ -1,6 +1,6 @@
 import { checkIfRedirected } from "@/lib/utils/redirect";
 
-import { ComicDetail } from "@/shared/interfaces/comic";
+import { ComicDetail } from "@/types/interfaces/comic";
 
 import { setComicDetailsFromDB } from "@/lib/services/setComicDetailsFromDB";
 

@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 
-import { ImagePaths } from "@/shared/enums/paths.enums";
+import { ImagePaths } from "@/types/enums/paths.enums";
 
 import {
   clearSearchData,

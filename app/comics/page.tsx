@@ -2,7 +2,7 @@ import { checkIfRedirected } from "@/lib/utils/redirect";
 
 import { getCategoryFromDB } from "@/lib/services/getCategoryFromDB";
 
-import { CategoryType } from "@/shared/enums/category-type.enum";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 import ComicsCategory from "@/app/comics/components/ComicsCategory";
 

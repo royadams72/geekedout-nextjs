@@ -3,7 +3,6 @@
  */
 import { rootStateMock } from "@/__mocks__/store.mocks";
 import { musicSliceMock } from "@/__mocks__/music/music.mocks";
-import { musicDetailMockNotMapped } from "@/__mocks__/music/mockedMusiciItem";
 
 import {
   setMusic,
@@ -13,7 +12,7 @@ import {
   selectMusicPreviews,
 } from "@/lib/features/music/musicSlice";
 
-import { MusicStore } from "@/shared/interfaces/music";
+import { MusicStore } from "@/types/interfaces/music";
 
 import { refreshToken } from "@/app/api/music/token/getToken";
 

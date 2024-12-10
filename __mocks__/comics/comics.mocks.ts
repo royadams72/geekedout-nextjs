@@ -1,6 +1,6 @@
 import { ComicsSliceState } from "@/lib/features/comics/comicsSlice";
 import { items } from "./items.mock";
-import { ComicDetail } from "@/shared/interfaces/comic";
+import { ComicDetail } from "@/types/interfaces/comic";
 
 export const comicDetailMock: ComicDetail = {
   name: items[0].title,

@@ -1,5 +1,5 @@
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { GameDetail, Game } from "@/shared/interfaces/game";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { GameDetail, Game } from "@/types/interfaces/game";
 import { GamesSliceState } from "../features/games/gamesSlice";
 import { getCategoryFromDB } from "@/lib/services/getCategoryFromDB";
 

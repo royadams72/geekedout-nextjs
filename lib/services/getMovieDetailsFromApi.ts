@@ -1,6 +1,6 @@
-import { Movie, MovieDetail } from "@/shared/interfaces/movies";
+import { Movie, MovieDetail } from "@/types/interfaces/movies";
 import { isEmpty } from "../utils/validation";
-import { CategoryType } from "@/shared/enums/category-type.enum";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 

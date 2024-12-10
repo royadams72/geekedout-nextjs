@@ -3,8 +3,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { comicSliceMock } from "@/__mocks__/comics/comics.mocks";
 import { rootStateMock } from "@/__mocks__/store.mocks";
 
-import { ComicStore } from "@/shared/interfaces/comic";
-import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
+import { ComicStore } from "@/types/interfaces/comic";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
 import {
   comicsSlice,

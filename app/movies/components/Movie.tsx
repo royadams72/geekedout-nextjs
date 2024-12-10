@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import styles from "@/styles/components/_detail.module.scss";
 
-import { MovieDetail } from "@/shared/interfaces/movies";
+import { MovieDetail } from "@/types/interfaces/movies";
 
 const Movie = ({ movieDetails }: { movieDetails: MovieDetail }) => {
   return (

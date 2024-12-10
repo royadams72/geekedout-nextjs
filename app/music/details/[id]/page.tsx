@@ -1,7 +1,7 @@
 import { checkIfRedirected } from "@/lib/utils/redirect";
 import { getMusicDetailsFromApi } from "@/lib/services/getMusicDetailsFromApi";
 
-import { AlbumDetail } from "@/shared/interfaces/music";
+import { AlbumDetail } from "@/types/interfaces/music";
 
 import MusicDetails from "@/app/music/components/MusicDetails";
 

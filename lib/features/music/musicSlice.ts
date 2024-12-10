@@ -8,9 +8,9 @@ import {
   AlbumDetail,
   Artists,
   MusicStore,
-} from "@/shared/interfaces/music";
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
+} from "@/types/interfaces/music";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
 import { isEmpty } from "@/lib/utils/validation";
 

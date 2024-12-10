@@ -2,7 +2,7 @@ export interface Album {
   album_type: string;
   artists: Artists[];
   available_markets: Array<string>;
-  cookieData: CookieData;
+  cookieData?: CookieData;
   external_urls: ExternalUrls;
   href: string;
   id: string;

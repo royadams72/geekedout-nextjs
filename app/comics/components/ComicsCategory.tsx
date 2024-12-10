@@ -6,11 +6,11 @@ import {
   ComicsSliceState,
 } from "@/lib/features/comics/comicsSlice";
 
-import { Preview } from "@/shared/interfaces/preview";
+import { Preview } from "@/types/interfaces/preview";
 
-import { CategoryTitle } from "@/shared/enums/category-type.enum";
+import { CategoryTitle } from "@/types/enums/category-type.enum";
 
-import Category from "@/shared/components/category/Category";
+import Category from "@/components/category/Category";
 
 const ComicsCategory = ({
   preloadedState,

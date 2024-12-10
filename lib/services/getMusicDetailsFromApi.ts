@@ -1,8 +1,8 @@
-import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
-import { AlbumDetail, Album, Artists } from "@/shared/interfaces/music";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
+import { AlbumDetail, Album, Artists } from "@/types/interfaces/music";
 import { isEmpty } from "../utils/validation";
 import { getCookie } from "../actions/getCookie";
-import { CookieNames } from "@/shared/enums/cookie-names.enum";
+import { CookieNames } from "@/types/enums/cookie-names.enum";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const MUSIC_API = "api/music";

@@ -3,9 +3,9 @@ import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
-import { Game } from "@/shared/interfaces/game";
-import { CategoryType } from "@/shared/enums/category-type.enum";
-import { ImageNotFound } from "@/shared/enums/image-not-found.enum";
+import { Game } from "@/types/interfaces/game";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
 export interface GamesSliceState {
   games: Game[];

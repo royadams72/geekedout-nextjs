@@ -4,8 +4,8 @@ import Head from "next/head";
 import "./globals.scss";
 import { StoreProvider } from "./StoreProvider";
 
-import Header from "@/shared/components/header/Header";
-import NavigationActions from "@/shared/components/navigation-actions/NavigationActions";
+import Header from "@/components/header/Header";
+import NavigationActions from "@/components/navigation-actions/NavigationActions";
 
 export const metadata: Metadata = {
   title: "Create Next App",

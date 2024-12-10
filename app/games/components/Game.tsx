@@ -6,7 +6,7 @@ import { formatDate } from "@/lib/utils/date";
 
 import styles from "@/styles/components/_detail.module.scss";
 
-import { GameDetail } from "@/shared/interfaces/game";
+import { GameDetail } from "@/types/interfaces/game";
 
 const Game = ({ gameDetail }: { gameDetail: GameDetail }) => {
   const amountStr = gameDetail?.worth.replace("$", "");

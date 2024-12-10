@@ -1,7 +1,7 @@
 import { checkIfRedirected } from "@/lib/utils/redirect";
 import { getMovieDetailsFromApi } from "@/lib/services/getMovieDetailsFromApi";
 
-import { MovieDetail } from "@/shared/interfaces/movies";
+import { MovieDetail } from "@/types/interfaces/movies";
 
 import MovieDetails from "@/app/movies/components/MovieDetails";
 

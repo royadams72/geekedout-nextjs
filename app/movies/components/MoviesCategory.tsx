@@ -1,5 +1,5 @@
 "use client";
-import { Preview } from "@/shared/interfaces/preview";
+import { Preview } from "@/types/interfaces/preview";
 
 import {
   setMovies,
@@ -7,9 +7,9 @@ import {
   MoviesSliceState,
 } from "@/lib/features/movies/moviesSlice";
 
-import { CategoryTitle } from "@/shared/enums/category-type.enum";
+import { CategoryTitle } from "@/types/enums/category-type.enum";
 
-import Category from "@/shared/components/category/Category";
+import Category from "@/components/category/Category";
 
 const MoviesCategory = ({
   preloadedState,
