@@ -1,6 +1,6 @@
 import { CookieNames } from "@/types/enums/cookie-names.enum";
 import { getCookie } from "../actions/getCookie";
-import { getStoreData } from "../db/redis";
+import { getDBData } from "../db/redis";
 
 export const getCategoryFromDB = async (categoryName: string) => {
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -10,7 +10,7 @@ export const getCategoryFromDB = async (categoryName: string) => {
     if (!sessionId) {
       return { redirect: `${BASE_URL}/?redirected=true` };
     }
-    const data = await getStoreData(sessionId as string);
+    const data = await getDBData(sessionId as string);
     const categoriesData = data?.state;
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);
