@@ -26,7 +26,7 @@ const dataFetchers = [
   },
   {
     key: CategoryType.MUSIC,
-    url: `${BASE_URL}/${ApiPaths.MOVIES_API}/${GET_DATA_FOLDER}/`,
+    url: `${BASE_URL}/${ApiPaths.MUSIC_API}/${GET_DATA_FOLDER}/`,
   },
 ];
 

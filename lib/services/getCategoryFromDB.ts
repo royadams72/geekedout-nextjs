@@ -3,8 +3,12 @@ import { getCookie } from "../actions/getCookie";
 import { getStoreData } from "../db/redis";
 
 export const getCategoryFromDB = async (categoryName: string) => {
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   try {
     const sessionId = await getCookie(CookieNames.SESSION_ID);
+    if (!sessionId) {
+      return { redirect: `${BASE_URL}/?redirected=true` };
+    }
     const data = await getStoreData(sessionId as string);
     const categoriesData = data?.state;
     if (!categoriesData || !categoriesData[categoryName]) {

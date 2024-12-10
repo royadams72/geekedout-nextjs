@@ -34,7 +34,6 @@ const getAllAlbums = async (req: NextRequest) => {
       );
     }
     const returnedData = { ...data.albums, cookieData };
-    // console.log("returnedData:", returnedData);
     return returnedData;
   } catch (error) {
     if (error instanceof ApiError) {
