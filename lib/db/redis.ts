@@ -30,7 +30,7 @@ export const saveSessionData = async (sessionId: string, data: any) => {
 export const getStoreData = async (sessionId: string) => {
   const data = await redis.get(`session:${sessionId}`);
   const parsed = JSON.parse(data as string);
-  console.log("Getting store data:", parsed.state.comics.comics.results[0]);
+  console.log("Getting store data:", parsed.state);
 
   return data ? JSON.parse(data) : null;
 };
