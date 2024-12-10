@@ -84,7 +84,6 @@ const isExpiredOrNull = (cookie: any) => {
     const tokenCookie = JSON.parse(cookie?.value);
     if (tokenCookie && tokenCookie?.access_token && tokenCookie?.expiry) {
       const { expiry } = tokenCookie;
-      // console.log("expiry > now:::", expiry < now);
       if (expiry < now) {
         return true;
       }
