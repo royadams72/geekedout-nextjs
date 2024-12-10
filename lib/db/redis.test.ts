@@ -1,18 +1,9 @@
-import {
-  comicDetailMock,
-  comicSliceMock,
-} from "@/__mocks__/comics/comics.mocks";
+import { comicSliceMock } from "@/__mocks__/comics/comics.mocks";
 import { gamesSliceMock } from "@/__mocks__/games.mocks";
 import { movieSliceMock } from "@/__mocks__/movies/movies.mocks";
 import { musicSliceMock } from "@/__mocks__/music/music.mocks";
 
-import { refreshToken } from "@/app/api/music/token/getToken";
-
-import { CategoryType } from "@/types/enums/category-type.enum";
-
-import { saveSessionData, getStoreData } from "./redis";
-
-import { Comic } from "@/types/interfaces/comic";
+import { saveDBData, getDBData } from "./redis";
 
 jest.mock("ioredis", () => require("ioredis-mock"));
 
@@ -36,7 +27,7 @@ describe("Redis Cache Functions", () => {
 
   beforeEach(async () => {
     jest.spyOn(console, "error").mockImplementation(() => {});
-    await saveSessionData(sessionId, { state: mockState });
+    await saveDBData(sessionId, { state: mockState });
   });
 
   afterEach(async () => {
@@ -47,7 +38,7 @@ describe("Redis Cache Functions", () => {
   });
 
   it("should save and retrieve session data", async () => {
-    const data = await getStoreData(sessionId);
+    const data = await getDBData(sessionId);
     expect(data).toEqual({ state: mockState });
   });
 });
