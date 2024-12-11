@@ -3,7 +3,7 @@ import Redis from "ioredis";
 const redis_url = process.env.REDIS_URL || "localhost:6379";
 const redis = new Redis(redis_url);
 
-export const saveSessionData = async (sessionId: string, data: any) => {
+export const saveDBData = async (sessionId: string, data: any) => {
   const sessionTTL = 86400;
   try {
     const response = await redis.set(
@@ -15,7 +15,7 @@ export const saveSessionData = async (sessionId: string, data: any) => {
 
     if (response !== "OK") {
       throw new Error(
-        `Could not save data saveSessionData() ${process.env.REDIS_HOST}`
+        `Could not save data saveDBData() ${process.env.REDIS_HOST}`
       );
     }
   } catch (error) {
@@ -23,7 +23,7 @@ export const saveSessionData = async (sessionId: string, data: any) => {
   }
 };
 
-export const getStoreData = async (sessionId: string) => {
+export const getDBData = async (sessionId: string) => {
   const data = await redis.get(`session:${sessionId}`);
   return data ? JSON.parse(data) : null;
 };

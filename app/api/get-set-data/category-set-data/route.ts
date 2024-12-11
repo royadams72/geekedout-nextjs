@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { saveSessionData } from "@/lib/db/redis";
+import { saveDBData } from "@/lib/db/redis";
 import { ensureBrowserSession } from "@/app/api/get-set-data/ensureBrowserSession";
 
 export async function POST(request: NextRequest) {
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { response: sessionResponse } = await ensureBrowserSession(sessionId);
-    await saveSessionData(sessionId, categoriesData);
+    await saveDBData(sessionId, categoriesData);
 
     return sessionResponse;
   } catch (error) {
