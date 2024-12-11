@@ -36,9 +36,11 @@ const Home = async ({
   searchParams: Promise<{ redirected: string }>;
 }) => {
   const { redirected } = await searchParams;
-  let data: any;
   const preloadedState: Record<string, any> = {};
+  let data: any;
   let headers = {};
+  let cookieData = null;
+
   for (const { key, url } of dataFetchers) {
     try {
       const token = await getCookie(CookieNames.SPOTIFY_TOKEN);
@@ -56,6 +58,14 @@ const Home = async ({
       });
 
       data = await res.json();
+
+      if (key === CategoryType.MUSIC) {
+        const musicCookie = res.headers.get("Set-Cookie");
+        if (musicCookie) {
+          cookieData = musicCookie;
+        }
+        // console.log("cookie in page.tsx", res);
+      }
       preloadedState[key] = { [key]: data };
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
@@ -76,6 +86,7 @@ const Home = async ({
       <MusicCategory
         preloadedState={preloadedState.music}
         isRedirected={redirected}
+        token={cookieData}
       />
       <GamesCategory
         preloadedState={preloadedState.games}

@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { checkSpotifyCookie } from "@/app/api/music/token/getToken";
+import {
+  checkSpotifyCookie,
+  setCookieString,
+} from "@/app/api/music/token/getToken";
 
 import { ApiError } from "@/lib/utils/error";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
 export const GET = async (req: NextRequest) => {
-  const data = await getAllAlbums(req);
-  return NextResponse.json(data, { status: 200 });
-};
-
-const getAllAlbums = async (req: NextRequest) => {
-  const { cookieData, cookieValue } = await checkSpotifyCookie(req);
+  const cookieData = await checkSpotifyCookie(req);
 
   try {
     const response = await fetch(
@@ -20,12 +18,18 @@ const getAllAlbums = async (req: NextRequest) => {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${cookieValue}`,
+          Authorization: `Bearer ${cookieData.access_token}`,
         },
       }
     );
+    console.log(cookieData.access_token);
 
     const data = await response.json();
+    const res = NextResponse.json(data.albums, { status: 200 });
+    if (cookieData.updated) {
+      const cookieString = await setCookieString(cookieData);
+      res.headers.set("Set-Cookie", cookieString);
+    }
 
     if (!response.ok) {
       throw new ApiError(
@@ -33,8 +37,8 @@ const getAllAlbums = async (req: NextRequest) => {
         data.error.message || "music API error"
       );
     }
-    const returnedData = { ...data.albums, cookieData };
-    return returnedData;
+
+    return res;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(
