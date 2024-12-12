@@ -16,7 +16,6 @@ export const setCookie = async (cookieString: any) => {
         acc.flags = acc.flags || [];
         acc.flags.push(key.trim());
       }
-      console.log("key:", key, "value=", value);
 
       return acc;
     }, {});
