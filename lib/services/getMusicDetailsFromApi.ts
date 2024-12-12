@@ -22,14 +22,10 @@ export const getMusicDetailsFromApi = async (id: number): Promise<any> => {
       },
     }
   );
+
   const data = await response.json();
-  const musicCookie = response.headers.get("Set-Cookie");
-  console.log("cookie in page.tsx", musicCookie);
-  if (musicCookie) {
-    cookieData = musicCookie;
-  }
   const item = mapAlbumDetail(data);
-  console.log("mapAlbumDetail::", cookieData);
+  cookieData = await getCookieFromResponse(response);
 
   return { item, cookieData };
 };
@@ -67,4 +63,12 @@ export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
     category: "Music",
     cookieData,
   };
+};
+
+export const getCookieFromResponse = async (res: Response) => {
+  const musicCookie = res.headers.get("Set-Cookie");
+  console.log("cookie in getCookieFromResponse", musicCookie);
+  if (musicCookie) {
+    return musicCookie;
+  }
 };

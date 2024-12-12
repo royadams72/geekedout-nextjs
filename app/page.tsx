@@ -8,6 +8,7 @@ import MoviesCategory from "@/app/movies/components/MoviesCategory";
 import ComicsCategory from "@/app/comics/components/ComicsCategory";
 import MusicCategory from "@/app/music/components/MusicCategory";
 import GamesCategory from "./games/components/GamesCategory";
+import { getCookieFromResponse } from "@/lib/services/getMusicDetailsFromApi";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
@@ -51,20 +52,18 @@ const Home = async ({
         };
       }
 
-      const res = await fetch(url, {
+      const response = await fetch(url, {
         method: "GET",
         credentials: "include",
         headers,
       });
 
-      data = await res.json();
+      data = await response.json();
 
       if (key === CategoryType.MUSIC) {
-        const musicCookie = res.headers.get("Set-Cookie");
-        if (musicCookie) {
-          cookieData = musicCookie;
-        }
+        cookieData = await getCookieFromResponse(response);
       }
+
       preloadedState[key] = { [key]: data };
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
