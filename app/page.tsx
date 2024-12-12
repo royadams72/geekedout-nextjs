@@ -61,10 +61,10 @@ const Home = async ({
 
       if (key === CategoryType.MUSIC) {
         const musicCookie = res.headers.get("Set-Cookie");
+        console.log("cookie in page.tsx", musicCookie);
         if (musicCookie) {
           cookieData = musicCookie;
         }
-        // console.log("cookie in page.tsx", res);
       }
       preloadedState[key] = { [key]: data };
     } catch (error) {

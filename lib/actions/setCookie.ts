@@ -5,7 +5,6 @@ export const setCookie = async (cookieString: any) => {
   const cookieStore = await cookies();
 
   if (cookieString) {
-    // Decode and parse the cookie string
     const decoded = decodeURIComponent(cookieString);
 
     // Example cookie format: `spotify_token=VALUE; Path=/; HttpOnly; Secure; Max-Age=3600; Expires=DATE`
@@ -17,14 +16,13 @@ export const setCookie = async (cookieString: any) => {
         acc.flags = acc.flags || [];
         acc.flags.push(key.trim());
       }
+      console.log("key:", key, "value=", value);
+
       return acc;
     }, {});
 
-    // Extract name and value
     const [name, value] = Object.entries(parts)[0];
-    console.log(name, typeof value);
 
-    // Extract attributes
     const options = {
       path: parts.Path || "/",
       httpOnly: parts.flags?.includes("HttpOnly"),
@@ -32,7 +30,6 @@ export const setCookie = async (cookieString: any) => {
       maxAge: parts["Max-Age"] ? parseInt(parts["Max-Age"], 10) : undefined,
     };
 
-    // Set the cookie
     cookieStore.set(name, String(value), options);
   }
 };

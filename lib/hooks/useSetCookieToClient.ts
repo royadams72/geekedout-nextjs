@@ -11,5 +11,5 @@ export const useSetCookieToClient = (token: any) => {
         await setCookie(token);
       }
     })();
-  }, []);
+  }, [token]);
 };

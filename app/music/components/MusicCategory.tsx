@@ -12,6 +12,7 @@ import { CategoryTitle } from "@/types/enums/category-type.enum";
 
 import Category from "@/components/category/Category";
 import { setCookie } from "@/lib/actions/setCookie";
+import { useSetCookieToClient } from "@/lib/hooks/useSetCookieToClient";
 
 const MusicCategory = ({
   preloadedState,
@@ -22,6 +23,7 @@ const MusicCategory = ({
   isRedirected?: string;
   token?: any;
 }) => {
+  useSetCookieToClient(token);
   return (
     <Category<Preview>
       title={CategoryTitle.MUSIC}

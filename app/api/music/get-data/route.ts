@@ -22,11 +22,11 @@ export const GET = async (req: NextRequest) => {
         },
       }
     );
-    console.log(cookieData.access_token);
 
     const data = await response.json();
     const res = NextResponse.json(data.albums, { status: 200 });
     if (cookieData.updated) {
+      console.log("cookieData.updated:", cookieData.updated);
       const cookieString = await setCookieString(cookieData);
       res.headers.set("Set-Cookie", cookieString);
     }
