@@ -1,22 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import {
-  checkSpotifyCookie,
-  setCookieString,
-} from "@/lib/utils/api/music/getToken";
 import { ApiError } from "@/lib/utils/error";
-import { getMusic } from "@/lib/utils/api/music/getMusic";
+import { getApi } from "@/lib/utils/api/getApi";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
 export const GET = async (req: NextRequest) => {
   try {
-    const response = await getMusic(
+    const response = await getApi(
       `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
+      CategoryType.MUSIC,
       req
     );
 
-    console.log("getting details");
     return response;
   } catch (error) {
     if (error instanceof ApiError) {
