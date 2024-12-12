@@ -16,8 +16,6 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 import { RootState } from "@/lib/store/store";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const GET_DATA_FOLDER = process.env.NEXT_PUBLIC_GET_DATA_FOLDER;
 export interface ComicsSliceState {
   comics: ComicStore;
 }

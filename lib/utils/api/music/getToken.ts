@@ -8,7 +8,6 @@ export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
 
   if (isExpiredOrNull(requestCookie)) {
     const cookieData = await refreshToken();
-    console.log("refreshing token:", { ...cookieData, updated: true });
     return { ...cookieData, updated: true };
   } else {
     const access_token = parseAndGetToken(requestCookie);

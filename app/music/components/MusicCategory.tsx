@@ -30,7 +30,6 @@ const MusicCategory = ({
       itemsSelector={selectMusicPreviews}
       preloadedStateAction={setMusic}
       preloadedState={preloadedState}
-      sliceNumber={6}
     />
   );
 };

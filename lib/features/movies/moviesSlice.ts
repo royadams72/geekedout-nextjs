@@ -8,8 +8,6 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 import { ImagePaths } from "@/types/enums/paths.enums";
 
-import { isEmpty } from "@/lib/utils/validation";
-
 export interface MoviesSliceState {
   movies: MoviesStore;
 }

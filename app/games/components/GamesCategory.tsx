@@ -23,7 +23,6 @@ const GamesCategory = ({
       title={CategoryTitle.GAMES}
       preloadedStateAction={setGames}
       preloadedState={preloadedState}
-      sliceNumber={6}
     />
   );
 };

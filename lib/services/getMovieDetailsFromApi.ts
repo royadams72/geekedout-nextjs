@@ -1,6 +1,7 @@
 import { Movie, MovieDetail } from "@/types/interfaces/movies";
 import { isEmpty } from "../utils/validation";
 import { CategoryType } from "@/types/enums/category-type.enum";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -43,8 +44,10 @@ function mapMovieDetail(movie: Movie, id: number): MovieDetail | {} {
     genres: genreNames,
     homepage: homepage!,
     id,
-    imdb_link: `http://www.imdb.com/title/${imdb_id}`,
-    image: `https://image.tmdb.org/t/p/w300${poster_path}`,
+    imdb_link: imdb_id ? `http://www.imdb.com/title/${imdb_id}` : undefined,
+    image: poster_path
+      ? `https://image.tmdb.org/t/p/w300${poster_path}`
+      : ImageNotFound.SM,
     name,
     overview,
     release_date,
