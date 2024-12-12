@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { saveDBData } from "@/lib/db/redis";
-import { ensureBrowserSession } from "@/app/api/get-set-data/ensureBrowserSession";
+import { ensureBrowserSession } from "@/lib/utils/api/category-set-data/ensureBrowserSession";
 
 export async function POST(request: NextRequest) {
   try {

@@ -3,42 +3,21 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   checkSpotifyCookie,
   setCookieString,
-} from "@/app/api/music/token/getToken";
-
+} from "@/lib/utils/api/music/getToken";
 import { ApiError } from "@/lib/utils/error";
+import { getMusic } from "@/lib/utils/api/music/getMusic";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
 export const GET = async (req: NextRequest) => {
-  const cookieData = await checkSpotifyCookie(req);
-
   try {
-    const response = await fetch(
+    const response = await getMusic(
       `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookieData.access_token}`,
-        },
-      }
+      req
     );
 
-    const data = await response.json();
-    const res = NextResponse.json(data.albums, { status: 200 });
-    if (cookieData.updated) {
-      console.log("cookieData.updated:", cookieData.updated);
-      const cookieString = await setCookieString(cookieData);
-      res.headers.set("Set-Cookie", cookieString);
-    }
-
-    if (!response.ok) {
-      throw new ApiError(
-        response.status,
-        data.error.message || "music API error"
-      );
-    }
-
-    return res;
+    console.log("getting details");
+    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(
