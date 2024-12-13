@@ -25,7 +25,6 @@ const ComicsCategory = ({
       itemsSelector={selectComicsPreviews}
       preloadedStateAction={setComics}
       preloadedState={preloadedState}
-      sliceNumber={6}
     />
   );
 };

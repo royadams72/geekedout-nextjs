@@ -2,6 +2,8 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 import { ComicDetail, Comic, Items, Price } from "@/types/interfaces/comic";
 import { ComicsSliceState } from "@/lib/features/comics/comicsSlice";
 import { getCategoryFromDB } from "@/lib/services/getCategoryFromDB";
+import { isNotEmpty } from "../utils/validation";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
 export const setComicDetailsFromDB = async (
   id: string
@@ -37,7 +39,7 @@ const mapComicDetail = (
     prices,
     title: name,
     urls: [{ url: clickThrough }],
-    images: [{ path, extension }],
+    images,
     dates: [{ date: onsaleDate }],
     creators: { items: creators },
   } = item;
@@ -49,7 +51,9 @@ const mapComicDetail = (
       role: c.role || "unknown",
     })),
     description: description || "No Description",
-    image: `${path}.${extension}`,
+    image: isNotEmpty(images)
+      ? `${images[0].path}.${images[0].extension}`
+      : ImageNotFound.SM,
     pageCount,
     printPrice: prices.find((c: Price) => c.type === "printPrice")?.price,
     clickThrough,

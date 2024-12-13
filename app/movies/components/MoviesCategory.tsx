@@ -24,7 +24,6 @@ const MoviesCategory = ({
       title={CategoryTitle.MOVIES}
       preloadedStateAction={setMovies}
       preloadedState={preloadedState}
-      sliceNumber={6}
       isRedirected={isRedirected}
     />
   );

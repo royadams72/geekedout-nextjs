@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 const clientID = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -7,19 +7,20 @@ export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
   const requestCookie = req.cookies.get("spotify_token");
 
   if (isExpiredOrNull(requestCookie)) {
-    const response = await refreshToken();
-    const cookieData = response.cookies.get("spotify_token");
-    const cookieValue = parseAndGetToken(cookieData);
-
-    return { cookieData, cookieValue };
+    const cookieData = await refreshToken();
+    return { ...cookieData, updated: true };
   } else {
-    const cookieValue = parseAndGetToken(requestCookie);
-    return { cookieValue };
+    const access_token = parseAndGetToken(requestCookie);
+    const cookieData = {
+      access_token,
+      updated: false,
+    };
+
+    return cookieData;
   }
 };
 
 export const refreshToken = async (): Promise<any> => {
-  const now = Date.now();
   try {
     const tokenResponse = await fetch(
       `https://accounts.spotify.com/api/token`,
@@ -37,30 +38,13 @@ export const refreshToken = async (): Promise<any> => {
       }
     );
 
+    const response = await tokenResponse.json();
     if (!tokenResponse.ok) {
-      const error = await tokenResponse.json();
       throw new Error(
-        `Failed to fetch token refreshToken(): ${error.error_description}`
+        `Failed to fetch token refreshToken(): ${response.error_description}`
       );
     }
-    const { access_token, expires_in } = await tokenResponse.json();
-    const expiry = now + expires_in * 1000;
 
-    const response = NextResponse.json(
-      { access_token, message: "Token set successfully" },
-      { status: 200 }
-    );
-
-    response.cookies.set(
-      "spotify_token",
-      JSON.stringify({ access_token, expiry }),
-      {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        maxAge: expires_in,
-        path: "/",
-      }
-    );
     return response;
   } catch (error) {
     throw new Error(`Failed to refresh token refreshToken(): ${error}`);
@@ -69,8 +53,8 @@ export const refreshToken = async (): Promise<any> => {
 
 const parseAndGetToken = (cookieData: any) => {
   const parsedToken = JSON.parse(cookieData.value);
-  const { access_token: cookieValue } = parsedToken;
-  return cookieValue;
+  const { access_token } = parsedToken;
+  return access_token;
 };
 
 const isExpiredOrNull = (cookie: any) => {
@@ -82,10 +66,30 @@ const isExpiredOrNull = (cookie: any) => {
     const tokenCookie = JSON.parse(cookie?.value);
     if (tokenCookie && tokenCookie?.access_token && tokenCookie?.expiry) {
       const { expiry } = tokenCookie;
+
       if (expiry < now) {
         return true;
       }
     }
   }
   return false;
+};
+
+export const setCookieString = async (cookieData: any) => {
+  const now = Date.now();
+  const { access_token, expires_in } = cookieData;
+  const expiry = now + expires_in * 1000;
+  const expiryDate = new Date(expiry).toUTCString();
+  const cookieValue = encodeURIComponent(
+    JSON.stringify({
+      access_token,
+      expiry,
+    })
+  );
+
+  const cookieString = `spotify_token=${cookieValue}; Path=/; Expires=${expiryDate}; Max-Age=${expires_in}; HttpOnly; ${
+    process.env.NODE_ENV === "production" ? "Secure;" : ""
+  }`;
+
+  return cookieString;
 };

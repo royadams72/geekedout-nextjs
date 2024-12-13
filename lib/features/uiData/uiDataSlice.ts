@@ -3,7 +3,6 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 
 import { UiData } from "@/types/interfaces/uiData";
-
 import { AllDetailsTypes } from "@/types/interfaces/all-categories";
 import { Preview } from "@/types/interfaces/preview";
 

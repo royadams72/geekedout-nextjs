@@ -14,11 +14,6 @@ import {
 
 import { MusicStore } from "@/types/interfaces/music";
 
-import { refreshToken } from "@/app/api/music/token/getToken";
-
-jest.mock("@/app/api/music/token/getToken", () => ({
-  refreshToken: jest.fn(),
-}));
 jest.mock("@/lib/features/music/musicSlice", () => ({
   ...jest.requireActual("@/lib/features/music/musicSlice"),
   getAllMusicApi: jest.fn(),

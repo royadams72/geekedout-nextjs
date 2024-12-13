@@ -1,26 +1,20 @@
 import { NextResponse } from "next/server";
 import { ApiError } from "@/lib/utils/error";
+import { getApi } from "@/lib/utils/api/getApi";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 const pageNum = "1";
-const api_key = process.env.MOVIES_APIKEY;
+const API_KEY = process.env.MOVIES_APIKEY;
 const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
 
 export async function GET() {
   try {
-    const response = await fetch(
-      `${BASE_URL_MOVIES}/now_playing?api_key=${api_key}&language=en-GB&pageNum=${pageNum}&region=GB`
+    const response = await getApi(
+      `${BASE_URL_MOVIES}/now_playing?api_key=${API_KEY}&language=en-GB&pageNum=${pageNum}&region=GB`,
+      CategoryType.MOVIES
     );
-    const data = await response.json();
 
-    if (!response.ok) {
-      console.error("No data found movies GET");
-      throw new ApiError(
-        response.status,
-        data.error.message || "movies API error"
-      );
-    }
-
-    return NextResponse.json(data, { status: 200 });
+    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(

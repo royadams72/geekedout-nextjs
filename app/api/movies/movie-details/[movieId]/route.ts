@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { ApiError } from "@/lib/utils/error";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
-const api_key = process.env.MOVIES_APIKEY;
+import { ApiError } from "@/lib/utils/error";
+import { getApi } from "@/lib/utils/api/getApi";
+
+const API_KEY = process.env.MOVIES_APIKEY;
 const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
 
 export async function GET(
@@ -15,24 +18,12 @@ export async function GET(
 ) {
   const { movieId } = await params;
   try {
-    const response = await fetch(
-      `${BASE_URL_MOVIES}/${movieId}?api_key=${api_key}&language=en-GB&region=GB`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+    const response = await getApi(
+      `${BASE_URL_MOVIES}/${movieId}?api_key=${API_KEY}&language=en-GB&region=GB`,
+      CategoryType.MOVIES
     );
-    const data = await response.json();
 
-    if (!response.ok) {
-      throw new ApiError(
-        response.status,
-        data.error.message || "movies details API error"
-      );
-    }
-
-    return NextResponse.json(data, { status: 200 });
+    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(

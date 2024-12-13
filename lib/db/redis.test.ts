@@ -6,11 +6,6 @@ import { musicSliceMock } from "@/__mocks__/music/music.mocks";
 import { saveDBData, getDBData } from "./redis";
 
 jest.mock("ioredis", () => require("ioredis-mock"));
-
-jest.mock("@/app/api/music/token/getToken", () => ({
-  refreshToken: jest.fn(),
-}));
-
 jest.mock("@/lib/features/comics/comicsSlice", () => ({
   setComicDetailsFromRedis: jest.fn(),
   mapComicDetail: jest.fn(),
@@ -31,7 +26,6 @@ describe("Redis Cache Functions", () => {
   });
 
   afterEach(async () => {
-    // Clear Redis after each test
     const Redis = require("ioredis-mock");
     const redis = new Redis();
     await redis.flushall();

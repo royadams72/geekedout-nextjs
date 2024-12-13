@@ -3,10 +3,6 @@ import { comicsSlice } from "../features/comics/comicsSlice";
 import { uiDataSlice } from "../features/uiData/uiDataSlice";
 import { loadState, RootState, makeStore as realMakeStore } from "./store";
 
-jest.mock("@/app/api/music/token/getToken", () => ({
-  refreshToken: jest.fn(),
-}));
-
 let rootReducers = combineReducers({
   comics: comicsSlice.reducer,
   uiData: uiDataSlice.reducer,

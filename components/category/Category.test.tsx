@@ -100,7 +100,6 @@ describe("ComicCategory Component", () => {
             itemsSelector={selectComicsPreviews}
             preloadedStateAction={setComics}
             preloadedState={comicStore}
-            sliceNumber={6}
           />
         </Provider>
       );
@@ -139,7 +138,6 @@ describe("ComicCategory Component", () => {
             itemsSelector={selectComicsPreviews}
             preloadedStateAction={setComics}
             preloadedState={comicStore}
-            sliceNumber={6}
           />
         </Provider>
       );
@@ -158,7 +156,6 @@ describe("ComicCategory Component", () => {
           itemsSelector={selectComicsPreviews}
           preloadedStateAction={setComics}
           preloadedState={comicStore}
-          sliceNumber={6}
         />
       </Provider>
     );
@@ -180,7 +177,6 @@ describe("ComicCategory Component", () => {
             itemsSelector={selectComicsPreviews}
             preloadedStateAction={setComics}
             preloadedState={undefined}
-            sliceNumber={6}
           />
         </Provider>
       );
@@ -203,7 +199,6 @@ describe("ComicCategory Component", () => {
           itemsSelector={selectComicsPreviews}
           preloadedStateAction={setComics}
           preloadedState={comicStore}
-          sliceNumber={6}
         />
       </Provider>
     );
@@ -225,7 +220,6 @@ describe("ComicCategory Component", () => {
           itemsSelector={selectComicsPreviews}
           preloadedStateAction={setComics}
           preloadedState={comicStore}
-          sliceNumber={6}
         />
       </Provider>
     );
@@ -244,7 +238,6 @@ describe("ComicCategory Component", () => {
           itemsSelector={selectComicsPreviews}
           preloadedStateAction={setComics}
           preloadedState={comicStore}
-          sliceNumber={6}
           isRedirected={"true"}
         />
       </Provider>

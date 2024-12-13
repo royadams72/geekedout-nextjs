@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { md5 } from "js-md5";
 
 import { ApiError } from "@/lib/utils/error";
+import { getApi } from "@/lib/utils/api/getApi";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 const ts = Date.now();
 const privateKey = process.env.COMICS_PRIVATE_APIKEY;
@@ -20,16 +22,12 @@ hash.update(`${ts}${privateKey}${publicKey}`);
 
 export async function GET() {
   try {
-    const res = await fetch(
-      `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`
+    const response = await getApi(
+      `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`,
+      CategoryType.COMICS
     );
-    const data = await res.json();
 
-    if (!res.ok) {
-      throw new ApiError(res.status, data.error.message || "comics API error");
-    }
-
-    return NextResponse.json(data.data, { status: 200 });
+    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(`comics API Error: ${error.statusCode} - ${error.message}`);

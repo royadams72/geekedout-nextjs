@@ -2,6 +2,7 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 import { GameDetail, Game } from "@/types/interfaces/game";
 import { GamesSliceState } from "../features/games/gamesSlice";
 import { getCategoryFromDB } from "@/lib/services/getCategoryFromDB";
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 
 export const setGameDetailsFromDB = async (
   id: string
@@ -30,7 +31,7 @@ export const mapGameDetail = (
   const {
     description,
     gamerpower_url,
-    image,
+    image = "",
     instructions,
     platforms,
     published_date,
@@ -44,7 +45,7 @@ export const mapGameDetail = (
     description,
     gamerpower_url,
     id,
-    image,
+    image: image || ImageNotFound.SM,
     instructions,
     platforms,
     published_date,

@@ -1,18 +1,15 @@
 import { NextResponse } from "next/server";
 import { ApiError } from "@/lib/utils/error";
+import { getApi } from "@/lib/utils/api/getApi";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 const BASE_URL_GAMES = process.env.BASE_URL_GAMES as string;
 
 export async function GET() {
   try {
-    const res = await fetch(BASE_URL_GAMES);
-    const data = await res.json();
+    const response = await getApi(BASE_URL_GAMES, CategoryType.GAMES);
 
-    if (!res.ok) {
-      console.error(`Failed to fetch games: ${data.error.message}`);
-      throw new ApiError(res.status, data.error.message || "API error");
-    }
-    return NextResponse.json(data, { status: 200 });
+    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(`games API Error: ${error.statusCode} - ${error.message}`);

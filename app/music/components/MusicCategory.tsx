@@ -11,24 +11,25 @@ import { Preview } from "@/types/interfaces/preview";
 import { CategoryTitle } from "@/types/enums/category-type.enum";
 
 import Category from "@/components/category/Category";
-import { useGetCookieFromState } from "@/lib/hooks/useGetCookieFromState";
+import { setCookie } from "@/lib/actions/setCookie";
+import { useSetCookieToClient } from "@/lib/hooks/useSetCookieToClient";
 
 const MusicCategory = ({
   preloadedState,
   isRedirected,
+  token,
 }: {
   preloadedState: MusicSliceState;
   isRedirected?: string;
+  token?: any;
 }) => {
-  const loadedState = useGetCookieFromState(preloadedState);
-
+  useSetCookieToClient(token);
   return (
     <Category<Preview>
       title={CategoryTitle.MUSIC}
       itemsSelector={selectMusicPreviews}
       preloadedStateAction={setMusic}
-      preloadedState={loadedState}
-      sliceNumber={6}
+      preloadedState={preloadedState}
     />
   );
 };

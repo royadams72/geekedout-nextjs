@@ -3,16 +3,9 @@ import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
-import {
-  Album,
-  AlbumDetail,
-  Artists,
-  MusicStore,
-} from "@/types/interfaces/music";
+import { Album, MusicStore } from "@/types/interfaces/music";
 import { CategoryType } from "@/types/enums/category-type.enum";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
-
-import { isEmpty } from "@/lib/utils/validation";
 
 export interface MusicSliceState {
   music: MusicStore;

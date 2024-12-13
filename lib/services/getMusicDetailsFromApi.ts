@@ -6,10 +6,10 @@ import { CookieNames } from "@/types/enums/cookie-names.enum";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const MUSIC_API = "api/music";
-
-export const getMusicDetailsFromApi = async (
-  id: number
-): Promise<AlbumDetail | {}> => {
+let cookieData: any = null;
+interface CookieData {}
+// | {}
+export const getMusicDetailsFromApi = async (id: number): Promise<any> => {
   const spotify_token = await getCookie(CookieNames.SPOTIFY_TOKEN);
   const response = await fetch(
     `${BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
@@ -22,9 +22,12 @@ export const getMusicDetailsFromApi = async (
       },
     }
   );
-  const data = await response.json();
 
-  return mapAlbumDetail(data);
+  const data = await response.json();
+  const item = mapAlbumDetail(data);
+  cookieData = await getCookieFromResponse(response);
+
+  return { item, cookieData };
 };
 
 export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
@@ -60,4 +63,12 @@ export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
     category: "Music",
     cookieData,
   };
+};
+
+export const getCookieFromResponse = async (res: Response) => {
+  const musicCookie = res.headers.get("Set-Cookie");
+  // console.log("cookie in getCookieFromResponse", musicCookie);
+  if (musicCookie) {
+    return musicCookie;
+  }
 };

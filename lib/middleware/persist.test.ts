@@ -99,8 +99,6 @@ describe("persist store", () => {
     });
 
     store.dispatch(setSessionId(sessionId));
-    // console.log("console.error", consoleErrorSpy.mock);
-    // expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
   it("should log an error if localStorage.setItem throws a QuotaExceededError", () => {

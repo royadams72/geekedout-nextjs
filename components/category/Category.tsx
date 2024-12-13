@@ -26,20 +26,18 @@ interface DisplayProps<T> {
   itemsSelector: (state: any) => T[];
   preloadedStateAction: (stata: any) => any;
   title: string;
-  sliceNumber: number;
   isRedirected?: string;
 }
 
 const generateSessionId = (): string => {
   return uuidv4();
 };
-
+const sliceNumber = 6;
 const Category = <T extends { id: number | string | undefined }>({
   preloadedState,
   itemsSelector,
   preloadedStateAction,
   title,
-  sliceNumber,
   isRedirected,
 }: DisplayProps<T>) => {
   const router = useRouter();
