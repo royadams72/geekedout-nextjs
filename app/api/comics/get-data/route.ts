@@ -21,6 +21,8 @@ const hash = md5.create();
 hash.update(`${ts}${privateKey}${publicKey}`);
 
 export async function GET() {
+  console.log("revalidating in comics");
+
   try {
     const response = await getApi(
       `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`,

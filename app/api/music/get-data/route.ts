@@ -7,6 +7,7 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
 export const GET = async (req: NextRequest) => {
+  console.log("revalidating in music");
   try {
     const response = await getApi(
       `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,

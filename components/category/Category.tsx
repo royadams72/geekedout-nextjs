@@ -84,7 +84,7 @@ const Category = <T extends { id: number | string | undefined }>({
     if (isNotEmpty(items)) {
       setItemsArray(isFirstPage ? items.slice(0, sliceNumber) : items);
     }
-  }, [items, isFirstPage, sliceNumber]);
+  }, [items, isFirstPage]);
 
   useEffect(() => {
     if (isRedirected) {
