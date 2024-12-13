@@ -44,7 +44,7 @@ function mapMovieDetail(movie: Movie, id: number): MovieDetail | {} {
     genres: genreNames,
     homepage: homepage!,
     id,
-    imdb_link: imdb_id ? `http://www.imdb.com/title/${imdb_id}` : undefined,
+    imdb_link: imdb_id && `http://www.imdb.com/title/${imdb_id}`,
     image: poster_path
       ? `https://image.tmdb.org/t/p/w300${poster_path}`
       : ImageNotFound.SM,

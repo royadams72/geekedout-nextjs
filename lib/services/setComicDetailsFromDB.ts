@@ -51,7 +51,6 @@ const mapComicDetail = (
       role: c.role || "unknown",
     })),
     description: description || "No Description",
-    // images?.[0]?.url || ImageNotFound.SM
     image: isNotEmpty(images)
       ? `${images[0].path}.${images[0].extension}`
       : ImageNotFound.SM,

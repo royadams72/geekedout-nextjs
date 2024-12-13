@@ -45,7 +45,7 @@ export const mapGameDetail = (
     description,
     gamerpower_url,
     id,
-    image: image ? image : ImageNotFound.SM,
+    image: image || ImageNotFound.SM,
     instructions,
     platforms,
     published_date,
