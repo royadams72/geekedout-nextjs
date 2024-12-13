@@ -89,12 +89,16 @@ const ItemDetails = <T extends BasicDetail>({
         <div className={styles[`details_container_${category.toLowerCase()}`]}>
           <div className={styles.details_btn_container}>
             {!isSearch && (
-              <Link href={`/${category.toLowerCase()}`} className="btn">
+              <Link
+                href={`/${category.toLowerCase()}`}
+                className="btn"
+                prefetch={false}
+              >
                 Back to {category}
               </Link>
             )}
             {isSearch && (
-              <Link className="btn" href="/search">
+              <Link className="btn" href="/search" prefetch={false}>
                 Back to Search Results
               </Link>
             )}

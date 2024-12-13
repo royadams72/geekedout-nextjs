@@ -45,7 +45,7 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <Link href="/">
+      <Link href="/" prefetch={false}>
         <Image
           className={styles.header__logo_image}
           src={`${ImagePaths.NAV_IMAGES}/logo@2x.png`}
@@ -58,7 +58,7 @@ const Header = () => {
       <nav className={styles.header__nav}>
         <ul className={styles.header__nav_ul}>
           <li className={styles.header__nav_item}>
-            <Link href="/movies">
+            <Link href="/movies" prefetch={false}>
               <Image
                 className={styles.header__nav_item_img}
                 src={`${ImagePaths.NAV_IMAGES}/movies@2x.png`}
@@ -69,7 +69,7 @@ const Header = () => {
             </Link>
           </li>
           <li className={styles.header__nav_item}>
-            <Link href="/comics">
+            <Link href="/comics" prefetch={false}>
               <Image
                 className={styles.header__nav_item_img}
                 src={`${ImagePaths.NAV_IMAGES}/comics@2x.png`}
@@ -80,7 +80,7 @@ const Header = () => {
             </Link>
           </li>
           <li className={styles.header__nav_item}>
-            <Link href="/music">
+            <Link href="/music" prefetch={false}>
               <Image
                 className={styles.header__nav_item_img}
                 src={`${ImagePaths.NAV_IMAGES}/music@2x.png`}
@@ -91,7 +91,7 @@ const Header = () => {
             </Link>
           </li>
           <li className="header__nav-item">
-            <Link href="/games">
+            <Link href="/games" prefetch={false}>
               <Image
                 className={styles.header__nav_item_img}
                 src={`${ImagePaths.NAV_IMAGES}/games@2x.png`}
@@ -102,7 +102,7 @@ const Header = () => {
             </Link>
           </li>
           <li className={styles.header__nav_item}>
-            <Link href="/search">
+            <Link href="/search" prefetch={false}>
               <Image
                 className={styles.header__nav_item_img}
                 src={`${ImagePaths.NAV_IMAGES}/search@2x.png`}
