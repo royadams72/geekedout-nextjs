@@ -20,30 +20,30 @@ export const getApi = async (
     headers = { Authorization: `Bearer ${cookieData.access_token}` };
   }
 
-  // if (!cachedData || now - lastUpdated > 60000) {
-  // console.log("Fetching fresh data...");
-  const response = await fetch(url, {
-    method: "GET",
-    headers,
-  });
+  if (!cachedData || now - lastUpdated > 120000) {
+    console.log(`Fetching fresh data for ${apiName} ...`);
+    const response = await fetch(url, {
+      method: "GET",
+      headers,
+    });
 
-  const data = await response.json();
-  const returndedData = data.albums || data.data || data;
-  const res = NextResponse.json(returndedData, { status: 200 });
+    const data = await response.json();
+    const returndedData = data.albums || data.data || data;
+    const res = NextResponse.json(returndedData, { status: 200 });
 
-  if (isMusicCategory && cookieData.updated) {
-    const cookieString = await setCookieString(cookieData);
-    res?.headers.set("Set-Cookie", cookieString);
+    if (isMusicCategory && cookieData.updated) {
+      const cookieString = await setCookieString(cookieData);
+      res?.headers.set("Set-Cookie", cookieString);
+    }
+
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        data.error.message || `${apiName} API error`
+      );
+    }
+    return res;
+  } else {
+    console.log(`Serving cached data...`);
   }
-
-  if (!response.ok) {
-    throw new ApiError(
-      response.status,
-      data.error.message || `${apiName} API error`
-    );
-  }
-  return res;
-  // } else {
-  //   console.log("Serving cached data...");
-  // }
 };
