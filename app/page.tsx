@@ -39,25 +39,24 @@ const Home = async ({
   const { redirected } = await searchParams;
   const preloadedState: Record<string, any> = {};
   let data: any;
-  let headers = {};
+  let headers = {
+    "Cache-Control": "s-maxage=60, stale-while-revalidate=30",
+  };
   let cookieData = null;
+  const token = await getCookie(CookieNames.SPOTIFY_TOKEN);
 
   for (const { key, url } of dataFetchers) {
+    const isMusic = key === CategoryType.MUSIC;
     try {
-      const token = await getCookie(CookieNames.SPOTIFY_TOKEN);
-
-      if (key === CategoryType.MUSIC) {
-        headers = {
-          Cookie: `spotify_token=${token}`,
-        };
-      }
-
       const response = await fetch(url, {
         method: "GET",
         credentials: "include",
-        headers,
+        headers: {
+          ...(isMusic && { Cookie: `spotify_token=${token}` }),
+        },
+        next: { revalidate: 60 },
       });
-
+      console.log(`Fetching data for ${url} at ${new Date().toISOString()}`);
       data = await response.json();
 
       if (key === CategoryType.MUSIC) {

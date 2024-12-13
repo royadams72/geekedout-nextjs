@@ -23,11 +23,7 @@ export const getApi = async (
   });
 
   const data = await response.json();
-  const returndedData = !!data.albums
-    ? data.albums
-    : !!data.data
-    ? data.data
-    : data;
+  const returndedData = data.albums || data.data || data;
 
   const res = NextResponse.json(returndedData, { status: 200 });
 

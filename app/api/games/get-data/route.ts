@@ -6,6 +6,7 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 const BASE_URL_GAMES = process.env.BASE_URL_GAMES as string;
 
 export async function GET() {
+  console.log("revalidating in games");
   try {
     const response = await getApi(BASE_URL_GAMES, CategoryType.GAMES);
 
