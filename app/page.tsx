@@ -39,9 +39,6 @@ const Home = async ({
   const { redirected } = await searchParams;
   const preloadedState: Record<string, any> = {};
   let data: any;
-  let headers = {
-    "Cache-Control": "s-maxage=60, stale-while-revalidate=30",
-  };
   let cookieData = null;
   const token = await getCookie(CookieNames.SPOTIFY_TOKEN);
 
@@ -52,10 +49,8 @@ const Home = async ({
         method: "GET",
         credentials: "include",
         headers: {
-          "Cache-Control": "s-maxage=60, stale-while-revalidate=30",
           ...(isMusic && { Cookie: `spotify_token=${token}` }),
         },
-        next: { revalidate: 60 },
       });
       console.log(`Fetching data for ${url} at ${new Date().toISOString()}`);
       data = await response.json();
