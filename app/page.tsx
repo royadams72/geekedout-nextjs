@@ -52,6 +52,7 @@ const Home = async ({
         method: "GET",
         credentials: "include",
         headers: {
+          "Cache-Control": "s-maxage=60, stale-while-revalidate=30",
           ...(isMusic && { Cookie: `spotify_token=${token}` }),
         },
         next: { revalidate: 60 },
