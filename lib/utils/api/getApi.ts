@@ -21,7 +21,7 @@ export const getApi = async (
   }
 
   // if (!cachedData || now - lastUpdated > 60000) {
-  console.log("Fetching fresh data...");
+  // console.log("Fetching fresh data...");
   const response = await fetch(url, {
     method: "GET",
     headers,
