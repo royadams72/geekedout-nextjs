@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { ApiError } from "@/lib/utils/error";
-import { getApi } from "@/lib/utils/api/getApi";
+import { getApi } from "@/app/api/getApi";
 import { CategoryType } from "@/types/enums/category-type.enum";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;

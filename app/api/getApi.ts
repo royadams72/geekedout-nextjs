@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ApiError } from "../error";
-import { checkSpotifyCookie, setCookieString } from "./music/getToken";
+import { ApiError } from "@/lib/utils/error";
+import {
+  checkSpotifyCookie,
+  setCookieString,
+} from "@/lib/utils/api/music/getToken";
 import { CategoryType } from "@/types/enums/category-type.enum";
 
 let cachedData = null;

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { md5 } from "js-md5";
 
 import { ApiError } from "@/lib/utils/error";
-import { getApi } from "@/lib/utils/api/getApi";
+import { getApi } from "@/app/api/getApi";
 import { CategoryType } from "@/types/enums/category-type.enum";
 
 const ts = Date.now();
