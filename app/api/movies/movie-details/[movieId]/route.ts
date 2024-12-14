@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { CategoryType } from "@/types/enums/category-type.enum";
 
 import { ApiError } from "@/lib/utils/error";
-import { getApi } from "@/lib/utils/api/getApi";
+import { getApi } from "@/app/api/getApi";
 
 const API_KEY = process.env.MOVIES_APIKEY;
 const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
