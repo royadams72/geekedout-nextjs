@@ -8,7 +8,7 @@ const API_KEY = process.env.MOVIES_APIKEY;
 const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
 
 export async function GET() {
-  console.log("revalidating in movies");
+  // console.log("revalidating in movies");
   try {
     const response = await getApi(
       `${BASE_URL_MOVIES}/now_playing?api_key=${API_KEY}&language=en-GB&pageNum=${pageNum}&region=GB`,
