@@ -21,7 +21,7 @@ const hash = md5.create();
 hash.update(`${ts}${privateKey}${publicKey}`);
 
 export async function GET() {
-  console.log("revalidating in comics");
+  // console.log("revalidating in comics");
 
   try {
     const response = await getApi(
