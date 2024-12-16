@@ -6,7 +6,7 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
-export const revalidate = DEFAULT_REVALIDATE_TIME;
+export const revalidate = 300;
 export const GET = async (req: NextRequest) => {
   // console.log("revalidating in music");
   try {

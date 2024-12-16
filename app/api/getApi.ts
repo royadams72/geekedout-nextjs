@@ -12,7 +12,7 @@ export const getApi = async (
   apiName: string,
   req = {} as NextRequest
 ) => {
-  const now = Date.now();
+  const revalidate = 300;
   let cookieData = null;
   let headers = {};
   const isMusicCategory = apiName === CategoryType.MUSIC;
@@ -34,7 +34,7 @@ export const getApi = async (
   // Add Cache-Control header
   res?.headers.set(
     "Cache-Control",
-    `s-maxage=${DEFAULT_REVALIDATE_TIME}, stale-while-revalidate`
+    `s-maxage=${revalidate}, stale-while-revalidate`
   );
 
   if (isMusicCategory && cookieData.updated) {

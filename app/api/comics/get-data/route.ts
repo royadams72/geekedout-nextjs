@@ -20,7 +20,7 @@ if (!privateKey || !publicKey) {
 
 const hash = md5.create();
 hash.update(`${ts}${privateKey}${publicKey}`);
-export const revalidate = DEFAULT_REVALIDATE_TIME;
+export const revalidate = 300;
 export async function GET() {
   console.log("revalidating in comics", revalidate);
 

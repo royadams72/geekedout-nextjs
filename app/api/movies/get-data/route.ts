@@ -7,7 +7,7 @@ import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
 const pageNum = "1";
 const API_KEY = process.env.MOVIES_APIKEY;
 const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
-export const revalidate = DEFAULT_REVALIDATE_TIME;
+export const revalidate = 300;
 export async function GET() {
   // console.log("revalidating in movies");
   try {
