@@ -5,6 +5,7 @@ import { md5 } from "js-md5";
 import { ApiError } from "@/lib/utils/error";
 import { getApi } from "@/app/api/getApi";
 import { CategoryType } from "@/types/enums/category-type.enum";
+import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
 
 const ts = Date.now();
 const privateKey = process.env.COMICS_PRIVATE_APIKEY;
@@ -19,9 +20,9 @@ if (!privateKey || !publicKey) {
 
 const hash = md5.create();
 hash.update(`${ts}${privateKey}${publicKey}`);
-
+export const revalidate = 300;
 export async function GET() {
-  // console.log("revalidating in comics");
+  console.log("revalidating in comics", revalidate);
 
   try {
     const response = await getApi(
