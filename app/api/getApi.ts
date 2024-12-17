@@ -5,7 +5,6 @@ import {
   setCookieString,
 } from "@/lib/utils/api/music/getToken";
 import { CategoryType } from "@/types/enums/category-type.enum";
-import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
 
 export const getApi = async (
   url: string,
@@ -31,7 +30,6 @@ export const getApi = async (
   const returndedData = data.albums || data.data || data;
   const res = NextResponse.json(returndedData, { status: 200 });
 
-  // Add Cache-Control header
   res?.headers.set(
     "Cache-Control",
     `s-maxage=${revalidate}, stale-while-revalidate`

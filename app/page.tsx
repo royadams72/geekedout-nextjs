@@ -48,6 +48,7 @@ const Home = async ({
       const response = await fetch(url, {
         method: "GET",
         credentials: "include",
+        next: { revalidate: 300 },
         headers: {
           ...(isMusic && { Cookie: `spotify_token=${token}` }),
         },

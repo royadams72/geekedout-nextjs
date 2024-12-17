@@ -6,7 +6,7 @@ import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
 
 const BASE_URL_GAMES = process.env.BASE_URL_GAMES as string;
 
-export const revalidate = 300;
+//export const revalidate = 300;
 export async function GET() {
   // console.log("revalidating in games");
   try {
