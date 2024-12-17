@@ -20,9 +20,9 @@ if (!privateKey || !publicKey) {
 
 const hash = md5.create();
 hash.update(`${ts}${privateKey}${publicKey}`);
-export const revalidate = 300;
+// //export const revalidate = 300;
 export async function GET() {
-  console.log("revalidating in comics", revalidate);
+  // console.log("revalidating in comics", revalidate);
 
   try {
     const response = await getApi(
