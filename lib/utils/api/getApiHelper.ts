@@ -6,16 +6,16 @@ import {
 } from "@/lib/utils/api/music/getToken";
 import { CategoryType } from "@/types/enums/category-type.enum";
 
-export const getApi = async (
+export const getApiHelper = async (
   url: string,
   apiName: string,
   req = {} as NextRequest
 ) => {
   const revalidate = 300;
+  const isMusicCategory = apiName === CategoryType.MUSIC;
   let cookieData = null;
   let headers = {};
-  const isMusicCategory = apiName === CategoryType.MUSIC;
-  console.log("Calling getApi function...");
+
   if (isMusicCategory) {
     cookieData = await checkSpotifyCookie(req);
     headers = { Authorization: `Bearer ${cookieData.access_token}` };
