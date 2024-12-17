@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { ApiError } from "@/lib/utils/error";
-import { getApi } from "@/app/api/getApi";
+import { getApiHelper } from "@/lib/utils/api/getApiHelper";
 import { CategoryType } from "@/types/enums/category-type.enum";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
@@ -11,7 +11,7 @@ export const POST = async (req: NextRequest) => {
   const id = searchParams.get("id") as string;
 
   try {
-    const response = await getApi(
+    const response = await getApiHelper(
       `${BASE_URL_MUSIC}/albums/${id}`,
       CategoryType.MUSIC,
       req

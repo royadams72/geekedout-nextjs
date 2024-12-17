@@ -1,17 +1,15 @@
 import { NextResponse } from "next/server";
 import { ApiError } from "@/lib/utils/error";
-import { getApi } from "@/app/api/getApi";
+import { getApiHelper } from "@/lib/utils/api/getApiHelper";
 import { CategoryType } from "@/types/enums/category-type.enum";
-import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
 
 const pageNum = "1";
 const API_KEY = process.env.MOVIES_APIKEY;
 const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
-//export const revalidate = 300;
+
 export async function GET() {
-  // console.log("revalidating in movies");
   try {
-    const response = await getApi(
+    const response = await getApiHelper(
       `${BASE_URL_MOVIES}/now_playing?api_key=${API_KEY}&language=en-GB&pageNum=${pageNum}&region=GB`,
       CategoryType.MOVIES
     );

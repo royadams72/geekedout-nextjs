@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { ApiError } from "@/lib/utils/error";
-import { getApi } from "@/app/api/getApi";
 import { CategoryType } from "@/types/enums/category-type.enum";
-import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
+
+import { ApiError } from "@/lib/utils/error";
+import { getApiHelper } from "@/lib/utils/api/getApiHelper";
 
 const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
-//export const revalidate = 300;
+
 export const GET = async (req: NextRequest) => {
-  // console.log("revalidating in music");
   try {
-    const response = await getApi(
+    const response = await getApiHelper(
       `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
       CategoryType.MUSIC,
       req

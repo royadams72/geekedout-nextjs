@@ -3,9 +3,8 @@ import { NextResponse } from "next/server";
 import { md5 } from "js-md5";
 
 import { ApiError } from "@/lib/utils/error";
-import { getApi } from "@/app/api/getApi";
+import { getApiHelper } from "@/lib/utils/api/getApiHelper";
 import { CategoryType } from "@/types/enums/category-type.enum";
-import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
 
 const ts = Date.now();
 const privateKey = process.env.COMICS_PRIVATE_APIKEY;
@@ -20,12 +19,10 @@ if (!privateKey || !publicKey) {
 
 const hash = md5.create();
 hash.update(`${ts}${privateKey}${publicKey}`);
-// //export const revalidate = 300;
-export async function GET() {
-  // console.log("revalidating in comics", revalidate);
 
+export async function GET() {
   try {
-    const response = await getApi(
+    const response = await getApiHelper(
       `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`,
       CategoryType.COMICS
     );

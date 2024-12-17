@@ -38,7 +38,6 @@ const Home = async ({
 }) => {
   const { redirected } = await searchParams;
   const preloadedState: Record<string, any> = {};
-  let data: any;
   let cookieData = null;
   const token = await getCookie(CookieNames.SPOTIFY_TOKEN);
 
@@ -53,7 +52,7 @@ const Home = async ({
           ...(isMusic && { Cookie: `spotify_token=${token}` }),
         },
       });
-      // console.log(`Fetching data for ${url} at ${new Date().toISOString()}`);
+
       const data = await response.json();
 
       if (isMusic) {

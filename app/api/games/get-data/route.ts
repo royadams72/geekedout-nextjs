@@ -1,16 +1,13 @@
 import { NextResponse } from "next/server";
 import { ApiError } from "@/lib/utils/error";
-import { getApi } from "@/app/api/getApi";
+import { getApiHelper } from "@/lib/utils/api/getApiHelper";
 import { CategoryType } from "@/types/enums/category-type.enum";
-import { DEFAULT_REVALIDATE_TIME } from "@/config/constants";
 
 const BASE_URL_GAMES = process.env.BASE_URL_GAMES as string;
 
-//export const revalidate = 300;
 export async function GET() {
-  // console.log("revalidating in games");
   try {
-    const response = await getApi(BASE_URL_GAMES, CategoryType.GAMES);
+    const response = await getApiHelper(BASE_URL_GAMES, CategoryType.GAMES);
 
     return response;
   } catch (error) {
