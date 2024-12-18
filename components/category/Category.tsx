@@ -46,6 +46,7 @@ const Category = <T extends { id: number | string | undefined }>({
   const items = useAppSelector(itemsSelector);
   const storeSessionId = useAppSelector(selectSessionId);
   const isFirstPage = useAppSelector(selectIsFirstPage);
+  console.log("isFirstPage:", isFirstPage);
 
   const [loading, setLoading] = useState(true);
   const [itemsArray, setItemsArray] = useState<Array<T>>([]);
