@@ -122,6 +122,7 @@ const ItemDetails = <T extends BasicDetail>({
                   height={300}
                   src={itemDetails?.image}
                   alt={itemDetails?.name}
+                  unoptimized={process.env.NODE_ENV === "development"}
                 />
               )}
             </div>

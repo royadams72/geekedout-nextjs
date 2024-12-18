@@ -42,6 +42,7 @@ const CategoryItem = ({
               loading="lazy"
               sizes="(max-width: 600px) 50vw, (max-width: 1200px) 16vw, 16vw"
               className={styles[`category__image${categoryColour}`]}
+              unoptimized={process.env.NODE_ENV === "development"}
             />
           </div>
           <p className={styles.category__footer}>
