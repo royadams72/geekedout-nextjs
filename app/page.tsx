@@ -39,16 +39,23 @@ const Home = async ({
   const { redirected } = await searchParams;
   const preloadedState: Record<string, any> = {};
   let cookieData = null;
+  let headers = {};
   const token = await getCookie(CookieNames.SPOTIFY_TOKEN);
 
   const fetchPromises = dataFetchers.map(async ({ key, url }) => {
     const isMusic = key === CategoryType.MUSIC;
+    if (key === CategoryType.MUSIC) {
+      headers = {
+        Cookie: `spotify_token=${token}`,
+      };
+    }
+
     try {
       const response = await fetch(url, {
         method: "GET",
         credentials: "include",
         headers: {
-          ...(isMusic && { Cookie: `spotify_token=${token}` }),
+          ...(isMusic && token && { Cookie: `spotify_token=${token}` }),
         },
       });
 
