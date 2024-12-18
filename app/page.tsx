@@ -59,8 +59,10 @@ const Home = async ({
         },
       });
 
-      const data = await response.json();
-      // console.log(`response:${key}`, response);
+      const textResponse = await response.text(); // Get raw response as text
+      console.log(`Raw response for ${key}:`, textResponse); // Log raw response
+
+      const data = JSON.parse(textResponse); // Parse as JSON after logging
       //
       if (isMusic) {
         cookieData = await getCookieFromResponse(response);

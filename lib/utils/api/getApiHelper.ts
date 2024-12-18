@@ -30,7 +30,14 @@ export const getApiHelper = async (
     headers,
   });
 
-  const data = await response.json();
+  let data = {} as any;
+  try {
+    data = await response.json();
+  } catch (e) {
+    console.error("Error parsing JSON:", e);
+    throw new ApiError(response.status, "Invalid JSON response from API");
+  }
+
   const returndedData = data.albums || data.data || data;
   const res = NextResponse.json(returndedData, { status: 200 });
 
