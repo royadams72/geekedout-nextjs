@@ -15,11 +15,10 @@ export const getApiHelper = async (
   const isMusicCategory = apiName === CategoryType.MUSIC;
   const isProduction = process.env.NODE_ENV === "production";
   const cacheControlStr = isProduction
-    ? `s-maxage=${revalidate}, stale-while-revalidate`
+    ? `s-maxage=300, stale-while-revalidate`
     : "no-store";
   let cookieData = null;
   let headers = {};
-  console.log("isMusicCategory:", isMusicCategory);
 
   if (isMusicCategory) {
     cookieData = await checkSpotifyCookie(req);
@@ -36,11 +35,11 @@ export const getApiHelper = async (
   const res = NextResponse.json(returndedData, { status: 200 });
 
   res?.headers.set("Cache-Control", cacheControlStr);
-
   if (isMusicCategory && cookieData.updated) {
     const cookieString = await setCookieString(cookieData);
     res?.headers.set("Set-Cookie", cookieString);
   }
+  console.log("headers", apiName, res?.headers);
 
   if (!response.ok) {
     throw new ApiError(

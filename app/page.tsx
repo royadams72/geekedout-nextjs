@@ -53,11 +53,11 @@ const Home = async ({
       });
 
       const data = await response.json();
-      console.log(`response:${key}`, response);
-
+      // console.log(`response:${key}`, response);
+      //
       if (isMusic) {
         cookieData = await getCookieFromResponse(response);
-        // console.log("cookieData in page.tsx", cookieData);
+        console.log("cookieData in page.tsx", cookieData);
       }
 
       return { key, data };
