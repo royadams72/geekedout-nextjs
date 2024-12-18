@@ -38,48 +38,42 @@ const Home = async ({
 }) => {
   const { redirected } = await searchParams;
   const preloadedState: Record<string, any> = {};
+  let data: any;
   let cookieData = null;
   let headers = {};
   const token = await getCookie(CookieNames.SPOTIFY_TOKEN);
 
-  const fetchPromises = dataFetchers.map(async ({ key, url }) => {
+  for (const { key, url } of dataFetchers) {
     const isMusic = key === CategoryType.MUSIC;
-    if (key === CategoryType.MUSIC) {
+    if (isMusic) {
       headers = {
         Cookie: `spotify_token=${token}`,
       };
+      console.log(`token: ${token}`);
     }
 
+    // : {
+    //   ...(isMusic && { Cookie: `spotify_token=${token}` }),
+    // },
     try {
       const response = await fetch(url, {
         method: "GET",
         credentials: "include",
-        headers: {
-          ...(isMusic && token && { Cookie: `spotify_token=${token}` }),
-        },
+        headers,
       });
+      data = await response.json();
 
-      const textResponse = await response.text(); // Get raw response as text
-      console.log(`Raw response for ${key}:`, textResponse); // Log raw response
-
-      const data = JSON.parse(textResponse); // Parse as JSON after logging
-      //
       if (isMusic) {
         cookieData = await getCookieFromResponse(response);
-        console.log("cookieData in page.tsx:", response, "data:", data);
+        console.log("cookieData in page.tsx:", cookieData);
       }
 
-      return { key, data };
+      preloadedState[key] = { [key]: data };
     } catch (error) {
       console.error(`Error fetching data for ${key}:`, error);
-      return { key, data: {} };
+      preloadedState[key] = {};
     }
-  });
-
-  const results = await Promise.all(fetchPromises);
-  results.forEach(({ key, data }) => {
-    preloadedState[key] = { [key]: data };
-  });
+  }
 
   return (
     <>
