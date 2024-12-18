@@ -39,7 +39,7 @@ export const getApiHelper = async (
     const cookieString = await setCookieString(cookieData);
     res?.headers.set("Set-Cookie", cookieString);
   }
-  console.log("headers", apiName, res?.headers);
+  // console.log("headers", apiName, res?.headers);
 
   if (!response.ok) {
     throw new ApiError(
