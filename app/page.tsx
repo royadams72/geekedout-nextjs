@@ -53,6 +53,7 @@ const Home = async ({
       });
 
       const data = await response.json();
+      console.log(`response:${key}`, response);
 
       if (isMusic) {
         cookieData = await getCookieFromResponse(response);
