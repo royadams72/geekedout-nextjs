@@ -66,7 +66,7 @@ export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
 };
 
 export const getCookieFromResponse = async (res: Response) => {
-  const musicCookie = res.headers.get("Set-Cookie");
+  const musicCookie = res.headers.get("set-cookie");
   // console.log("cookie in getCookieFromResponse", musicCookie);
   if (musicCookie) {
     return musicCookie;
