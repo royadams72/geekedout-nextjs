@@ -8,7 +8,7 @@ import { Preview } from "@/types/interfaces/preview";
 
 export const initialState: UiData = {
   currPrevUrls: {
-    currentUrl: "/",
+    currentUrl: "",
     previousUrl: "",
   },
   isFirstPage: true,
