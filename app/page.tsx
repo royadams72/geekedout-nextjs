@@ -57,7 +57,7 @@ const Home = async ({
       //
       if (isMusic) {
         cookieData = await getCookieFromResponse(response);
-        console.log("cookieData in page.tsx", cookieData);
+        console.log("cookieData in page.tsx:", response, "data:", data);
       }
 
       return { key, data };
