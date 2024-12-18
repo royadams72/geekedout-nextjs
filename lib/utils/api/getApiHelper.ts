@@ -41,7 +41,7 @@ export const getApiHelper = async (
   const returndedData = data.albums || data.data || data;
   const res = NextResponse.json(returndedData, { status: 200 });
 
-  // res?.headers.set("Cache-Control", cacheControlStr);
+  res?.headers.set("Cache-Control", cacheControlStr);
   if (isMusicCategory && cookieData.updated) {
     const cookieString = await setCookieString(cookieData);
     res?.headers.set("Set-Cookie", cookieString);
