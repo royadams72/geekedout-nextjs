@@ -7,8 +7,7 @@ import { CookieNames } from "@/types/enums/cookie-names.enum";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const MUSIC_API = "api/music";
 let cookieData: any = null;
-interface CookieData {}
-// | {}
+
 export const getMusicDetailsFromApi = async (id: number): Promise<any> => {
   const spotify_token = await getCookie(CookieNames.SPOTIFY_TOKEN);
   const response = await fetch(
@@ -66,8 +65,7 @@ export const mapAlbumDetail = (item: Album): AlbumDetail | {} => {
 };
 
 export const getCookieFromResponse = async (res: Response) => {
-  const musicCookie = res.headers.get("set-cookie");
-  // console.log("cookie in getCookieFromResponse", musicCookie);
+  const musicCookie = res.headers.get("Set-Cookie");
   if (musicCookie) {
     return musicCookie;
   }

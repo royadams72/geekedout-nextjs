@@ -67,7 +67,7 @@ const ItemDetails = <T extends BasicDetail>({
         }
       }
     }
-    setIsFetching(false); // Stop loading even if itemDetail is empty
+    setIsFetching(false);
   }, [itemDetail, dispatch]);
 
   useEffect(() => {
