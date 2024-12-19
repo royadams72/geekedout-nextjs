@@ -1,47 +1,15 @@
 "use client";
-import { useEffect } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
 
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
-
 import { ImagePaths } from "@/types/enums/paths.enums";
 
-import {
-  clearSearchData,
-  clearSelectedItem,
-  selectSearchData,
-  selectSelectedItem,
-  selectCurrPrevUrls,
-} from "@/lib/features/uiData/uiDataSlice";
-
 import styles from "@/styles/components/_header.module.scss";
-
-const notOnPages = (currUrl: string, pages: Array<any>) => {
-  return pages.filter((element) => currUrl.includes(element)).length === 0;
-};
-const pages = ["details", "search"];
 
 const Header = () => {
   const imgWidth = 100;
   const imgHeight = 100;
-  const dispatch = useAppDispatch();
-
-  const searchData = useAppSelector(selectSearchData);
-  const selectedItem = useAppSelector(selectSelectedItem);
-  const currentUrl = useAppSelector(selectCurrPrevUrls).currentUrl;
-
-  useEffect(() => {
-    if (notOnPages(currentUrl, pages)) {
-      if (searchData.searchTerm) {
-        dispatch(clearSearchData());
-      }
-      if (selectedItem) {
-        dispatch(clearSelectedItem());
-      }
-    }
-  }, [currentUrl, selectedItem, searchData.searchTerm, dispatch]);
 
   return (
     <header className={styles.header}>
