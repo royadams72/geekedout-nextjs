@@ -5,7 +5,6 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
   const requestCookie = req.cookies.get("spotify_token");
-  console.log("requestCookie in checkSpotifyCookie:", requestCookie);
 
   if (isExpiredOrNull(requestCookie)) {
     const cookieData = await refreshToken();

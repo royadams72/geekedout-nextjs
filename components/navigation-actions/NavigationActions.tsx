@@ -31,11 +31,9 @@ const NavigationActions = () => {
     if (notOnPages(currentUrl, pages)) {
       if (searchData.searchTerm) {
         dispatch(clearSearchData());
-        console.log("not on details or search clearSearchData");
       }
       if (selectedItem) {
         dispatch(clearSelectedItem());
-        console.log("clearSelectedItem::");
       }
     }
   }, [currentUrl, selectedItem, searchData.searchTerm, dispatch]);

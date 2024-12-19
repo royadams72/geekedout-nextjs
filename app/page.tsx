@@ -55,7 +55,6 @@ const Home = async ({
 
       if (isMusic) {
         cookieData = await getCookieFromResponse(response);
-        console.log("cookieData in page.tsx:", cookieData);
       }
 
       preloadedState[key] = { [key]: data };
