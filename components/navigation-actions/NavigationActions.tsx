@@ -1,17 +1,44 @@
 "use client";
+
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
 import {
+  clearSearchData,
+  clearSelectedItem,
   selectCurrPrevUrls,
+  selectSearchData,
+  selectSelectedItem,
   setFirstPage,
   setUrls,
 } from "@/lib/features/uiData/uiDataSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/store.hooks";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+
+const pages = ["details", "search"];
+const notOnPages = (currUrl: string, pages: Array<any>) => {
+  return pages.filter((element) => currUrl.includes(element)).length === 0;
+};
 
 const NavigationActions = () => {
   const currentPath = usePathname();
   const dispatch = useAppDispatch();
   const { currentUrl, previousUrl } = useAppSelector(selectCurrPrevUrls);
+
+  const searchData = useAppSelector(selectSearchData);
+  const selectedItem = useAppSelector(selectSelectedItem);
+
+  useEffect(() => {
+    if (notOnPages(currentUrl, pages)) {
+      if (searchData.searchTerm) {
+        dispatch(clearSearchData());
+        console.log("not on details or search clearSearchData");
+      }
+      if (selectedItem) {
+        dispatch(clearSelectedItem());
+        console.log("clearSelectedItem::");
+      }
+    }
+  }, [currentUrl, selectedItem, searchData.searchTerm, dispatch]);
 
   useEffect(() => {
     if (currentUrl !== currentPath) {
