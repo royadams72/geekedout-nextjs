@@ -18,6 +18,11 @@ persisterMiddleware.startListening({
   predicate: (action, currState: any, prevState: any) => {
     if (currState.uiData !== prevState.uiData) {
       persistStoreClientSide(JSON.stringify(currState));
+      console.log(
+        "currState.uiData !== prevState.uiData",
+        currState.uiData,
+        prevState.uiData
+      );
       return true;
     }
     return false;
