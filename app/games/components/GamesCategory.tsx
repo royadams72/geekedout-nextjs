@@ -17,6 +17,8 @@ const GamesCategory = ({
   preloadedState: any;
   isRedirected?: string;
 }) => {
+  // console.log("Games:", preloadedState);
+
   return (
     <Category<Preview>
       itemsSelector={selectGamesPreviews}

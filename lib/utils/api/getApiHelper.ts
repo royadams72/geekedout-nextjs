@@ -30,23 +30,18 @@ export const getApiHelper = async (
     headers,
   });
 
-  let data = {} as any;
-  try {
-    data = await response.json();
-  } catch (e) {
-    console.error("Error parsing JSON:", e);
-    throw new ApiError(response.status, "Invalid JSON response from API");
-  }
+  const data = await response.json();
 
   const returndedData = data.albums || data.data || data;
   const res = NextResponse.json(returndedData, { status: 200 });
+  // console.log(returndedData.games);
 
-  res?.headers.set("Cache-Control", cacheControlStr);
+  // res?.headers.set("Cache-Control", cacheControlStr);
   if (isMusicCategory && cookieData.updated) {
     const cookieString = await setCookieString(cookieData);
     res?.headers.set("Set-Cookie", cookieString);
   }
-  console.log("headers", apiName, res?.headers);
+  // console.log("headers", apiName, res?.headers);
 
   if (!response.ok) {
     throw new ApiError(

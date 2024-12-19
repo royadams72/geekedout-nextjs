@@ -11,7 +11,7 @@ export const initialState: UiData = {
     currentUrl: "/",
     previousUrl: "",
   },
-  isFirstPage: undefined,
+  isFirstPage: true,
   searchData: {
     searchTerm: "",
     items: [],
