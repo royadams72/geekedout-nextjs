@@ -11,7 +11,7 @@ import { Preview } from "@/types/interfaces/preview";
 import { CategoryTitle } from "@/types/enums/category-type.enum";
 
 import Category from "@/components/category/Category";
-import { setCookie } from "@/lib/actions/setCookie";
+
 import { useSetCookieToClient } from "@/lib/hooks/useSetCookieToClient";
 
 const MusicCategory = ({
@@ -24,6 +24,7 @@ const MusicCategory = ({
   token?: any;
 }) => {
   useSetCookieToClient(token);
+
   return (
     <Category<Preview>
       title={CategoryTitle.MUSIC}

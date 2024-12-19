@@ -25,6 +25,7 @@ const CategoryLoader = ({ title }: { title: string }) => {
                       fill
                       loading="lazy"
                       sizes="25vw, 25vh"
+                      unoptimized={true}
                     />
                   </div>
                 </div>
