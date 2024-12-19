@@ -5,7 +5,7 @@ export interface UiData {
     currentUrl: string;
     previousUrl: string;
   };
-  isFirstPage: boolean;
+  isFirstPage: boolean | undefined;
   searchData: {
     searchTerm: string;
     items: Array<Preview>;

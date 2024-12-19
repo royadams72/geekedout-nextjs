@@ -16,6 +16,11 @@ const persistStoreClientSide = (state: string) => {
 export const persisterMiddleware = createListenerMiddleware();
 persisterMiddleware.startListening({
   predicate: (action, currState: any, prevState: any) => {
+    console.log(
+      "currState.uiData !== prevState.uiData",
+      currState.uiData !== prevState.uiData
+    );
+
     if (currState.uiData !== prevState.uiData) {
       persistStoreClientSide(JSON.stringify(currState));
       console.log(
