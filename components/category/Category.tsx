@@ -52,9 +52,10 @@ const Category = <T extends { id: number | string | undefined }>({
 
   useEffect(() => {
     if (preloadedState && preloadedState[title.toLowerCase()]) {
+      console.log("isFirstPage:", isFirstPage);
       setLoading(false);
     }
-  }, [preloadedState, title]);
+  }, [preloadedState, title, isFirstPage]);
 
   useEffect(() => {
     if (loading) return;
@@ -68,6 +69,12 @@ const Category = <T extends { id: number | string | undefined }>({
   useEffect(() => {
     if (loading) return;
 
+    console.log(
+      "preloadState isNotEmpty:",
+      isNotEmpty(preloadedState[title.toLowerCase()]),
+      " isFirstPage:",
+      isFirstPage
+    );
     if (isNotEmpty(preloadedState[title.toLowerCase()]) && isFirstPage) {
       dispatch(preloadedStateAction(preloadedState[title.toLowerCase()]));
     }

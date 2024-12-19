@@ -37,5 +37,5 @@ const nextConfig = {
     ],
   },
 };
-// i.scdn.co;
+
 export default nextConfig;
