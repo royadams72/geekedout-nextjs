@@ -14,9 +14,10 @@ export const getApiHelper = async (
   const revalidate = 300;
   const isMusicCategory = apiName === CategoryType.MUSIC;
   const isProduction = process.env.NODE_ENV === "production";
-  const cacheControlStr = isProduction
-    ? `s-maxage=300, stale-while-revalidate`
-    : "no-store";
+  const cacheControlStr =
+    isProduction && !isMusicCategory
+      ? `s-maxage=300, stale-while-revalidate`
+      : "no-store";
   let cookieData = null;
   let headers = {};
 
@@ -41,7 +42,7 @@ export const getApiHelper = async (
   const returndedData = data.albums || data.data || data;
   const res = NextResponse.json(returndedData, { status: 200 });
 
-  // res?.headers.set("Cache-Control", `s-maxage=300, stale-while-revalidate`);
+  res?.headers.set("Cache-Control", cacheControlStr);
 
   if (isMusicCategory && cookieData.updated) {
     const cookieString = await setCookieString(cookieData);
