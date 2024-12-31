@@ -1,17 +1,19 @@
+import { ENV } from "@/lib/services/envService";
+import { isEmpty } from "@/lib/utils/validation";
 import { Movie, MovieDetail } from "@/types/interfaces/movies";
-import { isEmpty } from "../utils/validation";
 import { CategoryType } from "@/types/enums/category-type.enum";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getMovieDetailsFromApi = async (
   id: number
 ): Promise<MovieDetail | {}> => {
   try {
-    const response = await fetch(`${BASE_URL}/api/movies/movie-details/${id}`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${ENV.BASE_URL}/api/movies/movie-details/${id}`,
+      {
+        method: "GET",
+      }
+    );
     const data = await response.json();
     if (!response.ok) {
       throw new Error(`Failed to fetch movie: ${response.status}`);

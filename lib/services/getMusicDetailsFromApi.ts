@@ -1,17 +1,17 @@
+import { ENV } from "@/lib/services/envService";
+import { isEmpty } from "@/lib/utils/validation";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 import { AlbumDetail, Album, Artists } from "@/types/interfaces/music";
-import { isEmpty } from "../utils/validation";
 import { getCookie } from "../actions/getCookie";
 import { CookieNames } from "@/types/enums/cookie-names.enum";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const MUSIC_API = "api/music";
 let cookieData: any = null;
 
 export const getMusicDetailsFromApi = async (id: number): Promise<any> => {
   const spotify_token = await getCookie(CookieNames.SPOTIFY_TOKEN);
   const response = await fetch(
-    `${BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
+    `${ENV.BASE_URL}/${MUSIC_API}/get-details?id=${id}`,
     {
       method: "POST",
       credentials: "include",

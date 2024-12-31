@@ -2,11 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { CategoryType } from "@/types/enums/category-type.enum";
 
+import { ENV } from "@/lib/services/envService";
 import { ApiError } from "@/lib/utils/error";
 import { getApiHelper } from "@/lib/utils/api/getApiHelper";
-
-const API_KEY = process.env.MOVIES_APIKEY;
-const BASE_URL_MOVIES = process.env.BASE_URL_MOVIES;
 
 export async function GET(
   request: NextRequest,
@@ -19,7 +17,7 @@ export async function GET(
   const { movieId } = await params;
   try {
     const response = await getApiHelper(
-      `${BASE_URL_MOVIES}/${movieId}?api_key=${API_KEY}&language=en-GB&region=GB`,
+      `${ENV.BASE_URL_MOVIES}/${movieId}?api_key=${ENV.MOVIES_APIKEY}&language=en-GB&region=GB`,
       CategoryType.MOVIES
     );
 

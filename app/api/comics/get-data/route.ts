@@ -2,28 +2,27 @@ import { NextResponse } from "next/server";
 
 import { md5 } from "js-md5";
 
+import { ENV } from "@/lib/services/envService";
 import { ApiError } from "@/lib/utils/error";
 import { getApiHelper } from "@/lib/utils/api/getApiHelper";
+
 import { CategoryType } from "@/types/enums/category-type.enum";
 
 const ts = Date.now();
-const privateKey = process.env.COMICS_PRIVATE_APIKEY;
-const publicKey = process.env.COMICS_PUBLIC_APIKEY;
-const BASE_URL_COMICS = process.env.BASE_URL_COMICS;
 const offset = "0";
 const limit = "100";
 
-if (!privateKey || !publicKey) {
-  console.error("API keys are not defined in environment variables.");
-}
-
 const hash = md5.create();
-hash.update(`${ts}${privateKey}${publicKey}`);
+hash.update(`${ts}${ENV.COMICS_PRIVATE_KEY}${ENV.COMICS_PUBLIC_KEY}`);
 
 export async function GET() {
   try {
     const response = await getApiHelper(
-      `${BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${publicKey}&hash=${hash.hex()}`,
+      `${
+        ENV.BASE_URL_COMICS
+      }/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${
+        ENV.COMICS_PUBLIC_KEY
+      }&hash=${hash.hex()}`,
       CategoryType.COMICS
     );
 
