@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
-
-const clientID = process.env.SPOTIFY_CLIENT_ID;
-const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+import { ENV } from "@/lib/services/envService";
 
 export const checkSpotifyCookie = async (req: NextRequest): Promise<any> => {
   const requestCookie = req.cookies.get("spotify_token");
@@ -31,7 +29,7 @@ export const refreshToken = async (): Promise<any> => {
         }),
         headers: {
           Authorization: `Basic ${Buffer.from(
-            `${clientID}:${clientSecret}`
+            `${ENV.SPOTIFY_CLIENT_ID}:${ENV.SPOTIFY_CLIENT_SECRET}`
           ).toString("base64")}`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -88,7 +86,7 @@ export const setCookieString = async (cookieData: any) => {
   );
 
   const cookieString = `spotify_token=${cookieValue}; Path=/; Expires=${expiryDate}; Max-Age=${expires_in}; HttpOnly; ${
-    process.env.NODE_ENV === "production" ? "Secure;" : ""
+    ENV.IS_PRODUCTION ? "Secure;" : ""
   }`;
 
   return cookieString;

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { ENV } from "@/lib/services/envService";
 import { ApiError } from "@/lib/utils/error";
 import { getApiHelper } from "@/lib/utils/api/getApiHelper";
-import { CategoryType } from "@/types/enums/category-type.enum";
 
-const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 export const POST = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
@@ -12,7 +12,7 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const response = await getApiHelper(
-      `${BASE_URL_MUSIC}/albums/${id}`,
+      `${ENV.BASE_URL_MUSIC}/albums/${id}`,
       CategoryType.MUSIC,
       req
     );

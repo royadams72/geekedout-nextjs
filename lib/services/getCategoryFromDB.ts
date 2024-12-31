@@ -1,14 +1,14 @@
+import { ENV } from "@/lib/services/envService";
 import { CookieNames } from "@/types/enums/cookie-names.enum";
-import { getCookie } from "../actions/getCookie";
-import { getDBData } from "../db/redis";
+import { getCookie } from "@/lib/actions/getCookie";
+import { getDBData } from "@/lib/db/redis";
 
 export const getCategoryFromDB = async (categoryName: string) => {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   const sessionId = await getCookie(CookieNames.SESSION_ID);
 
   try {
     if (!sessionId) {
-      return { redirect: `${BASE_URL}/?redirected=true` };
+      return { redirect: `${ENV.BASE_URL}/?redirected=true` };
     }
     const data = await getDBData(sessionId as string);
     const categoriesData = data?.state;

@@ -1,7 +1,7 @@
 import Redis from "ioredis";
+import { ENV } from "../services/envService";
 
-const redis_url = process.env.REDIS_URL || "localhost:6379";
-const redis = new Redis(redis_url);
+const redis = new Redis(ENV.REDIS_URL);
 
 export const saveDBData = async (sessionId: string, data: any) => {
   const sessionTTL = 86400;
@@ -14,9 +14,7 @@ export const saveDBData = async (sessionId: string, data: any) => {
     );
 
     if (response !== "OK") {
-      throw new Error(
-        `Could not save data saveDBData() ${process.env.REDIS_HOST}`
-      );
+      throw new Error(`Could not save data saveDBData()`);
     }
   } catch (error) {
     return { message: "Error getting data:", error };

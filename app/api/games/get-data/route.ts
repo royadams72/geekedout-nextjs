@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
+
+import { ENV } from "@/lib/services/envService";
 import { ApiError } from "@/lib/utils/error";
 import { getApiHelper } from "@/lib/utils/api/getApiHelper";
 import { CategoryType } from "@/types/enums/category-type.enum";
 
-const BASE_URL_GAMES = process.env.BASE_URL_GAMES as string;
-
 export async function GET() {
   try {
-    const response = await getApiHelper(BASE_URL_GAMES, CategoryType.GAMES);
+    const response = await getApiHelper(ENV.BASE_URL_GAMES, CategoryType.GAMES);
 
     return response;
   } catch (error) {

@@ -2,15 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { CategoryType } from "@/types/enums/category-type.enum";
 
+import { ENV } from "@/lib/services/envService";
 import { ApiError } from "@/lib/utils/error";
 import { getApiHelper } from "@/lib/utils/api/getApiHelper";
-
-const BASE_URL_MUSIC = process.env.BASE_URL_MUSIC;
 
 export const GET = async (req: NextRequest) => {
   try {
     const response = await getApiHelper(
-      `${BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
+      `${ENV.BASE_URL_MUSIC}/browse/new-releases?limit=20&country=GB`,
       CategoryType.MUSIC,
       req
     );

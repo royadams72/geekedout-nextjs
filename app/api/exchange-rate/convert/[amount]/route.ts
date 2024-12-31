@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
-
-const privateKey = process.env.EXCHANGE_RATE_APIKEY;
-const BASE_URL_EXCHANGE = process.env.BASE_URL_EXCHANGE;
+import { ENV } from "@/lib/services/envService";
 
 export async function GET(
   request: NextRequest,
@@ -15,7 +13,7 @@ export async function GET(
     const { amount } = await params;
     const amountToConvert = Number(amount.replace("$", ""));
     const res = await fetch(
-      `${BASE_URL_EXCHANGE}/${privateKey}/pair/USD/GBP/${amountToConvert}`
+      `${ENV.BASE_URL_EXCHANGE}/${ENV.EXCHANGE_RATE_KEY}/pair/USD/GBP/${amountToConvert}`
     );
     const data = await res.json();
     if (!res.ok) {

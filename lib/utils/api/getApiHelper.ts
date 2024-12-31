@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { ApiError } from "@/lib/utils/error";
 import {
   checkSpotifyCookie,
   setCookieString,
 } from "@/lib/utils/api/music/getToken";
+import { ENV } from "@/lib/services/envService";
+
 import { CategoryType } from "@/types/enums/category-type.enum";
 
 export const getApiHelper = async (
@@ -13,7 +16,7 @@ export const getApiHelper = async (
 ) => {
   const revalidate = 300;
   const isMusicCategory = apiName === CategoryType.MUSIC;
-  const isProduction = process.env.NODE_ENV === "production";
+  const isProduction = ENV.IS_PRODUCTION;
   const cacheControlStr =
     isProduction && !isMusicCategory
       ? `s-maxage=300, stale-while-revalidate`
