@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { md5 } from "js-md5";
+import crypto from "crypto";
 
 import { ENV } from "@/lib/services/envService";
 import { ApiError } from "@/lib/utils/error";
@@ -11,18 +11,15 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 const ts = Date.now();
 const offset = "0";
 const limit = "100";
-
-const hash = md5.create();
-hash.update(`${ts}${ENV.COMICS_PRIVATE_KEY}${ENV.COMICS_PUBLIC_KEY}`);
+const hash = crypto
+  .createHash("md5")
+  .update(`${ts}${ENV.COMICS_PRIVATE_KEY}${ENV.COMICS_PUBLIC_KEY}`)
+  .digest("hex");
 
 export async function GET() {
   try {
     const response = await getApiHelper(
-      `${
-        ENV.BASE_URL_COMICS
-      }/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${
-        ENV.COMICS_PUBLIC_KEY
-      }&hash=${hash.hex()}`,
+      `${ENV.BASE_URL_COMICS}/comics?dateDescriptor=thisWeek&offset=${offset}&limit=${limit}&ts=${ts}&apikey=${ENV.COMICS_PUBLIC_KEY}&hash=${hash}`,
       CategoryType.COMICS
     );
 
