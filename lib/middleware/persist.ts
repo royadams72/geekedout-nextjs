@@ -48,6 +48,9 @@ persisterMiddleware.startListening({
         }
       } catch (error) {
         console.error(`There was an error persist middleware: ${error}`);
+        Response.json(`There was an error persist middleware: ${error}`, {
+          status: 500,
+        });
       }
     }
   },
