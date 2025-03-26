@@ -53,10 +53,7 @@ export const getApiHelper = async (
   }
 
   if (!response.ok) {
-    throw new ApiError(
-      response.status,
-      data.error.message || `${apiName} API error`
-    );
+    throw new ApiError(response.status, data.error || `${apiName} API error`);
   }
   return res;
 };
