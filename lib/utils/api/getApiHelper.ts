@@ -44,6 +44,7 @@ export const getApiHelper = async (
 
   const returndedData = data.albums || data.data || data;
   const res = NextResponse.json(returndedData, { status: 200 });
+  console.log(`${apiName}--${cacheControlStr}`);
 
   res?.headers.set("Cache-Control", cacheControlStr);
 
@@ -53,10 +54,7 @@ export const getApiHelper = async (
   }
 
   if (!response.ok) {
-    throw new ApiError(
-      response.status,
-      data.error.message || `${apiName} API error`
-    );
+    throw new ApiError(response.status, data.error || `${apiName} API error`);
   }
   return res;
 };
