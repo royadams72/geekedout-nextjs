@@ -47,12 +47,9 @@ export const selectComicsPreviews = createSelector(
   (comic: Comic[]) =>
     comic?.map((comic: Comic): Preview => {
       const comicImage = comic?.image?.small_url;
-      // console.log(comic);
-      let comicName = comic.name;
+      let comicName = comic?.name;
       if (!comicName) {
-        if (!comic.volume.site_detail_url) {
-        }
-        comicName = getComicNameFromUrl(comic.volume.site_detail_url);
+        comicName = comic.volume.name;
       }
       return {
         category: CategoryType.COMICS,
@@ -62,10 +59,3 @@ export const selectComicsPreviews = createSelector(
       };
     })
 );
-
-const getComicNameFromUrl = (url: string) => {
-  const str = url.split("gamespot.com/")[1].split("/")[0].split("-");
-  return str
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};

@@ -13,14 +13,14 @@ export interface Image {
 
 export interface AssociatedImage {
   original_url: string;
-  id: number;
+  id: string;
   caption: string | null;
   image_tags: string;
 }
 
 export interface Volume {
   api_detail_url: string;
-  id: number;
+  id: string;
   name: string;
   site_detail_url: string;
 }
@@ -34,7 +34,7 @@ export interface Comic {
   deck: string | null;
   description: string;
   has_staff_review: boolean;
-  id: number;
+  id: string | number;
   image: Image;
   associated_images: AssociatedImage[];
   issue_number: string;
@@ -45,15 +45,13 @@ export interface Comic {
 }
 
 export interface ComicDetail {
-  creators?: Array<{ name: string; role: string } | undefined>;
-  onsaleDate: string;
+  date_added: string;
   description?: string;
-  id: number;
+  id: string;
   image: string;
   issue_number: string;
-  printPrice?: number;
   name: string;
-  clickThrough?: string;
+  api_detail_url?: string;
   category: string;
 }
 
