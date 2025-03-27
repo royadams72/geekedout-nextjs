@@ -1,11 +1,12 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
-import { createAppSlice } from "@/lib/store/createAppSlice";
-import { RootState } from "@/lib/store/store";
-
 import { Album, MusicStore } from "@/types/interfaces/music";
 import { CategoryType } from "@/types/enums/category-type.enum";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
+import { Preview } from "@/types/interfaces/preview";
+
+import { createAppSlice } from "@/lib/store/createAppSlice";
+import { RootState } from "@/lib/store/store";
 
 export interface MusicSliceState {
   music: MusicStore;
@@ -48,11 +49,13 @@ export const selectAllAlbums = createSelector(
 export const selectMusicPreviews = createSelector(
   selectAllAlbums,
   (albums: Album[]) =>
-    albums?.map((album) => ({
-      category: CategoryType.MUSIC,
-      id: album.id,
-      imageLarge: album.images?.[0]?.url || ImageNotFound.SM,
-      imageSmall: album.images?.[1]?.url || ImageNotFound.SM,
-      title: album.name,
-    }))
+    albums?.map(
+      (album): Preview => ({
+        category: CategoryType.MUSIC,
+        id: album.id,
+        imageLarge: album.images?.[0]?.url || ImageNotFound.SM,
+        imageSmall: album.images?.[1]?.url || ImageNotFound.SM,
+        title: album.name,
+      })
+    )
 );

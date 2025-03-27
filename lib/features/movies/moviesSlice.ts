@@ -1,12 +1,13 @@
 import { createSelector, PayloadAction } from "@reduxjs/toolkit";
 
-import { createAppSlice } from "@/lib/store/createAppSlice";
-import { RootState } from "@/lib/store/store";
-
 import { Movie, MoviesStore } from "@/types/interfaces/movies";
 import { CategoryType } from "@/types/enums/category-type.enum";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 import { ImagePaths } from "@/types/enums/paths.enums";
+import { Preview } from "@/types/interfaces/preview";
+
+import { createAppSlice } from "@/lib/store/createAppSlice";
+import { RootState } from "@/lib/store/store";
 
 export interface MoviesSliceState {
   movies: MoviesStore;
@@ -44,15 +45,17 @@ export const selectMovies = createSelector(
 export const selectMoviesPreviews = createSelector(
   selectMovies,
   (movies: Movie[]) =>
-    movies?.map((movie) => ({
-      category: CategoryType.MOVIES,
-      id: movie.id,
-      imageLarge: movie.poster_path
-        ? `${ImagePaths.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
-        : ImageNotFound.MED_250x250,
-      imageSmall: movie.poster_path
-        ? `${ImagePaths.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
-        : ImageNotFound.SM,
-      title: movie.title,
-    }))
+    movies?.map((movie): Preview => {
+      return {
+        category: CategoryType.MOVIES,
+        id: movie.id,
+        imageLarge: movie.poster_path
+          ? `${ImagePaths.MOVIES_CDN_IMAGES}w400${movie.poster_path}`
+          : ImageNotFound.MED_250x250,
+        imageSmall: movie.poster_path
+          ? `${ImagePaths.MOVIES_CDN_IMAGES}w300${movie.poster_path}`
+          : ImageNotFound.SM,
+        title: movie.title,
+      };
+    })
 );

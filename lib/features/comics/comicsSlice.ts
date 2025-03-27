@@ -1,19 +1,10 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
-import { createAppSlice } from "@/lib/store/createAppSlice";
-
-import { isNotEmpty } from "@/lib/utils/validation";
-
-import {
-  Comic,
-  ComicDetail,
-  ComicStore,
-  Items,
-  Price,
-} from "@/types/interfaces/comic";
-
 import { CategoryType } from "@/types/enums/category-type.enum";
-import { ImageNotFound } from "@/types/enums/image-not-found.enum";
+import { Comic, ComicStore } from "@/types/interfaces/comic";
+import { Preview } from "@/types/interfaces/preview";
+
+import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
 export interface ComicsSliceState {
@@ -21,7 +12,15 @@ export interface ComicsSliceState {
 }
 
 const initialState: ComicsSliceState = {
-  comics: { count: 0, limit: 0, offset: 0, results: [] },
+  comics: {
+    error: "",
+    limit: 0,
+    offset: 0,
+    number_of_page_results: 0,
+    number_of_total_results: 0,
+    status_code: 0,
+    results: [],
+  },
 };
 
 export const comicsSlice = createAppSlice({
@@ -46,19 +45,27 @@ export const selectComicsArray = createSelector(
 export const selectComicsPreviews = createSelector(
   selectComicsArray,
   (comic: Comic[]) =>
-    comic?.map((comic: Comic) => {
-      const isImages = comic.images && isNotEmpty(comic.images[0]);
-
+    comic?.map((comic: Comic): Preview => {
+      const comicImage = comic?.image?.small_url;
+      // console.log(comic);
+      let comicName = comic.name;
+      if (!comicName) {
+        if (!comic.volume.site_detail_url) {
+        }
+        comicName = getComicNameFromUrl(comic.volume.site_detail_url);
+      }
       return {
         category: CategoryType.COMICS,
         id: comic.id,
-        title: comic.title,
-        imageLarge: isImages
-          ? `${comic.images[0].path}.jpg`
-          : ImageNotFound.MED_250x250,
-        imageSmall: isImages
-          ? `${comic.images[0].path}/standard_fantastic.jpg`
-          : ImageNotFound.SM,
+        title: comicName,
+        imageLarge: comicImage,
       };
     })
 );
+
+const getComicNameFromUrl = (url: string) => {
+  const str = url.split("gamespot.com/")[1].split("/")[0].split("-");
+  return str
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
