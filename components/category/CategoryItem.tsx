@@ -10,6 +10,8 @@ import { selectIsFirstPage } from "@/lib/features/uiData/uiDataSlice";
 import { Preview } from "@/types/interfaces/preview";
 
 import styles from "@/styles/components/_category.module.scss";
+import { franc } from "franc";
+import { useEffect } from "react";
 
 const CategoryItem = ({
   item,
@@ -25,6 +27,14 @@ const CategoryItem = ({
   const itemLink = isFirstPage
     ? `${item.category}`
     : `${item.category}/details/${item.id}`;
+  if (title) {
+    console.log("tilte");
+  }
+  // useEffect(()=>{
+  //   if (franc(title) !== "eng") {
+
+  //   }
+  // })
 
   return (
     <>

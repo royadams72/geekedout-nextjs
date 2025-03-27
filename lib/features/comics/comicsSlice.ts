@@ -1,4 +1,5 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
+import { franc } from "franc";
 
 import { CategoryType } from "@/types/enums/category-type.enum";
 import { Comic, ComicStore } from "@/types/interfaces/comic";
@@ -47,10 +48,8 @@ export const selectComicsPreviews = createSelector(
   (comic: Comic[]) =>
     comic?.map((comic: Comic): Preview => {
       const comicImage = comic?.image?.small_url;
-      let comicName = comic?.name;
-      if (!comicName) {
-        comicName = comic.volume.name;
-      }
+      let comicName = comic?.name || comic?.volume?.name;
+
       return {
         category: CategoryType.COMICS,
         id: comic.id,

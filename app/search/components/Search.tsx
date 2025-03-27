@@ -48,8 +48,8 @@ const Search = () => {
 
     if (trimmedValue !== "" && trimmedValue.length > 2) {
       setTimeout(() => {
-        const filteredItems = categories.filter((item) =>
-          item.title.toLocaleLowerCase().includes(trimmedValue)
+        const filteredItems = categories.filter((item: any) =>
+          item?.title.toLocaleLowerCase().includes(trimmedValue)
         );
 
         shuffle(filteredItems);
