@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Head from "next/head";
 
-import "./globals.scss";
+import "../globals.scss";
 import { StoreProvider } from "./StoreProvider";
 
 import Header from "@/components/header/Header";

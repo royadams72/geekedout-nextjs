@@ -1,5 +1,5 @@
-@import "../mixins/mixins";
-@import "./search.module";
+@use "../mixins/mixins" as *;
+@use "./search.module";
 
 @mixin truncate($lines: 1, $font-size: 1rem, $line-height: 1.3) {
   $display: block;

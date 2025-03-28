@@ -1,8 +1,11 @@
-$btn-font:      $font-main-font !default;
-$btn-border:    1px solid settings-colour('text-white');
+@use "../settings" as *;
+@use "../mixins/mixins" as *;
+@use "../utilities/utils" as *;
+
+$btn-font: $font-main-font !default;
+$btn-border: 1px solid settings-colour("text-white");
 
 .btn {
-
   border: $btn-border;
   border-radius: 0;
   display: inline-block;
@@ -16,9 +19,7 @@ $btn-border:    1px solid settings-colour('text-white');
   vertical-align: middle;
   white-space: nowrap;
 
-
   @include is-medium {
     margin-left: 0;
   }
-
 }

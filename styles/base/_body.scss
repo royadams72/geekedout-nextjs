@@ -1,3 +1,7 @@
+@use "../mixins/mixins" as *;
+@use "../settings" as *;
+@use "../utilities/utils" as *;
+
 $base-bg-colour: settings-colour("bg-colour-primary") !default;
 
 html {

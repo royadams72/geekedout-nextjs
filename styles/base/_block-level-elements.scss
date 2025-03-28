@@ -1,4 +1,7 @@
 //Mixins /
+@use "../settings" as *;
+@use "../mixins/mixins" as *;
+@use "../utilities/utils" as *;
 
 $type-body-font-family: $font-main-font !default;
 $type-font-colour: settings-colour("text-primary") !default;

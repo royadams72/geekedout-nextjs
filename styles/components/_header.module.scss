@@ -1,4 +1,4 @@
-@import "../mixins/mixins";
+@use "../mixins/mixins" as mixins;
 
 $bg-colour: #232323;
 
@@ -10,11 +10,11 @@ $bg-colour: #232323;
   position: relative;
   z-index: 100;
 
-  @include is-medium {
+  @include mixins.is-medium {
     grid-template-columns: 55% 1fr;
   }
 
-  @include is-large {
+  @include mixins.is-large {
     grid-template-columns: 75% 1fr;
   }
 
@@ -25,12 +25,12 @@ $bg-colour: #232323;
       margin: 0 auto;
       width: 70%;
 
-      @include is-medium {
+      @include mixins.is-medium {
         margin: 10px 0 10px 15px;
         width: 60%;
       }
 
-      @include is-large {
+      @include mixins.is-large {
         width: 24%;
       }
     }
