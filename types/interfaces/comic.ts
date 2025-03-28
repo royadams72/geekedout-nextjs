@@ -55,40 +55,6 @@ export interface ComicDetail {
   category: string;
 }
 
-// export interface ComicDate {
-//   type?: string;
-//   date?: string;
-// }
-
-// export interface Price {
-//   price: number;
-//   type: string;
-// }
-
-// export interface Obj {
-//   available?: number;
-//   collectionURI?: string;
-//   items: Items[];
-//   returned?: number;
-// }
-
-// export interface DataUrls {
-//   type: string;
-//   url: string;
-// }
-
-// export interface ImageModel {
-//   extension?: string;
-//   path?: string;
-// }
-
-// export interface Items {
-//   resourceURI?: string;
-//   name: string;
-//   type?: string;
-//   role?: string;
-// }
-
 export interface ComicStore {
   error: "";
   limit: number;
