@@ -46,7 +46,7 @@ export interface Comic {
 
 export interface ComicDetail {
   date_added: string;
-  description?: string;
+  description?: TrustedHTML;
   id: string;
   image: string;
   issue_number: string;
