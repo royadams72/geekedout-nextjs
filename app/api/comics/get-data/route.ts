@@ -15,7 +15,8 @@ export async function GET() {
       CategoryType.COMICS
     );
 
-    return response;
+    const data = await response.json();
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(`comics API Error: ${error.statusCode} - ${error.message}`);

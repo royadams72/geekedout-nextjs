@@ -21,7 +21,8 @@ export async function GET(
       CategoryType.MOVIES
     );
 
-    return response;
+    const data = await response.json();
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(
