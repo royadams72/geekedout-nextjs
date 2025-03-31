@@ -6,9 +6,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const persistStoreClientSide = (state: string) => {
   if (typeof window !== "undefined") {
     try {
-      localStorage.setItem("redux-store", state);
+      sessionStorage.setItem("redux-store", state);
     } catch (error) {
-      console.error("Error saving to local storage:", error);
+      console.error("Error saving to session storage:", error);
     }
   }
 };

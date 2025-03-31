@@ -51,7 +51,7 @@ export interface ComicDetail {
   image: string;
   issue_number: string;
   name: string;
-  api_detail_url?: string;
+  site_detail_url?: string;
   category: string;
 }
 

@@ -42,13 +42,13 @@ const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
       )}
 
       <Link
-        href={comicDetails?.api_detail_url as string}
+        href={comicDetails?.site_detail_url as string}
         target="_blank"
         rel="noopener noreferrer"
         role="link"
         className="btn"
       >
-        Go to Mavel Website
+        Go to comic details
       </Link>
     </>
   );
