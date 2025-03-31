@@ -1,6 +1,4 @@
-@use "../settings" as *;
-@use "../mixins/mixins" as *;
-@use "../utilities/utils" as *;
+@use "../imports" as *;
 
 $btn-font: $font-main-font !default;
 $btn-border: 1px solid settings-colour("text-white");

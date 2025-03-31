@@ -13,7 +13,7 @@ export const translate = async (text: string | TrustedHTML) => {
     });
     console.log("data", text);
     if (!response.ok) {
-      console.log("response", response);
+      // console.log("response", response);
       return text;
     }
 

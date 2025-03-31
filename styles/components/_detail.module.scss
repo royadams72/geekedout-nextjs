@@ -1,8 +1,5 @@
-// @use "../utilities/utils";
-@use "../mixins/mixins" as mixins;
-@use "../utilities/utils" as *;
-// @use "../settings";
-// @use "../index" as *;
+@use "../imports" as *;
+
 $comics-colour: settings-colour("comics");
 $music-colour: settings-colour("music");
 $games-colour: settings-colour("games");
@@ -136,7 +133,7 @@ $details-width: 650px;
       grid-area: details_info;
     }
 
-    @include mixins.is-medium {
+    @include is-medium {
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto auto;
       grid-template-areas:
@@ -181,7 +178,7 @@ $details-width: 650px;
     max-width: 300px;
     padding-left: 28px;
 
-    @include mixins.is-medium {
+    @include is-medium {
       margin: 0 auto;
       max-width: 740px;
       padding-left: 0;
@@ -204,7 +201,7 @@ $details-width: 650px;
     padding: 0;
     text-align: left;
 
-    @include mixins.is-medium {
+    @include is-medium {
       padding: 10px;
     }
   }

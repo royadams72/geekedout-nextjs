@@ -17,17 +17,17 @@ export async function GET() {
 
     return response;
   } catch (error) {
-    // if (error instanceof ApiError) {
-    //   console.error(`comics API Error: ${error.statusCode} - ${error.message}`);
-    //   return NextResponse.json(
-    //     `There was an error requesting comic data: ${error.message}`,
-    //     { status: error.statusCode }
-    //   );
-    // } else {
-    console.error("Unexpected Error comics API:", error);
-    return NextResponse.json(`Unexpected Error comics API: ${error}`, {
-      status: 500,
-    });
-    // }
+    if (error instanceof ApiError) {
+      console.error(`comics API Error: ${error.statusCode} - ${error.message}`);
+      return NextResponse.json(
+        `There was an error requesting comic data: ${error.message}`,
+        { status: error.statusCode }
+      );
+    } else {
+      console.error("Unexpected Error comics API:", error);
+      return NextResponse.json(`Unexpected Error comics API: ${error}`, {
+        status: 500,
+      });
+    }
   }
 }
