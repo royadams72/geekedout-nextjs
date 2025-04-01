@@ -20,7 +20,7 @@ export type RootState = ReturnType<typeof rootReducer>;
 
 export const loadState = () => {
   if (typeof window !== "undefined") {
-    const serializedState = localStorage.getItem("redux-store");
+    const serializedState = sessionStorage.getItem("redux-store");
     if (serializedState) {
       return JSON.parse(serializedState);
     }

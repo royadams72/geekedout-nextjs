@@ -1,6 +1,4 @@
-@import "../mixins/mixins";
-
-@import "../base/animation";
+@use "../base/animation" as *;
 
 .loaderContainer {
   height: 100%;

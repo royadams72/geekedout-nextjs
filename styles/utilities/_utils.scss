@@ -1,3 +1,7 @@
+@use "sass:map";
+@use "../settings" as *;
+
 @function settings-colour($colour) {
-  @return map-get($settings-colours, $colour);
+  $value: map.get($settings-colours, $colour); // Get the value from the map
+  @return $value; // Return the value from the function
 }

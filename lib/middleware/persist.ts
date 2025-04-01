@@ -1,14 +1,14 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 
-const GET_SET_DATA_API = process.env.NEXT_PUBLIC_GET_SET_DATA_API;
+const SET_DATA_API = process.env.NEXT_PUBLIC_SET_DATA_API;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const persistStoreClientSide = (state: string) => {
   if (typeof window !== "undefined") {
     try {
-      localStorage.setItem("redux-store", state);
+      sessionStorage.setItem("redux-store", state);
     } catch (error) {
-      console.error("Error saving to local storage:", error);
+      console.error("Error saving to session storage:", error);
     }
   }
 };
@@ -31,16 +31,13 @@ persisterMiddleware.startListening({
 
     if (sessionId) {
       try {
-        const res = await fetch(
-          `${BASE_URL}/${GET_SET_DATA_API}/category-set-data`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ state }),
-          }
-        );
+        const res = await fetch(`${BASE_URL}/${SET_DATA_API}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ state }),
+        });
 
         if (!res.ok) {
           console.error(`HTTP error! Status: ${res.status}`);

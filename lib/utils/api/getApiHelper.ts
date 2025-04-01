@@ -14,7 +14,6 @@ export const getApiHelper = async (
   apiName: string,
   req = {} as NextRequest
 ) => {
-  const revalidate = 300;
   const isMusicCategory = apiName === CategoryType.MUSIC;
   const isProduction = ENV.IS_PRODUCTION;
   const cacheControlStr =
@@ -44,7 +43,6 @@ export const getApiHelper = async (
 
   const returndedData = data.albums || data.data || data;
   const res = NextResponse.json(returndedData, { status: 200 });
-  console.log(`${apiName}--${cacheControlStr}`);
 
   res?.headers.set("Cache-Control", cacheControlStr);
 

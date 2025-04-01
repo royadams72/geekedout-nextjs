@@ -1,11 +1,12 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
-import { createAppSlice } from "@/lib/store/createAppSlice";
-import { RootState } from "@/lib/store/store";
-
 import { Game } from "@/types/interfaces/game";
 import { CategoryType } from "@/types/enums/category-type.enum";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
+import { Preview } from "@/types/interfaces/preview";
+
+import { createAppSlice } from "@/lib/store/createAppSlice";
+import { RootState } from "@/lib/store/store";
 
 export interface GamesSliceState {
   games: Game[];
@@ -36,7 +37,7 @@ export const selectGames = createSelector(
 export const selectGamesPreviews = createSelector(
   selectGames,
   (games: Game[]) =>
-    games?.map((game) => {
+    games?.map((game): Preview => {
       return {
         category: CategoryType.GAMES,
         id: game.id,

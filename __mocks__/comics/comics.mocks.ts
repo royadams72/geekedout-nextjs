@@ -1,28 +1,29 @@
 import { ComicsSliceState } from "@/lib/features/comics/comicsSlice";
 import { items } from "./items.mock";
 import { ComicDetail } from "@/types/interfaces/comic";
+import { CategoryType } from "@/types/enums/category-type.enum";
 
 export const comicDetailMock: ComicDetail = {
-  name: items[0].title,
-  description: items[0].description,
-  id: items[0].id,
-  image: items[0].images[0].path,
-  category: "comic",
-  creators: [
-    { name: "John Byrne", role: "Artist" },
-    { name: "Stan Lee", role: "writer" },
-  ],
-  onsaleDate: "2024-10-01T00:00:00Z",
-  pageCount: 30,
-  printPrice: 4.99,
-  clickThrough: "http://gateway.marvel.com/v1/public/series/32866",
+  date_added: "2008-06-06 11:10:16",
+  description: "This is the description.",
+  id: "6",
+  image:
+    "https://comicvine.gamespot.com/a/uploads/scale_small/5/58993/2645776-chamber_of_chills__13_cgc_8.5.jpg",
+  issue_number: "13",
+  name: "Chamber of Chills Magazine",
+  site_detail_url:
+    "https://comicvine.gamespot.com/chamber-of-chills-magazine-13-the-lost-race/4000-6/",
+  category: CategoryType.COMICS,
 };
 
 export const comicSliceMock: ComicsSliceState = {
   comics: {
-    count: 1,
-    limit: 10,
+    error: "",
+    limit: 0,
     offset: 0,
+    number_of_page_results: 0,
+    number_of_total_results: 0,
+    status_code: 0,
     results: items,
   },
 };

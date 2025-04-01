@@ -1,10 +1,6 @@
 /*
-
 Animation
-
 */
-
-/* ---------- Mixins */
 
 @mixin animation-keyframe($name, $property, $from, $to) {
   @keyframes #{$name} {

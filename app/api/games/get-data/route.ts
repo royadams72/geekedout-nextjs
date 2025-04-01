@@ -9,7 +9,8 @@ export async function GET() {
   try {
     const response = await getApiHelper(ENV.BASE_URL_GAMES, CategoryType.GAMES);
 
-    return response;
+    const data = await response.json();
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(`games API Error: ${error.statusCode} - ${error.message}`);

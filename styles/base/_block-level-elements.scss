@@ -1,4 +1,4 @@
-//Mixins /
+@use "../imports" as *;
 
 $type-body-font-family: $font-main-font !default;
 $type-font-colour: settings-colour("text-primary") !default;

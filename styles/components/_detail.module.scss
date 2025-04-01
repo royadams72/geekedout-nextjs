@@ -1,6 +1,4 @@
-@import "../utilities/utils";
-@import "../mixins/mixins";
-@import "../settings";
+@use "../imports" as *;
 
 $comics-colour: settings-colour("comics");
 $music-colour: settings-colour("music");

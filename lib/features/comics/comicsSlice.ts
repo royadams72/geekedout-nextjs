@@ -1,27 +1,27 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
 
-import { createAppSlice } from "@/lib/store/createAppSlice";
-
-import { isNotEmpty } from "@/lib/utils/validation";
-
-import {
-  Comic,
-  ComicDetail,
-  ComicStore,
-  Items,
-  Price,
-} from "@/types/interfaces/comic";
-
-import { CategoryType } from "@/types/enums/category-type.enum";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
+import { CategoryType } from "@/types/enums/category-type.enum";
+import { Comic, ComicStore } from "@/types/interfaces/comic";
+import { Preview } from "@/types/interfaces/preview";
+
+import { createAppSlice } from "@/lib/store/createAppSlice";
 import { RootState } from "@/lib/store/store";
 
 export interface ComicsSliceState {
   comics: ComicStore;
 }
 
-const initialState: ComicsSliceState = {
-  comics: { count: 0, limit: 0, offset: 0, results: [] },
+export const initialState: ComicsSliceState = {
+  comics: {
+    error: "",
+    limit: 0,
+    offset: 0,
+    number_of_page_results: 0,
+    number_of_total_results: 0,
+    status_code: 0,
+    results: [],
+  },
 };
 
 export const comicsSlice = createAppSlice({
@@ -46,19 +46,15 @@ export const selectComicsArray = createSelector(
 export const selectComicsPreviews = createSelector(
   selectComicsArray,
   (comic: Comic[]) =>
-    comic?.map((comic: Comic) => {
-      const isImages = comic.images && isNotEmpty(comic.images[0]);
+    comic?.map((comic: Comic): Preview => {
+      const comicImage = comic?.image?.small_url;
+      let comicName = comic?.name || comic?.volume?.name;
 
       return {
         category: CategoryType.COMICS,
         id: comic.id,
-        title: comic.title,
-        imageLarge: isImages
-          ? `${comic.images[0].path}.jpg`
-          : ImageNotFound.MED_250x250,
-        imageSmall: isImages
-          ? `${comic.images[0].path}/standard_fantastic.jpg`
-          : ImageNotFound.SM,
+        title: comicName,
+        imageLarge: comicImage || ImageNotFound.MED_250x250,
       };
     })
 );

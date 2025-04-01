@@ -1,9 +1,12 @@
+@use "sass:math";
+@use "../imports" as *;
+
 $base-bg-colour: settings-colour("bg-colour-primary") !default;
 
 html {
   -webkit-font-smoothing: antialiased;
   background-color: $base-bg-colour;
-  font-size: (14px / 16px) * 100%;
+  font-size: math.div(14px, 16px) * 100%;
 }
 
 .main {

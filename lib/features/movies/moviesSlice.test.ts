@@ -34,6 +34,7 @@ global.fetch = jest.fn(() =>
 ) as jest.Mock;
 
 let consoleErrorMock: any;
+
 describe("movieSlice", () => {
   let store: any;
   let moviesStore: MoviesStore;

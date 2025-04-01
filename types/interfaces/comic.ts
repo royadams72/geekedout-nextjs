@@ -1,84 +1,66 @@
+export interface Image {
+  icon_url: string;
+  medium_url: string;
+  screen_url: string;
+  screen_large_url: string;
+  small_url: string;
+  super_url: string;
+  thumb_url: string;
+  tiny_url: string;
+  original_url: string;
+  image_tags: string;
+}
+
+export interface AssociatedImage {
+  original_url: string;
+  id: string;
+  caption: string | null;
+  image_tags: string;
+}
+
+export interface Volume {
+  api_detail_url: string;
+  id: string;
+  name: string;
+  site_detail_url: string;
+}
+
 export interface Comic {
-  characters: Obj;
-  collectedIssues: any[];
-  creators: Obj;
-  dates: ComicDate[];
+  aliases: string | null;
+  api_detail_url: string;
+  cover_date: string;
+  date_added: string;
+  date_last_updated: string;
+  deck: string | null;
   description: string | null;
-  diamondCode: string;
-  digitalId?: number;
-  ean: string;
-  events: Obj;
-  format: string;
-  id?: number | string;
-  images: ImageModel[];
-  isbn: string;
-  issn: string;
-  issueNumber: number;
-  modified: string;
-  pageCount: number;
-  prices: Price[];
-  resourceURI: string;
-  series: Items;
-  stories: Obj;
-  textObjects: any[];
-  thumbnail: ImageModel;
-  title: string;
-  upc: string;
-  urls: DataUrls[];
-  variantDescription: string;
-  variants: Items[];
+  has_staff_review: boolean;
+  id: string | number;
+  image: Image;
+  associated_images: AssociatedImage[];
+  issue_number: string;
+  name: string | null;
+  site_detail_url: string;
+  store_date: string | null;
+  volume: Volume;
 }
 
 export interface ComicDetail {
-  creators?: Array<{ name: string; role: string } | undefined>;
-  onsaleDate: string;
-  description?: string;
-  id: number | string;
+  date_added: string;
+  description?: TrustedHTML;
+  id: string;
   image: string;
-  pageCount?: number;
-  printPrice?: number;
+  issue_number: string;
   name: string;
-  clickThrough?: string;
+  site_detail_url?: string;
   category: string;
 }
 
-export interface ComicDate {
-  type?: string;
-  date?: string;
-}
-
-export interface Price {
-  price: number;
-  type: string;
-}
-
-export interface Obj {
-  available?: number;
-  collectionURI?: string;
-  items: Items[];
-  returned?: number;
-}
-
-export interface DataUrls {
-  type: string;
-  url: string;
-}
-
-export interface ImageModel {
-  extension?: string;
-  path?: string;
-}
-
-export interface Items {
-  resourceURI?: string;
-  name: string;
-  type?: string;
-  role?: string;
-}
-
 export interface ComicStore {
-  count?: number;
-  limit?: number;
-  offset?: number;
+  error: "";
+  limit: number;
+  offset: number;
+  number_of_page_results: number;
+  number_of_total_results: number;
+  status_code: number;
   results: Comic[];
 }
