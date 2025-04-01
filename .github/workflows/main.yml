@@ -21,8 +21,7 @@ jobs:
       BASE_URL_MUSIC: ${{ secrets.BASE_URL_MUSIC }}
       BASE_URL_EXCHANGE: ${{ secrets.BASE_URL_EXCHANGE }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
-      COMICS_PUBLIC_APIKEY: ${{ secrets.COMICS_PUBLIC_APIKEY }}
-      COMICS_PRIVATE_APIKEY: ${{ secrets.COMICS_PRIVATE_APIKEY }}
+      COMIC_VINE_APIKEY: ${{ secrets.COMIC_VINE_APIKEY }}
       X_MASHAPE_KEY: ${{ secrets.X_MASHAPE_KEY }}
       MOVIES_APIKEY: ${{ secrets.MOVIES_APIKEY }}
       SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
