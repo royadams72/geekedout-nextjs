@@ -16,18 +16,11 @@ export const getApiHelper = async (
 ) => {
   const isMusicCategory = apiName === CategoryType.MUSIC;
   const isProduction = ENV.IS_PRODUCTION;
-  const cacheControlStr =
-    isProduction && !isMusicCategory
-      ? `s-maxage=300, stale-while-revalidate`
-      : "no-store";
+  const cacheControlStr = isProduction
+    ? `s-maxage=300, stale-while-revalidate`
+    : "no-store";
   let cookieData = null;
   let headers = {};
-  console.log(
-    "isProduction: ",
-    isProduction,
-    "cacheControlStr: ",
-    cacheControlStr
-  );
 
   if (isMusicCategory) {
     cookieData = await checkSpotifyCookie(req);
