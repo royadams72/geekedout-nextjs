@@ -11,12 +11,6 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "i.annihil.us",
-        port: "",
-        pathname: "**",
-      },
-      {
         protocol: "https",
         hostname: "i.scdn.co",
         port: "",
@@ -31,6 +25,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "image.tmdb.org",
+        port: "",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "comicvine.gamespot.com",
         port: "",
         pathname: "**",
       },
