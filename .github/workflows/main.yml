@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
-      NEXT_PUBLIC_GET_SET_DATA_API: ${{ secrets.NEXT_PUBLIC_GET_SET_DATA_API }}
+      NEXT_PUBLIC_GET_SET_DATA_API: ${{ secrets.NEXT_PUBLIC_SET_DATA_API }}
       NEXT_PUBLIC_GET_DATA_FOLDER: ${{ secrets.NEXT_PUBLIC_GET_DATA_FOLDER }}
       BASE_URL_COMICS: ${{ secrets.BASE_URL_COMICS }}
       BASE_URL_GAMES: ${{ secrets.BASE_URL_GAMES }}
