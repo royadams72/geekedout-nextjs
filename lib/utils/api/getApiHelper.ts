@@ -15,10 +15,10 @@ export const getApiHelper = async (
   req = {} as NextRequest
 ) => {
   const isMusicCategory = apiName === CategoryType.MUSIC;
-  const isProduction = ENV.IS_PRODUCTION;
-  const cacheControlStr = isProduction
-    ? `s-maxage=300, stale-while-revalidate`
-    : "no-store";
+  const cacheControlStr =
+    ENV.IS_PRODUCTION && !isMusicCategory
+      ? `s-maxage=300, stale-while-revalidate`
+      : "no-store";
   let cookieData = null;
   let headers = {};
 
