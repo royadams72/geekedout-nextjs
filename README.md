@@ -8,8 +8,14 @@ To run the development server:
 npm run dev
 ```
 
-Uses Redis as a cache: `redis-server /usr/local/etc/redis.conf`
+APIs used:
+`https://comicvine.gamespot.com/`
+`https://www.gamerpower.com/`
+`https://api.themoviedb.org`
+`https://api.spotify.com/`
 
-This uses Exchance rate API https://www.exchangerate-api.com/
+Uses Redis as a cache, start redis: `redis-server /usr/local/etc/redis.conf`
+
+This uses Exchance rate API to format currency https://www.exchangerate-api.com/
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
