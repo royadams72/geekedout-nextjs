@@ -12,7 +12,6 @@ export const getCategoryFromDB = async (categoryName: string) => {
     }
     const data = await getDBData(sessionId as string);
     const categoriesData = data?.state;
-    console.log("categoriesData", categoriesData[categoryName]);
 
     if (!categoriesData || !categoriesData[categoryName]) {
       throw new Error(`Category ${categoryName} does not exist`);

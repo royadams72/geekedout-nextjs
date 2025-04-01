@@ -17,7 +17,7 @@ export const ensureBrowserSession = async (existingSessionId?: string) => {
         : "Session created and data retrieved",
     });
 
-    if (!sessionId) {
+    if (!sessionId || sessionId !== existingSessionId) {
       response.cookies.set("sessionId", existingSessionId, {
         path: "/",
         httpOnly: true,
