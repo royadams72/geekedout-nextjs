@@ -101,7 +101,7 @@ describe("persist store", () => {
     store.dispatch(setSessionId(sessionId));
   });
 
-  it("should log an error if localStorage.setItem throws a QuotaExceededError", () => {
+  it("should log an error if session.setItem throws a QuotaExceededError", () => {
     const quotaExceededError = new Error("QuotaExceededError");
     jest.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw quotaExceededError;
@@ -110,7 +110,7 @@ describe("persist store", () => {
     store.dispatch(setFirstPage(false));
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(
-      "Error saving to local storage:",
+      "Error saving to session storage:",
       quotaExceededError
     );
   });

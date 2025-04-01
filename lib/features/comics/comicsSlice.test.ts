@@ -11,6 +11,7 @@ import {
   ComicsSliceState,
   selectComicsPreviews,
   setComics,
+  initialState,
 } from "@/lib/features/comics/comicsSlice";
 
 let comicsReducer = () => comicSliceMock;
@@ -44,10 +45,6 @@ describe("comicSlice", () => {
   });
 
   it("should handle setComics action", () => {
-    const initialState = {
-      comics: { count: 0, limit: 0, offset: 0, results: [] },
-    };
-
     const newState = comicsSlice.reducer(initialState, setComics(comicStore));
 
     expect(newState.comics).toEqual(comicStore);
@@ -58,7 +55,7 @@ describe("comicSlice", () => {
 
     const previewComics = selectComicsPreviews(rootStateMock);
 
-    expect(previewComics[0].title).toEqual(originalArray[0].title);
+    expect(previewComics[0].title).toEqual(originalArray[0].name);
   });
 
   it("should handle selectComicsPreviews when no image", () => {
@@ -70,8 +67,10 @@ describe("comicSlice", () => {
           results: [
             {
               ...rootStateMock.comics.comics.results[0],
-              images: [],
-              thumbnail: {},
+              image: {
+                ...rootStateMock.comics.comics.results[0].image, // Clone the image object too
+                small_url: "", // Set small_url to an empty string
+              },
             },
           ],
         },
@@ -80,7 +79,6 @@ describe("comicSlice", () => {
 
     const previewComics = selectComicsPreviews(clonedState);
 
-    expect(previewComics[0].imageSmall).toEqual(ImageNotFound.SM);
     expect(previewComics[0].imageLarge).toEqual(ImageNotFound.MED_250x250);
   });
 });

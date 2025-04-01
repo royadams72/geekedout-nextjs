@@ -32,13 +32,13 @@ export interface Comic {
   date_added: string;
   date_last_updated: string;
   deck: string | null;
-  description: string;
+  description: string | null;
   has_staff_review: boolean;
   id: string | number;
   image: Image;
   associated_images: AssociatedImage[];
   issue_number: string;
-  name: string;
+  name: string | null;
   site_detail_url: string;
   store_date: string | null;
   volume: Volume;
@@ -62,5 +62,5 @@ export interface ComicStore {
   number_of_page_results: number;
   number_of_total_results: number;
   status_code: number;
-  results: [];
+  results: Comic[];
 }

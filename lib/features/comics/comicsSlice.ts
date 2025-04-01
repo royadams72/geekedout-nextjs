@@ -1,6 +1,6 @@
 import { createSelector, type PayloadAction } from "@reduxjs/toolkit";
-import { franc } from "franc";
 
+import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 import { CategoryType } from "@/types/enums/category-type.enum";
 import { Comic, ComicStore } from "@/types/interfaces/comic";
 import { Preview } from "@/types/interfaces/preview";
@@ -12,7 +12,7 @@ export interface ComicsSliceState {
   comics: ComicStore;
 }
 
-const initialState: ComicsSliceState = {
+export const initialState: ComicsSliceState = {
   comics: {
     error: "",
     limit: 0,
@@ -54,7 +54,7 @@ export const selectComicsPreviews = createSelector(
         category: CategoryType.COMICS,
         id: comic.id,
         title: comicName,
-        imageLarge: comicImage,
+        imageLarge: comicImage || ImageNotFound.MED_250x250,
       };
     })
 );

@@ -7,7 +7,6 @@ import { formatDate } from "@/lib/utils/date";
 import { ComicDetail } from "@/types/interfaces/comic";
 import { useEffect, useState } from "react";
 import { translate } from "@/lib/utils/translate";
-import { franc } from "franc";
 
 const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
   const [description, setDescription] = useState<TrustedHTML | string>(
@@ -15,12 +14,10 @@ const Comic = ({ comicDetails }: { comicDetails: ComicDetail }) => {
   );
 
   useEffect(() => {
-    if (franc(description as string) !== "eng") {
-      (async () => {
-        const translatedTitle = await translate(description);
-        setDescription(translatedTitle);
-      })();
-    }
+    (async () => {
+      const translatedTitle = await translate(description);
+      setDescription(translatedTitle);
+    })();
   }, [description]);
 
   return (
