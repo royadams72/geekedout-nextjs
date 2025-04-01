@@ -22,6 +22,12 @@ export const getApiHelper = async (
       : "no-store";
   let cookieData = null;
   let headers = {};
+  console.log(
+    "isProduction: ",
+    isProduction,
+    "cacheControlStr: ",
+    cacheControlStr
+  );
 
   if (isMusicCategory) {
     cookieData = await checkSpotifyCookie(req);
