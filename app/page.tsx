@@ -47,27 +47,25 @@ const Home = async ({
       preloadedState.comics
     );
 
-    if (!preloadedState[key]) {
-      const isMusic = key === CategoryType.MUSIC;
-      try {
-        const response = await fetch(url, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            ...(isMusic && { Cookie: `spotify_token=${token}` }),
-          },
-        });
-        const data = await response.json();
+    const isMusic = key === CategoryType.MUSIC;
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          ...(isMusic && { Cookie: `spotify_token=${token}` }),
+        },
+      });
+      const data = await response.json();
 
-        if (isMusic) {
-          cookieData = await getCookieFromResponse(response);
-        }
-
-        preloadedState[key] = { [key]: data };
-      } catch (error) {
-        console.error(`Error fetching data for ${key}:`, error);
-        preloadedState[key] = {};
+      if (isMusic) {
+        cookieData = await getCookieFromResponse(response);
       }
+
+      preloadedState[key] = { [key]: data };
+    } catch (error) {
+      console.error(`Error fetching data for ${key}:`, error);
+      preloadedState[key] = {};
     }
   }
   return (
