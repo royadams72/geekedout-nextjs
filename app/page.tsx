@@ -44,7 +44,7 @@ const Home = async ({
   for (const { key, url } of dataFetchers) {
     console.log(
       "is preloadedState available: !preloadedState[key]",
-      !preloadedState[key]
+      preloadedState.comics
     );
 
     if (!preloadedState[key]) {
