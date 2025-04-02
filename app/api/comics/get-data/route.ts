@@ -13,15 +13,20 @@ export async function GET() {
       CategoryType.COMICS
     );
 
-    const data = await response.json();
-    // console.log("comics response", response);
-    // console.log("comics data", data);
-    const res = NextResponse.json(data, { status: 200 });
-    res?.headers.set(
-      "Cache-Control",
-      "`s-maxage=300, stale-while-revalidate=60"
-    );
-    return res;
+    // const data = await response.json();
+    // console.log(
+    //   "comics response header::::",
+    //   response?.headers.get("Cache-Control")
+    // );
+    // // console.log("comics response", response);
+    // // console.log("comics data", data);
+    // const res = NextResponse.json(data, { status: 200 });
+    // res?.headers.set(
+    //   "Cache-Control",
+    //   "`s-maxage=300, stale-while-revalidate=60"
+    // );
+
+    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(`comics API Error: ${error.statusCode} - ${error.message}`);

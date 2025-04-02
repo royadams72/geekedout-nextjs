@@ -16,8 +16,9 @@ export async function GET() {
       CategoryType.MOVIES
     );
 
-    const data = await response.json();
-    return NextResponse.json(data, { status: 200 });
+    // const data = await response.json();
+    // return NextResponse.json(data, { status: 200 });
+    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(

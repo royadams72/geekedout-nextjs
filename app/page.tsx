@@ -62,10 +62,6 @@ const Home = async ({
       console.error(`Error fetching data for ${key}:`, error);
       preloadedState[key] = {};
     }
-    const res = await fetch(`${ENV.BASE_URL}/api/test`, {
-      method: "GET",
-    });
-    console.log("res", await res.json());
   }
 
   return (
