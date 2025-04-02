@@ -16,8 +16,12 @@ export async function GET() {
     const data = await response.json();
     // console.log("comics response", response);
     // console.log("comics data", data);
-
-    return NextResponse.json(data, { status: 200 });
+    const res = NextResponse.json(data, { status: 200 });
+    res?.headers.set(
+      "Cache-Control",
+      "`s-maxage=300, stale-while-revalidate=60"
+    );
+    return res;
   } catch (error) {
     if (error instanceof ApiError) {
       console.error(`comics API Error: ${error.statusCode} - ${error.message}`);
