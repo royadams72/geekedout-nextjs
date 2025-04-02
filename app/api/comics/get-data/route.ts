@@ -14,6 +14,9 @@ export async function GET() {
     );
 
     const data = await response.json();
+    console.log("comics response", response);
+    console.log("comics data", data);
+
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     if (error instanceof ApiError) {
