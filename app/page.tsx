@@ -15,19 +15,19 @@ import GamesCategory from "./games/components/GamesCategory";
 const dataFetchers = [
   {
     key: CategoryType.GAMES,
-    url: `${ENV.BASE_URL}/${ApiPaths.GAMES_API}/${ENV.GET_DATA_FOLDER}/`,
+    url: `${ApiPaths.GAMES_API}/${ENV.GET_DATA_FOLDER}/`,
   },
   {
     key: CategoryType.COMICS,
-    url: `${ENV.BASE_URL}/${ApiPaths.COMICS_API}/${ENV.GET_DATA_FOLDER}`,
+    url: `${ApiPaths.COMICS_API}/${ENV.GET_DATA_FOLDER}`,
   },
   {
     key: CategoryType.MOVIES,
-    url: `${ENV.BASE_URL}/${ApiPaths.MOVIES_API}/${ENV.GET_DATA_FOLDER}`,
+    url: `${ApiPaths.MOVIES_API}/${ENV.GET_DATA_FOLDER}`,
   },
   {
     key: CategoryType.MUSIC,
-    url: `${ENV.BASE_URL}/${ApiPaths.MUSIC_API}/${ENV.GET_DATA_FOLDER}/`,
+    url: `${ApiPaths.MUSIC_API}/${ENV.GET_DATA_FOLDER}/`,
   },
 ];
 
@@ -62,6 +62,10 @@ const Home = async ({
       console.error(`Error fetching data for ${key}:`, error);
       preloadedState[key] = {};
     }
+    const res = await fetch("api/test", {
+      method: "GET",
+    });
+    console.log("res", await res.json());
   }
 
   return (
