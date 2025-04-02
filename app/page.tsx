@@ -17,10 +17,10 @@ const dataFetchers = [
     key: CategoryType.GAMES,
     url: `${ENV.BASE_URL}/${ApiPaths.GAMES_API}/${ENV.GET_DATA_FOLDER}/`,
   },
-  // {
-  //   key: CategoryType.COMICS,
-  //   url: `${ENV.BASE_URL}/${ApiPaths.COMICS_API}/${ENV.GET_DATA_FOLDER}`,
-  // },
+  {
+    key: CategoryType.COMICS,
+    url: `${ENV.BASE_URL}/${ApiPaths.COMICS_API}/${ENV.GET_DATA_FOLDER}`,
+  },
   {
     key: CategoryType.MOVIES,
     url: `${ENV.BASE_URL}/${ApiPaths.MOVIES_API}/${ENV.GET_DATA_FOLDER}`,
@@ -70,10 +70,10 @@ const Home = async ({
         preloadedState={preloadedState.movies}
         isRedirected={redirected}
       />
-      {/* <ComicsCategory
+      <ComicsCategory
         preloadedState={preloadedState.comics}
         isRedirected={redirected}
-      /> */}
+      />
       <MusicCategory
         preloadedState={preloadedState.music}
         isRedirected={redirected}
