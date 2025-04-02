@@ -42,6 +42,11 @@ const Home = async ({
   let cookieData = null;
 
   for (const { key, url } of dataFetchers) {
+    console.log(
+      "is preloadedState available: !preloadedState[key]",
+      !preloadedState[key]
+    );
+
     if (!preloadedState[key]) {
       const isMusic = key === CategoryType.MUSIC;
       try {
