@@ -96,7 +96,7 @@ const Category = <T extends { id: number | string | undefined }>({
     <>
       {!isFirstPage && (
         <div className={styles.details_btn_container}>
-          <Link className="btn" href="/">
+          <Link className="btn" href="/" prefetch={false}>
             Back to main page
           </Link>
         </div>
