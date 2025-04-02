@@ -9,13 +9,13 @@ import { CategoryType } from "@/types/enums/category-type.enum";
 export async function GET() {
   try {
     const response = await getApiHelper(
-      `${ENV.BASE_URL_COMICS}/issues/?api_key=${ENV.COMIC_VINE_APIKEY}&sort=date_added:desc&format=json`,
+      `${ENV.BASE_URL_COMICS}/issues/?api_key=${ENV.COMIC_VINE_APIKEY}&limit=50&sort=date_added:desc&format=json`,
       CategoryType.COMICS
     );
 
     const data = await response.json();
-    console.log("comics response", response);
-    console.log("comics data", data);
+    // console.log("comics response", response);
+    // console.log("comics data", data);
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
