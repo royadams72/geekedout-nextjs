@@ -42,28 +42,29 @@ const Home = async ({
   let cookieData = null;
 
   for (const { key, url } of dataFetchers) {
-    const isMusic = key === CategoryType.MUSIC;
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          ...(isMusic && { Cookie: `spotify_token=${token}` }),
-        },
-      });
-      const data = await response.json();
+    if (!preloadedState[key]) {
+      const isMusic = key === CategoryType.MUSIC;
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            ...(isMusic && { Cookie: `spotify_token=${token}` }),
+          },
+        });
+        const data = await response.json();
 
-      if (isMusic) {
-        cookieData = await getCookieFromResponse(response);
+        if (isMusic) {
+          cookieData = await getCookieFromResponse(response);
+        }
+
+        preloadedState[key] = { [key]: data };
+      } catch (error) {
+        console.error(`Error fetching data for ${key}:`, error);
+        preloadedState[key] = {};
       }
-
-      preloadedState[key] = { [key]: data };
-    } catch (error) {
-      console.error(`Error fetching data for ${key}:`, error);
-      preloadedState[key] = {};
     }
   }
-
   return (
     <>
       <MoviesCategory
