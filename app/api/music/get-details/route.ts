@@ -17,8 +17,6 @@ export const POST = async (req: NextRequest) => {
       req
     );
 
-    // const data = await response.json();
-    // return NextResponse.json(data, { status: 200 });
     return response;
   } catch (error) {
     if (error instanceof ApiError) {

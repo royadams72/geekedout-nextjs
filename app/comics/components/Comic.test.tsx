@@ -15,8 +15,8 @@ global.fetch = jest.fn(() =>
       Promise.resolve({ translatedText: mockComicDetails.description }),
   })
 ) as jest.Mock;
+
 beforeEach(async () => {
-  // global.fetch = jest.fn();
   await act(async () => {
     render(<Comic comicDetails={mockComicDetails} />);
   });

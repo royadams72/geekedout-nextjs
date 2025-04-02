@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
     }
 
     const { response: sessionResponse } = await ensureBrowserSession(sessionId);
-    // console.log(categoriesData);
 
     await saveDBData(sessionId, categoriesData);
 

@@ -6,32 +6,11 @@ import { isNotEmpty } from "../utils/validation";
 import { ImageNotFound } from "@/types/enums/image-not-found.enum";
 import { ENV } from "./envService";
 
-// export const setComicDetailsFromDB = async (id: number) => {
-//   try {
-//     const response = await fetch(
-//       `https://comicvine.gamespot.com/api/issue/1100494/?api_key=${ENV.COMIC_VINE_APIKEY}&sort=date_added:desc&format=json`,
-//       {
-//         method: "GET",
-//       }
-//     );
-//     const data = await response.json();
-//     console.log(data);
-
-//     // if (!response.ok) {
-//     //   throw new Error(`Failed to fetch movie: ${response.status}`);
-//     // }
-//     // return mapMovieDetail(data, id);
-//   } catch (error) {
-//     console.error(`Unable to load details getAllMovieApi(): ${error}`);
-//     return {};
-//   }
-// };
 export const setComicDetailsFromDB = async (
   id: string
 ): Promise<ComicDetail | {}> => {
   try {
     const storeData = await getCategoryFromDB(CategoryType.COMICS);
-    // console.log("storeData in comics", storeData.comics);
 
     if (!storeData) {
       throw new Error("Could not get comics storeData from DB");

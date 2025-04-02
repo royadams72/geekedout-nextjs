@@ -68,8 +68,8 @@ describe("comicSlice", () => {
             {
               ...rootStateMock.comics.comics.results[0],
               image: {
-                ...rootStateMock.comics.comics.results[0].image, // Clone the image object too
-                small_url: "", // Set small_url to an empty string
+                ...rootStateMock.comics.comics.results[0].image,
+                small_url: "",
               },
             },
           ],
