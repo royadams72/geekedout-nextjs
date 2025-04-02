@@ -45,8 +45,6 @@ export const getApiHelper = async (
 
   res?.headers.set("Cache-Control", cacheControlStr);
 
-  console.log(res?.headers.get("Cache-Control"));
-
   if (isMusicCategory && cookieData.updated) {
     const cookieString = await setCookieString(cookieData);
     res?.headers.set("Set-Cookie", cookieString);
