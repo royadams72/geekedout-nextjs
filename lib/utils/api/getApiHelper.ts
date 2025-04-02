@@ -44,15 +44,8 @@ export const getApiHelper = async (
   const res = NextResponse.json(returndedData, { status: 200 });
 
   res?.headers.set("Cache-Control", cacheControlStr);
-  res?.headers.set("Vercel-CDN-Cache-Control", cacheControlStr);
-  res?.headers.set("CDN-Cache-Control", cacheControlStr);
-  //   Vercel-CDN-Cache-Control
-  // CDN-Cache-Control
-  console.log(
-    res?.headers.get("Cache-Control"),
-    res?.headers.get("Vercel-CDN-Cache-Control"),
-    res?.headers.get("CDN-Cache-Control")
-  );
+
+  console.log(res?.headers.get("Cache-Control"));
 
   if (isMusicCategory && cookieData.updated) {
     const cookieString = await setCookieString(cookieData);
